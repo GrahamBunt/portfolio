@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+body {
+  background: #000000;
+  color: #ffffff;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    mask-position: 100% 0;
+    -webkit-mask-position: 100% 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    mask-position: 0 0;
+    -webkit-mask-position: 0 0;
+  }
+}
+
+.animate-reveal {
+  display: block;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(to left, transparent 0%, transparent 10%, white 50%, white 100%);
+  -webkit-mask-size: 300% 100%;
+  -webkit-mask-position: 100% 0;
+  mask-image: linear-gradient(to left, transparent 0%, transparent 10%, white 50%, white 100%);
+  mask-size: 300% 100%;
+  mask-position: 100% 0;
+  animation: reveal 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
