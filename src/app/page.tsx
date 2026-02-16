@@ -6,7 +6,9 @@ export default function Home() {
   const [fontsReady, setFontsReady] = useState(false);
 
   useEffect(() => {
-    document.fonts.ready.then(() => setFontsReady(true));
+    document.fonts.ready.then(
+      () => new Promise((r) => setTimeout(r, 350))
+    ).then(() => setFontsReady(true));
   }, []);
 
   return (
