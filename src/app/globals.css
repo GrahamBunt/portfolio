@@ -7,19 +7,16 @@ body {
 
 @keyframes reveal {
   0% {
-    opacity: 0;
     transform: translateY(30px);
     mask-position: 100% 0;
     -webkit-mask-position: 100% 0;
   }
   85% {
-    opacity: 1;
     transform: translateY(0);
     mask-position: 0 0;
     -webkit-mask-position: 0 0;
   }
   100% {
-    opacity: 1;
     transform: translateY(0);
     mask-position: 0 0;
     -webkit-mask-position: 0 0;
@@ -28,23 +25,25 @@ body {
 
 @keyframes reveal-early {
   0% {
-    opacity: 0;
     transform: translateY(30px);
     mask-position: 100% 0;
     -webkit-mask-position: 100% 0;
   }
   80% {
-    opacity: 1;
     transform: translateY(0);
     mask-position: 0 0;
     -webkit-mask-position: 0 0;
   }
   100% {
-    opacity: 1;
     transform: translateY(0);
     mask-position: 0 0;
     -webkit-mask-position: 0 0;
   }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .animate-reveal {
@@ -56,7 +55,9 @@ body {
   mask-image: linear-gradient(to left, transparent 0%, transparent 10%, white 50%, white 100%);
   mask-size: 300% 100%;
   mask-position: 100% 0;
-  animation: reveal 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation:
+    reveal 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
+    fade-in 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 .animate-reveal-early {
@@ -68,5 +69,7 @@ body {
   mask-image: linear-gradient(to left, transparent 0%, transparent 10%, white 50%, white 100%);
   mask-size: 300% 100%;
   mask-position: 100% 0;
-  animation: reveal-early 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation:
+    reveal-early 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
+    fade-in 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
