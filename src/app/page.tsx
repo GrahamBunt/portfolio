@@ -19,8 +19,8 @@ export default function Home() {
           <em className="italic">Product Designer</em>
         </span>
         <span
-          className={fontsReady ? "animate-reveal" : "opacity-0"}
-          style={fontsReady ? { animationDelay: "200ms" } : undefined}
+          className={fontsReady ? "animate-reveal-early" : "opacity-0"}
+          style={fontsReady ? { animationDelay: "120ms" } : undefined}
         >
           based in Salt Lake City, Utah.
         </span>
