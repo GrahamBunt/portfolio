@@ -20,11 +20,35 @@ All page content uses a unified reveal animation (`.animate-reveal` in `globals.
 - Starts 30px below final position, opacity 0
 - Animates upward to resting position while fading in
 - Includes a left-to-right gradient mask wipe that reveals text from left to right
-- All three effects (translate, opacity, mask) are part of one single CSS animation
-- Duration: 2 seconds, easing: `cubic-bezier(0.25, 0.1, 0.25, 1)`
-- Multiple lines are staggered with ~200ms delay between them
+- TranslateY and mask complete in 1.4s; opacity fades in over 2s for a softer finish
+- Easing: `cubic-bezier(0.25, 0.1, 0.25, 1)`
+- All movement and mask properties reach final values at 80–85% of their duration, leaving the tail end with zero visible drift
+- Multiple lines are staggered with ~120ms delay between them
 - Animation waits for fonts to fully load, plus a 350ms pause, before playing
 - The overall feel should be graceful and intentional — like a deep breath, not a snap
+
+## Homepage Vision & Load Sequence
+
+The homepage has three sections that animate in sequentially on load:
+
+1. **Hero text** (already built) — animates in first with the current reveal animation
+2. **Segmented control** with "Projects" and "Snippets" tabs — animates in after the hero text settles, using a similar opacity and gradient reveal
+3. **Content peek below the fold** — animates in after the segmented control, encouraging scroll
+
+The entire load sequence should feel like one choreographed animation — each element follows the previous one naturally with consistent animation language throughout.
+
+### Segmented Control
+
+The segmented control switches between two content views:
+
+- **Projects**: vertical stack of case study cards with header, description, CTA button, and image
+- **Snippets**: three-column masonry grid with staggered card heights, showcasing UI work, interactions, animated gifs, and personal photos for personality
+
+### Content Guidelines
+
+- All new elements should follow the responsive design principles already established
+- Animation timing for new sections should use the same easing curve and reveal style as the hero text
+- Stagger delays between sections should feel natural — each section waits for the previous one to settle before beginning
 
 ## Responsive Design Principles
 
