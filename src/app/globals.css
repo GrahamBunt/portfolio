@@ -29,5 +29,5 @@ body {
   mask-image: linear-gradient(to left, transparent 0%, transparent 10%, white 50%, white 100%);
   mask-size: 300% 100%;
   mask-position: 100% 0;
-  animation: reveal 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation: reveal 2s cubic-bezier(0.25, 0.1, 0.0, 1) forwards;
 }
