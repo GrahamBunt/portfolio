@@ -5,37 +5,17 @@ body {
   color: #ffffff;
 }
 
-@keyframes reveal {
-  0% {
-    transform: translateY(30px);
-    mask-position: 100% 0;
-    -webkit-mask-position: 100% 0;
-  }
-  85% {
-    transform: translateY(0);
-    mask-position: 0 0;
-    -webkit-mask-position: 0 0;
-  }
-  100% {
-    transform: translateY(0);
-    mask-position: 0 0;
-    -webkit-mask-position: 0 0;
-  }
+@keyframes slide-up {
+  from { transform: translateY(30px); }
+  to { transform: translateY(0); }
 }
 
-@keyframes reveal-early {
-  0% {
-    transform: translateY(30px);
+@keyframes mask-wipe {
+  from {
     mask-position: 100% 0;
     -webkit-mask-position: 100% 0;
   }
-  80% {
-    transform: translateY(0);
-    mask-position: 0 0;
-    -webkit-mask-position: 0 0;
-  }
-  100% {
-    transform: translateY(0);
+  to {
     mask-position: 0 0;
     -webkit-mask-position: 0 0;
   }
@@ -49,6 +29,7 @@ body {
 .animate-reveal {
   display: block;
   opacity: 0;
+  transform: translateY(30px);
   -webkit-mask-image: linear-gradient(to left, transparent 0%, transparent 10%, white 50%, white 100%);
   -webkit-mask-size: 300% 100%;
   -webkit-mask-position: 100% 0;
@@ -56,20 +37,7 @@ body {
   mask-size: 300% 100%;
   mask-position: 100% 0;
   animation:
-    reveal 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
-    fade-in 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-}
-
-.animate-reveal-early {
-  display: block;
-  opacity: 0;
-  -webkit-mask-image: linear-gradient(to left, transparent 0%, transparent 10%, white 50%, white 100%);
-  -webkit-mask-size: 300% 100%;
-  -webkit-mask-position: 100% 0;
-  mask-image: linear-gradient(to left, transparent 0%, transparent 10%, white 50%, white 100%);
-  mask-size: 300% 100%;
-  mask-position: 100% 0;
-  animation:
-    reveal-early 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
-    fade-in 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    slide-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    mask-wipe 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
+    fade-in 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
