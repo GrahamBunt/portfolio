@@ -23,7 +23,6 @@ export default function Icon() {
           background: "#000",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={dataUrl}
           width={64}
