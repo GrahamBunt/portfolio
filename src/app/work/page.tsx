@@ -98,7 +98,7 @@ export default function WorkPage() {
           <header className="work-heading">
             <h1 className="font-[family-name:var(--font-instrument-serif)]">
               <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
-                <em>Select</em> Work
+                <em>Select</em> work
               </span>
             </h1>
             <p
@@ -129,7 +129,7 @@ export default function WorkPage() {
           </Link>
 
           <section className="work-all-projects staged-work-rise" style={allProjectsDelay}>
-            <h3>All Projects</h3>
+            <h3>All projects</h3>
             <div className="work-project-list">
               {otherWork.map((project, index) => (
                 <Link

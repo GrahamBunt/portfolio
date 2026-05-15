@@ -89,7 +89,9 @@ export default function Home() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <SocialIcon icon={link.icon} />
+                <span className="social-icon-glyph">
+                  <SocialIcon icon={link.icon} />
+                </span>
               </a>
             ))}
           </div>

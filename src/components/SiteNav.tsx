@@ -9,7 +9,7 @@ const NAV_LINKS = [
 ];
 
 const MISC_LINKS = [
-  { label: "Tech stack", href: "/tech-stack" },
+  { label: "Stack", href: "/tech-stack" },
   { label: "Booklist", href: "/booklist" },
   { label: "Bookmarks", href: "/bookmarks" },
 ];
@@ -60,7 +60,7 @@ export function SiteNav() {
           <Link
             key={link.href}
             href={link.href}
-            className={`nav-item-pill text-white ${link.label === "Projects" ? "nav-link-projects" : "nav-link-about"}`}
+            className={`nav-item-pill text-white ${link.href === "/work" ? "nav-link-projects" : "nav-link-about"}`}
             aria-label={link.label}
           >
             {link.label}
