@@ -4,6 +4,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
+import { ProjectListSection } from "@/components/ProjectListSection";
 import { SiteNav } from "@/components/SiteNav";
 import { featuredWork, otherWork } from "@/content/work";
 
@@ -128,30 +129,20 @@ export default function WorkPage() {
             </div>
           </Link>
 
-          <section className="work-all-projects staged-work-rise" style={allProjectsDelay}>
-            <h3>All projects</h3>
-            <div className="work-project-list">
-              {otherWork.map((project, index) => (
-                <Link
-                  key={project.slug}
-                  ref={(node) => {
-                    projectRowRefs.current[index] = node;
-                  }}
-                  href={`/work/${project.slug}`}
-                  className="work-project-row"
-                >
-                  <div className="work-project-row-bg" aria-hidden="true" />
-                  <div className="work-project-row-content">
-                    <img src={project.image} alt="" />
-                    <div>
-                      <p>{project.title}</p>
-                      <p>{project.tag}</p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
+          <ProjectListSection
+            title="All projects"
+            items={otherWork.map((project) => ({
+              title: project.title,
+              description: project.tag,
+              href: `/work/${project.slug}`,
+              image: project.image,
+            }))}
+            className="staged-work-rise"
+            style={allProjectsDelay}
+            rowRef={(node, index) => {
+              projectRowRefs.current[index] = node;
+            }}
+          />
         </section>
       </main>
 
