@@ -18,6 +18,13 @@ export function SiteNav() {
   const [miscOpen, setMiscOpen] = useState(false);
   const miscRef = useRef<HTMLDivElement>(null);
 
+  const onAvatarClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (window.location.pathname === "/") {
+      event.preventDefault();
+      window.location.reload();
+    }
+  };
+
   useEffect(() => {
     const onPointerDown = (event: PointerEvent) => {
       if (!miscRef.current?.contains(event.target as Node)) {
@@ -36,19 +43,24 @@ export function SiteNav() {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-10 flex w-full items-center justify-between p-5">
-      <Link href="/" aria-label="Home" className="group relative block h-10 w-10 overflow-hidden rounded-full">
+    <nav className="site-nav fixed top-0 left-0 right-0 z-10 flex w-full items-center justify-between p-5">
+      <Link
+        href="/"
+        aria-label="Home"
+        className="site-nav-avatar group relative block h-10 w-10 overflow-hidden rounded-full"
+        onClick={onAvatarClick}
+      >
         <div
           className="h-full w-full rounded-full bg-cover bg-center transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.12]"
           style={{ backgroundImage: "url(/avatar.jpg)" }}
         />
       </Link>
-      <div className="font-inter-display flex items-center gap-2.5 text-base font-medium leading-6">
+      <div className="site-nav-links font-inter-display flex items-center gap-2.5 text-base font-medium leading-6">
         {NAV_LINKS.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className="nav-item-pill text-white"
+            className={`nav-item-pill text-white ${link.label === "Projects" ? "nav-link-projects" : "nav-link-about"}`}
             aria-label={link.label}
           >
             {link.label}
@@ -57,7 +69,7 @@ export function SiteNav() {
         <div ref={miscRef} className="nav-menu">
           <button
             type="button"
-            className="nav-item-pill nav-menu-trigger text-white"
+            className="nav-item-pill nav-menu-trigger nav-link-misc text-white"
             aria-expanded={miscOpen}
             aria-haspopup="menu"
             onClick={() => setMiscOpen((open) => !open)}

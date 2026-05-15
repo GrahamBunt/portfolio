@@ -1,20 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import type { CSSProperties } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { SiteNav } from "@/components/SiteNav";
 import { projects } from "@/content/projects";
-
-const NAV_LINKS = [
-  { label: "Projects", href: "/work" },
-  { label: "About", href: "/about" },
-];
-
-const MISC_LINKS = [
-  { label: "Tech stack", href: "/tech-stack" },
-  { label: "Booklist", href: "/booklist" },
-  { label: "Bookmarks", href: "/bookmarks" },
-];
 
 const SOCIAL_LINKS = [
   { label: "X", href: "https://x.com/grahambunt", icon: "x" },
@@ -48,8 +37,6 @@ function SocialIcon({ icon }: { icon: (typeof SOCIAL_LINKS)[number]["icon"] }) {
 
 export default function Home() {
   const [fontsReady, setFontsReady] = useState(false);
-  const [miscOpen, setMiscOpen] = useState(false);
-  const miscRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -62,81 +49,14 @@ export default function Home() {
       .then(() => setFontsReady(true));
   }, []);
 
-  useEffect(() => {
-    const onPointerDown = (event: PointerEvent) => {
-      if (!miscRef.current?.contains(event.target as Node)) {
-        setMiscOpen(false);
-      }
-    };
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMiscOpen(false);
-    };
-
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, []);
-
   // Tight unified sequence (fontsReady = t0):
   // H1 spans: 0-950ms / 100-1050ms
-  // Social links follow; outer cols start as the H1 settles; middle trails by 120ms.
+  // Social links and masonry share the Select Work blur/wipe rise; middle column trails slightly.
 
   return (
     <main className={`flex min-h-screen flex-col items-center bg-black py-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
       <div className="canvas flex flex-col items-center gap-5">
-        <nav className="fixed top-0 left-0 right-0 z-10 flex w-full items-center justify-between p-5">
-          <Link href="/" aria-label="Home" className="group relative block h-10 w-10 overflow-hidden rounded-full">
-            <div
-              className="h-full w-full rounded-full bg-cover bg-center transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.12]"
-              style={{ backgroundImage: "url(/avatar.jpg)" }}
-            />
-          </Link>
-          <div
-            className="font-inter-display flex items-center gap-2.5 text-base font-medium leading-6"
-          >
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="nav-item-pill text-white"
-                aria-label={link.label}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div ref={miscRef} className="nav-menu">
-              <button
-                type="button"
-                className="nav-item-pill nav-menu-trigger text-white"
-                aria-expanded={miscOpen}
-                aria-haspopup="menu"
-                onClick={() => setMiscOpen((open) => !open)}
-              >
-                Misc
-                <span className={`nav-chevron ${miscOpen ? "is-open" : ""}`} aria-hidden="true" />
-              </button>
-              <div className={`nav-menu-panel ${miscOpen ? "is-open" : ""}`} role="menu" aria-hidden={!miscOpen}>
-                {MISC_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="nav-menu-item"
-                    role="menuitem"
-                    tabIndex={miscOpen ? 0 : -1}
-                    onClick={() => setMiscOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </nav>
+        <SiteNav />
 
         <section
           data-section="intro"
@@ -153,13 +73,18 @@ export default function Home() {
               based in Salt Lake City, Utah.
             </span>
           </h1>
-          <div className="social-links">
-            {SOCIAL_LINKS.map((link, index) => (
+          <div
+            className={`social-links ${fontsReady ? "animate-social-reveal" : "opacity-0"}`}
+            style={fontsReady ? ({
+              "--rise-delay": "260ms",
+              "--rise-duration": "0.84s",
+            } as CSSProperties) : undefined}
+          >
+            {SOCIAL_LINKS.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className={`social-icon-button ${fontsReady ? "animate-reveal-compact" : "opacity-0"}`}
-                style={fontsReady ? { animationDelay: `${520 + index * 50}ms` } : undefined}
+                className="social-icon-button"
                 aria-label={link.label}
                 target="_blank"
                 rel="noreferrer"
@@ -175,18 +100,19 @@ export default function Home() {
             {[0, 1, 2].map((colIndex) => {
               // Outer columns (0, 2) rise together; middle (1) trails slightly.
               const isMiddle = colIndex === 1;
-              const columnDelay = isMiddle ? "1030ms" : "900ms";
-              const columnDuration = isMiddle ? "1.05s" : "1.0s";
-              const mobileColumnDelay = `${900 + colIndex * 90}ms`;
+              const columnDelay = isMiddle ? "840ms" : "680ms";
+              const columnDuration = isMiddle ? "1.46s" : "1.38s";
+              const mobileColumnDelay = `${680 + colIndex * 80}ms`;
 
               return (
                 <div
                   key={colIndex}
-                  className="masonry-column staged-rise-far flex w-full flex-1 flex-col items-stretch gap-[30px]"
+                  className="masonry-column staged-work-rise flex w-full flex-1 flex-col items-stretch gap-[30px]"
                   style={
                     {
                       "--rise-delay": columnDelay,
                       "--rise-duration": columnDuration,
+                      "--rise-distance": "96px",
                       "--mobile-rise-delay": mobileColumnDelay,
                     } as CSSProperties
                   }

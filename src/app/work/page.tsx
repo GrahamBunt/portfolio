@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SiteNav } from "@/components/SiteNav";
 import { featuredWork, otherWork } from "@/content/work";
 
@@ -17,6 +17,7 @@ function ArrowIcon() {
 
 export default function WorkPage() {
   const [fontsReady, setFontsReady] = useState(false);
+  const projectRowRefs = useRef<Array<HTMLAnchorElement | null>>([]);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -29,14 +30,63 @@ export default function WorkPage() {
       .then(() => setFontsReady(true));
   }, []);
 
+  useEffect(() => {
+    const rows = projectRowRefs.current;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let frame = 0;
+
+    const updateRows = () => {
+      frame = 0;
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const start = viewportHeight * 0.98;
+      const end = viewportHeight * 0.72;
+
+      rows.forEach((row) => {
+        if (!row) return;
+
+        if (prefersReducedMotion) {
+          row.style.setProperty("--project-scroll-x", "0px");
+          return;
+        }
+
+        const rect = row.getBoundingClientRect();
+        const rawProgress = (start - rect.top) / (start - end);
+        const progress = Math.min(1, Math.max(0, rawProgress));
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        const offset = (1 - easedProgress) * 24;
+
+        row.style.setProperty("--project-scroll-x", `${offset.toFixed(2)}px`);
+      });
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateRows);
+    };
+
+    updateRows();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
+
   const featuredDelay = {
-    "--rise-delay": "520ms",
-    "--rise-duration": "0.78s",
+    "--rise-delay": "700ms",
+    "--rise-duration": "1.62s",
+    "--rise-blur": "0px",
+    "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const allProjectsDelay = {
-    "--rise-delay": "700ms",
-    "--rise-duration": "0.72s",
+    "--rise-delay": "940ms",
+    "--rise-duration": "1.08s",
+    "--rise-blur": "0px",
+    "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   return (
@@ -47,13 +97,13 @@ export default function WorkPage() {
         <section className="work-products" aria-label="Projects">
           <header className="work-heading">
             <h1 className="font-[family-name:var(--font-instrument-serif)]">
-              <span className={fontsReady ? "animate-reveal" : "opacity-0"}>
+              <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
                 <em>Select</em> Work
               </span>
             </h1>
             <p
-              className={`font-inter-display ${fontsReady ? "animate-reveal-compact" : "opacity-0"}`}
-              style={fontsReady ? { animationDelay: "160ms" } : undefined}
+              className={`font-inter-display ${fontsReady ? "work-description-reveal" : "opacity-0"}`}
+              style={fontsReady ? { "--description-delay": "260ms" } as CSSProperties : undefined}
             >
               Explore my portfolio — focused on minimal aesthetics and meaningful user experiences.
             </p>
@@ -61,7 +111,7 @@ export default function WorkPage() {
 
           <Link
             href={`/work/${featuredWork.slug}`}
-            className="work-featured staged-rise"
+            className="work-featured staged-work-rise"
             style={featuredDelay}
           >
             <div className="work-featured-media">
@@ -78,12 +128,15 @@ export default function WorkPage() {
             </div>
           </Link>
 
-          <section className="work-all-projects staged-rise" style={allProjectsDelay}>
+          <section className="work-all-projects staged-work-rise" style={allProjectsDelay}>
             <h3>All Projects</h3>
             <div className="work-project-list">
-              {otherWork.map((project) => (
+              {otherWork.map((project, index) => (
                 <Link
                   key={project.slug}
+                  ref={(node) => {
+                    projectRowRefs.current[index] = node;
+                  }}
                   href={`/work/${project.slug}`}
                   className="work-project-row"
                 >
