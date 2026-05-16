@@ -3,6 +3,7 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
+import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { ContactSection } from "@/components/ContactSection";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { SiteNav } from "@/components/SiteNav";
@@ -218,21 +219,18 @@ export default function AboutPage() {
                 )}
               </span>
             </h1>
-            <p
-              className={`font-inter-display ${fontsReady ? "work-description-reveal" : "opacity-0"}`}
-              style={fontsReady ? { "--description-delay": "260ms" } as CSSProperties : undefined}
-            >
-              {tuneMode ? (
+            {tuneMode ? (
+              <p className="font-inter-display">
                 <EditableText
                   value={draft.hero.description}
                   onChange={(value) => updateDraft((content) => {
                     content.hero.description = value;
                   })}
                 />
-              ) : (
-                draft.hero.description
-              )}
-            </p>
+              </p>
+            ) : (
+              <AnimatedDescription ready={fontsReady} delay="260ms" text={draft.hero.description} />
+            )}
           </header>
 
           <div className="about-portrait staged-work-rise" style={portraitDelay}>

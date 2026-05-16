@@ -4,6 +4,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
+import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { SiteNav } from "@/components/SiteNav";
 import { featuredWork, otherWork } from "@/content/work";
@@ -102,12 +103,11 @@ export default function WorkPage() {
                 <em>Select</em> work
               </span>
             </h1>
-            <p
-              className={`font-inter-display ${fontsReady ? "work-description-reveal" : "opacity-0"}`}
-              style={fontsReady ? { "--description-delay": "260ms" } as CSSProperties : undefined}
-            >
-              Explore my portfolio — focused on minimal aesthetics and meaningful user experiences.
-            </p>
+            <AnimatedDescription
+              ready={fontsReady}
+              delay="260ms"
+              text="Explore my portfolio — focused on minimal aesthetics and meaningful user experiences."
+            />
           </header>
 
           <Link

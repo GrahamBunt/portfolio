@@ -72,7 +72,7 @@ export const aboutContent: AboutContent = {
       },
       {
         title: "Tech stack",
-        description: "The tools I'm using.",
+        description: "The tools I'm currently using.",
         href: "/tech-stack",
         image:
           "https://framerusercontent.com/images/sKCj51P5Pbroc1slvmbJ4edE2A.png?width=240&height=240",
