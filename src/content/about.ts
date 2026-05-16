@@ -61,28 +61,33 @@ export const aboutContent: AboutContent = {
   explore: {
     title: "Explore",
     description:
-      "Design is my passion, and I’m always working on something new. Here are my latest creations:",
+      "A few places to learn more about my work, thinking, and curiousity.",
     links: [
       {
-        title: "Work",
-        description: "Minimal aesthetics and meaningful user experiences.",
+        title: "Projects",
+        description: "Select work and products I've helped shape.",
         href: "/work",
         image:
           "https://framerusercontent.com/images/GVAsfqwYw2uFROcE6bLZSJSaZik.png?width=240&height=240",
       },
       {
-        title: "Blog",
-        description: "Thoughts on minimalism, web design, and more.",
-        href: "/booklist",
-        image:
-          "https://framerusercontent.com/images/52cupkvbRnaQ0ZdpaZnex7SJdsk.png?width=240&height=240",
-      },
-      {
-        title: "Tech Stack",
-        description: "From concept to creation - tools that I use daily.",
+        title: "Tech stack",
+        description: "The tools I'm using.",
         href: "/tech-stack",
         image:
           "https://framerusercontent.com/images/sKCj51P5Pbroc1slvmbJ4edE2A.png?width=240&height=240",
+      },
+      {
+        title: "Booklist",
+        description: "What's pulling my curiousity lately.",
+        href: "/booklist",
+        image: "/explore-booklist.svg",
+      },
+      {
+        title: "Bookmarks",
+        description: "Saved ideas, references, and other finds.",
+        href: "/bookmarks",
+        image: "/explore-bookmarks.svg",
       },
     ],
   },
