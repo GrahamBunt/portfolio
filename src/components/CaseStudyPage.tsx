@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { SiteNav } from "@/components/SiteNav";
-import type { WorkItem } from "@/content/work";
+import type { CaseStudyBlock, CaseStudyBlockWidth, WorkItem } from "@/content/work";
 
 type CaseStudy = WorkItem;
 
@@ -14,6 +14,98 @@ type CaseStudyPageProps = {
   project: CaseStudy;
   related: WorkItem[];
 };
+
+function getBlockWidthClass(width: CaseStudyBlockWidth = "content") {
+  return `case-study-block-${width}`;
+}
+
+function CaseStudyMediaBlock({
+  label,
+  src,
+  caption,
+  aspectRatio,
+  width = "content",
+}: {
+  label: string;
+  src?: string;
+  caption?: string;
+  aspectRatio?: number;
+  width?: CaseStudyBlockWidth;
+}) {
+  return (
+    <figure
+      className={`case-study-placeholder case-study-block ${getBlockWidthClass(width)}`}
+      style={{ aspectRatio: aspectRatio ?? 4 / 3 }}
+    >
+      {src ? <img src={src} alt="" /> : <span className="font-inter-display">{label}</span>}
+      {caption ? <figcaption className="font-inter-display">{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: "text" }> }) {
+  return (
+    <article className={`case-study-text-section case-study-block ${getBlockWidthClass(block.width)}`}>
+      {block.eyebrow ? <p className="case-study-section-eyebrow font-inter-display">{block.eyebrow}</p> : null}
+      <h2>{block.title}</h2>
+      <div className="case-study-section-body">
+        {block.body.map((paragraph) => (
+          <p key={paragraph} className="font-inter-display">
+            {paragraph}
+          </p>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
+  if (block.type === "metadata") {
+    return (
+      <dl className="case-study-meta case-study-block case-study-block-content font-inter-display">
+        {block.items.map((item) => (
+          <div key={item.label}>
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+    );
+  }
+
+  if (block.type === "text") {
+    return <CaseStudyTextBlock block={block} />;
+  }
+
+  if (block.type === "media") {
+    return (
+      <CaseStudyMediaBlock
+        label={block.label}
+        src={block.src}
+        caption={block.caption}
+        aspectRatio={block.aspectRatio}
+        width={block.width}
+      />
+    );
+  }
+
+  const media = (
+    <CaseStudyMediaBlock
+      label={block.media.label}
+      src={block.media.src}
+      caption={block.media.caption}
+      aspectRatio={block.media.aspectRatio}
+    />
+  );
+
+  return (
+    <section className={`case-study-split case-study-block ${block.mediaSide === "left" ? "is-media-left" : ""}`}>
+      {block.mediaSide === "left" ? media : null}
+      <CaseStudyTextBlock block={{ type: "text", eyebrow: block.eyebrow, title: block.title, body: block.body }} />
+      {block.mediaSide === "left" ? null : media}
+    </section>
+  );
+}
 
 export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const [fontsReady, setFontsReady] = useState(false);
@@ -96,12 +188,36 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
+  const legacyBlocks: CaseStudyBlock[] = [
+    ...(project.metadata?.length ? [{ type: "metadata" as const, items: project.metadata }] : []),
+    ...(project.sections?.flatMap((section) => [
+      {
+        type: "text" as const,
+        eyebrow: section.eyebrow,
+        title: section.title,
+        body: section.body,
+      },
+      ...(section.media
+        ? [
+            {
+              type: "media" as const,
+              label: section.media.label,
+              aspectRatio: section.media.aspectRatio,
+            },
+          ]
+        : []),
+    ]) ?? []),
+  ];
+  const caseStudyBlocks = project.blocks ?? legacyBlocks;
+  const hasCaseStudyBlocks = caseStudyBlocks.length > 0;
+  const title = project.displayTitle ?? project.title;
+
   return (
     <div className={`case-study-page ${fontsReady ? "sequence-ready" : ""}`}>
       <SiteNav showBack />
 
       <main className="case-study-main">
-        <section className="case-study-hero-section" aria-label={project.title}>
+        <section className="case-study-hero-section" aria-label={title}>
           <div className="case-study-top">
             <div
               className={`case-study-pill font-inter-display ${fontsReady ? "staged-work-rise" : "opacity-0"}`}
@@ -112,36 +228,40 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
             <header className="work-heading case-study-heading">
               <h1 className="font-[family-name:var(--font-instrument-serif)]">
                 <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
-                  {project.title}
+                  {title}
                 </span>
               </h1>
               <AnimatedDescription ready={fontsReady} delay="260ms" text={project.summary} />
             </header>
           </div>
 
-          <figure className={`case-study-hero ${fontsReady ? "case-study-hero-reveal" : "opacity-0"}`} style={heroStyle}>
+          <figure className={`case-study-hero case-study-hero-full ${fontsReady ? "case-study-hero-reveal" : "opacity-0"}`} style={heroStyle}>
             <img src={project.image} alt="" />
           </figure>
         </section>
 
-        <section className="case-study-gallery staged-work-rise" style={galleryStyle} aria-label="Project details">
-          {project.gallery.map((item, index) => (
-            <div key={`${item.caption}-${item.src}`} className="case-study-gallery-group">
-              <figure className="case-study-media-card">
-                <div className="case-study-media-shell">
-                  <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
-                </div>
-                <figcaption className="font-inter-display">{item.caption}</figcaption>
-              </figure>
+        <section className="case-study-body staged-work-rise" style={galleryStyle} aria-label="Project details">
+          {hasCaseStudyBlocks
+            ? caseStudyBlocks.map((block, index) => (
+                <CaseStudyBlockView key={`${block.type}-${index}`} block={block} />
+              ))
+            : project.gallery.map((item, index) => (
+                <div key={`${item.caption}-${item.src}`} className="case-study-gallery-group">
+                  <figure className="case-study-media-card">
+                    <div className="case-study-media-shell">
+                      <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
+                    </div>
+                    <figcaption className="font-inter-display">{item.caption}</figcaption>
+                  </figure>
 
-              {project.notes[index] ? (
-                <article className="case-study-note">
-                  <h2>{project.notes[index].title}</h2>
-                  <p className="font-inter-display">{project.notes[index].body}</p>
-                </article>
-              ) : null}
-            </div>
-          ))}
+                  {project.notes[index] ? (
+                    <article className="case-study-note">
+                      <h2>{project.notes[index].title}</h2>
+                      <p className="font-inter-display">{project.notes[index].body}</p>
+                    </article>
+                  ) : null}
+                </div>
+              ))}
         </section>
 
         <section className="work-products case-study-related" aria-label="More case studies">
