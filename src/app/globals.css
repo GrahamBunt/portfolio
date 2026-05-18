@@ -270,11 +270,13 @@ body {
 @keyframes nav-menu-item-in {
   from {
     opacity: 0;
-    transform: translateY(-3px) scale(0.985);
+    clip-path: inset(0 0 42% 0 round 10px);
+    transform: translateY(0);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    clip-path: inset(0 0 0 0 round 10px);
+    transform: translateY(0);
   }
 }
 
@@ -508,13 +510,13 @@ body {
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
   opacity: 1;
-  transform: rotate(45deg);
+  transform: translateY(-1px) rotate(45deg);
   transform-origin: center;
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 220ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .nav-chevron.is-open {
-  transform: rotate(225deg);
+  transform: translateY(2px) rotate(225deg);
 }
 
 .nav-menu-panel {
@@ -523,7 +525,7 @@ body {
   right: 0;
   z-index: 30;
   display: flex;
-  width: 40px;
+  width: 48px;
   height: 40px;
   box-sizing: border-box;
   contain: layout paint;
@@ -543,7 +545,7 @@ body {
   will-change: width, height, opacity, border-radius;
   /* Close transition (used when .is-open is removed): faster, no overshoot. */
   transition:
-    width 180ms cubic-bezier(0.4, 0, 0.2, 1),
+    width 170ms cubic-bezier(0.4, 0, 0.2, 1),
     height 180ms cubic-bezier(0.4, 0, 0.2, 1),
     border-radius 180ms cubic-bezier(0.4, 0, 0.2, 1),
     opacity 140ms cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -557,9 +559,9 @@ body {
   border-radius: 18px;
   /* Open transition: soft materialization with a restrained ease-out. */
   transition:
-    width 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    height 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-radius 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 245ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 295ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 295ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 220ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
@@ -570,27 +572,28 @@ body {
   color: rgba(255, 255, 255, 0.75);
   line-height: 24px;
   opacity: 0;
+  clip-path: inset(0 0 42% 0 round 10px);
   padding: 7px 10px;
   text-decoration: none;
-  transform: translateY(-3px) scale(0.985);
+  transform: translateY(0);
   transition: background-color 140ms cubic-bezier(0.25, 0.1, 0.25, 1), color 140ms cubic-bezier(0.25, 0.1, 0.25, 1);
   white-space: nowrap;
 }
 
 .nav-menu-panel.is-open .nav-menu-item {
-  animation: nav-menu-item-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: nav-menu-item-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .nav-menu-panel.is-open .nav-menu-item:nth-child(1) {
-  animation-delay: 70ms;
+  animation-delay: 115ms;
 }
 
 .nav-menu-panel.is-open .nav-menu-item:nth-child(2) {
-  animation-delay: 105ms;
+  animation-delay: 145ms;
 }
 
 .nav-menu-panel.is-open .nav-menu-item:nth-child(3) {
-  animation-delay: 140ms;
+  animation-delay: 175ms;
 }
 
 .nav-menu-item:hover,
