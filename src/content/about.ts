@@ -64,7 +64,7 @@ export const aboutContent: AboutContent = {
       "A few places to learn more about my work, thinking, and curiousity.",
     links: [
       {
-        title: "Projects",
+        title: "Work",
         description: "Select work and products I've helped shape.",
         href: "/work",
         image:

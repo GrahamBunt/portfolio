@@ -270,7 +270,7 @@ body {
 @keyframes nav-menu-item-in {
   from {
     opacity: 0;
-    transform: translateY(-6px) scale(0.96);
+    transform: translateY(-3px) scale(0.985);
   }
   to {
     opacity: 1;
@@ -440,10 +440,10 @@ body {
 }
 
 .nav-link-projects {
-  width: 90px;
-  min-width: 90px;
-  max-width: 90px;
-  flex-basis: 90px;
+  width: 76px;
+  min-width: 76px;
+  max-width: 76px;
+  flex-basis: 76px;
 }
 
 .nav-link-about {
@@ -508,13 +508,13 @@ body {
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
   opacity: 1;
-  transform: translateY(-1px) rotate(45deg);
+  transform: rotate(45deg);
   transform-origin: center;
-  transition: transform 220ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav-chevron.is-open {
-  transform: translateY(2px) rotate(225deg);
+  transform: rotate(225deg);
 }
 
 .nav-menu-panel {
@@ -555,12 +555,12 @@ body {
   pointer-events: auto;
   opacity: 1;
   border-radius: 18px;
-  /* Open transition: longer, springy curve with tiny overshoot. */
+  /* Open transition: soft materialization with a restrained ease-out. */
   transition:
-    width 320ms cubic-bezier(0.34, 1.15, 0.64, 1),
-    height 320ms cubic-bezier(0.34, 1.15, 0.64, 1),
-    border-radius 320ms cubic-bezier(0.34, 1.15, 0.64, 1),
-    opacity 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .nav-menu-item {
@@ -572,25 +572,25 @@ body {
   opacity: 0;
   padding: 7px 10px;
   text-decoration: none;
-  transform: translateY(-4px);
+  transform: translateY(-3px) scale(0.985);
   transition: background-color 140ms cubic-bezier(0.25, 0.1, 0.25, 1), color 140ms cubic-bezier(0.25, 0.1, 0.25, 1);
   white-space: nowrap;
 }
 
 .nav-menu-panel.is-open .nav-menu-item {
-  animation: nav-menu-item-in 210ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: nav-menu-item-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .nav-menu-panel.is-open .nav-menu-item:nth-child(1) {
-  animation-delay: 160ms;
+  animation-delay: 70ms;
 }
 
 .nav-menu-panel.is-open .nav-menu-item:nth-child(2) {
-  animation-delay: 205ms;
+  animation-delay: 105ms;
 }
 
 .nav-menu-panel.is-open .nav-menu-item:nth-child(3) {
-  animation-delay: 250ms;
+  animation-delay: 140ms;
 }
 
 .nav-menu-item:hover,
