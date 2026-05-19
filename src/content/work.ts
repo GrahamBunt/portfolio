@@ -33,6 +33,11 @@ export type CaseStudyBlock =
       items: CaseStudyMetadata[];
     }
   | {
+      type: "overview";
+      items: CaseStudyMetadata[];
+      body: string[];
+    }
+  | {
       type: "text";
       eyebrow?: string;
       title: string;
@@ -52,6 +57,7 @@ export type CaseStudyBlock =
       eyebrow?: string;
       title: string;
       body: string[];
+      variant?: "default" | "feature";
       media: {
         label: string;
         src?: string;
@@ -79,17 +85,19 @@ export type CaseStudyNote = {
 export const featuredWork: WorkItem = {
   title: "Smartsheet Reports",
   slug: "smartsheet-reports",
-  tag: "E-Commerce",
+  tag: "Smartsheet • 2025–2026",
   image: "https://framerusercontent.com/images/wYoiuVTRSJ0cIdLHzFk90nOF9E.jpg?scale-down-to=1024&width=2160&height=1620",
   summary: "Led the design effort for modernizing and positioning Smartsheet's primary data aggregation surface.",
   blocks: [
     {
-      type: "metadata",
+      type: "overview",
       items: [
         { label: "Role", value: "Sole designer" },
-        { label: "Team", value: "PM, Researcher" },
-        { label: "Duration", value: "~6 months" },
-        { label: "Scope", value: "Report modernization, cross-team convergence" },
+        { label: "Team", value: "PM, Researcher, 3 Engineers" },
+        { label: "Scope", value: "Surface modernization, multi-team convergence" },
+      ],
+      body: [
+        "Smartsheet Reports is the surface teams use to combine data across multiple sheets. I led the design effort to modernize the experience and help leadership decide how reports should fit alongside adjacent platform capabilities.",
       ],
     },
     {
@@ -130,7 +138,8 @@ export const featuredWork: WorkItem = {
       body: [
         "This block is ready for a side-by-side artifact once the final image set is available.",
       ],
-      media: { label: "Configuration model placeholder", aspectRatio: 4 / 3 },
+      variant: "feature",
+      media: { label: "Configuration model placeholder" },
       mediaSide: "right",
     },
     {
@@ -185,7 +194,7 @@ export const otherWork: WorkItem[] = [
   {
     title: "Project and Portfolio Management",
     slug: "project-and-portfolio-management",
-    tag: "E-Commerce",
+    tag: "Smartsheet • 2025",
     image: "https://framerusercontent.com/images/WsjEGmBC6idcXZcKsrO1Sn5UNg.jpg?scale-down-to=512&width=2160&height=1620",
     summary: "Project and Portfolio Management",
     gallery: [],
@@ -194,7 +203,7 @@ export const otherWork: WorkItem[] = [
   {
     title: "Scenario Planning",
     slug: "scenario-planning",
-    tag: "E-Commerce",
+    tag: "Smartsheet • 2024–2025",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
     summary: "Scenario Planning",
     gallery: [],
@@ -203,7 +212,7 @@ export const otherWork: WorkItem[] = [
   {
     title: "Resource Management Integration",
     slug: "resource-management-integration",
-    tag: "E-Commerce",
+    tag: "Smartsheet • 2023–2024",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
     summary: "Resource Management Integration",
     gallery: [],
@@ -212,7 +221,7 @@ export const otherWork: WorkItem[] = [
   {
     title: "American Modern Insurance",
     slug: "american-modern-insurance",
-    tag: "Web & Tablet",
+    tag: "KPMG • 2021–2022",
     image: "https://framerusercontent.com/images/aNzcXn8YsE4sy8K8Aoq3YSlYZU.png?scale-down-to=512&width=3200&height=2400",
     summary: "American Modern Insurance",
     gallery: [],
@@ -221,7 +230,7 @@ export const otherWork: WorkItem[] = [
   {
     title: "MetLife Mexico",
     slug: "metlife-mexico",
-    tag: "Web & Tablet",
+    tag: "KPMG • 2021",
     image: "https://framerusercontent.com/images/kc6IsF2GDXNWwJQSk7F77a91hb8.png?scale-down-to=1024&width=5472&height=3648",
     summary: "MetLife Mexico",
     gallery: [

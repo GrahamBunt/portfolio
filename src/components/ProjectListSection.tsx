@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
+import { ProjectMeta } from "@/components/ProjectMeta";
 
 export type ProjectListItem = {
   title: string;
@@ -51,7 +52,7 @@ export function ProjectListSection({
                 <img src={item.image} alt="" />
                 <div>
                   <p>{renderTitle ? renderTitle(item, index) : item.title}</p>
-                  <p>{renderDescription ? renderDescription(item, index) : item.description}</p>
+                  <p>{renderDescription ? renderDescription(item, index) : <ProjectMeta value={item.description} />}</p>
                 </div>
               </div>
             </>

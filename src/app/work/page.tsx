@@ -6,6 +6,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { ProjectListSection } from "@/components/ProjectListSection";
+import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import { featuredWork, otherWork } from "@/content/work";
 
@@ -106,7 +107,7 @@ export default function WorkPage() {
             <AnimatedDescription
               ready={fontsReady}
               delay="260ms"
-              text="Explore my portfolio — focused on minimal aesthetics and meaningful user experiences."
+              text="Product design focused on clarity, usefulness, and scale."
             />
           </header>
 
@@ -121,7 +122,9 @@ export default function WorkPage() {
             <div className="work-featured-title">
               <div>
                 <h2>{featuredWork.title}</h2>
-                <p>{featuredWork.tag}</p>
+                <p>
+                  <ProjectMeta value={featuredWork.tag} />
+                </p>
               </div>
               <span className="work-featured-arrow">
                 <ArrowIcon />

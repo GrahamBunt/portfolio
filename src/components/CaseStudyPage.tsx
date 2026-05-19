@@ -3,8 +3,8 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
-import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { ProjectListSection } from "@/components/ProjectListSection";
+import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import type { CaseStudyBlock, CaseStudyBlockWidth, WorkItem } from "@/content/work";
 
@@ -13,6 +13,42 @@ type CaseStudy = WorkItem;
 type CaseStudyPageProps = {
   project: CaseStudy;
   related: WorkItem[];
+};
+
+const overviewCopyStyle: CSSProperties = {
+  color: "#ffffff",
+  fontFamily: '"Inter Display", var(--font-inter), sans-serif',
+  fontSize: "clamp(26px, 2.35vw, 34px)",
+  fontWeight: 500,
+  lineHeight: 1.28,
+  letterSpacing: 0,
+  margin: 0,
+};
+
+const hiddenMetadataLabelStyle: CSSProperties = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  whiteSpace: "nowrap",
+};
+
+const overviewMetaPrimaryStyle: CSSProperties = {
+  color: "#ffffff",
+  fontSize: 20,
+  fontWeight: 500,
+  lineHeight: "28px",
+  margin: 0,
+};
+
+const overviewMetaSecondaryStyle: CSSProperties = {
+  color: "rgba(255, 255, 255, 0.65)",
+  fontSize: 18,
+  fontWeight: 500,
+  lineHeight: "28px",
+  margin: 0,
 };
 
 function getBlockWidthClass(width: CaseStudyBlockWidth = "content") {
@@ -24,18 +60,20 @@ function CaseStudyMediaBlock({
   src,
   caption,
   aspectRatio,
+  fill = false,
   width = "content",
 }: {
   label: string;
   src?: string;
   caption?: string;
   aspectRatio?: number;
+  fill?: boolean;
   width?: CaseStudyBlockWidth;
 }) {
   return (
     <figure
       className={`case-study-placeholder case-study-block ${getBlockWidthClass(width)}`}
-      style={{ aspectRatio: aspectRatio ?? 4 / 3 }}
+      style={fill ? undefined : { aspectRatio: aspectRatio ?? 4 / 3 }}
     >
       {src ? <img src={src} alt="" /> : <span className="font-inter-display">{label}</span>}
       {caption ? <figcaption className="font-inter-display">{caption}</figcaption> : null}
@@ -66,10 +104,36 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
         {block.items.map((item) => (
           <div key={item.label}>
             <dt>{item.label}</dt>
-            <dd>{item.value}</dd>
+            <dd>
+              <ProjectMeta value={item.value} />
+            </dd>
           </div>
         ))}
       </dl>
+    );
+  }
+
+  if (block.type === "overview") {
+    return (
+      <section className="case-study-overview case-study-block font-inter-display">
+        <dl className="case-study-overview-meta">
+          {block.items.map((item, index) => (
+            <div key={item.label} className={index === 0 ? "is-primary" : undefined}>
+              <dt style={hiddenMetadataLabelStyle}>{item.label}</dt>
+              <dd style={index === 0 ? overviewMetaPrimaryStyle : overviewMetaSecondaryStyle}>
+                <ProjectMeta value={item.value} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <div className="case-study-overview-copy">
+          {block.body.map((paragraph) => (
+            <p key={paragraph} style={overviewCopyStyle}>
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      </section>
     );
   }
 
@@ -89,17 +153,21 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
     );
   }
 
+  const isFeatureSplit = block.variant === "feature";
   const media = (
     <CaseStudyMediaBlock
       label={block.media.label}
       src={block.media.src}
       caption={block.media.caption}
       aspectRatio={block.media.aspectRatio}
+      fill={isFeatureSplit}
     />
   );
 
   return (
-    <section className={`case-study-split case-study-block ${block.mediaSide === "left" ? "is-media-left" : ""}`}>
+    <section
+      className={`case-study-split case-study-block ${block.mediaSide === "left" ? "is-media-left" : ""} ${isFeatureSplit ? "is-feature" : ""}`}
+    >
       {block.mediaSide === "left" ? media : null}
       <CaseStudyTextBlock block={{ type: "text", eyebrow: block.eyebrow, title: block.title, body: block.body }} />
       {block.mediaSide === "left" ? null : media}
@@ -219,19 +287,18 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
       <main className="case-study-main">
         <section className="case-study-hero-section" aria-label={title}>
           <div className="case-study-top">
-            <div
-              className={`case-study-pill font-inter-display ${fontsReady ? "staged-work-rise" : "opacity-0"}`}
-              style={fontsReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
-            >
-              {project.tag}
-            </div>
             <header className="work-heading case-study-heading">
+              <div
+                className={`case-study-top-meta font-inter-display ${fontsReady ? "staged-work-rise" : "opacity-0"}`}
+                style={fontsReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
+              >
+                <ProjectMeta value={project.tag} />
+              </div>
               <h1 className="font-[family-name:var(--font-instrument-serif)]">
                 <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
                   {title}
                 </span>
               </h1>
-              <AnimatedDescription ready={fontsReady} delay="260ms" text={project.summary} />
             </header>
           </div>
 
