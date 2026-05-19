@@ -5,6 +5,7 @@ export type WorkItem = {
   tag: string;
   image: string;
   summary: string;
+  overview?: CaseStudyOverview;
   blocks?: CaseStudyBlock[];
   metadata?: CaseStudyMetadata[];
   sections?: CaseStudySection[];
@@ -15,6 +16,11 @@ export type WorkItem = {
 export type CaseStudyMetadata = {
   label: string;
   value: string;
+};
+
+export type CaseStudyOverview = {
+  items: CaseStudyMetadata[];
+  body: string[];
 };
 
 export type CaseStudySection = {
@@ -88,18 +94,18 @@ export const featuredWork: WorkItem = {
   tag: "Smartsheet • 2025–2026",
   image: "https://framerusercontent.com/images/wYoiuVTRSJ0cIdLHzFk90nOF9E.jpg?scale-down-to=1024&width=2160&height=1620",
   summary: "Led the design effort for modernizing and positioning Smartsheet's primary data aggregation surface.",
+  overview: {
+    items: [
+      { label: "Role", value: "Sole designer" },
+      { label: "Team", value: "PM, Researcher, 3 Engineers" },
+      { label: "Scope", value: "Surface modernization, multi-team convergence" },
+    ],
+    body: [
+      "Smartsheet Reports is the surface teams use to combine data across multiple sheets.",
+      "I led the design effort to modernize the experience and help leadership decide how reports should fit alongside adjacent platform capabilities.",
+    ],
+  },
   blocks: [
-    {
-      type: "overview",
-      items: [
-        { label: "Role", value: "Sole designer" },
-        { label: "Team", value: "PM, Researcher, 3 Engineers" },
-        { label: "Scope", value: "Surface modernization, multi-team convergence" },
-      ],
-      body: [
-        "Smartsheet Reports is the surface teams use to combine data across multiple sheets. I led the design effort to modernize the experience and help leadership decide how reports should fit alongside adjacent platform capabilities.",
-      ],
-    },
     {
       type: "media",
       label: "Hero workflow placeholder",

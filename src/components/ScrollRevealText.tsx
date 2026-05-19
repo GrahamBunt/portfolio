@@ -1,25 +1,31 @@
 "use client";
 
-import { Fragment, useEffect, useRef, type CSSProperties } from "react";
+import { Fragment, useEffect, useMemo, useRef, type CSSProperties } from "react";
 
 type ScrollRevealTextProps = {
-  text: string;
+  text: string | string[];
   className?: string;
   style?: CSSProperties;
+  paragraphGap?: number;
+  // Per-paragraph reveal speed multiplier. 1 = default, 2 = twice as fast
+  // (words packed into half the scroll budget), 0.5 = half as fast.
+  paragraphSpeeds?: number[];
 };
 
-const DIM_ALPHA = 0.12;
+const DIM_ALPHA = 0.42;
 const BRIGHT_ALPHA = 0.96;
 
-// The paragraph's reveal is driven by its scroll position. p = 0 when the
-// paragraph's top enters near the bottom of the viewport; p = 1 once it has
-// risen into the reading zone.
-const REVEAL_ENTER = 0.95; // container top as a fraction of viewport height
-const REVEAL_EXIT = 0.4;
+// Paragraph-level reveal progress is driven by scroll position.
+// p = 0 when the container's top enters near the bottom of the viewport;
+// p = 1 once it has had enough time in the reading zone. The window is tuned
+// to feel paced without forcing the text too far up the viewport.
+const REVEAL_ENTER = 0.95;
+const REVEAL_EXIT = 0.63;
+const CONTAINER_HEIGHT_FACTOR = 0.58;
 
 // How much paragraph progress one word takes to brighten. Larger = softer
 // leading edge (more words mid-transition at once).
-const WORD_RAMP = 0.13;
+const WORD_RAMP = 0.12;
 
 function smoothstep(value: number) {
   const t = Math.min(1, Math.max(0, value));
@@ -32,9 +38,41 @@ const wordStyle: CSSProperties = {
   willChange: "color",
 };
 
-export function ScrollRevealText({ text, className, style }: ScrollRevealTextProps) {
-  const containerRef = useRef<HTMLParagraphElement>(null);
-  const words = text.trim().split(/\s+/);
+export function ScrollRevealText({
+  text,
+  className,
+  style,
+  paragraphGap = 24,
+  paragraphSpeeds,
+}: ScrollRevealTextProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const paragraphs = Array.isArray(text) ? text : [text];
+  const wordsByParagraph = paragraphs.map((paragraph) => paragraph.trim().split(/\s+/));
+
+  // Per-word reading-order position (r ∈ [0, 1]). Each paragraph's words
+  // get weight 1/speed — higher speed = lighter weight = words packed
+  // closer together in r-space → that paragraph reveals faster in scroll.
+  const rValues = useMemo(() => {
+    const weights: number[] = [];
+    wordsByParagraph.forEach((words, pIdx) => {
+      const speed = paragraphSpeeds?.[pIdx] ?? 1;
+      const weight = 1 / Math.max(0.0001, speed);
+      words.forEach(() => weights.push(weight));
+    });
+    if (weights.length === 0) return [];
+    const before: number[] = [];
+    let acc = 0;
+    weights.forEach((w) => {
+      before.push(acc);
+      acc += w;
+    });
+    const denom = before[before.length - 1] || 1;
+    return before.map((c) => c / denom);
+  }, [paragraphSpeeds, wordsByParagraph]);
+
+  // Stable dependencies for the effect when text/speeds change.
+  const textKey = paragraphs.join(" ");
+  const speedsKey = (paragraphSpeeds ?? []).join(",");
 
   useEffect(() => {
     const container = containerRef.current;
@@ -52,24 +90,22 @@ export function ScrollRevealText({ text, className, style }: ScrollRevealTextPro
       return;
     }
 
-    const lastIndex = Math.max(1, wordEls.length - 1);
     let frame = 0;
 
     const update = () => {
       frame = 0;
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const top = container.getBoundingClientRect().top;
+      const rect = container.getBoundingClientRect();
 
-      // Paragraph-level reveal progress, driven purely by scroll position.
+      // Keep a little height sensitivity so multi-line paragraphs still reveal
+      // continuously, without making tall text blocks feel sluggish.
       const enterPx = REVEAL_ENTER * viewportHeight;
       const exitPx = REVEAL_EXIT * viewportHeight;
-      const p = (enterPx - top) / (enterPx - exitPx);
+      const totalDistance = enterPx - exitPx + rect.height * CONTAINER_HEIGHT_FACTOR;
+      const p = (enterPx - rect.top) / totalDistance;
 
       wordEls.forEach((el, index) => {
-        // Reading-order position of this word: 0 (first) .. 1 (last). DOM
-        // order is reading order, so the playhead sweeps left-to-right then
-        // line-by-line, exactly how the text is read.
-        const r = index / lastIndex;
+        const r = rValues[index] ?? 0;
         const t = smoothstep((p - r) / WORD_RAMP);
         const alpha = DIM_ALPHA + (BRIGHT_ALPHA - DIM_ALPHA) * t;
         el.style.color = `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
@@ -81,7 +117,6 @@ export function ScrollRevealText({ text, className, style }: ScrollRevealTextPro
       frame = window.requestAnimationFrame(update);
     };
 
-    // Run once on mount so a mid-page refresh resolves to the correct state.
     update();
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
@@ -91,18 +126,26 @@ export function ScrollRevealText({ text, className, style }: ScrollRevealTextPro
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
     };
-  }, [text]);
+  }, [rValues, textKey, speedsKey]);
 
   return (
-    <p ref={containerRef} className={className} style={style}>
-      {words.map((word, index) => (
-        <Fragment key={`${word}-${index}`}>
-          <span data-reveal-word style={wordStyle}>
-            {word}
-          </span>
-          {index < words.length - 1 ? " " : null}
-        </Fragment>
+    <div
+      ref={containerRef}
+      className={className}
+      style={{ display: "flex", flexDirection: "column", gap: paragraphGap }}
+    >
+      {wordsByParagraph.map((words, paragraphIndex) => (
+        <p key={paragraphIndex} style={style}>
+          {words.map((word, wordIndex) => (
+            <Fragment key={`${paragraphIndex}-${wordIndex}`}>
+              <span data-reveal-word style={wordStyle}>
+                {word}
+              </span>
+              {wordIndex < words.length - 1 ? " " : null}
+            </Fragment>
+          ))}
+        </p>
       ))}
-    </p>
+    </div>
   );
 }

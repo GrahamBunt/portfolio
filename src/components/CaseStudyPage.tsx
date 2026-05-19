@@ -7,7 +7,7 @@ import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
 import { SiteNav } from "@/components/SiteNav";
-import type { CaseStudyBlock, CaseStudyBlockWidth, WorkItem } from "@/content/work";
+import type { CaseStudyBlock, CaseStudyBlockWidth, CaseStudyOverview, WorkItem } from "@/content/work";
 
 type CaseStudy = WorkItem;
 
@@ -51,6 +51,8 @@ const overviewMetaSecondaryStyle: CSSProperties = {
   lineHeight: "28px",
   margin: 0,
 };
+
+const overviewParagraphSpeeds = [1, 1.45];
 
 function getBlockWidthClass(width: CaseStudyBlockWidth = "content") {
   return `case-study-block-${width}`;
@@ -98,6 +100,30 @@ function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: 
   );
 }
 
+function CaseStudyOverviewBlock({ overview }: { overview: CaseStudyOverview }) {
+  return (
+    <section className="case-study-overview case-study-block font-inter-display">
+      <dl className="case-study-overview-meta">
+        {overview.items.map((item, index) => (
+          <div key={item.label} className={index === 0 ? "is-primary" : undefined}>
+            <dt style={hiddenMetadataLabelStyle}>{item.label}</dt>
+            <dd style={index === 0 ? overviewMetaPrimaryStyle : overviewMetaSecondaryStyle}>
+              <ProjectMeta value={item.value} />
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <div className="case-study-overview-copy">
+        <ScrollRevealText
+          text={overview.body}
+          style={overviewCopyStyle}
+          paragraphSpeeds={overviewParagraphSpeeds}
+        />
+      </div>
+    </section>
+  );
+}
+
 function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
   if (block.type === "metadata") {
     return (
@@ -115,25 +141,7 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
   }
 
   if (block.type === "overview") {
-    return (
-      <section className="case-study-overview case-study-block font-inter-display">
-        <dl className="case-study-overview-meta">
-          {block.items.map((item, index) => (
-            <div key={item.label} className={index === 0 ? "is-primary" : undefined}>
-              <dt style={hiddenMetadataLabelStyle}>{item.label}</dt>
-              <dd style={index === 0 ? overviewMetaPrimaryStyle : overviewMetaSecondaryStyle}>
-                <ProjectMeta value={item.value} />
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <div className="case-study-overview-copy">
-          {block.body.map((paragraph) => (
-            <ScrollRevealText key={paragraph} text={paragraph} style={overviewCopyStyle} />
-          ))}
-        </div>
-      </section>
-    );
+    return <CaseStudyOverviewBlock overview={block} />;
   }
 
   if (block.type === "text") {
@@ -275,7 +283,10 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
         : []),
     ]) ?? []),
   ];
-  const caseStudyBlocks = project.blocks ?? legacyBlocks;
+  const authoredBlocks = project.blocks ?? legacyBlocks;
+  const fallbackOverview = authoredBlocks.find((block) => block.type === "overview");
+  const overview = project.overview ?? fallbackOverview;
+  const caseStudyBlocks = authoredBlocks.filter((block) => block.type !== "overview");
   const hasCaseStudyBlocks = caseStudyBlocks.length > 0;
   const title = project.displayTitle ?? project.title;
 
@@ -307,6 +318,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
         </section>
 
         <section className="case-study-body staged-work-rise" style={galleryStyle} aria-label="Project details">
+          {overview ? <CaseStudyOverviewBlock overview={overview} /> : null}
           {hasCaseStudyBlocks
             ? caseStudyBlocks.map((block, index) => (
                 <CaseStudyBlockView key={`${block.type}-${index}`} block={block} />
