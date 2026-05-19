@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
+import { ScrollRevealText } from "@/components/ScrollRevealText";
 import { SiteNav } from "@/components/SiteNav";
 import type { CaseStudyBlock, CaseStudyBlockWidth, WorkItem } from "@/content/work";
 
@@ -18,8 +19,8 @@ type CaseStudyPageProps = {
 const overviewCopyStyle: CSSProperties = {
   color: "#ffffff",
   fontFamily: '"Inter Display", var(--font-inter), sans-serif',
-  fontSize: "clamp(26px, 2.35vw, 34px)",
-  fontWeight: 500,
+  fontSize: "clamp(24px, 2.2vw, 32px)",
+  fontWeight: 400,
   lineHeight: 1.28,
   letterSpacing: 0,
   margin: 0,
@@ -128,9 +129,7 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
         </dl>
         <div className="case-study-overview-copy">
           {block.body.map((paragraph) => (
-            <p key={paragraph} style={overviewCopyStyle}>
-              {paragraph}
-            </p>
+            <ScrollRevealText key={paragraph} text={paragraph} style={overviewCopyStyle} />
           ))}
         </div>
       </section>
