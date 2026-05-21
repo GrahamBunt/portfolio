@@ -52,7 +52,8 @@ const overviewMetaSecondaryStyle: CSSProperties = {
   margin: 0,
 };
 
-const overviewParagraphSpeeds = [1, 1.45];
+const overviewParagraphSpeeds = [1, 1.18];
+const narrativeParagraphSpeeds = [1, 1.25];
 
 function getBlockWidthClass(width: CaseStudyBlockWidth = "content") {
   return `case-study-block-${width}`;
@@ -84,19 +85,54 @@ function CaseStudyMediaBlock({
   );
 }
 
+function CaseStudyViewGridBlock({ block }: { block: Extract<CaseStudyBlock, { type: "viewGrid" }> }) {
+  return (
+    <section className={`case-study-view-grid case-study-block ${getBlockWidthClass(block.width)}`} aria-label="Report views">
+      {block.items.map((item) => (
+        <article key={item.kind} className="case-study-view-card">
+          <div className={`case-study-view-card-visual is-${item.kind}`} aria-hidden="true">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <span key={index} />
+            ))}
+          </div>
+          <p className="font-inter-display">{item.title}</p>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function CaseStudySectionBody({ body }: { body: string[] }) {
+  return (
+    <div className="case-study-section-body">
+      {body.map((paragraph) => (
+        <p key={paragraph} className="font-inter-display">
+          {paragraph}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: "text" }> }) {
   return (
     <article className={`case-study-text-section case-study-block ${getBlockWidthClass(block.width)}`}>
       {block.eyebrow ? <p className="case-study-section-eyebrow font-inter-display">{block.eyebrow}</p> : null}
-      <h2>{block.title}</h2>
-      <div className="case-study-section-body">
-        {block.body.map((paragraph) => (
-          <p key={paragraph} className="font-inter-display">
-            {paragraph}
-          </p>
-        ))}
-      </div>
+      {block.title ? <h2>{block.title}</h2> : null}
+      <CaseStudySectionBody body={block.body} />
     </article>
+  );
+}
+
+function CaseStudyNarrativeBlock({ block }: { block: Extract<CaseStudyBlock, { type: "narrative" }> }) {
+  return (
+    <section className={`case-study-narrative case-study-block ${getBlockWidthClass(block.width ?? "wide")} font-inter-display`}>
+      <ScrollRevealText
+        text={block.body}
+        style={overviewCopyStyle}
+        paragraphSpeeds={narrativeParagraphSpeeds}
+      />
+    </section>
   );
 }
 
@@ -148,6 +184,10 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
     return <CaseStudyTextBlock block={block} />;
   }
 
+  if (block.type === "narrative") {
+    return <CaseStudyNarrativeBlock block={block} />;
+  }
+
   if (block.type === "media") {
     return (
       <CaseStudyMediaBlock
@@ -158,6 +198,10 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
         width={block.width}
       />
     );
+  }
+
+  if (block.type === "viewGrid") {
+    return <CaseStudyViewGridBlock block={block} />;
   }
 
   const isFeatureSplit = block.variant === "feature";
@@ -176,7 +220,11 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
       className={`case-study-split case-study-block ${block.mediaSide === "left" ? "is-media-left" : ""} ${isFeatureSplit ? "is-feature" : ""}`}
     >
       {block.mediaSide === "left" ? media : null}
-      <CaseStudyTextBlock block={{ type: "text", eyebrow: block.eyebrow, title: block.title, body: block.body }} />
+      <article className="case-study-text-section case-study-block case-study-block-content">
+        {block.eyebrow ? <p className="case-study-section-eyebrow font-inter-display">{block.eyebrow}</p> : null}
+        <h2>{block.title}</h2>
+        <CaseStudySectionBody body={block.body} />
+      </article>
       {block.mediaSide === "left" ? null : media}
     </section>
   );

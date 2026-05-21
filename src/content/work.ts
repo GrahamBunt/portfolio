@@ -46,7 +46,12 @@ export type CaseStudyBlock =
   | {
       type: "text";
       eyebrow?: string;
-      title: string;
+      title?: string;
+      body: string[];
+      width?: CaseStudyBlockWidth;
+    }
+  | {
+      type: "narrative";
       body: string[];
       width?: CaseStudyBlockWidth;
     }
@@ -56,6 +61,11 @@ export type CaseStudyBlock =
       src?: string;
       caption?: string;
       aspectRatio?: number;
+      width?: CaseStudyBlockWidth;
+    }
+  | {
+      type: "viewGrid";
+      items: CaseStudyViewCard[];
       width?: CaseStudyBlockWidth;
     }
   | {
@@ -74,6 +84,11 @@ export type CaseStudyBlock =
     };
 
 export type CaseStudyBlockWidth = "content" | "wide" | "full";
+
+export type CaseStudyViewCard = {
+  title: string;
+  kind: "table" | "timeline" | "gantt" | "card";
+};
 
 export type CaseStudyMedia = {
   src: string;
@@ -114,11 +129,27 @@ export const featuredWork: WorkItem = {
     },
     {
       type: "text",
-      eyebrow: "The Problem",
-      title: "A rigid experience built for admins, not collaborators",
+      title: "Introducing new views to the report asset",
       body: [
-        "Smartsheet spent years rebuilding the views in its core asset, the sheet. Reports, the tool people use to combine data across multiple sheets, still ran on the old views. Bringing the new views to reports was the natural next step.",
-        "The work exposed a deeper problem. The legacy report bundled data configuration and display controls into one admin-only layer. Collaborators got a rigid view with no ability to explore the data themselves. If you wanted to see the data grouped differently, you had to ask an admin. The top request from customers was simple. Let collaborators filter.",
+        "In the early 2020s Smartsheet set out on a multi-year effort to rebuild the core views in the sheet, its primary asset.",
+        "Reports, the second most-used asset, used to combine data from multiple sheets, still ran on the legacy view system. Bringing new views to reports was the natural next step.",
+      ],
+    },
+    {
+      type: "viewGrid",
+      items: [
+        { title: "Table", kind: "table" },
+        { title: "Timeline", kind: "timeline" },
+        { title: "Gantt", kind: "gantt" },
+        { title: "Card", kind: "card" },
+      ],
+    },
+    {
+      type: "text",
+      title: "More than a reskin",
+      body: [
+        "Early explorations made it clear there were fundamental issues preventing people from getting the most out of the tool.",
+        "The legacy report bundled data configuration and display controls into one admin-only layer. Collaborators, anyone shared to the report below admin level, got a read-only view with no ability to explore the data themselves. The top request from customers was to give more control to collaborators.",
       ],
     },
     {
@@ -129,20 +160,17 @@ export const featuredWork: WorkItem = {
     },
     {
       type: "text",
-      eyebrow: "The Approach",
       title: "Pulling the configuration model apart",
       body: [
-        "I started on the first-time experience, but the explorations kept surfacing a deeper problem. I paused and went after the core model instead. That pivot also gave my PM a clear sequencing plan for the roadmap.",
-        "The insight was that admin filtering and collaborator filtering are two different jobs. Admin filters define what data exists in the report. Collaborator filters are a temporary lens on data that's already there. Same word, different purposes.",
-        "Report definition consolidated into three steps: select sources, choose columns, define rows. Everything else opened up to collaborators.",
+        "The insight was that some admin controls were essential to defining what data was included and how it was aggregated while other controls were purely for changing the display of data. The core tension was how to reserve the definition controls for admins while opening up the display controls for collaborators.",
       ],
     },
     {
       type: "split",
-      eyebrow: "Model",
       title: "Admin definition, collaborator lens",
       body: [
-        "This block is ready for a side-by-side artifact once the final image set is available.",
+        "Report definition consolidated into three steps: select sources, choose columns, and define rows.",
+        "Everything else would open up to collaborators.",
       ],
       variant: "feature",
       media: { label: "Configuration model placeholder" },
@@ -150,7 +178,6 @@ export const featuredWork: WorkItem = {
     },
     {
       type: "text",
-      eyebrow: "The Pivot",
       title: "Defending the report's right to exist",
       body: [
         "Halfway through the project, our CPO asked a hard question. Do we need a report at all?",
@@ -168,7 +195,6 @@ export const featuredWork: WorkItem = {
     },
     {
       type: "text",
-      eyebrow: "The Execution",
       title: "Designing the details across teams and systems",
       body: [
         "With the strategy settled, I went deep on the design specs for each definition step. Select sources required a new pattern in the universal asset picker. Choose columns meant working with the portfolios team to make the manage fields experience work in their context. Define rows led to an advanced filter pattern that I shaped with three other designers for consistency across the platform.",
@@ -184,7 +210,6 @@ export const featuredWork: WorkItem = {
     },
     {
       type: "text",
-      eyebrow: "Reflection",
       title: "What ambiguity taught me about leadership",
       body: [
         "I'm proud of a few things from this project. I stepped up when three teams converged and no one was in charge. I balanced strategic ambiguity with heads-down craft. I worked through a messy moment and set the report on stable footing for whoever carried it forward.",
@@ -198,7 +223,7 @@ export const featuredWork: WorkItem = {
 
 export const otherWork: WorkItem[] = [
   {
-    title: "Project and Portfolio Management",
+    title: "Project and portfolio management",
     slug: "project-and-portfolio-management",
     tag: "Smartsheet • 2025",
     image: "https://framerusercontent.com/images/WsjEGmBC6idcXZcKsrO1Sn5UNg.jpg?scale-down-to=512&width=2160&height=1620",
@@ -207,7 +232,7 @@ export const otherWork: WorkItem[] = [
     notes: [],
   },
   {
-    title: "Scenario Planning",
+    title: "Scenario planning",
     slug: "scenario-planning",
     tag: "Smartsheet • 2024–2025",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
@@ -216,7 +241,7 @@ export const otherWork: WorkItem[] = [
     notes: [],
   },
   {
-    title: "Resource Management Integration",
+    title: "Resource management integration",
     slug: "resource-management-integration",
     tag: "Smartsheet • 2023–2024",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
@@ -225,7 +250,7 @@ export const otherWork: WorkItem[] = [
     notes: [],
   },
   {
-    title: "American Modern Insurance",
+    title: "American modern insurance",
     slug: "american-modern-insurance",
     tag: "KPMG • 2021–2022",
     image: "https://framerusercontent.com/images/aNzcXn8YsE4sy8K8Aoq3YSlYZU.png?scale-down-to=512&width=3200&height=2400",
