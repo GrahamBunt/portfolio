@@ -102,8 +102,8 @@ export default function BooklistPage() {
                 Get a pop socket for it too.
               </p>
               <div className="book-tweet-media" aria-hidden="true">
-                <img src="/booklist/kindle-pop-socket-back.png" alt="" />
-                <img src="/booklist/kindle-pop-socket-front.png" alt="" />
+                <img src="/booklist/kindle-pop-socket-back.jpg" alt="" />
+                <img src="/booklist/kindle-pop-socket-front.jpg" alt="" />
               </div>
               <p className="book-tweet-date">9:40 AM · May 11, 2026</p>
             </a>

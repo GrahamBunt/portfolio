@@ -31,27 +31,9 @@ export const booklist2026: BookItem[] = [
     cover: "/booklist/inner-game-tennis.jpg",
   },
   {
-    title: "Blue Highways",
-    author: "William Least Heat-Moon",
-    rating: 5,
-    cover: "/booklist/blue-highways.jpg",
-  },
-  {
-    title: "The Pathless Path",
-    author: "Paul Millerd",
-    rating: 5,
-    cover: "/booklist/pathless-path.png",
-  },
-  {
     title: "The Charisma Myth",
     author: "Olivia Fox Cabane",
     rating: 5,
     cover: "/booklist/charisma-myth.jpg",
-  },
-  {
-    title: "The Devil in the Kitchen",
-    author: "Marco Pierre White",
-    rating: 5,
-    cover: "/booklist/devil-in-the-kitchen.jpg",
   },
 ];
