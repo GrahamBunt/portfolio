@@ -4,19 +4,41 @@
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
+import { ExploreSection } from "@/components/ExploreSection";
 import { SiteNav } from "@/components/SiteNav";
+import { aboutContent } from "@/content/about";
 import { booklist2026 } from "@/content/books";
 
 const BOOKLIST_TWEET_URL = "https://x.com/gtbunt/status/2053832719331701229";
+const BOOKLIST_EXPLORE_LINKS = [
+  aboutContent.explore.links[0],
+  {
+    title: "About",
+    description: "A bit more about me and how I think.",
+    href: "/about",
+    image: "/explore-about.svg",
+  },
+  ...aboutContent.explore.links.filter((item) => item.href !== "/work" && item.href !== "/booklist"),
+];
 
-function Stars({ rating }: { rating: number }) {
+function Stars({ rating, pending = false }: { rating: number; pending?: boolean }) {
   return (
-    <span className="book-rating" aria-label={`${rating} out of 5 stars`}>
-      {Array.from({ length: 5 }).map((_, index) => (
-        <span key={index} className={index < rating ? "is-filled" : undefined} aria-hidden="true">
-          ★
-        </span>
-      ))}
+    <span className="book-rating" aria-label={pending ? "Rating pending" : `${rating} out of 5 stars`}>
+      {Array.from({ length: 5 }).map((_, index) => {
+        const filled = !pending && index < rating;
+
+        return (
+          <svg
+            key={index}
+            className={filled ? "is-filled" : undefined}
+            aria-hidden="true"
+            viewBox="0 0 20 20"
+            focusable="false"
+          >
+            <path d="M10 1.8 12.55 7l5.75.84-4.16 4.05.98 5.72L10 14.9l-5.12 2.71.98-5.72L1.7 7.84 7.45 7 10 1.8Z" />
+          </svg>
+        );
+      })}
     </span>
   );
 }
@@ -64,7 +86,7 @@ export default function BooklistPage() {
             <AnimatedDescription
               ready={fontsReady}
               delay="260ms"
-              text="Books I’m reading since I started tracking in 2026."
+              text="In 2026, I noticed AI pulling me away from slower, more deliberate thought. Reading is my way of protecting it."
             />
           </header>
 
@@ -75,11 +97,14 @@ export default function BooklistPage() {
             <div className="book-grid">
               {booklist2026.map((book) => (
                 <article key={`${book.title}-${book.author}`} className="book-card">
-                  <img className="book-cover-frame" src={book.cover} alt="" />
+                  <div className="book-cover-wrap">
+                    <img className="book-cover-frame" src={book.cover} alt="" />
+                    {book.status ? <span className="book-cover-sash">{book.status}</span> : null}
+                  </div>
                   <div className="book-card-meta font-inter-display">
                     <h3>{book.title}</h3>
                     <p>{book.author}</p>
-                    <Stars rating={book.rating} />
+                    <Stars rating={book.rating} pending={book.ratingPending} />
                   </div>
                 </article>
               ))}
@@ -108,6 +133,8 @@ export default function BooklistPage() {
               <p className="book-tweet-date">9:40 AM · May 11, 2026</p>
             </a>
           </aside>
+
+          <ExploreSection title="Explore" items={BOOKLIST_EXPLORE_LINKS} />
         </section>
       </main>
 

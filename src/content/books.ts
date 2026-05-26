@@ -3,6 +3,8 @@ export type BookItem = {
   author: string;
   rating: number;
   cover: string;
+  status?: string;
+  ratingPending?: boolean;
 };
 
 export const booklist2026: BookItem[] = [
@@ -35,5 +37,7 @@ export const booklist2026: BookItem[] = [
     author: "Olivia Fox Cabane",
     rating: 5,
     cover: "/booklist/charisma-myth.jpg",
+    status: "in progress",
+    ratingPending: true,
   },
 ];

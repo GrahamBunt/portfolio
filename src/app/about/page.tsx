@@ -5,7 +5,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { ContactSection } from "@/components/ContactSection";
-import { ProjectListSection } from "@/components/ProjectListSection";
+import { ExploreSection } from "@/components/ExploreSection";
 import { SiteNav } from "@/components/SiteNav";
 import { SocialIcon } from "@/components/SocialIcon";
 import { aboutContent, type AboutContent } from "@/content/about";
@@ -67,7 +67,6 @@ export default function AboutPage() {
   const [tuneMode, setTuneMode] = useState(false);
   const [draft, setDraft] = useState<AboutContent>(() => cloneContent());
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const exploreRowRefs = useRef<Array<HTMLAnchorElement | null>>([]);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -87,51 +86,6 @@ export default function AboutPage() {
     }, 0);
 
     return () => window.clearTimeout(tuneModeTimer);
-  }, []);
-
-  useEffect(() => {
-    const rows = exploreRowRefs.current;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let frame = 0;
-
-    const updateRows = () => {
-      frame = 0;
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const start = viewportHeight * 0.98;
-      const end = viewportHeight * 0.72;
-
-      rows.forEach((row) => {
-        if (!row) return;
-
-        if (prefersReducedMotion) {
-          row.style.setProperty("--project-scroll-x", "0px");
-          return;
-        }
-
-        const rect = row.getBoundingClientRect();
-        const rawProgress = (start - rect.top) / (start - end);
-        const progress = Math.min(1, Math.max(0, rawProgress));
-        const easedProgress = 1 - Math.pow(1 - progress, 3);
-        const offset = (1 - easedProgress) * 24;
-
-        row.style.setProperty("--project-scroll-x", `${offset.toFixed(2)}px`);
-      });
-    };
-
-    const requestUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(updateRows);
-    };
-
-    updateRows();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-
-    return () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-    };
   }, []);
 
   const portraitDelay = {
@@ -279,11 +233,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="work-products about-list-shell" aria-label="Explore">
-          <ProjectListSection
-            rowRef={(node, index) => {
-              exploreRowRefs.current[index] = node;
-            }}
+        <ExploreSection
             title={
               tuneMode ? (
                 <EditableText
@@ -296,21 +246,7 @@ export default function AboutPage() {
                 draft.explore.title
               )
             }
-            description={
-              tuneMode ? (
-                <EditableText
-                  value={draft.explore.description}
-                  onChange={(value) => updateDraft((content) => {
-                    content.explore.description = value;
-                  })}
-                />
-              ) : (
-                draft.explore.description
-              )
-            }
             items={draft.explore.links}
-            titleClassName="about-explore-title"
-            descriptionClassName="about-explore-description"
             disableLinks={tuneMode}
             renderTitle={(item, index) =>
               tuneMode ? (
@@ -337,7 +273,6 @@ export default function AboutPage() {
               )
             }
           />
-        </section>
 
         <ContactSection
           align="left"
