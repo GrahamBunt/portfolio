@@ -107,7 +107,7 @@ export default function WorkPage() {
             <AnimatedDescription
               ready={fontsReady}
               delay="260ms"
-              text="Product design focused on clarity, usefulness, and scale."
+              text="Product design work focused on clarity, usefulness, and scale."
             />
           </header>
 
