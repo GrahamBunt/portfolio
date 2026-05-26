@@ -223,7 +223,7 @@ export const featuredWork: WorkItem = {
 
 export const otherWork: WorkItem[] = [
   {
-    title: "Project and portfolio management",
+    title: "Project and Portfolio Management",
     slug: "project-and-portfolio-management",
     tag: "Smartsheet • 2025",
     image: "https://framerusercontent.com/images/WsjEGmBC6idcXZcKsrO1Sn5UNg.jpg?scale-down-to=512&width=2160&height=1620",
@@ -232,7 +232,7 @@ export const otherWork: WorkItem[] = [
     notes: [],
   },
   {
-    title: "Scenario planning",
+    title: "Scenario Planning",
     slug: "scenario-planning",
     tag: "Smartsheet • 2024–2025",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
@@ -241,7 +241,7 @@ export const otherWork: WorkItem[] = [
     notes: [],
   },
   {
-    title: "Resource management integration",
+    title: "Resource Management Integration",
     slug: "resource-management-integration",
     tag: "Smartsheet • 2023–2024",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
@@ -250,7 +250,7 @@ export const otherWork: WorkItem[] = [
     notes: [],
   },
   {
-    title: "American modern insurance",
+    title: "American Modern Insurance",
     slug: "american-modern-insurance",
     tag: "KPMG • 2021–2022",
     image: "https://framerusercontent.com/images/aNzcXn8YsE4sy8K8Aoq3YSlYZU.png?scale-down-to=512&width=3200&height=2400",

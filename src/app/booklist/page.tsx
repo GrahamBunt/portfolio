@@ -86,7 +86,7 @@ export default function BooklistPage() {
             <AnimatedDescription
               ready={fontsReady}
               delay="260ms"
-              text="In 2026, I noticed AI pulling me away from slower, more deliberate thought. Reading is my way of protecting it."
+              text="In 2026, I noticed AI pulling me away from slower, more deliberate thought. Reading became my way of protecting that."
             />
           </header>
 

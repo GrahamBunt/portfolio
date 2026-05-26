@@ -38,7 +38,7 @@ export const aboutContent: AboutContent = {
     titleItalic: "Hey there",
     titleRest: "—I'm Graham.",
     description:
-      "I consider myself a generalist, leaning in wherever is necessary to shape quality experiences and help teams move forward.",
+      "I'm a generalist at heart. I lean in wherever necessary to shape quality experiences and help move teams forward.",
   },
   bio: "Software is ephemeral, but the relationships and the shared experience of pursuing excellence is what remains.",
   social: [

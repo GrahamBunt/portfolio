@@ -133,7 +133,7 @@ export default function WorkPage() {
           </Link>
 
           <ProjectListSection
-            title="All projects"
+            title="All Projects"
             items={otherWork.map((project) => ({
               title: project.title,
               description: project.tag,

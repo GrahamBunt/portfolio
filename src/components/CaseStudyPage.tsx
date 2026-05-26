@@ -392,7 +392,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
 
         <section className="work-products case-study-related" aria-label="More case studies">
           <ProjectListSection
-            title="All projects"
+            title="All Projects"
             items={related.map((item) => ({
               title: item.title,
               description: item.tag,
