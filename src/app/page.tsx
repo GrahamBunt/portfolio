@@ -94,8 +94,11 @@ export default function Home() {
                   {projects.slice(colIndex * 4, colIndex * 4 + 4).map((project) => (
                     <figure key={project.slug} className="flex flex-col gap-2.5">
                       <div
-                        className="overflow-hidden rounded-[10px] border border-white/15 bg-white/10"
-                        style={{ aspectRatio: project.aspectRatio }}
+                        className="overflow-hidden rounded-[10px] bg-white/10 bg-cover bg-center"
+                        style={{
+                          aspectRatio: project.aspectRatio,
+                          backgroundImage: project.src ? `url(${project.src})` : undefined,
+                        }}
                       />
                       <figcaption className="text-base font-medium text-white/65">
                         {project.title}

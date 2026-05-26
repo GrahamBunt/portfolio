@@ -93,7 +93,7 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
             aria-haspopup="menu"
             onClick={() => setMiscOpen((open) => !open)}
           >
-            Misc
+            More
             <span className={`nav-chevron ${miscOpen ? "is-open" : ""}`} aria-hidden="true" />
           </button>
           <div className={`nav-menu-panel ${miscOpen ? "is-open" : ""}`} role="menu" aria-hidden={!miscOpen}>
