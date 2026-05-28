@@ -53,20 +53,20 @@ export default function BooklistPage() {
     window.scrollTo(0, 0);
 
     document.fonts.ready
-      .then(() => new Promise((resolve) => setTimeout(resolve, 350)))
+      .then(() => new Promise((resolve) => setTimeout(resolve, 250)))
       .then(() => setFontsReady(true));
   }, []);
 
   const gridDelay = {
-    "--rise-delay": "700ms",
-    "--rise-duration": "1.18s",
+    "--rise-delay": "780ms",
+    "--rise-duration": "1s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const tweetDelay = {
-    "--rise-delay": "860ms",
-    "--rise-duration": "1.08s",
+    "--rise-delay": "980ms",
+    "--rise-duration": "0.92s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -85,7 +85,7 @@ export default function BooklistPage() {
             </h1>
             <AnimatedDescription
               ready={fontsReady}
-              delay="260ms"
+              delay="500ms"
               text="In 2026, I noticed AI pulling me away from slower, more deliberate thought. Reading became my way of protecting that."
             />
           </header>

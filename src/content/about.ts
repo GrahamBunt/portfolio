@@ -65,7 +65,7 @@ export const aboutContent: AboutContent = {
     links: [
       {
         title: "Work",
-        description: "Select work and products I've helped shape.",
+        description: "Select work from products I've helped shape.",
         href: "/work",
         image:
           "https://framerusercontent.com/images/GVAsfqwYw2uFROcE6bLZSJSaZik.png?width=240&height=240",

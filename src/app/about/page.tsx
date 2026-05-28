@@ -75,7 +75,7 @@ export default function AboutPage() {
     window.scrollTo(0, 0);
 
     document.fonts.ready
-      .then(() => new Promise((resolve) => setTimeout(resolve, 350)))
+      .then(() => new Promise((resolve) => setTimeout(resolve, 250)))
       .then(() => setFontsReady(true));
 
     const tuneModeTimer = window.setTimeout(() => {
@@ -89,15 +89,15 @@ export default function AboutPage() {
   }, []);
 
   const portraitDelay = {
-    "--rise-delay": "700ms",
-    "--rise-duration": "1.62s",
+    "--rise-delay": "780ms",
+    "--rise-duration": "1.36s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const bioDelay = {
-    "--rise-delay": "940ms",
-    "--rise-duration": "1.08s",
+    "--rise-delay": "980ms",
+    "--rise-duration": "0.96s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -183,7 +183,7 @@ export default function AboutPage() {
                 />
               </p>
             ) : (
-              <AnimatedDescription ready={fontsReady} delay="260ms" text={draft.hero.description} />
+              <AnimatedDescription ready={fontsReady} delay="500ms" text={draft.hero.description} />
             )}
           </header>
 

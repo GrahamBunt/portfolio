@@ -82,7 +82,7 @@ export function AnimatedDescription({
           <span
             key={line.id}
             className="animated-description-line"
-            style={{ "--line-delay": `${index * 90}ms` } as CSSProperties}
+            style={{ "--line-delay": `${index * 48}ms` } as CSSProperties}
           >
             {line.text}
           </span>

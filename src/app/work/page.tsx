@@ -29,7 +29,7 @@ export default function WorkPage() {
     window.scrollTo(0, 0);
 
     document.fonts.ready
-      .then(() => new Promise((resolve) => setTimeout(resolve, 350)))
+      .then(() => new Promise((resolve) => setTimeout(resolve, 250)))
       .then(() => setFontsReady(true));
   }, []);
 
@@ -79,15 +79,15 @@ export default function WorkPage() {
   }, []);
 
   const featuredDelay = {
-    "--rise-delay": "700ms",
-    "--rise-duration": "1.62s",
+    "--rise-delay": "780ms",
+    "--rise-duration": "1.36s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const allProjectsDelay = {
-    "--rise-delay": "940ms",
-    "--rise-duration": "1.08s",
+    "--rise-delay": "980ms",
+    "--rise-duration": "0.96s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -106,7 +106,7 @@ export default function WorkPage() {
             </h1>
             <AnimatedDescription
               ready={fontsReady}
-              delay="260ms"
+              delay="500ms"
               text="Product design work focused on clarity, usefulness, and scale."
             />
           </header>
