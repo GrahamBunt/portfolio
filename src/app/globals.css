@@ -1345,10 +1345,11 @@ body {
   position: relative;
   display: grid;
   width: 100%;
-  min-height: 56px;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 10px;
-  align-items: center;
+  min-height: 68px;
+  box-sizing: border-box;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 20px;
+  align-items: start;
   color: inherit;
   padding: 14px 20px;
   text-decoration: none;
@@ -1364,32 +1365,45 @@ body {
   background: #ffffff26;
 }
 
+.bookmark-row-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+}
+
 .bookmark-row time {
+  padding-top: 2px;
   color: rgba(255, 255, 255, 0.48);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
-  line-height: 28px;
+  line-height: 24px;
   white-space: nowrap;
   transition: color 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.bookmark-row-text {
-  display: block;
+.bookmark-row-title {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
   min-width: 0;
-  overflow: hidden;
+  align-items: center;
   color: #ffffff;
   font-size: 18px;
   font-weight: 500;
   line-height: 28px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   transition: color 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.bookmark-row:hover time,
-.bookmark-row:focus-visible time,
-.bookmark-row:hover .bookmark-row-text,
-.bookmark-row:focus-visible .bookmark-row-text {
+.bookmark-row-title-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmark-row-title:hover,
+.bookmark-row:focus-visible .bookmark-row-title {
   color: #ff5a00;
 }
 
@@ -1398,11 +1412,55 @@ body {
 }
 
 .bookmark-row-source {
-  color: currentColor;
+  display: block;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.bookmark-row-title {
-  color: currentColor;
+.bookmark-row-arrow {
+  display: inline-flex;
+  width: 0;
+  height: 22px;
+  flex: 0 0 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #000000;
+  margin-left: 0;
+  opacity: 0;
+  transform: translateX(-4px) scale(0.94);
+  transition:
+    opacity 180ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 180ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    width 180ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    flex-basis 180ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    margin-left 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.bookmark-row-arrow svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.bookmark-row-title:hover .bookmark-row-arrow,
+.bookmark-row:focus-visible .bookmark-row-arrow {
+  width: 22px;
+  flex-basis: 22px;
+  margin-left: 8px;
+  opacity: 1;
+  transform: translateX(0) scale(1);
 }
 
 .work-footer {

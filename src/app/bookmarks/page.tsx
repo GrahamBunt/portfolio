@@ -74,11 +74,19 @@ export default function BookmarksPage() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <time dateTime={bookmark.date}>{formatBookmarkDate(bookmark.date)}</time>
-                  <span className="bookmark-row-text">
-                    <span className="bookmark-row-source">{bookmark.source}:</span>{" "}
-                    <span className="bookmark-row-title">{bookmark.title}</span>
+                  <span className="bookmark-row-copy">
+                    <span className="bookmark-row-title">
+                      <span className="bookmark-row-title-text">{bookmark.title}</span>
+                      <span className="bookmark-row-arrow" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                          <path d="M7 17 17 7" />
+                          <path d="M9 7h8v8" />
+                        </svg>
+                      </span>
+                    </span>
+                    <span className="bookmark-row-source">{bookmark.source}</span>
                   </span>
+                  <time dateTime={bookmark.date}>{formatBookmarkDate(bookmark.date)}</time>
                 </a>
               ))}
             </div>
