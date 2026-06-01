@@ -52,7 +52,8 @@ const overviewMetaSecondaryStyle: CSSProperties = {
   margin: 0,
 };
 
-const overviewParagraphSpeeds = [1, 1.18];
+const overviewParagraphSpeeds = [1, 1];
+const overviewRevealDistanceScale = 1.15;
 const narrativeParagraphSpeeds = [1, 1.25];
 
 function getBlockWidthClass(width: CaseStudyBlockWidth = "content") {
@@ -154,6 +155,7 @@ function CaseStudyOverviewBlock({ overview }: { overview: CaseStudyOverview }) {
           text={overview.body}
           style={overviewCopyStyle}
           paragraphSpeeds={overviewParagraphSpeeds}
+          revealDistanceScale={overviewRevealDistanceScale}
         />
       </div>
     </section>

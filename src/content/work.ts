@@ -112,11 +112,11 @@ export const featuredWork: WorkItem = {
   overview: {
     items: [
       { label: "Role", value: "Sole designer" },
-      { label: "Team", value: "PM, Researcher, 3 Engineers" },
+      { label: "Team", value: "PM, Researcher, 4 Engineers" },
       { label: "Scope", value: "Surface modernization, multi-team convergence" },
     ],
     body: [
-      "Smartsheet Reports is the surface teams use to combine data across multiple sheets.",
+      "The Report asset in Smartsheet is the surface teams use to combine data across multiple sheets.",
       "I led the design effort to modernize the experience and help leadership decide how reports should fit alongside adjacent platform capabilities.",
     ],
   },
