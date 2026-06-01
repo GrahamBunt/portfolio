@@ -89,15 +89,15 @@ export default function AboutPage() {
   }, []);
 
   const portraitDelay = {
-    "--rise-delay": "780ms",
-    "--rise-duration": "1.36s",
+    "--rise-delay": "520ms",
+    "--rise-duration": "1.08s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const bioDelay = {
-    "--rise-delay": "980ms",
-    "--rise-duration": "0.96s",
+    "--rise-delay": "640ms",
+    "--rise-duration": "0.88s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -183,7 +183,7 @@ export default function AboutPage() {
                 />
               </p>
             ) : (
-              <AnimatedDescription ready={fontsReady} delay="500ms" text={draft.hero.description} />
+              <AnimatedDescription ready={fontsReady} delay="260ms" text={draft.hero.description} />
             )}
           </header>
 

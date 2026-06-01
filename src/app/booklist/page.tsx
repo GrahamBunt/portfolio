@@ -58,15 +58,15 @@ export default function BooklistPage() {
   }, []);
 
   const gridDelay = {
-    "--rise-delay": "780ms",
-    "--rise-duration": "1s",
+    "--rise-delay": "520ms",
+    "--rise-duration": "0.88s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const tweetDelay = {
-    "--rise-delay": "980ms",
-    "--rise-duration": "0.92s",
+    "--rise-delay": "640ms",
+    "--rise-duration": "0.84s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -85,7 +85,7 @@ export default function BooklistPage() {
             </h1>
             <AnimatedDescription
               ready={fontsReady}
-              delay="500ms"
+              delay="260ms"
               text="In 2026, I noticed AI pulling me away from slower, more deliberate thought. Reading became my way of protecting that."
             />
           </header>

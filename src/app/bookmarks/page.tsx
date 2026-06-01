@@ -43,8 +43,8 @@ export default function BookmarksPage() {
   }, []);
 
   const listDelay = {
-    "--rise-delay": "780ms",
-    "--rise-duration": "0.96s",
+    "--rise-delay": "520ms",
+    "--rise-duration": "0.88s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -61,7 +61,7 @@ export default function BookmarksPage() {
                 {bookmarksPageContent.title}
               </span>
             </h1>
-            <AnimatedDescription ready={fontsReady} delay="500ms" text={bookmarksPageContent.description} />
+            <AnimatedDescription ready={fontsReady} delay="260ms" text={bookmarksPageContent.description} />
           </header>
 
           <section className="bookmarks-list-section staged-work-rise" style={listDelay} aria-label="Saved links">

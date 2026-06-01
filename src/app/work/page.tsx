@@ -79,15 +79,15 @@ export default function WorkPage() {
   }, []);
 
   const featuredDelay = {
-    "--rise-delay": "780ms",
-    "--rise-duration": "1.36s",
+    "--rise-delay": "520ms",
+    "--rise-duration": "1.08s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const allProjectsDelay = {
-    "--rise-delay": "980ms",
-    "--rise-duration": "0.96s",
+    "--rise-delay": "640ms",
+    "--rise-duration": "0.88s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -106,7 +106,7 @@ export default function WorkPage() {
             </h1>
             <AnimatedDescription
               ready={fontsReady}
-              delay="500ms"
+              delay="260ms"
               text="Product design work focused on clarity, usefulness, and scale."
             />
           </header>
