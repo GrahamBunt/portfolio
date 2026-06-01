@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useRef, type CSSProperties } from "react";
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 type ScrollRevealTextProps = {
   text: string | string[];
@@ -8,12 +8,13 @@ type ScrollRevealTextProps = {
   style?: CSSProperties;
   paragraphGap?: number;
   // Per-paragraph reveal speed multiplier. 1 = default, 2 = twice as fast
-  // (words packed into half the scroll budget), 0.5 = half as fast.
+  // (lines packed into half the scroll budget), 0.5 = half as fast.
   paragraphSpeeds?: number[];
+  // Stretches the scroll distance needed for the full reveal. Larger = slower.
+  revealDistanceScale?: number;
 };
 
 const DIM_ALPHA = 0.42;
-const BRIGHT_ALPHA = 0.96;
 
 // Paragraph-level reveal progress is driven by scroll position.
 // p = 0 when the container's top enters near the bottom of the viewport;
@@ -25,7 +26,7 @@ const CONTAINER_HEIGHT_FACTOR = 0.58;
 
 // How much paragraph progress one word takes to brighten. Larger = softer
 // leading edge (more words mid-transition at once).
-const WORD_RAMP = 0.12;
+const LINE_RAMP = 0.24;
 
 function smoothstep(value: number) {
   const t = Math.min(1, Math.max(0, value));
@@ -33,10 +34,27 @@ function smoothstep(value: number) {
 }
 
 const wordStyle: CSSProperties = {
-  display: "inline-block",
+  display: "inline",
   color: `rgba(255, 255, 255, ${DIM_ALPHA})`,
   willChange: "color",
 };
+
+const measurementStyle: CSSProperties = {
+  visibility: "hidden",
+  pointerEvents: "none",
+};
+
+const overlayStyle: CSSProperties = {
+  position: "absolute",
+  inset: 0,
+  display: "flex",
+  flexDirection: "column",
+  pointerEvents: "none",
+};
+
+function serializeLines(lines: string[][][]) {
+  return lines.map((paragraph) => paragraph.map((line) => line.join(" ")).join("\n")).join("\n\n");
+}
 
 export function ScrollRevealText({
   text,
@@ -44,21 +62,31 @@ export function ScrollRevealText({
   style,
   paragraphGap = 24,
   paragraphSpeeds,
+  revealDistanceScale = 1,
 }: ScrollRevealTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const paragraphs = Array.isArray(text) ? text : [text];
-  const wordsByParagraph = paragraphs.map((paragraph) => paragraph.trim().split(/\s+/));
+  const linesKeyRef = useRef("");
+  const [linesByParagraph, setLinesByParagraph] = useState<string[][][] | null>(null);
+  const textKey = Array.isArray(text) ? text.join(" ") : text;
+  const paragraphs = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
+  const wordsByParagraph = useMemo(
+    () => paragraphs.map((paragraph) => paragraph.trim().split(/\s+/).filter(Boolean)),
+    [paragraphs],
+  );
 
-  // Per-word reading-order position (r ∈ [0, 1]). Each paragraph's words
-  // get weight 1/speed — higher speed = lighter weight = words packed
+  // Per-line reading-order position (r ∈ [0, 1]). Each paragraph's lines
+  // get weight 1/speed — higher speed = lighter weight = lines packed
   // closer together in r-space → that paragraph reveals faster in scroll.
-  const rValues = useMemo(() => {
+  const lineRValues = useMemo(() => {
+    if (!linesByParagraph) return [];
+
     const weights: number[] = [];
-    wordsByParagraph.forEach((words, pIdx) => {
+    linesByParagraph.forEach((lines, pIdx) => {
       const speed = paragraphSpeeds?.[pIdx] ?? 1;
       const weight = 1 / Math.max(0.0001, speed);
-      words.forEach(() => weights.push(weight));
+      lines.forEach(() => weights.push(weight));
     });
+
     if (weights.length === 0) return [];
     const before: number[] = [];
     let acc = 0;
@@ -68,24 +96,86 @@ export function ScrollRevealText({
     });
     const denom = before[before.length - 1] || 1;
     return before.map((c) => c / denom);
-  }, [paragraphSpeeds, wordsByParagraph]);
+  }, [linesByParagraph, paragraphSpeeds]);
 
-  // Stable dependencies for the effect when text/speeds change.
-  const textKey = paragraphs.join(" ");
   const speedsKey = (paragraphSpeeds ?? []).join(",");
+
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let frame = 0;
+    let cancelled = false;
+
+    const measure = () => {
+      frame = 0;
+      if (cancelled) return;
+
+      const paragraphEls = Array.from(
+        container.querySelectorAll<HTMLElement>("[data-reveal-measure-paragraph]"),
+      );
+
+      const nextLines = paragraphEls.map((paragraphEl, paragraphIndex) => {
+        const wordEls = Array.from(
+          paragraphEl.querySelectorAll<HTMLElement>("[data-reveal-measure-word]"),
+        );
+        const paragraphLines: string[][] = [];
+        let currentTop: number | null = null;
+
+        wordEls.forEach((wordEl, wordIndex) => {
+          const rect = wordEl.getBoundingClientRect();
+          const top = rect.top;
+
+          if (currentTop === null || Math.abs(top - currentTop) > 2) {
+            paragraphLines.push([]);
+            currentTop = top;
+          }
+
+          paragraphLines[paragraphLines.length - 1].push(
+            wordsByParagraph[paragraphIndex]?.[wordIndex] ?? wordEl.textContent ?? "",
+          );
+        });
+
+        return paragraphLines;
+      });
+
+      const nextKey = serializeLines(nextLines);
+      if (nextKey !== linesKeyRef.current) {
+        linesKeyRef.current = nextKey;
+        setLinesByParagraph(nextLines);
+      }
+    };
+
+    const requestMeasure = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(measure);
+    };
+
+    measure();
+
+    const resizeObserver = new ResizeObserver(requestMeasure);
+    resizeObserver.observe(container);
+    document.fonts?.ready.then(requestMeasure).catch(() => undefined);
+
+    return () => {
+      cancelled = true;
+      if (frame) window.cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
+    };
+  }, [textKey, wordsByParagraph]);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const wordEls = Array.from(
-      container.querySelectorAll<HTMLElement>("[data-reveal-word]"),
+    const lineEls = Array.from(
+      container.querySelectorAll<HTMLElement>("[data-reveal-line]"),
     );
-    if (wordEls.length === 0) return;
+    if (lineEls.length === 0) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      wordEls.forEach((el) => {
-        el.style.color = `rgba(255, 255, 255, ${BRIGHT_ALPHA})`;
+      lineEls.forEach((el) => {
+        el.style.setProperty("--line-fill", "100%");
       });
       return;
     }
@@ -101,14 +191,14 @@ export function ScrollRevealText({
       // continuously, without making tall text blocks feel sluggish.
       const enterPx = REVEAL_ENTER * viewportHeight;
       const exitPx = REVEAL_EXIT * viewportHeight;
-      const totalDistance = enterPx - exitPx + rect.height * CONTAINER_HEIGHT_FACTOR;
+      const totalDistance = (enterPx - exitPx + rect.height * CONTAINER_HEIGHT_FACTOR) * Math.max(0.0001, revealDistanceScale);
       const p = (enterPx - rect.top) / totalDistance;
 
-      wordEls.forEach((el, index) => {
-        const r = rValues[index] ?? 0;
-        const t = smoothstep((p - r) / WORD_RAMP);
-        const alpha = DIM_ALPHA + (BRIGHT_ALPHA - DIM_ALPHA) * t;
-        el.style.color = `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
+      const maxLineIndex = Math.max(1, lineEls.length - 1);
+      lineEls.forEach((el, index) => {
+        const r = lineRValues[index] ?? index / maxLineIndex;
+        const t = smoothstep((p - r) / LINE_RAMP);
+        el.style.setProperty("--line-fill", `${(t * 100).toFixed(2)}%`);
       });
     };
 
@@ -126,26 +216,45 @@ export function ScrollRevealText({
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
     };
-  }, [rValues, textKey, speedsKey]);
+  }, [linesByParagraph, lineRValues, textKey, speedsKey, revealDistanceScale]);
 
   return (
     <div
       ref={containerRef}
       className={className}
-      style={{ display: "flex", flexDirection: "column", gap: paragraphGap }}
+      style={{ position: "relative" }}
     >
-      {wordsByParagraph.map((words, paragraphIndex) => (
-        <p key={paragraphIndex} style={style}>
-          {words.map((word, wordIndex) => (
-            <Fragment key={`${paragraphIndex}-${wordIndex}`}>
-              <span data-reveal-word style={wordStyle}>
-                {word}
-              </span>
-              {wordIndex < words.length - 1 ? " " : null}
-            </Fragment>
+      <div
+        aria-hidden="true"
+        style={{ ...measurementStyle, display: "flex", flexDirection: "column", gap: paragraphGap }}
+      >
+        {wordsByParagraph.map((words, paragraphIndex) => (
+          <p key={paragraphIndex} data-reveal-measure-paragraph style={style}>
+            {words.map((word, wordIndex) => (
+              <Fragment key={`${paragraphIndex}-${wordIndex}`}>
+                <span data-reveal-measure-word style={wordStyle}>
+                  {word}
+                </span>
+                {wordIndex < words.length - 1 ? " " : null}
+              </Fragment>
+            ))}
+          </p>
+        ))}
+      </div>
+
+      {linesByParagraph ? (
+        <div style={{ ...overlayStyle, gap: paragraphGap }}>
+          {linesByParagraph.map((paragraphLines, paragraphIndex) => (
+            <p key={paragraphIndex} style={style}>
+              {paragraphLines.map((lineWords, lineIndex) => (
+                <span key={`${paragraphIndex}-${lineIndex}`} className="scroll-reveal-line" data-reveal-line>
+                  {lineWords.join(" ")}
+                </span>
+              ))}
+            </p>
           ))}
-        </p>
-      ))}
+        </div>
+      ) : null}
     </div>
   );
 }

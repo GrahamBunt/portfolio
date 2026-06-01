@@ -25,6 +25,25 @@ body {
   font-family: "Inter Display", var(--font-inter), sans-serif;
 }
 
+.scroll-reveal-line {
+  --line-fill: 0%;
+  --line-edge: 7%;
+  --line-tail: 15%;
+  display: block;
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(255, 255, 255, 0.96) calc(var(--line-fill) - var(--line-edge)),
+    rgba(255, 255, 255, 0.72) var(--line-fill),
+    rgba(255, 255, 255, 0.42) calc(var(--line-fill) + var(--line-tail)),
+    rgba(255, 255, 255, 0.42) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  will-change: background-image;
+}
+
 .canvas {
   width: 100%;
 }
