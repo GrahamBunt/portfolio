@@ -65,14 +65,14 @@ export const aboutContent: AboutContent = {
     links: [
       {
         title: "Work",
-        description: "Select work from products I've helped shape.",
+        description: "Products I've helped shape.",
         href: "/work",
         image:
           "https://framerusercontent.com/images/GVAsfqwYw2uFROcE6bLZSJSaZik.png?width=240&height=240",
       },
       {
-        title: "Tech stack",
-        description: "The tools I'm currently using.",
+        title: "Stack",
+        description: "Tools I'm currently using.",
         href: "/tech-stack",
         image:
           "https://framerusercontent.com/images/sKCj51P5Pbroc1slvmbJ4edE2A.png?width=240&height=240",

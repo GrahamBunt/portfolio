@@ -4,6 +4,7 @@ export type WorkItem = {
   slug: string;
   tag: string;
   image: string;
+  heroImage?: string;
   summary: string;
   overview?: CaseStudyOverview;
   blocks?: CaseStudyBlock[];
@@ -107,7 +108,8 @@ export const featuredWork: WorkItem = {
   title: "Smartsheet Reports",
   slug: "smartsheet-reports",
   tag: "Smartsheet • 2025–2026",
-  image: "https://framerusercontent.com/images/wYoiuVTRSJ0cIdLHzFk90nOF9E.jpg?scale-down-to=1024&width=2160&height=1620",
+  image: "/work/smartsheet-report-hero.png",
+  heroImage: "/work/smartsheet-report-hero.png",
   summary: "Led the design effort for modernizing and positioning Smartsheet's primary data aggregation surface.",
   overview: {
     items: [

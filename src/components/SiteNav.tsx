@@ -9,7 +9,7 @@ const NAV_LINKS = [
 ];
 
 const MISC_LINKS = [
-  { label: "Tech stack", href: "/tech-stack" },
+  { label: "Stack", href: "/tech-stack" },
   { label: "Booklist", href: "/booklist" },
   { label: "Bookmarks", href: "/bookmarks" },
 ];

@@ -14,7 +14,7 @@ const BOOKLIST_EXPLORE_LINKS = [
   aboutContent.explore.links[0],
   {
     title: "About",
-    description: "A bit more about me and how I think.",
+    description: "Me and how I think.",
     href: "/about",
     image: "/explore-about.svg",
   },
@@ -86,7 +86,7 @@ export default function BooklistPage() {
             <AnimatedDescription
               ready={fontsReady}
               delay="260ms"
-              text="In 2026, I noticed AI pulling me away from slower, more deliberate thought. Reading became my way of protecting that."
+              text="The world is designed to pull us away from slower, deliberate thought. Reading is my way of protecting it."
             />
           </header>
 

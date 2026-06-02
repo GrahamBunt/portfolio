@@ -363,7 +363,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
           </div>
 
           <figure className={`case-study-hero case-study-hero-full ${fontsReady ? "case-study-hero-reveal" : "opacity-0"}`} style={heroStyle}>
-            <img src={project.image} alt="" />
+            <img src={project.heroImage ?? project.image} alt="" />
           </figure>
         </section>
 

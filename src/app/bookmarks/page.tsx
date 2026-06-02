@@ -12,7 +12,7 @@ const BOOKMARKS_EXPLORE_LINKS = [
   aboutContent.explore.links[0],
   {
     title: "About",
-    description: "A bit more about me and how I think.",
+    description: "Me and how I think.",
     href: "/about",
     image: "/explore-about.svg",
   },
@@ -77,12 +77,6 @@ export default function BookmarksPage() {
                   <span className="bookmark-row-copy">
                     <span className="bookmark-row-title">
                       <span className="bookmark-row-title-text">{bookmark.title}</span>
-                      <span className="bookmark-row-arrow" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" focusable="false">
-                          <path d="M7 17 17 7" />
-                          <path d="M9 7h8v8" />
-                        </svg>
-                      </span>
                     </span>
                     <span className="bookmark-row-source">{bookmark.source}</span>
                   </span>
