@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ContactSection } from "@/components/ContactSection";
 import { SiteNav } from "@/components/SiteNav";
 import { SOCIAL_LINKS, SocialIcon } from "@/components/SocialIcon";
@@ -87,24 +88,43 @@ export default function Home() {
                       "--rise-delay": columnDelay,
                       "--rise-duration": columnDuration,
                       "--rise-distance": "96px",
+                      "--rise-animation": "work-rise-in-clean",
+                      "--rise-blur": "0px",
                       "--mobile-rise-delay": mobileColumnDelay,
                     } as CSSProperties
                   }
                 >
-                  {projects.slice(colIndex * 4, colIndex * 4 + 4).map((project) => (
-                    <figure key={project.slug} className="flex flex-col gap-2.5">
-                      <div
-                        className="overflow-hidden rounded-[10px] bg-white/10 bg-cover bg-center"
-                        style={{
-                          aspectRatio: project.aspectRatio,
-                          backgroundImage: project.src ? `url(${project.src})` : undefined,
-                        }}
-                      />
-                      <figcaption className="text-base font-medium text-white/65">
-                        {project.title}
-                      </figcaption>
-                    </figure>
-                  ))}
+                  {projects.slice(colIndex * 4, colIndex * 4 + 4).map((project, projectIndex) => {
+                    const globalIndex = colIndex * 4 + projectIndex;
+                    const shouldLoadEarly = globalIndex < 6;
+
+                    return (
+                      <figure key={project.slug} className="flex flex-col gap-2.5">
+                        <div
+                          className="relative overflow-hidden rounded-[10px] bg-white/10"
+                          style={{
+                            aspectRatio: project.aspectRatio,
+                          }}
+                        >
+                          {project.src ? (
+                            <Image
+                              src={project.src}
+                              alt=""
+                              fill
+                              className="object-cover object-center"
+                              sizes="(max-width: 809px) calc(100vw - 40px), (max-width: 1720px) calc((100vw - 80px) / 3), 547px"
+                              loading={shouldLoadEarly ? "eager" : "lazy"}
+                              fetchPriority={globalIndex < 3 ? "high" : "auto"}
+                              quality={92}
+                            />
+                          ) : null}
+                        </div>
+                        <figcaption className="text-base font-medium text-white/65">
+                          {project.title}
+                        </figcaption>
+                      </figure>
+                    );
+                  })}
                 </div>
               );
             })}
