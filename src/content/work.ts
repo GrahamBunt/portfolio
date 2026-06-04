@@ -128,7 +128,7 @@ export const featuredWork: WorkItem = {
   tag: "Smartsheet • 2025–2026",
   image: "/work/smartsheet-reports/empty-mock-hero.jpg",
   heroImage: "/work/smartsheet-reports/empty-mock-hero.jpg",
-  featuredImage: "/work/smartsheet-reports/featured-hero.jpg",
+  featuredImage: "/work/smartsheet-reports/featured-card-hero.jpg",
   summary: "Led the design effort for modernizing and positioning Smartsheet's primary data aggregation surface.",
   overview: {
     items: [
