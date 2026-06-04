@@ -3,7 +3,6 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
-import { useDialKit } from "dialkit";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
@@ -94,17 +93,24 @@ const stepMediaStyle: CSSProperties = {
 
 const stepCopyStyle: CSSProperties = {
   display: "grid",
+  gridTemplateColumns: "28px minmax(0, 1fr)",
+  columnGap: 12,
   rowGap: 12,
   alignItems: "center",
 };
 
 const stepNumberStyle: CSSProperties = {
   display: "inline-flex",
+  width: 28,
+  height: 28,
   alignItems: "center",
   justifyContent: "center",
   borderRadius: 999,
   background: "#ffffff",
   color: "#000000",
+  fontSize: 14,
+  fontWeight: 600,
+  lineHeight: "28px",
 };
 
 const stepFlowHeaderStyle: CSSProperties = {
@@ -127,10 +133,10 @@ const stepFlowTitleStyle: CSSProperties = {
 
 const stepFlowLabelStyle: CSSProperties = {
   color: "#ffffff",
-  fontSize: 13,
+  fontSize: 16,
   fontWeight: 600,
-  letterSpacing: "0.08em",
-  lineHeight: "20px",
+  letterSpacing: "0.12em",
+  lineHeight: "23px",
   margin: 0,
   opacity: 0.5,
 };
@@ -187,12 +193,13 @@ function CaseStudyViewGridBlock({ block }: { block: Extract<CaseStudyBlock, { ty
     <section className={`case-study-view-grid case-study-block ${getBlockWidthClass(block.width)}`} aria-label="Report views">
       {block.items.map((item) => (
         <article key={item.kind} className="case-study-view-card">
-          <div className={`case-study-view-card-visual is-${item.kind}`} aria-hidden="true">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <span key={index} />
-            ))}
+          <div className="case-study-view-card-heading">
+            <span className="case-study-view-card-icon">
+              <img src={item.icon} alt="" aria-hidden="true" />
+            </span>
+            <h2>{item.title}</h2>
           </div>
-          <p className="font-inter-display">{item.title}</p>
+          <p className="font-inter-display">{item.description}</p>
         </article>
       ))}
     </section>
@@ -200,39 +207,18 @@ function CaseStudyViewGridBlock({ block }: { block: Extract<CaseStudyBlock, { ty
 }
 
 function CaseStudyStepFlowBlock({ block }: { block: Extract<CaseStudyBlock, { type: "stepFlow" }> }) {
-  const howItWorksControls = useDialKit("Report How It Works Label", {
-    letterSpacing: [0.08, 0, 0.3, 0.01],
-    fontWeight: [600, 400, 800, 50],
-    opacity: [0.5, 0.2, 1, 0.05],
-    fontSize: [13, 10, 20, 1],
-    cardSpacing: [40, 12, 96, 1],
-  });
   const maxWidth = block.width === "content" ? 520 : block.width === "wide" ? 720 : 1680;
 
   return (
     <section
       className={`case-study-step-flow case-study-block ${getBlockWidthClass(block.width ?? "full")}`}
-      style={{ ...stepFlowStyle, maxWidth, gap: howItWorksControls.cardSpacing }}
+      style={{ ...stepFlowStyle, maxWidth }}
       aria-label="Core report definition steps"
     >
       {block.title || block.label ? (
         <header className="case-study-step-flow-header" style={stepFlowHeaderStyle}>
           {block.title ? <h2 style={stepFlowTitleStyle}>{block.title}</h2> : null}
-          {block.label ? (
-            <p
-              className="font-inter-display"
-              style={{
-                ...stepFlowLabelStyle,
-                fontSize: howItWorksControls.fontSize,
-                fontWeight: howItWorksControls.fontWeight,
-                letterSpacing: `${howItWorksControls.letterSpacing}em`,
-                lineHeight: `${Math.round(howItWorksControls.fontSize * 1.45)}px`,
-                opacity: howItWorksControls.opacity,
-              }}
-            >
-              {block.label}
-            </p>
-          ) : null}
+          {block.label ? <p className="font-inter-display" style={stepFlowLabelStyle}>{block.label}</p> : null}
         </header>
       ) : null}
       <div className="case-study-step-flow-grid" style={stepFlowGridStyle}>
@@ -261,11 +247,19 @@ function CaseStudyStepFlowBlock({ block }: { block: Extract<CaseStudyBlock, { ty
   );
 }
 
-function CaseStudySectionBody({ body }: { body: string[] }) {
+function CaseStudySectionBody({
+  body,
+  style,
+  paragraphStyle,
+}: {
+  body: string[];
+  style?: CSSProperties;
+  paragraphStyle?: CSSProperties;
+}) {
   return (
-    <div className="case-study-section-body">
+    <div className="case-study-section-body" style={style}>
       {body.map((paragraph) => (
-        <p key={paragraph} className="font-inter-display">
+        <p key={paragraph} className="font-inter-display" style={paragraphStyle}>
           {paragraph}
         </p>
       ))}
@@ -274,11 +268,29 @@ function CaseStudySectionBody({ body }: { body: string[] }) {
 }
 
 function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: "text" }> }) {
+  const isWideIntro = block.width === "full" && block.title;
+  const textAlign = block.align === "center" ? "center" : undefined;
+  const introRevealText = isWideIntro && block.title ? [block.title, ...block.body] : null;
+
   return (
-    <article className={`case-study-text-section case-study-block ${getBlockWidthClass(block.width)}`}>
+    <article
+      className={`case-study-text-section case-study-block ${getBlockWidthClass(block.width)} ${block.align === "center" ? "is-centered" : ""}`}
+      style={block.align === "center" ? { alignItems: "center", textAlign } : undefined}
+    >
       {block.eyebrow ? <p className="case-study-section-eyebrow font-inter-display">{block.eyebrow}</p> : null}
-      {block.title ? <h2>{block.title}</h2> : null}
-      <CaseStudySectionBody body={block.body} />
+      {introRevealText ? (
+        <ScrollRevealText
+          text={introRevealText}
+          style={{ ...overviewCopyStyle, width: "100%", maxWidth: 840 }}
+          paragraphSpeeds={overviewParagraphSpeeds}
+          revealDistanceScale={overviewRevealDistanceScale}
+        />
+      ) : (
+        <>
+          {block.title ? <h2>{block.title}</h2> : null}
+          <CaseStudySectionBody body={block.body} />
+        </>
+      )}
     </article>
   );
 }

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Inter } from "next/font/google";
-import { DialRoot } from "dialkit";
-import "dialkit/styles.css";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -30,7 +28,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${instrumentSerif.variable} ${inter.variable} font-[family-name:var(--font-inter)] antialiased`}>
         {children}
-        <DialRoot />
       </body>
     </html>
   );

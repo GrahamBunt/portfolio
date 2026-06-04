@@ -50,6 +50,7 @@ export type CaseStudyBlock =
       eyebrow?: string;
       title?: string;
       body: string[];
+      align?: "left" | "center";
       width?: CaseStudyBlockWidth;
     }
   | {
@@ -96,7 +97,9 @@ export type CaseStudyBlockWidth = "content" | "wide" | "full";
 
 export type CaseStudyViewCard = {
   title: string;
-  kind: "table" | "timeline" | "gantt" | "card";
+  description: string;
+  icon: string;
+  kind: "table" | "timeline" | "gantt" | "board";
 };
 
 export type CaseStudyStep = {
@@ -165,26 +168,42 @@ export const featuredWork: WorkItem = {
       ],
     },
     {
-      type: "media",
-      label: "Definition step specs placeholder",
-      aspectRatio: 4 / 3,
-      width: "wide",
-    },
-    {
       type: "text",
-      title: "Introducing new views to the report asset",
+      title: "In the early 2020s, Smartsheet set out on a multi-year effort to rebuild the core views in the sheet, its primary asset.",
+      align: "center",
+      width: "full",
       body: [
-        "In the early 2020s Smartsheet set out on a multi-year effort to rebuild the core views in the sheet, its primary asset.",
-        "Reports, the second most-used asset, used to combine data from multiple sheets, still ran on the legacy view system. Bringing new views to reports was the natural next step.",
+        "Bringing new views to reports was the natural next step.",
       ],
     },
     {
       type: "viewGrid",
+      width: "wide",
       items: [
-        { title: "Table", kind: "table" },
-        { title: "Timeline", kind: "timeline" },
-        { title: "Gantt", kind: "gantt" },
-        { title: "Card", kind: "card" },
+        {
+          title: "Table",
+          description: "Organize work in a table with rows and customizable columns.",
+          icon: "/work/smartsheet-reports/view-icons/table.svg",
+          kind: "table",
+        },
+        {
+          title: "Board",
+          description: "Manage agile work with cards on a Kanban board.",
+          icon: "/work/smartsheet-reports/view-icons/board.svg",
+          kind: "board",
+        },
+        {
+          title: "Timeline",
+          description: "Visualize related tasks and milestones across time.",
+          icon: "/work/smartsheet-reports/view-icons/timeline.svg",
+          kind: "timeline",
+        },
+        {
+          title: "Gantt",
+          description: "Stay on schedule by tracking tasks, milestones, and dependencies.",
+          icon: "/work/smartsheet-reports/view-icons/gantt.svg",
+          kind: "gantt",
+        },
       ],
     },
     {
@@ -192,8 +211,8 @@ export const featuredWork: WorkItem = {
       title: "More than a reskin",
       body: [
         "Early explorations made it clear there were fundamental issues preventing people from getting the most out of the tool.",
-        "The legacy report bundled data configuration and display controls into one admin-only layer. Collaborators, anyone shared to the report below admin level, got a read-only view with no ability to explore the data themselves.",
-        "The top request from customers was to give more flexibility to collaborators.",
+        "The legacy report bundled data configuration and display controls into one admin-only layer. Collaborators, anyone shared to the report below admin level, got a read-only view with no ability to explore the data themselves. The top request from customers was to give more flexibility to collaborators.",
+        "There were also usability challenges in the Report Builder experience and several unique report features we needed to preserve, including grouping and summary calculations. Because these capabilities weren't supported by the existing sheet view primitives, we needed to establish patterns for reports that could later scale back to sheets.",
       ],
     },
     {
