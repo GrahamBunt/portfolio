@@ -3,6 +3,7 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
+import { useDialKit } from "dialkit";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
@@ -56,6 +57,101 @@ const overviewParagraphSpeeds = [1, 1];
 const overviewRevealDistanceScale = 1.15;
 const narrativeParagraphSpeeds = [1, 1.25];
 
+const stepFlowStyle: CSSProperties = {
+  display: "flex",
+  width: "100%",
+  maxWidth: 1680,
+  flexDirection: "column",
+  gap: 40,
+};
+
+const stepFlowGridStyle: CSSProperties = {
+  display: "grid",
+  width: "100%",
+  gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
+  gap: 30,
+};
+
+const stepCardStyle: CSSProperties = {
+  display: "flex",
+  minWidth: 0,
+  flexDirection: "column",
+  gap: 20,
+};
+
+const stepMediaStyle: CSSProperties = {
+  display: "flex",
+  width: "100%",
+  aspectRatio: "5 / 4",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
+  borderRadius: 10,
+  background: "linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)), #171717",
+  boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.14)",
+  margin: 0,
+};
+
+const stepCopyStyle: CSSProperties = {
+  display: "grid",
+  rowGap: 12,
+  alignItems: "center",
+};
+
+const stepNumberStyle: CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: 999,
+  background: "#ffffff",
+  color: "#000000",
+};
+
+const stepFlowHeaderStyle: CSSProperties = {
+  display: "flex",
+  width: "100%",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 8,
+  textAlign: "center",
+};
+
+const stepFlowTitleStyle: CSSProperties = {
+  color: "#ffffff",
+  fontFamily: "var(--font-instrument-serif), serif",
+  fontSize: "clamp(38px, 4.4vw, 64px)",
+  fontWeight: 400,
+  lineHeight: 1,
+  margin: 0,
+};
+
+const stepFlowLabelStyle: CSSProperties = {
+  color: "#ffffff",
+  fontSize: 13,
+  fontWeight: 600,
+  letterSpacing: "0.08em",
+  lineHeight: "20px",
+  margin: 0,
+  opacity: 0.5,
+};
+
+const stepTitleStyle: CSSProperties = {
+  color: "#ffffff",
+  fontFamily: '"Inter Display", var(--font-inter), sans-serif',
+  fontSize: 20,
+  fontWeight: 500,
+  lineHeight: "28px",
+  margin: 0,
+};
+
+const stepDescriptionStyle: CSSProperties = {
+  color: "rgba(255, 255, 255, 0.65)",
+  fontSize: 18,
+  fontWeight: 500,
+  lineHeight: "28px",
+  margin: 0,
+};
+
 function getBlockWidthClass(width: CaseStudyBlockWidth = "content") {
   return `case-study-block-${width}`;
 }
@@ -99,6 +195,68 @@ function CaseStudyViewGridBlock({ block }: { block: Extract<CaseStudyBlock, { ty
           <p className="font-inter-display">{item.title}</p>
         </article>
       ))}
+    </section>
+  );
+}
+
+function CaseStudyStepFlowBlock({ block }: { block: Extract<CaseStudyBlock, { type: "stepFlow" }> }) {
+  const howItWorksControls = useDialKit("Report How It Works Label", {
+    letterSpacing: [0.08, 0, 0.3, 0.01],
+    fontWeight: [600, 400, 800, 50],
+    opacity: [0.5, 0.2, 1, 0.05],
+    fontSize: [13, 10, 20, 1],
+    cardSpacing: [40, 12, 96, 1],
+  });
+  const maxWidth = block.width === "content" ? 520 : block.width === "wide" ? 720 : 1680;
+
+  return (
+    <section
+      className={`case-study-step-flow case-study-block ${getBlockWidthClass(block.width ?? "full")}`}
+      style={{ ...stepFlowStyle, maxWidth, gap: howItWorksControls.cardSpacing }}
+      aria-label="Core report definition steps"
+    >
+      {block.title || block.label ? (
+        <header className="case-study-step-flow-header" style={stepFlowHeaderStyle}>
+          {block.title ? <h2 style={stepFlowTitleStyle}>{block.title}</h2> : null}
+          {block.label ? (
+            <p
+              className="font-inter-display"
+              style={{
+                ...stepFlowLabelStyle,
+                fontSize: howItWorksControls.fontSize,
+                fontWeight: howItWorksControls.fontWeight,
+                letterSpacing: `${howItWorksControls.letterSpacing}em`,
+                lineHeight: `${Math.round(howItWorksControls.fontSize * 1.45)}px`,
+                opacity: howItWorksControls.opacity,
+              }}
+            >
+              {block.label}
+            </p>
+          ) : null}
+        </header>
+      ) : null}
+      <div className="case-study-step-flow-grid" style={stepFlowGridStyle}>
+        {block.items.map((item, index) => (
+          <article key={item.title} className="case-study-step-card" style={stepCardStyle}>
+            <figure className="case-study-step-media" style={stepMediaStyle}>
+              {item.image ? <img src={item.image} alt="" /> : <span className="font-inter-display">{item.label}</span>}
+            </figure>
+            <div
+              className="case-study-step-copy"
+              style={stepCopyStyle}
+            >
+              <span
+                className="case-study-step-number font-inter-display"
+                style={stepNumberStyle}
+              >
+                {index + 1}
+              </span>
+              <h2 style={stepTitleStyle}>{item.title}</h2>
+              <p className="font-inter-display" style={{ ...stepDescriptionStyle, gridColumn: "1 / -1" }}>{item.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
@@ -204,6 +362,10 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
   if (block.type === "viewGrid") {
     return <CaseStudyViewGridBlock block={block} />;
+  }
+
+  if (block.type === "stepFlow") {
+    return <CaseStudyStepFlowBlock block={block} />;
   }
 
   const isFeatureSplit = block.variant === "feature";

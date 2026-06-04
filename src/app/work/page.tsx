@@ -107,7 +107,7 @@ export default function WorkPage() {
             <AnimatedDescription
               ready={fontsReady}
               delay="260ms"
-              text="Product design work focused on clarity, usefulness, and scale."
+              text="Product designs focused on simplicity, usefulness, and scale."
             />
           </header>
 
@@ -117,7 +117,7 @@ export default function WorkPage() {
             style={featuredDelay}
           >
             <div className="work-featured-media">
-              <img src={featuredWork.image} alt="" />
+              <img src={featuredWork.featuredImage ?? featuredWork.image} alt="" />
             </div>
             <div className="work-featured-title">
               <div>

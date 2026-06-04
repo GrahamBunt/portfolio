@@ -5,6 +5,7 @@ export type WorkItem = {
   tag: string;
   image: string;
   heroImage?: string;
+  featuredImage?: string;
   summary: string;
   overview?: CaseStudyOverview;
   blocks?: CaseStudyBlock[];
@@ -70,6 +71,13 @@ export type CaseStudyBlock =
       width?: CaseStudyBlockWidth;
     }
   | {
+      type: "stepFlow";
+      title?: string;
+      label?: string;
+      items: CaseStudyStep[];
+      width?: CaseStudyBlockWidth;
+    }
+  | {
       type: "split";
       eyebrow?: string;
       title: string;
@@ -91,6 +99,13 @@ export type CaseStudyViewCard = {
   kind: "table" | "timeline" | "gantt" | "card";
 };
 
+export type CaseStudyStep = {
+  title: string;
+  description: string;
+  image?: string;
+  label: string;
+};
+
 export type CaseStudyMedia = {
   src: string;
   caption: string;
@@ -108,14 +123,15 @@ export const featuredWork: WorkItem = {
   title: "Smartsheet Reports",
   slug: "smartsheet-reports",
   tag: "Smartsheet • 2025–2026",
-  image: "/work/smartsheet-report-hero.png",
-  heroImage: "/work/smartsheet-report-hero.png",
+  image: "/work/smartsheet-reports/empty-mock-hero.jpg",
+  heroImage: "/work/smartsheet-reports/empty-mock-hero.jpg",
+  featuredImage: "/work/smartsheet-reports/featured-hero.jpg",
   summary: "Led the design effort for modernizing and positioning Smartsheet's primary data aggregation surface.",
   overview: {
     items: [
       { label: "Role", value: "Sole designer" },
       { label: "Team", value: "PM, Researcher, 4 Engineers" },
-      { label: "Scope", value: "Surface modernization, multi-team convergence" },
+      { label: "Duration", value: "6-7 months" },
     ],
     body: [
       "The Report asset in Smartsheet is the surface teams use to combine data across multiple sheets.",
@@ -124,8 +140,33 @@ export const featuredWork: WorkItem = {
   },
   blocks: [
     {
+      type: "stepFlow",
+      width: "full",
+      label: "HOW IT WORKS",
+      items: [
+        {
+          title: "Select sheets",
+          description: "Choose the sheets that power the report.",
+          image: "/work/smartsheet-reports/asset-picker.png",
+          label: "Select sheets placeholder",
+        },
+        {
+          title: "Manage fields",
+          description: "Choose columns or summary fields to include.",
+          image: "/work/smartsheet-reports/manage-fields.png",
+          label: "Manage fields placeholder",
+        },
+        {
+          title: "Define rows",
+          description: "Choose which rows are included.",
+          image: "/work/smartsheet-reports/define-rows.png",
+          label: "Define rows placeholder",
+        },
+      ],
+    },
+    {
       type: "media",
-      label: "Hero workflow placeholder",
+      label: "Definition step specs placeholder",
       aspectRatio: 4 / 3,
       width: "wide",
     },
@@ -151,7 +192,8 @@ export const featuredWork: WorkItem = {
       title: "More than a reskin",
       body: [
         "Early explorations made it clear there were fundamental issues preventing people from getting the most out of the tool.",
-        "The legacy report bundled data configuration and display controls into one admin-only layer. Collaborators, anyone shared to the report below admin level, got a read-only view with no ability to explore the data themselves. The top request from customers was to give more control to collaborators.",
+        "The legacy report bundled data configuration and display controls into one admin-only layer. Collaborators, anyone shared to the report below admin level, got a read-only view with no ability to explore the data themselves.",
+        "The top request from customers was to give more flexibility to collaborators.",
       ],
     },
     {
@@ -164,7 +206,7 @@ export const featuredWork: WorkItem = {
       type: "text",
       title: "Pulling the configuration model apart",
       body: [
-        "The insight was that some admin controls were essential to defining what data was included and how it was aggregated while other controls were purely for changing the display of data. The core tension was how to reserve the definition controls for admins while opening up the display controls for collaborators.",
+        "The insight was that some admin controls were essential to defining what data was included and how it was aggregated, while other controls were purely for changing the display of data.",
       ],
     },
     {
@@ -224,15 +266,6 @@ export const featuredWork: WorkItem = {
 };
 
 export const otherWork: WorkItem[] = [
-  {
-    title: "Project and Portfolio Management",
-    slug: "project-and-portfolio-management",
-    tag: "Smartsheet • 2025",
-    image: "https://framerusercontent.com/images/WsjEGmBC6idcXZcKsrO1Sn5UNg.jpg?scale-down-to=512&width=2160&height=1620",
-    summary: "Project and Portfolio Management",
-    gallery: [],
-    notes: [],
-  },
   {
     title: "Scenario Planning",
     slug: "scenario-planning",
