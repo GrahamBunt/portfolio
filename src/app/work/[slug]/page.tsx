@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyPage } from "@/components/CaseStudyPage";
-import { allWork, getCaseStudy } from "@/content/work";
+import { getCaseStudy, otherWork, routeableWork } from "@/content/work";
 
 type ProjectPageProps = {
   params: Promise<{
@@ -10,7 +10,7 @@ type ProjectPageProps = {
 };
 
 export function generateStaticParams() {
-  return allWork.map((project) => ({
+  return routeableWork.map((project) => ({
     slug: project.slug,
   }));
 }
@@ -37,7 +37,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   if (!project) notFound();
 
-  const related = allWork.filter((item) => item.slug !== project.slug);
+  const related = otherWork;
 
   return <CaseStudyPage project={project} related={related} />;
 }

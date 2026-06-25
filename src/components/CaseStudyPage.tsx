@@ -2,7 +2,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
@@ -16,14 +16,45 @@ type CaseStudyPageProps = {
   related: WorkItem[];
 };
 
+type ProblemCardDials = {
+  padding: number;
+  titleWeight: number;
+  subtitleWeight: number;
+};
+
+type ProblemCardDialStyle = CSSProperties & {
+  "--problem-card-padding": string;
+  "--problem-title-weight": number;
+  "--problem-subtitle-weight": number;
+};
+
+const defaultProblemCardDials: ProblemCardDials = {
+  padding: 42,
+  titleWeight: 400,
+  subtitleWeight: 500,
+};
+
 const overviewCopyStyle: CSSProperties = {
   color: "#ffffff",
   fontFamily: '"Inter Display", var(--font-inter), sans-serif',
-  fontSize: "clamp(24px, 2.2vw, 32px)",
+  fontSize: "clamp(25px, 2.25vw, 34px)",
   fontWeight: 400,
-  lineHeight: 1.28,
-  letterSpacing: 0,
+  lineHeight: 1.24,
+  letterSpacing: "-0.01em",
   margin: 0,
+};
+
+const overviewLeadCopyStyle: CSSProperties = {
+  ...overviewCopyStyle,
+  fontSize: "clamp(32px, 3.55vw, 54px)",
+  lineHeight: 1.1,
+  letterSpacing: "-0.02em",
+  textWrap: "balance",
+};
+
+const overviewSupportingCopyStyle: CSSProperties = {
+  ...overviewCopyStyle,
+  color: "rgba(255, 255, 255, 0.65)",
 };
 
 const hiddenMetadataLabelStyle: CSSProperties = {
@@ -52,9 +83,14 @@ const overviewMetaSecondaryStyle: CSSProperties = {
   margin: 0,
 };
 
-const overviewParagraphSpeeds = [1, 1];
-const overviewRevealDistanceScale = 1.15;
 const narrativeParagraphSpeeds = [1, 1.25];
+
+const staticOverviewCopyWrapStyle: CSSProperties = {
+  display: "flex",
+  width: "100%",
+  flexDirection: "column",
+  gap: 24,
+};
 
 const stepFlowStyle: CSSProperties = {
   display: "flex",
@@ -131,14 +167,14 @@ const stepFlowTitleStyle: CSSProperties = {
   margin: 0,
 };
 
-const stepFlowLabelStyle: CSSProperties = {
-  color: "#ffffff",
+const sectionLabelStyle: CSSProperties = {
+  color: "rgba(255, 255, 255, 0.36)",
   fontSize: 16,
   fontWeight: 600,
   letterSpacing: "0.12em",
   lineHeight: "23px",
   margin: 0,
-  opacity: 0.5,
+  textShadow: "0 -1px 0 rgba(255, 255, 255, 0.08), 0 1px 0 rgba(0, 0, 0, 0.95)",
 };
 
 const stepTitleStyle: CSSProperties = {
@@ -165,25 +201,69 @@ function getBlockWidthClass(width: CaseStudyBlockWidth = "content") {
 function CaseStudyMediaBlock({
   label,
   src,
+  videoSrc,
+  embedSrc,
   caption,
   aspectRatio,
+  bentoItems,
   fill = false,
   width = "content",
 }: {
   label: string;
   src?: string;
+  videoSrc?: string;
+  embedSrc?: string;
   caption?: string;
   aspectRatio?: number;
+  bentoItems?: {
+    label: string;
+    src?: string;
+    fit?: "cover" | "contain";
+    span?: "large" | "small";
+  }[];
   fill?: boolean;
   width?: CaseStudyBlockWidth;
 }) {
+  const isVideo = Boolean(videoSrc || embedSrc);
+
   return (
     <figure
-      className={`case-study-placeholder case-study-block ${getBlockWidthClass(width)}`}
-      style={fill ? undefined : { aspectRatio: aspectRatio ?? 4 / 3 }}
+      className={`case-study-placeholder case-study-block ${getBlockWidthClass(width)} ${bentoItems?.length ? "is-bento" : ""} ${isVideo ? "is-video" : ""}`}
+      style={fill || isVideo ? undefined : { aspectRatio: aspectRatio ?? 4 / 3 }}
     >
-      {src ? <img src={src} alt="" /> : <span className="font-inter-display">{label}</span>}
-      {caption ? <figcaption className="font-inter-display">{caption}</figcaption> : null}
+      {bentoItems?.length ? (
+        <div className="case-study-bento-placeholder" aria-label={label}>
+          {bentoItems.map((item) => (
+            <div
+              key={item.src ?? item.label}
+              className={`case-study-bento-tile ${item.span === "large" ? "is-large" : ""} ${item.src ? "has-image" : ""} ${item.fit === "contain" ? "is-contain" : ""}`}
+            >
+              {item.src ? <img src={item.src} alt="" /> : <span className="case-study-bento-tile-chip font-inter-display">{item.label}</span>}
+            </div>
+          ))}
+        </div>
+      ) : videoSrc || embedSrc ? (
+        embedSrc ? (
+          <iframe
+            src={embedSrc}
+            title={label}
+            style={{ aspectRatio: aspectRatio ?? 16 / 9 }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        ) : (
+          <div className="case-study-video-frame" style={{ aspectRatio: aspectRatio ?? 16 / 9 }}>
+            <video controls playsInline preload="metadata" aria-label={label}>
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          </div>
+        )
+      ) : src ? (
+        <img src={src} alt="" />
+      ) : (
+        <span className="font-inter-display">{label}</span>
+      )}
+      {caption && !isVideo ? <figcaption className="font-inter-display">{caption}</figcaption> : null}
     </figure>
   );
 }
@@ -199,9 +279,179 @@ function CaseStudyViewGridBlock({ block }: { block: Extract<CaseStudyBlock, { ty
             </span>
             <h2>{item.title}</h2>
           </div>
-          <p className="font-inter-display">{item.description}</p>
         </article>
       ))}
+    </section>
+  );
+}
+
+function CaseStudyComparisonBlock({ block }: { block: Extract<CaseStudyBlock, { type: "comparison" }> }) {
+  return (
+    <section
+      className={`case-study-comparison case-study-block ${getBlockWidthClass(block.width ?? "full")}`}
+      aria-label="Report experience comparison"
+    >
+      {block.items.map((item) => (
+        <figure key={item.title} className={`case-study-comparison-panel ${item.src ? "has-image" : ""}`}>
+          <div className="case-study-comparison-image-frame">
+            {item.src ? <img src={item.src} alt="" /> : <span className="font-inter-display">{item.label}</span>}
+            {item.watermark ? (
+              <span className="case-study-comparison-watermark" aria-hidden="true">
+                {item.title}
+              </span>
+            ) : null}
+          </div>
+        </figure>
+      ))}
+    </section>
+  );
+}
+
+function CaseStudyProblemCardsBlock({ block }: { block: Extract<CaseStudyBlock, { type: "problemCards" }> }) {
+  const dialStyle: ProblemCardDialStyle = {
+    "--problem-card-padding": `${defaultProblemCardDials.padding}px`,
+    "--problem-title-weight": defaultProblemCardDials.titleWeight,
+    "--problem-subtitle-weight": defaultProblemCardDials.subtitleWeight,
+  };
+
+  return (
+    <section
+      className={`case-study-problem-section case-study-block ${getBlockWidthClass(block.width ?? "full")}`}
+      aria-label={block.label}
+      style={dialStyle}
+    >
+      <header className="case-study-problem-header">
+        <p className="font-inter-display" style={sectionLabelStyle}>{block.label}</p>
+      </header>
+      <div className="case-study-problem-grid">
+        {block.items.map((item) => (
+          <article key={item.title} className={`case-study-problem-card is-${item.tone} ${item.image ? "has-image" : ""}`}>
+            {item.image ? (
+              <div className="case-study-problem-image" aria-hidden="true">
+                <img src={item.image} alt="" loading="eager" decoding="async" fetchPriority="high" />
+              </div>
+            ) : null}
+            <div className="case-study-problem-content">
+              <div className="case-study-problem-heading">
+                {!item.image ? (
+                  <div className={`case-study-problem-avatar is-${item.tone}`} aria-hidden="true">
+                    {item.avatar ? <img src={item.avatar} alt="" /> : item.audience.slice(0, 1)}
+                  </div>
+                ) : null}
+                <p className="case-study-problem-audience font-inter-display">{item.audience}</p>
+              </div>
+              <h2>{item.title}</h2>
+              <p className="case-study-problem-body font-inter-display">{item.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CaseStudySpecSamplesBlock({ block }: { block: Extract<CaseStudyBlock, { type: "specSamples" }> }) {
+  return (
+    <section
+      className={`case-study-spec-samples case-study-block ${getBlockWidthClass(block.width ?? "full")}`}
+      aria-label={block.label}
+    >
+      <header className="case-study-spec-samples-header">
+        <p className="font-inter-display" style={sectionLabelStyle}>{block.label}</p>
+      </header>
+      <div className="case-study-spec-samples-grid">
+        {block.items.map((item) => (
+          <a key={item.title} className="case-study-spec-sample-card" href={item.href} target="_blank" rel="noreferrer">
+            <div className={`case-study-spec-sample-media is-${item.kind} ${item.image || item.video ? "has-image" : ""}`} aria-hidden="true">
+              {item.video ? (
+                <video src={item.video} autoPlay loop muted playsInline poster={item.image} />
+              ) : item.image ? (
+                <img src={item.image} alt="" />
+              ) : (
+                <div className="case-study-spec-sample-window">
+                  <div className="case-study-spec-sample-window-bar">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                  <div className="case-study-spec-sample-canvas">
+                    {item.kind === "prototype" ? (
+                      <>
+                        <div className="case-study-spec-prototype-panel" />
+                        <div className="case-study-spec-prototype-control" />
+                      </>
+                    ) : (
+                      <>
+                        <div className="case-study-spec-frame is-large" />
+                        <div className="case-study-spec-frame" />
+                        <div className="case-study-spec-frame is-tall" />
+                        <div className="case-study-spec-frame" />
+                        <div className="case-study-spec-frame is-wide" />
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="case-study-spec-sample-title-row">
+              <div>
+                <h3>{item.title}</h3>
+                <p className="font-inter-display">{item.description}</p>
+              </div>
+              <span className="case-study-spec-sample-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7.05 17.66a1 1 0 0 1 0-1.42l8.53-8.53H9.5a1 1 0 1 1 0-2h8.49a1 1 0 0 1 1 1v8.49a1 1 0 1 1-2 0V9.12l-8.53 8.54a1 1 0 0 1-1.41 0Z" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CaseStudyImpactBlock({ block }: { block: Extract<CaseStudyBlock, { type: "impact" }> }) {
+  return (
+    <section className={`case-study-impact case-study-block ${getBlockWidthClass(block.width ?? "full")}`}>
+      <div className="case-study-impact-heading">
+        <div className="case-study-impact-label">
+          <p className="font-inter-display">{block.label}</p>
+        </div>
+        <h2>{block.statement}</h2>
+      </div>
+      <div className="case-study-impact-outcomes">
+        {block.outcomes.map((item) => (
+          <article key={item.number}>
+            <span className="font-inter-display">{item.number}</span>
+            <div>
+              <h3>{item.title}</h3>
+              <p className="font-inter-display">{item.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      {block.footnote ? <p className="case-study-impact-footnote font-inter-display">{block.footnote}</p> : null}
+    </section>
+  );
+}
+
+function CaseStudySpotlightBlock({ block }: { block: Extract<CaseStudyBlock, { type: "spotlight" }> }) {
+  return (
+    <section className="case-study-spotlight case-study-block" aria-labelledby="case-study-spotlight-title">
+      <article className="case-study-text-section case-study-block case-study-block-content">
+        <h2 id="case-study-spotlight-title">{block.title}</h2>
+        <CaseStudySectionBody body={block.body} />
+      </article>
+      <CaseStudyMediaBlock
+        label={block.media.label}
+        src={block.media.src}
+        videoSrc={block.media.videoSrc}
+        embedSrc={block.media.embedSrc}
+        caption={block.media.caption}
+        aspectRatio={block.media.aspectRatio}
+        width={block.media.width}
+      />
     </section>
   );
 }
@@ -218,7 +468,7 @@ function CaseStudyStepFlowBlock({ block }: { block: Extract<CaseStudyBlock, { ty
       {block.title || block.label ? (
         <header className="case-study-step-flow-header" style={stepFlowHeaderStyle}>
           {block.title ? <h2 style={stepFlowTitleStyle}>{block.title}</h2> : null}
-          {block.label ? <p className="font-inter-display" style={stepFlowLabelStyle}>{block.label}</p> : null}
+          {block.label ? <p className="font-inter-display" style={sectionLabelStyle}>{block.label}</p> : null}
         </header>
       ) : null}
       <div className="case-study-step-flow-grid" style={stepFlowGridStyle}>
@@ -279,12 +529,13 @@ function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: 
     >
       {block.eyebrow ? <p className="case-study-section-eyebrow font-inter-display">{block.eyebrow}</p> : null}
       {introRevealText ? (
-        <ScrollRevealText
-          text={introRevealText}
-          style={{ ...overviewCopyStyle, width: "100%", maxWidth: 840 }}
-          paragraphSpeeds={overviewParagraphSpeeds}
-          revealDistanceScale={overviewRevealDistanceScale}
-        />
+        <div className="font-inter-display" style={{ ...staticOverviewCopyWrapStyle, maxWidth: 520, textAlign: "left" }}>
+          {introRevealText.map((paragraph) => (
+            <p key={paragraph} style={{ ...overviewCopyStyle, width: "100%", maxWidth: 520 }}>
+              {paragraph}
+            </p>
+          ))}
+        </div>
       ) : (
         <>
           {block.title ? <h2>{block.title}</h2> : null}
@@ -321,12 +572,13 @@ function CaseStudyOverviewBlock({ overview }: { overview: CaseStudyOverview }) {
         ))}
       </dl>
       <div className="case-study-overview-copy">
-        <ScrollRevealText
-          text={overview.body}
-          style={overviewCopyStyle}
-          paragraphSpeeds={overviewParagraphSpeeds}
-          revealDistanceScale={overviewRevealDistanceScale}
-        />
+        <div style={staticOverviewCopyWrapStyle}>
+          {overview.body.map((paragraph, index) => (
+            <p key={paragraph} style={index === 0 ? overviewLeadCopyStyle : overviewSupportingCopyStyle}>
+              {paragraph}
+            </p>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -365,6 +617,8 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
       <CaseStudyMediaBlock
         label={block.label}
         src={block.src}
+        videoSrc={block.videoSrc}
+        embedSrc={block.embedSrc}
         caption={block.caption}
         aspectRatio={block.aspectRatio}
         width={block.width}
@@ -374,6 +628,26 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
   if (block.type === "viewGrid") {
     return <CaseStudyViewGridBlock block={block} />;
+  }
+
+  if (block.type === "comparison") {
+    return <CaseStudyComparisonBlock block={block} />;
+  }
+
+  if (block.type === "problemCards") {
+    return <CaseStudyProblemCardsBlock block={block} />;
+  }
+
+  if (block.type === "specSamples") {
+    return <CaseStudySpecSamplesBlock block={block} />;
+  }
+
+  if (block.type === "impact") {
+    return <CaseStudyImpactBlock block={block} />;
+  }
+
+  if (block.type === "spotlight") {
+    return <CaseStudySpotlightBlock block={block} />;
   }
 
   if (block.type === "stepFlow") {
@@ -387,6 +661,7 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
       src={block.media.src}
       caption={block.media.caption}
       aspectRatio={block.media.aspectRatio}
+      bentoItems={block.media.bentoItems}
       fill={isFeatureSplit}
     />
   );
@@ -408,7 +683,6 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
 export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const [fontsReady, setFontsReady] = useState(false);
-  const relatedRowRefs = useRef<Array<HTMLAnchorElement | null>>([]);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -421,63 +695,10 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
       .then(() => setFontsReady(true));
   }, []);
 
-  useEffect(() => {
-    const rows = relatedRowRefs.current;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let frame = 0;
-
-    const updateRows = () => {
-      frame = 0;
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const start = viewportHeight * 0.98;
-      const end = viewportHeight * 0.72;
-
-      rows.forEach((row) => {
-        if (!row) return;
-
-        if (prefersReducedMotion) {
-          row.style.setProperty("--project-scroll-x", "0px");
-          return;
-        }
-
-        const rect = row.getBoundingClientRect();
-        const rawProgress = (start - rect.top) / (start - end);
-        const progress = Math.min(1, Math.max(0, rawProgress));
-        const easedProgress = 1 - Math.pow(1 - progress, 3);
-        const offset = (1 - easedProgress) * 24;
-
-        row.style.setProperty("--project-scroll-x", `${offset.toFixed(2)}px`);
-      });
-    };
-
-    const requestUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(updateRows);
-    };
-
-    updateRows();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-
-    return () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-    };
-  }, []);
-
   const heroStyle = {
     "--rise-delay": "700ms",
     "--rise-duration": "1.72s",
     "--rise-distance": "80px",
-  } as CSSProperties;
-
-  const galleryStyle = {
-    "--rise-delay": "1080ms",
-    "--rise-duration": "1.08s",
-    "--rise-distance": "40px",
-    "--rise-blur": "0px",
-    "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const relatedStyle = {
@@ -541,7 +762,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
           </figure>
         </section>
 
-        <section className="case-study-body staged-work-rise" style={galleryStyle} aria-label="Project details">
+        <section className="case-study-body" aria-label="Project details">
           {overview ? <CaseStudyOverviewBlock overview={overview} /> : null}
           {hasCaseStudyBlocks
             ? caseStudyBlocks.map((block, index) => (
@@ -568,7 +789,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
 
         <section className="work-products case-study-related" aria-label="More case studies">
           <ProjectListSection
-            title="All Projects"
+            title="Coming soon..."
             items={related.map((item) => ({
               title: item.title,
               description: item.tag,
@@ -577,9 +798,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
             }))}
             className="staged-work-rise"
             style={relatedStyle}
-            rowRef={(node, index) => {
-              relatedRowRefs.current[index] = node;
-            }}
+            disableLinks
           />
         </section>
       </main>

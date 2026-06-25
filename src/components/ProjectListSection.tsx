@@ -60,7 +60,7 @@ export function ProjectListSection({
 
           if (disableLinks) {
             return (
-              <div key={item.href} className="work-project-row" style={rowStyle}>
+              <div key={item.href} className="work-project-row is-disabled" style={rowStyle}>
                 {rowContent}
               </div>
             );

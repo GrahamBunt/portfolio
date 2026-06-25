@@ -9,7 +9,7 @@ export type ProjectItem = {
 
 // Aspect ratios mirror the live Framer image dimensions.
 export const projects: ProjectItem[] = [
-  { title: "SmartAssist", slug: "smartassist", aspectRatio: 900 / 1120, type: "image", src: "/masonry/smartassist.png" },
+  { title: "AI Report Creation", slug: "smartassist", aspectRatio: 900 / 1120, type: "image", src: "/masonry/smartassist.png" },
   { title: "People Directory & Profile", slug: "people-directory", aspectRatio: 900 / 1120, type: "image", src: "/masonry/people-directory.png" },
   { title: "Oil & Gas", slug: "oil-and-gas-mobile", aspectRatio: 1, type: "image", src: "/masonry/og-mobile.png" },
   { title: "Biking in Park City", slug: "biking-parkcity", aspectRatio: 900 / 1120, type: "image", src: "/masonry/biking.png" },

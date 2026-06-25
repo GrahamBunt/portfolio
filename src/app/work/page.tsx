@@ -1,9 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
@@ -18,9 +18,14 @@ function ArrowIcon() {
   );
 }
 
+function getWorkListingMeta(tag: string) {
+  return tag;
+}
+
 export default function WorkPage() {
   const [fontsReady, setFontsReady] = useState(false);
-  const projectRowRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const [featuredImageReady, setFeaturedImageReady] = useState(false);
+  const sequenceReady = fontsReady && featuredImageReady;
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -31,51 +36,6 @@ export default function WorkPage() {
     document.fonts.ready
       .then(() => new Promise((resolve) => setTimeout(resolve, 250)))
       .then(() => setFontsReady(true));
-  }, []);
-
-  useEffect(() => {
-    const rows = projectRowRefs.current;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let frame = 0;
-
-    const updateRows = () => {
-      frame = 0;
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const start = viewportHeight * 0.98;
-      const end = viewportHeight * 0.72;
-
-      rows.forEach((row) => {
-        if (!row) return;
-
-        if (prefersReducedMotion) {
-          row.style.setProperty("--project-scroll-x", "0px");
-          return;
-        }
-
-        const rect = row.getBoundingClientRect();
-        const rawProgress = (start - rect.top) / (start - end);
-        const progress = Math.min(1, Math.max(0, rawProgress));
-        const easedProgress = 1 - Math.pow(1 - progress, 3);
-        const offset = (1 - easedProgress) * 24;
-
-        row.style.setProperty("--project-scroll-x", `${offset.toFixed(2)}px`);
-      });
-    };
-
-    const requestUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(updateRows);
-    };
-
-    updateRows();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-
-    return () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-    };
   }, []);
 
   const featuredDelay = {
@@ -93,7 +53,7 @@ export default function WorkPage() {
   } as CSSProperties;
 
   return (
-    <div className={`work-page ${fontsReady ? "sequence-ready" : ""}`}>
+    <div className={`work-page ${sequenceReady ? "sequence-ready" : ""}`}>
       <SiteNav />
 
       <main className="work-main">
@@ -117,13 +77,22 @@ export default function WorkPage() {
             style={featuredDelay}
           >
             <div className="work-featured-media">
-              <img src={featuredWork.featuredImage ?? featuredWork.image} alt="" />
+              <Image
+                src={featuredWork.featuredImage ?? featuredWork.image}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 640px) calc(100vw - 40px), 560px"
+                quality={92}
+                onLoad={() => setFeaturedImageReady(true)}
+                onError={() => setFeaturedImageReady(true)}
+              />
             </div>
             <div className="work-featured-title">
               <div>
                 <h2>{featuredWork.title}</h2>
                 <p>
-                  <ProjectMeta value={featuredWork.tag} />
+                  <ProjectMeta value={getWorkListingMeta(featuredWork.tag)} />
                 </p>
               </div>
               <span className="work-featured-arrow">
@@ -133,18 +102,16 @@ export default function WorkPage() {
           </Link>
 
           <ProjectListSection
-            title="All Projects"
+            title="Coming soon..."
             items={otherWork.map((project) => ({
               title: project.title,
-              description: project.tag,
+              description: getWorkListingMeta(project.tag),
               href: `/work/${project.slug}`,
               image: project.image,
             }))}
             className="staged-work-rise"
             style={allProjectsDelay}
-            rowRef={(node, index) => {
-              projectRowRefs.current[index] = node;
-            }}
+            disableLinks
           />
         </section>
       </main>

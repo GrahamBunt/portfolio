@@ -16,6 +16,6 @@ export const config = {
   matcher: [
     // Protect everything except: Next internals, the login page,
     // the dynamic favicon route, and public static assets.
-    "/((?!_next/static|_next/image|login|icon|avatar|fonts|masonry).*)",
+    "/((?!_next/static|_next/image|login|icon|avatar|fonts|masonry|work).*)",
   ],
 };
