@@ -33,6 +33,10 @@ export default function WorkPage() {
     }
     window.scrollTo(0, 0);
 
+    const caseStudyHero = featuredWork.heroImage ?? featuredWork.image;
+    const heroPreload = new window.Image();
+    heroPreload.src = caseStudyHero;
+
     document.fonts.ready
       .then(() => new Promise((resolve) => setTimeout(resolve, 250)))
       .then(() => setFontsReady(true));

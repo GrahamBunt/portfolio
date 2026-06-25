@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import type { CSSProperties } from "react";
-import { useEffect, useState } from "react";
+import type { CSSProperties, SyntheticEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
@@ -683,6 +683,9 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
 export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const [fontsReady, setFontsReady] = useState(false);
+  const [heroImageReady, setHeroImageReady] = useState(false);
+  const heroImageRef = useRef<HTMLImageElement | null>(null);
+  const sequenceReady = fontsReady && heroImageReady;
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -694,6 +697,35 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
       .then(() => new Promise((resolve) => setTimeout(resolve, 350)))
       .then(() => setFontsReady(true));
   }, []);
+
+  useEffect(() => {
+    const image = heroImageRef.current;
+    let frame = 0;
+
+    if (!image?.complete) {
+      return;
+    }
+
+    if (image.decode) {
+      image.decode().catch(() => undefined).finally(() => setHeroImageReady(true));
+      return;
+    }
+
+    frame = requestAnimationFrame(() => setHeroImageReady(true));
+
+    return () => cancelAnimationFrame(frame);
+  }, [project.heroImage, project.image]);
+
+  function handleHeroImageLoad(event: SyntheticEvent<HTMLImageElement>) {
+    const image = event.currentTarget;
+
+    if (image.decode) {
+      image.decode().catch(() => undefined).finally(() => setHeroImageReady(true));
+      return;
+    }
+
+    setHeroImageReady(true);
+  }
 
   const heroStyle = {
     "--rise-delay": "700ms",
@@ -736,7 +768,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const title = project.displayTitle ?? project.title;
 
   return (
-    <div className={`case-study-page ${fontsReady ? "sequence-ready" : ""}`}>
+    <div className={`case-study-page ${sequenceReady ? "sequence-ready" : ""}`}>
       <SiteNav showBack />
 
       <main className="case-study-main">
@@ -744,21 +776,30 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
           <div className="case-study-top">
             <header className="work-heading case-study-heading">
               <div
-                className={`case-study-top-meta font-inter-display ${fontsReady ? "staged-work-rise" : "opacity-0"}`}
-                style={fontsReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
+                className={`case-study-top-meta font-inter-display ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
+                style={sequenceReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
               >
                 <ProjectMeta value={project.tag} />
               </div>
               <h1 className="font-[family-name:var(--font-instrument-serif)]">
-                <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
+                <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                   {title}
                 </span>
               </h1>
             </header>
           </div>
 
-          <figure className={`case-study-hero case-study-hero-full ${fontsReady ? "case-study-hero-reveal" : "opacity-0"}`} style={heroStyle}>
-            <img src={project.heroImage ?? project.image} alt="" />
+          <figure className={`case-study-hero case-study-hero-full ${sequenceReady ? "case-study-hero-reveal" : "opacity-0"}`} style={heroStyle}>
+            <img
+              ref={heroImageRef}
+              src={project.heroImage ?? project.image}
+              alt=""
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              onLoad={handleHeroImageLoad}
+              onError={() => setHeroImageReady(true)}
+            />
           </figure>
         </section>
 
