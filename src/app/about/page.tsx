@@ -5,7 +5,6 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { ContactSection } from "@/components/ContactSection";
-import { ExploreSection } from "@/components/ExploreSection";
 import { SiteNav } from "@/components/SiteNav";
 import { SocialIcon } from "@/components/SocialIcon";
 import { aboutContent, type AboutContent } from "@/content/about";
@@ -236,47 +235,6 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-
-        <ExploreSection
-            title={
-              tuneMode ? (
-                <EditableText
-                  value={draft.explore.title}
-                  onChange={(value) => updateDraft((content) => {
-                    content.explore.title = value;
-                  })}
-                />
-              ) : (
-                draft.explore.title
-              )
-            }
-            items={draft.explore.links}
-            disableLinks={tuneMode}
-            renderTitle={(item, index) =>
-              tuneMode ? (
-                <EditableText
-                  value={item.title}
-                  onChange={(value) => updateDraft((content) => {
-                    content.explore.links[index].title = value;
-                  })}
-                />
-              ) : (
-                item.title
-              )
-            }
-            renderDescription={(item, index) =>
-              tuneMode ? (
-                <EditableText
-                  value={item.description}
-                  onChange={(value) => updateDraft((content) => {
-                    content.explore.links[index].description = value;
-                  })}
-                />
-              ) : (
-                item.description
-              )
-            }
-          />
 
         <ContactSection
           align="left"
