@@ -20,7 +20,8 @@ function isValidContent(value: unknown): value is AboutContent {
     isString(content.hero.titleItalic, 80) &&
     isString(content.hero.titleRest, 120) &&
     isString(content.hero.description, 500) &&
-    isString(content.bio, 500) &&
+    Array.isArray(content.bio) &&
+    content.bio.every((paragraph) => isString(paragraph, 700)) &&
     Array.isArray(content.social) &&
     content.social.every(
       (item) =>
@@ -63,7 +64,7 @@ export type AboutContent = {
     titleRest: string;
     description: string;
   };
-  bio: string;
+  bio: string[];
   social: Array<{
     label: string;
     href: string;

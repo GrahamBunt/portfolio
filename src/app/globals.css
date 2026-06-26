@@ -1584,6 +1584,13 @@ body {
   gap: 40px;
 }
 
+.about-copy {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .about-bio p {
   font-family: "Inter Display", var(--font-inter), sans-serif;
   font-weight: 500;

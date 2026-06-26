@@ -192,18 +192,22 @@ export default function AboutPage() {
           </div>
 
           <div className="about-bio staged-work-rise" style={bioDelay}>
-            <p>
-              {tuneMode ? (
-                <EditableText
-                  value={draft.bio}
-                  onChange={(value) => updateDraft((content) => {
-                    content.bio = value;
-                  })}
-                />
-              ) : (
-                draft.bio
-              )}
-            </p>
+            <div className="about-copy">
+              {draft.bio.map((paragraph, index) => (
+                <p key={index}>
+                  {tuneMode ? (
+                    <EditableText
+                      value={paragraph}
+                      onChange={(value) => updateDraft((content) => {
+                        content.bio[index] = value;
+                      })}
+                    />
+                  ) : (
+                    paragraph
+                  )}
+                </p>
+              ))}
+            </div>
             <div className="about-social">
               {draft.social.map((item, index) => (
                 <a
