@@ -57,9 +57,10 @@ export function ProjectListSection({
               <div className="work-project-row-content">
                 {hasComingSoonStatus ? (
                   <div className="work-project-thinking-thumb" aria-hidden="true">
-                    {Array.from({ length: 15 }, (_, dotIndex) => (
-                      <span key={dotIndex} />
-                    ))}
+                    <svg viewBox="0 0 24 24" focusable="false">
+                      <circle cx="12" cy="12" r="8" />
+                      <path d="M12 7.75v4.65l3.1 1.85" />
+                    </svg>
                   </div>
                 ) : (
                   <img
