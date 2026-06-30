@@ -412,6 +412,8 @@ function CaseStudySpecSamplesBlock({ block }: { block: Extract<CaseStudyBlock, {
 }
 
 function CaseStudyImpactBlock({ block }: { block: Extract<CaseStudyBlock, { type: "impact" }> }) {
+  const outcomeCountClass = block.outcomes.length === 4 ? "is-four-up" : "";
+
   return (
     <section className={`case-study-impact case-study-block ${getBlockWidthClass(block.width ?? "full")}`}>
       <div className="case-study-impact-heading">
@@ -420,7 +422,7 @@ function CaseStudyImpactBlock({ block }: { block: Extract<CaseStudyBlock, { type
         </div>
         <h2>{block.statement}</h2>
       </div>
-      <div className="case-study-impact-outcomes">
+      <div className={`case-study-impact-outcomes ${outcomeCountClass}`}>
         {block.outcomes.map((item) => (
           <article key={item.number}>
             <span className="font-inter-display">{item.number}</span>
@@ -432,6 +434,37 @@ function CaseStudyImpactBlock({ block }: { block: Extract<CaseStudyBlock, { type
         ))}
       </div>
       {block.footnote ? <p className="case-study-impact-footnote font-inter-display">{block.footnote}</p> : null}
+    </section>
+  );
+}
+
+function CaseStudyShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { type: "showcase" }> }) {
+  const hasHeader = Boolean(block.label || block.title || block.body);
+
+  return (
+    <section className={`case-study-showcase case-study-block ${getBlockWidthClass(block.width ?? "full")}`}>
+      {hasHeader ? (
+        <header className="case-study-showcase-header">
+          {block.label ? <p className="case-study-showcase-label font-inter-display">{block.label}</p> : null}
+          <div>
+            {block.title ? <h2>{block.title}</h2> : null}
+            {block.body ? <p className="font-inter-display">{block.body}</p> : null}
+          </div>
+        </header>
+      ) : null}
+      <div className="case-study-showcase-grid">
+        {block.items.map((item) => (
+          <figure key={item.title} className={`case-study-showcase-item ${item.span === "half" ? "is-half" : "is-full"}`}>
+            <figcaption>
+              <h3>{item.title}</h3>
+              <p className="font-inter-display">{item.description}</p>
+            </figcaption>
+            <div className="case-study-showcase-media">
+              <img src={item.src} alt="" />
+            </div>
+          </figure>
+        ))}
+      </div>
     </section>
   );
 }
@@ -561,16 +594,19 @@ function CaseStudyNarrativeBlock({ block }: { block: Extract<CaseStudyBlock, { t
 function CaseStudyOverviewBlock({ overview }: { overview: CaseStudyOverview }) {
   return (
     <section className="case-study-overview case-study-block font-inter-display">
-      <dl className="case-study-overview-meta">
-        {overview.items.map((item, index) => (
-          <div key={item.label} className={index === 0 ? "is-primary" : undefined}>
-            <dt style={hiddenMetadataLabelStyle}>{item.label}</dt>
-            <dd style={index === 0 ? overviewMetaPrimaryStyle : overviewMetaSecondaryStyle}>
-              <ProjectMeta value={item.value} />
-            </dd>
-          </div>
-        ))}
-      </dl>
+      <aside className="case-study-overview-details">
+        <dl className="case-study-overview-meta">
+          {overview.items.map((item, index) => (
+            <div key={item.label} className={index === 0 ? "is-primary" : undefined}>
+              <dt style={hiddenMetadataLabelStyle}>{item.label}</dt>
+              <dd style={index === 0 ? overviewMetaPrimaryStyle : overviewMetaSecondaryStyle}>
+                <ProjectMeta value={item.value} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+        {overview.summary ? <p className="case-study-overview-summary">{overview.summary}</p> : null}
+      </aside>
       <div className="case-study-overview-copy">
         <div style={staticOverviewCopyWrapStyle}>
           {overview.body.map((paragraph, index) => (
@@ -644,6 +680,10 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
   if (block.type === "impact") {
     return <CaseStudyImpactBlock block={block} />;
+  }
+
+  if (block.type === "showcase") {
+    return <CaseStudyShowcaseBlock block={block} />;
   }
 
   if (block.type === "spotlight") {
@@ -830,16 +870,17 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
 
         <section className="work-products case-study-related" aria-label="More case studies">
           <ProjectListSection
-            title="Coming soon..."
+            title="All projects"
             items={related.map((item) => ({
               title: item.title,
               description: item.tag,
-              href: `/work/${item.slug}`,
-              image: item.image,
+              href: item.isComingSoon ? undefined : `/work/${item.slug}`,
+              image: item.featuredImage ?? item.heroImage ?? item.image,
+              imagePosition: item.slug === "smartsheet-reports" ? "70% 18%" : undefined,
+              statusLabel: item.isComingSoon ? "Coming soon" : undefined,
             }))}
             className="staged-work-rise"
             style={relatedStyle}
-            disableLinks
           />
         </section>
       </main>

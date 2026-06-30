@@ -106,16 +106,17 @@ export default function WorkPage() {
           </Link>
 
           <ProjectListSection
-            title="Coming soon..."
+            title="All projects"
             items={otherWork.map((project) => ({
               title: project.title,
               description: getWorkListingMeta(project.tag),
-              href: `/work/${project.slug}`,
-              image: project.image,
+              href: project.isComingSoon ? undefined : `/work/${project.slug}`,
+              image: project.featuredImage ?? project.heroImage ?? project.image,
+              imagePosition: project.slug === "smartsheet-reports" ? "70% 18%" : undefined,
+              statusLabel: project.isComingSoon ? "Coming soon" : undefined,
             }))}
             className="staged-work-rise"
             style={allProjectsDelay}
-            disableLinks
           />
         </section>
       </main>

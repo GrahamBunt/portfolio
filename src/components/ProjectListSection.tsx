@@ -6,8 +6,11 @@ import { ProjectMeta } from "@/components/ProjectMeta";
 export type ProjectListItem = {
   title: string;
   description: string;
-  href: string;
+  href?: string;
   image: string;
+  imageFit?: "cover" | "contain";
+  imagePosition?: string;
+  statusLabel?: string;
 };
 
 type ProjectListSectionProps = {
@@ -45,22 +48,41 @@ export function ProjectListSection({
       {description ? <p className={descriptionClassName}>{description}</p> : null}
       <div className="work-project-list">
         {items.map((item, index) => {
+          const href = item.href;
+          const isDisabled = disableLinks || !href;
+          const hasComingSoonStatus = item.statusLabel?.toLowerCase() === "coming soon";
           const rowContent = (
             <>
               <div className="work-project-row-bg" aria-hidden="true" />
               <div className="work-project-row-content">
-                <img src={item.image} alt="" />
-                <div>
+                {hasComingSoonStatus ? (
+                  <div className="work-project-thinking-thumb" aria-hidden="true">
+                    {Array.from({ length: 15 }, (_, dotIndex) => (
+                      <span key={dotIndex} />
+                    ))}
+                  </div>
+                ) : (
+                  <img
+                    src={item.image}
+                    alt=""
+                    style={{
+                      objectFit: item.imageFit,
+                      objectPosition: item.imagePosition,
+                    }}
+                  />
+                )}
+                <div className="work-project-copy">
                   <p>{renderTitle ? renderTitle(item, index) : item.title}</p>
                   <p>{renderDescription ? renderDescription(item, index) : <ProjectMeta value={item.description} />}</p>
                 </div>
+                {item.statusLabel ? <span className="work-project-status font-inter-display">{item.statusLabel}</span> : null}
               </div>
             </>
           );
 
-          if (disableLinks) {
+          if (isDisabled) {
             return (
-              <div key={item.href} className="work-project-row is-disabled" style={rowStyle}>
+              <div key={`${item.title}-${item.description}`} className="work-project-row is-disabled" style={rowStyle} aria-disabled="true">
                 {rowContent}
               </div>
             );
@@ -70,7 +92,7 @@ export function ProjectListSection({
             <Link
               key={item.href}
               ref={rowRef ? (node) => rowRef(node, index) : undefined}
-              href={item.href}
+              href={href}
               className="work-project-row"
               style={rowStyle}
             >

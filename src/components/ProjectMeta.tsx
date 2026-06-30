@@ -3,17 +3,20 @@ type ProjectMetaProps = {
 };
 
 export function ProjectMeta({ value }: ProjectMetaProps) {
-  const [company, year] = value.split(" • ");
+  const parts = value.split(" • ");
 
-  if (!year) {
+  if (parts.length === 1) {
     return <>{value}</>;
   }
 
   return (
     <>
-      {company}
-      <span className="project-meta-dot" aria-hidden="true" />
-      {year}
+      {parts.map((part, index) => (
+        <span key={`${part}-${index}`}>
+          {index > 0 ? <span className="project-meta-dot" aria-hidden="true" /> : null}
+          {part}
+        </span>
+      ))}
     </>
   );
 }

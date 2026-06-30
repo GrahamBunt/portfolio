@@ -7,6 +7,7 @@ export type WorkItem = {
   heroImage?: string;
   featuredImage?: string;
   summary: string;
+  isComingSoon?: boolean;
   overview?: CaseStudyOverview;
   blocks?: CaseStudyBlock[];
   metadata?: CaseStudyMetadata[];
@@ -22,6 +23,7 @@ export type CaseStudyMetadata = {
 
 export type CaseStudyOverview = {
   items: CaseStudyMetadata[];
+  summary?: string;
   body: string[];
 };
 
@@ -43,6 +45,7 @@ export type CaseStudyBlock =
   | {
       type: "overview";
       items: CaseStudyMetadata[];
+      summary?: string;
       body: string[];
     }
   | {
@@ -103,6 +106,14 @@ export type CaseStudyBlock =
       statement: string;
       outcomes: CaseStudyImpactOutcome[];
       footnote?: string;
+      width?: CaseStudyBlockWidth;
+    }
+  | {
+      type: "showcase";
+      label?: string;
+      title?: string;
+      body?: string;
+      items: CaseStudyShowcaseItem[];
       width?: CaseStudyBlockWidth;
     }
   | {
@@ -188,6 +199,13 @@ export type CaseStudyImpactOutcome = {
   body: string;
 };
 
+export type CaseStudyShowcaseItem = {
+  title: string;
+  description: string;
+  src: string;
+  span?: "full" | "half";
+};
+
 export type CaseStudyMedia = {
   src: string;
   caption: string;
@@ -212,9 +230,9 @@ export const featuredWork: WorkItem = {
   overview: {
     items: [
       { label: "Role", value: "Lead designer" },
-      { label: "Team", value: "PM, Researcher, 4 Engineers" },
+      { label: "Team", value: "PM • Researcher • 4 Engineers" },
       { label: "Teams", value: "3 converging teams" },
-      { label: "Duration", value: "Eight months" },
+      { label: "Duration", value: "8 months" },
     ],
     body: [
       "The Report asset in Smartsheet combines data across multiple Sheets.",
@@ -466,6 +484,7 @@ export const otherWork: WorkItem[] = [
     tag: "Smartsheet • 2024–2025",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
     summary: "Scenario Planning",
+    isComingSoon: true,
     gallery: [],
     notes: [],
   },
@@ -475,6 +494,7 @@ export const otherWork: WorkItem[] = [
     tag: "Smartsheet • 2023–2025",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
     summary: "Resource Management Integration",
+    isComingSoon: true,
     gallery: [],
     notes: [],
   },
@@ -482,8 +502,77 @@ export const otherWork: WorkItem[] = [
     title: "American Modern Insurance",
     slug: "american-modern-insurance",
     tag: "KPMG • 2021–2022",
-    image: "https://framerusercontent.com/images/aNzcXn8YsE4sy8K8Aoq3YSlYZU.png?scale-down-to=512&width=3200&height=2400",
-    summary: "American Modern Insurance",
+    image: "/masonry/amig.png",
+    heroImage: "/masonry/amig.png",
+    summary: "A concise case study placeholder for the American Modern Insurance experience design work.",
+    isComingSoon: true,
+    overview: {
+      items: [
+        { label: "Role", value: "Product designer" },
+        { label: "Team", value: "KPMG Studio, client stakeholders, engineering partners" },
+        { label: "Client", value: "American Modern Insurance" },
+        { label: "Duration", value: "2021–2022" },
+      ],
+      body: [
+        "American Modern Insurance needed a clearer digital experience for quoting, product discovery, and policyholder workflows.",
+        "I helped shape a more focused interface direction that made complex insurance choices easier to understand and easier to act on.",
+      ],
+    },
+    blocks: [
+      {
+        type: "text",
+        title: "Simplifying a complex product surface",
+        body: [
+          "The work centered on making insurance tasks feel less fragmented. Customers and internal teams needed clearer pathways through product information, quoting moments, and supporting details that usually lived across separate touchpoints.",
+          "The design direction prioritized plain hierarchy, decisive calls to action, and page structures that could scale across product lines without making every page feel custom-built from scratch.",
+        ],
+      },
+      {
+        type: "media",
+        width: "wide",
+        label: "American Modern interface direction",
+        src: "/masonry/amig.png",
+        aspectRatio: 900 / 1120,
+      },
+      {
+        type: "text",
+        title: "Designing for trust and momentum",
+        body: [
+          "The core interaction challenge was balancing confidence with speed. Insurance users need enough information to trust what they are selecting, but too much explanation slows the flow and makes every decision feel heavier than it needs to be.",
+          "I used compact content patterns, progressive detail, and consistent action placement to help the experience feel guided without becoming rigid.",
+        ],
+      },
+      {
+        type: "media",
+        width: "wide",
+        label: "AMIG supporting screen placeholder",
+        src: "/masonry/kpmg-app.png",
+        aspectRatio: 1,
+      },
+      {
+        type: "impact",
+        width: "full",
+        label: "Project impact",
+        statement: "The work gave the client a clearer digital product direction for a complicated insurance experience.",
+        outcomes: [
+          {
+            number: "01",
+            title: "Clearer paths",
+            body: "Organized product and quote flows around the decisions users actually needed to make.",
+          },
+          {
+            number: "02",
+            title: "Reusable patterns",
+            body: "Established page and component patterns that could scale across related insurance journeys.",
+          },
+          {
+            number: "03",
+            title: "Stakeholder alignment",
+            body: "Created a tangible direction for client, design, and implementation conversations.",
+          },
+        ],
+      },
+    ],
     gallery: [],
     notes: [],
   },
@@ -491,41 +580,88 @@ export const otherWork: WorkItem[] = [
     title: "MetLife Mexico",
     slug: "metlife-mexico",
     tag: "KPMG • 2021",
-    image: "https://framerusercontent.com/images/kc6IsF2GDXNWwJQSk7F77a91hb8.png?scale-down-to=1024&width=5472&height=3648",
-    summary: "MetLife Mexico",
-    gallery: [
+    image: "/masonry/metlife.png",
+    heroImage: "/work/metlife-mexico/metlife-grid-display.png",
+    featuredImage: "/work/metlife-mexico/home-dashboard.png",
+    summary: "A concise case study for a MetLife Mexico agent portal designed to centralize portfolio management, client service, and sales activity.",
+    overview: {
+      items: [
+        { label: "Role", value: "Lead designer" },
+        { label: "Team", value: "2 Designers • 2 Researchers" },
+        { label: "Duration", value: "4 months" },
+        { label: "Deliverable", value: "Agent Portal MVP" },
+      ],
+      body: [
+        "MetLife Mexico needed a centralized workspace where agents could manage their business from one place.",
+      ],
+    },
+    blocks: [
       {
-        src: "https://framerusercontent.com/images/GmLtgWMAItPR9A4q6e8dZ9MFUDo.png?width=3200&height=2400",
-        caption: "Main Screens",
+        type: "showcase",
+        width: "large",
+        items: [
+          {
+            title: "Home dashboard",
+            description: "A unified home for priorities, performance, and daily work.",
+            src: "/work/metlife-mexico/dashboard-display.png",
+            span: "full",
+          },
+          {
+            title: "Client relationships",
+            description: "Manage clients, policies, and communication from one place.",
+            src: "/work/metlife-mexico/clients-display.png",
+            span: "full",
+          },
+          {
+            title: "Activities",
+            description: "Track service requests, follow-ups, and daily sales work.",
+            src: "/work/metlife-mexico/activities-display.png",
+            span: "full",
+          },
+          {
+            title: "Products + performance",
+            description: "Connect product knowledge with portfolio performance.",
+            src: "/work/metlife-mexico/performance-display.png",
+            span: "full",
+          },
+        ],
       },
       {
-        src: "https://framerusercontent.com/images/f9iUhvbT4lerSn7WvgX7fZz9M.png?width=3200&height=2400",
-        caption: "Logo Animation",
-      },
-      {
-        src: "https://framerusercontent.com/images/mMXRBILXNX0XeF5DQrx1eoAO4uo.png?width=3200&height=2400",
-        caption: "For You Page",
-      },
-      {
-        src: "https://framerusercontent.com/images/aNzcXn8YsE4sy8K8Aoq3YSlYZU.png?width=3200&height=2400",
-        caption: "Product Landing Page",
+        type: "impact",
+        width: "full",
+        label: "Business impact",
+        statement: "The MVP established a shared vision for MetLife Mexico's future agent platform.",
+        outcomes: [
+          {
+            number: "01",
+            title: "Unified workflows",
+            body: "Combined sales, servicing, and performance into one workspace.",
+          },
+          {
+            number: "02",
+            title: "Validated with agents",
+            body: "20 interviews shaped the MVP before implementation.",
+          },
+          {
+            number: "03",
+            title: "Clear implementation path",
+            body: "Delivered build-ready flows and prototypes.",
+          },
+          {
+            number: "04",
+            title: "Executive alignment",
+            body: "Created a shared vision for the future agent experience.",
+          },
+        ],
       },
     ],
-    notes: [
-      {
-        title: "Context",
-        body: "A focused case study shell for documenting the problem space, product decisions, and interaction details behind the project.",
-      },
-      {
-        title: "Process",
-        body: "Use this section to describe how the work moved from early exploration into sharper product definition, visual systems, and final execution.",
-      },
-    ],
+    gallery: [],
+    notes: [],
   },
 ];
 
 export const allWork = [featuredWork, ...otherWork];
-export const routeableWork = [featuredWork];
+export const routeableWork = allWork.filter((item) => !item.isComingSoon);
 
 const fallbackGallery = [
   "https://framerusercontent.com/images/GmLtgWMAItPR9A4q6e8dZ9MFUDo.png?width=3200&height=2400",
