@@ -468,7 +468,7 @@ export const featuredWork: WorkItem = {
       type: "text",
       title: "Carrying the work forward",
       body: [
-        "A company reorg and layoff moved me to another team before all planned releases were complete. I partnered with the incoming designer and PM to transfer the work and shape future releases, including Report rebranding and Smart Assist (AI) integration.",
+        "A company reorg moved me to another team before all planned releases were complete. I partnered with the incoming designer and PM to transfer the work and shape future releases, including Report rebranding and Smart Assist (AI) integration.",
         "This project clarified the kind of impact I want to have: stepping into ambiguity, connecting teams, and turning competing directions into a product strategy people can build toward.",
       ],
     },
