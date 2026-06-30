@@ -479,16 +479,6 @@ export const featuredWork: WorkItem = {
 
 export const otherWork: WorkItem[] = [
   {
-    title: "Scenario Planning",
-    slug: "scenario-planning",
-    tag: "Smartsheet • 2024–2025",
-    image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
-    summary: "Scenario Planning",
-    isComingSoon: true,
-    gallery: [],
-    notes: [],
-  },
-  {
     title: "Resource Management Integration",
     slug: "resource-management-integration",
     tag: "Smartsheet • 2023–2025",
