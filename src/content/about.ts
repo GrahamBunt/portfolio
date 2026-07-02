@@ -97,7 +97,7 @@ export const aboutContent: AboutContent = {
     title: "Contact",
     description:
       "I’m always excited to meet new people, collaborate on ideas, and discuss opportunities.",
-    action: "Copy Email",
+    action: "gtbunt@gmail.com",
   },
   footer: {
     name: "Graham Bunt",
