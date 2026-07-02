@@ -102,6 +102,12 @@ function easeOutCubic(value: number) {
 function getCaseStudyPreloadImageSrcs(project: CaseStudy) {
   const srcs = new Set<string>();
 
+  project.deckSlides?.forEach((slide) => {
+    if (slide.src) {
+      srcs.add(slide.src);
+    }
+  });
+
   project.blocks?.forEach((block) => {
     if (block.type === "showcase") {
       block.items.forEach((item) => srcs.add(item.src));
@@ -680,9 +686,9 @@ function CaseStudyDeckScroller({
                     ref={index === 0 ? imageRef : undefined}
                     src={slide.src}
                     alt=""
-                    loading={index === 0 ? "eager" : "lazy"}
+                    loading="eager"
                     decoding="async"
-                    fetchPriority={index === 0 ? "high" : undefined}
+                    fetchPriority={index < 4 ? "high" : "auto"}
                     onLoad={index === 0 ? onHeroImageLoad : undefined}
                     onError={index === 0 ? onHeroImageError : undefined}
                   />
