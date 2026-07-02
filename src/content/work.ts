@@ -4,10 +4,13 @@ export type WorkItem = {
   slug: string;
   tag: string;
   image: string;
+  thumbnailImage?: string;
   heroImage?: string;
   featuredImage?: string;
   summary: string;
   isComingSoon?: boolean;
+  caseStudyLayout?: "deck";
+  deckSlides?: CaseStudyPresentationSlide[];
   overview?: CaseStudyOverview;
   blocks?: CaseStudyBlock[];
   metadata?: CaseStudyMetadata[];
@@ -117,6 +120,14 @@ export type CaseStudyBlock =
       width?: CaseStudyBlockWidth;
     }
   | {
+      type: "presentationScroller";
+      label?: string;
+      title?: string;
+      body?: string;
+      slides: CaseStudyPresentationSlide[];
+      width?: CaseStudyBlockWidth;
+    }
+  | {
       type: "spotlight";
       title: string;
       body: string[];
@@ -204,6 +215,13 @@ export type CaseStudyShowcaseItem = {
   description: string;
   src: string;
   span?: "full" | "half";
+};
+
+export type CaseStudyPresentationSlide = {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  src?: string;
 };
 
 export type CaseStudyMedia = {
@@ -493,74 +511,69 @@ export const otherWork: WorkItem[] = [
     slug: "american-modern-insurance",
     tag: "KPMG • 2021–2022",
     image: "/masonry/amig.png",
-    heroImage: "/masonry/amig.png",
+    heroImage: "/work/american-modern-insurance/cs2-01.png",
     summary: "A concise case study placeholder for the American Modern Insurance experience design work.",
-    isComingSoon: true,
-    overview: {
-      items: [
-        { label: "Role", value: "Product designer" },
-        { label: "Team", value: "KPMG Studio, client stakeholders, engineering partners" },
-        { label: "Client", value: "American Modern Insurance" },
-        { label: "Duration", value: "2021–2022" },
-      ],
-      body: [
-        "American Modern Insurance needed a clearer digital experience for quoting, product discovery, and policyholder workflows.",
-        "I helped shape a more focused interface direction that made complex insurance choices easier to understand and easier to act on.",
-      ],
-    },
-    blocks: [
+    caseStudyLayout: "deck",
+    deckSlides: [
       {
-        type: "text",
-        title: "Simplifying a complex product surface",
-        body: [
-          "The work centered on making insurance tasks feel less fragmented. Customers and internal teams needed clearer pathways through product information, quoting moments, and supporting details that usually lived across separate touchpoints.",
-          "The design direction prioritized plain hierarchy, decisive calls to action, and page structures that could scale across product lines without making every page feel custom-built from scratch.",
-        ],
+        title: "Opening slide",
+        src: "/work/american-modern-insurance/cs2-01.png",
       },
       {
-        type: "media",
-        width: "wide",
-        label: "American Modern interface direction",
-        src: "/masonry/amig.png",
-        aspectRatio: 900 / 1120,
+        title: "Discovery slide",
+        src: "/work/american-modern-insurance/cs2-02.png",
       },
       {
-        type: "text",
-        title: "Designing for trust and momentum",
-        body: [
-          "The core interaction challenge was balancing confidence with speed. Insurance users need enough information to trust what they are selecting, but too much explanation slows the flow and makes every decision feel heavier than it needs to be.",
-          "I used compact content patterns, progressive detail, and consistent action placement to help the experience feel guided without becoming rigid.",
-        ],
+        title: "Process slide",
+        src: "/work/american-modern-insurance/cs2-03.png",
       },
       {
-        type: "media",
-        width: "wide",
-        label: "AMIG supporting screen placeholder",
-        src: "/masonry/kpmg-app.png",
-        aspectRatio: 1,
+        title: "Experience slide",
+        src: "/work/american-modern-insurance/cs2-04.png",
       },
       {
-        type: "impact",
-        width: "full",
-        label: "Project impact",
-        statement: "The work gave the client a clearer digital product direction for a complicated insurance experience.",
-        outcomes: [
-          {
-            number: "01",
-            title: "Clearer paths",
-            body: "Organized product and quote flows around the decisions users actually needed to make.",
-          },
-          {
-            number: "02",
-            title: "Reusable patterns",
-            body: "Established page and component patterns that could scale across related insurance journeys.",
-          },
-          {
-            number: "03",
-            title: "Stakeholder alignment",
-            body: "Created a tangible direction for client, design, and implementation conversations.",
-          },
-        ],
+        title: "Final design slide",
+        src: "/work/american-modern-insurance/cs2-05.png",
+      },
+      {
+        title: "Slide 6",
+        src: "/work/american-modern-insurance/cs2-06.png",
+      },
+      {
+        title: "Slide 7",
+        src: "/work/american-modern-insurance/cs2-07.png",
+      },
+      {
+        title: "Slide 8",
+        src: "/work/american-modern-insurance/cs2-08.png",
+      },
+      {
+        title: "Slide 9",
+        src: "/work/american-modern-insurance/cs2-09.png",
+      },
+      {
+        title: "Slide 10",
+        src: "/work/american-modern-insurance/cs2-10.png",
+      },
+      {
+        title: "Slide 11",
+        src: "/work/american-modern-insurance/cs2-11.png",
+      },
+      {
+        title: "Slide 12",
+        src: "/work/american-modern-insurance/cs2-12.png",
+      },
+      {
+        title: "Slide 13",
+        src: "/work/american-modern-insurance/cs2-13.png",
+      },
+      {
+        title: "Slide 14",
+        src: "/work/american-modern-insurance/cs2-14.png",
+      },
+      {
+        title: "Final slide",
+        src: "/work/american-modern-insurance/cs2-15.png",
       },
     ],
     gallery: [],
@@ -570,7 +583,8 @@ export const otherWork: WorkItem[] = [
     title: "MetLife Mexico",
     slug: "metlife-mexico",
     tag: "KPMG • 2021",
-    image: "/masonry/metlife.png",
+    image: "/work/metlife-mexico/thumbnail.png",
+    thumbnailImage: "/work/metlife-mexico/thumbnail.png",
     heroImage: "/work/metlife-mexico/metlife-grid-display.png",
     featuredImage: "/work/metlife-mexico/home-dashboard.png",
     summary: "A concise case study for a MetLife Mexico agent portal designed to centralize portfolio management, client service, and sales activity.",
@@ -593,25 +607,25 @@ export const otherWork: WorkItem[] = [
           {
             title: "Home dashboard",
             description: "A unified home for priorities, performance, and daily work.",
-            src: "/work/metlife-mexico/dashboard-display.png",
+            src: "/work/metlife-mexico/dashboard-display-optimized.png",
             span: "full",
           },
           {
             title: "Client relationships",
             description: "Manage clients, policies, and communication from one place.",
-            src: "/work/metlife-mexico/clients-display.png",
+            src: "/work/metlife-mexico/clients-display-optimized.png",
             span: "full",
           },
           {
             title: "Activities",
             description: "Track service requests, follow-ups, and daily sales work.",
-            src: "/work/metlife-mexico/activities-display.png",
+            src: "/work/metlife-mexico/activities-display-optimized.png",
             span: "full",
           },
           {
             title: "Products + performance",
             description: "Connect product knowledge with portfolio performance.",
-            src: "/work/metlife-mexico/performance-display.png",
+            src: "/work/metlife-mexico/performance-display-optimized.png",
             span: "full",
           },
         ],

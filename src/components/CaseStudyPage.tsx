@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import type { CSSProperties, SyntheticEvent } from "react";
-import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, RefObject, SyntheticEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
@@ -84,6 +84,36 @@ const overviewMetaSecondaryStyle: CSSProperties = {
 };
 
 const narrativeParagraphSpeeds = [1, 1.25];
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function smoothstep(value: number) {
+  const clamped = clamp(value, 0, 1);
+  return clamped * clamped * (3 - 2 * clamped);
+}
+
+function easeOutCubic(value: number) {
+  const clamped = clamp(value, 0, 1);
+  return 1 - (1 - clamped) ** 3;
+}
+
+function getCaseStudyPreloadImageSrcs(project: CaseStudy) {
+  const srcs = new Set<string>();
+
+  project.blocks?.forEach((block) => {
+    if (block.type === "showcase") {
+      block.items.forEach((item) => srcs.add(item.src));
+    }
+
+    if (block.type === "media" && block.src) {
+      srcs.add(block.src);
+    }
+  });
+
+  return Array.from(srcs);
+}
 
 const staticOverviewCopyWrapStyle: CSSProperties = {
   display: "flex",
@@ -453,17 +483,216 @@ function CaseStudyShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { ty
         </header>
       ) : null}
       <div className="case-study-showcase-grid">
-        {block.items.map((item) => (
+        {block.items.map((item, index) => (
           <figure key={item.title} className={`case-study-showcase-item ${item.span === "half" ? "is-half" : "is-full"}`}>
             <figcaption>
               <h3>{item.title}</h3>
               <p className="font-inter-display">{item.description}</p>
             </figcaption>
             <div className="case-study-showcase-media">
-              <img src={item.src} alt="" />
+              <img src={item.src} alt="" loading="eager" decoding="async" fetchPriority={index < 2 ? "high" : "auto"} />
             </div>
           </figure>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function CaseStudyPresentationScrollerBlock({ block }: { block: Extract<CaseStudyBlock, { type: "presentationScroller" }> }) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [motion, setMotion] = useState({
+    shift: 0,
+    firstSlideWidth: 1180,
+  });
+
+  useLayoutEffect(() => {
+    let frame = 0;
+
+    function measure() {
+      const section = sectionRef.current;
+      const track = trackRef.current;
+
+      if (!section || !track) {
+        return;
+      }
+
+      const viewportWidth = window.innerWidth;
+      const rect = section.getBoundingClientRect();
+      const scrollableDistance = Math.max(1, section.offsetHeight - window.innerHeight);
+      const rawProgress = clamp(-rect.top / scrollableDistance, 0, 1);
+      const scaleProgress = clamp(rawProgress / 0.22, 0, 1);
+      const horizontalProgress = clamp((rawProgress - 0.18) / 0.82, 0, 1);
+      const baseSlideWidth = Math.min(viewportWidth * 0.78, 1180);
+      const firstSlideWidth = baseSlideWidth - baseSlideWidth * 0.36 * scaleProgress;
+      const maxShift = Math.max(0, track.scrollWidth - viewportWidth + 40);
+
+      setMotion({
+        shift: maxShift * horizontalProgress,
+        firstSlideWidth,
+      });
+    }
+
+    function requestMeasure() {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measure);
+    }
+
+    requestMeasure();
+    window.addEventListener("scroll", requestMeasure, { passive: true });
+    window.addEventListener("resize", requestMeasure);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestMeasure);
+      window.removeEventListener("resize", requestMeasure);
+    };
+  }, [block.slides.length]);
+
+  const style = {
+    "--presentation-scroll-height": `${Math.max(340, block.slides.length * 82)}vh`,
+    "--presentation-shift": `${motion.shift * -1}px`,
+    "--presentation-first-width": `${motion.firstSlideWidth}px`,
+  } as CSSProperties;
+
+  return (
+    <section ref={sectionRef} className="case-study-presentation-scroll case-study-block case-study-block-full" style={style}>
+      <div className="case-study-presentation-sticky">
+        {block.label || block.title || block.body ? (
+          <header className="case-study-presentation-header">
+            {block.label ? <p className="case-study-showcase-label font-inter-display">{block.label}</p> : null}
+            <div>
+              {block.title ? <h2>{block.title}</h2> : null}
+              {block.body ? <p className="font-inter-display">{block.body}</p> : null}
+            </div>
+          </header>
+        ) : null}
+
+        <div ref={trackRef} className="case-study-presentation-track">
+          {block.slides.map((slide, index) => (
+            <article key={`${slide.eyebrow ?? index}-${slide.title}`} className={`case-study-presentation-slide ${index === 0 ? "is-hero-slide" : ""}`}>
+              {slide.src ? <img src={slide.src} alt="" /> : <div className="case-study-presentation-placeholder" aria-hidden="true" />}
+              <div className="case-study-presentation-copy font-inter-display">
+                {slide.eyebrow ? <span>{slide.eyebrow}</span> : null}
+                <h3>{slide.title}</h3>
+                {slide.description ? <p>{slide.description}</p> : null}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseStudyDeckScroller({
+  slides,
+  imageRef,
+  onHeroImageLoad,
+  onHeroImageError,
+}: {
+  slides: NonNullable<WorkItem["deckSlides"]>;
+  imageRef: RefObject<HTMLImageElement | null>;
+  onHeroImageLoad: (event: SyntheticEvent<HTMLImageElement>) => void;
+  onHeroImageError: () => void;
+}) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [motion, setMotion] = useState({
+    transform: 0,
+    firstSlideWidth: 1180,
+    firstSlideRadius: 10,
+  });
+
+  useLayoutEffect(() => {
+    let frame = 0;
+
+    function measure() {
+      const section = sectionRef.current;
+      const track = trackRef.current;
+      const firstSlide = track?.firstElementChild as HTMLElement | null;
+      const lastSlide = track?.lastElementChild as HTMLElement | null;
+
+      if (!section || !track || !firstSlide || !lastSlide) {
+        return;
+      }
+
+      const viewportWidth = window.innerWidth;
+      const rect = section.getBoundingClientRect();
+      const scrollableDistance = Math.max(1, section.offsetHeight - window.innerHeight);
+      const earlyActivationOffset = Math.min(window.innerHeight * 0.86, 780);
+      const progress = clamp((earlyActivationOffset - rect.top) / (scrollableDistance + earlyActivationOffset), 0, 1);
+      const scaleProgress = easeOutCubic(progress / 0.3);
+      const horizontalProgress = smoothstep((progress - 0.08) / 0.92);
+      const heroWidth = Math.min(viewportWidth - 40, 1680);
+      const slideWidth = Math.min(viewportWidth * 0.76, 1180);
+      const firstSlideWidth = heroWidth - (heroWidth - slideWidth) * scaleProgress;
+      const firstSlideRadius = 22 - 12 * scaleProgress;
+      const firstCenteredTransform = viewportWidth / 2 - firstSlideWidth / 2;
+      const targetFirstCenteredTransform = viewportWidth / 2 - slideWidth / 2;
+      const lastCenteredTransform = viewportWidth / 2 - (lastSlide.offsetLeft + lastSlide.offsetWidth / 2);
+      const transform = firstCenteredTransform + (lastCenteredTransform - targetFirstCenteredTransform) * horizontalProgress;
+
+      setMotion({
+        transform,
+        firstSlideWidth,
+        firstSlideRadius,
+      });
+    }
+
+    function requestMeasure() {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measure);
+    }
+
+    requestMeasure();
+    window.addEventListener("scroll", requestMeasure, { passive: true });
+    window.addEventListener("resize", requestMeasure);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestMeasure);
+      window.removeEventListener("resize", requestMeasure);
+    };
+  }, [slides.length]);
+
+  const style = {
+    "--deck-scroll-height": `${Math.max(620, slides.length * 142)}vh`,
+    "--deck-track-transform": `${motion.transform}px`,
+    "--deck-first-width": `${motion.firstSlideWidth}px`,
+    "--deck-first-radius": `${motion.firstSlideRadius}px`,
+  } as CSSProperties;
+
+  if (!slides.length) {
+    return null;
+  }
+
+  return (
+    <section ref={sectionRef} className="case-study-deck-scroll" style={style} aria-label="American Modern slide deck">
+      <div className="case-study-deck-sticky">
+        <div ref={trackRef} className="case-study-deck-track">
+          {slides.map((slide, index) => (
+            <figure key={`${slide.title}-${index}`} className={`case-study-deck-slide ${index === 0 ? "is-hero-slide" : ""}`}>
+              <div className="case-study-deck-slide-frame">
+                {slide.src ? (
+                  <img
+                    ref={index === 0 ? imageRef : undefined}
+                    src={slide.src}
+                    alt=""
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={index === 0 ? "high" : undefined}
+                    onLoad={index === 0 ? onHeroImageLoad : undefined}
+                    onError={index === 0 ? onHeroImageError : undefined}
+                  />
+                ) : (
+                  <div className="case-study-deck-placeholder" aria-hidden="true" />
+                )}
+              </div>
+            </figure>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -686,6 +915,10 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
     return <CaseStudyShowcaseBlock block={block} />;
   }
 
+  if (block.type === "presentationScroller") {
+    return <CaseStudyPresentationScrollerBlock block={block} />;
+  }
+
   if (block.type === "spotlight") {
     return <CaseStudySpotlightBlock block={block} />;
   }
@@ -756,6 +989,30 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
     return () => cancelAnimationFrame(frame);
   }, [project.heroImage, project.image]);
 
+  useEffect(() => {
+    const imageSrcs = getCaseStudyPreloadImageSrcs(project);
+
+    if (!imageSrcs.length) {
+      return;
+    }
+
+    const images = imageSrcs.map((src) => {
+      const image = new window.Image();
+      image.decoding = "async";
+      image.loading = "eager";
+      image.src = src;
+      image.decode?.().catch(() => undefined);
+      return image;
+    });
+
+    return () => {
+      images.forEach((image) => {
+        image.onload = null;
+        image.onerror = null;
+      });
+    };
+  }, [project]);
+
   function handleHeroImageLoad(event: SyntheticEvent<HTMLImageElement>) {
     const image = event.currentTarget;
 
@@ -806,6 +1063,68 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const caseStudyBlocks = authoredBlocks.filter((block) => block.type !== "overview");
   const hasCaseStudyBlocks = caseStudyBlocks.length > 0;
   const title = project.displayTitle ?? project.title;
+  const isDeckCaseStudy = project.caseStudyLayout === "deck" && Boolean(project.deckSlides?.length);
+
+  if (isDeckCaseStudy && project.deckSlides) {
+    return (
+      <div className={`case-study-page case-study-deck-page ${sequenceReady ? "sequence-ready" : ""}`}>
+        <SiteNav showBack />
+
+        <main className="case-study-main case-study-deck-main">
+          <section className="case-study-hero-section case-study-deck-title-section" aria-label={title}>
+            <div className="case-study-top">
+              <header className="work-heading case-study-heading">
+                <div
+                  className={`case-study-top-meta font-inter-display ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
+                  style={sequenceReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
+                >
+                  <ProjectMeta value={project.tag} />
+                </div>
+                <h1 className="font-[family-name:var(--font-instrument-serif)]">
+                  <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
+                    {title}
+                  </span>
+                </h1>
+              </header>
+            </div>
+
+          </section>
+
+          <CaseStudyDeckScroller
+            slides={project.deckSlides}
+            imageRef={heroImageRef}
+            onHeroImageLoad={handleHeroImageLoad}
+            onHeroImageError={() => setHeroImageReady(true)}
+          />
+
+          <section className="work-products case-study-related" aria-label="More case studies">
+            <ProjectListSection
+              title="All projects"
+              items={related.map((item) => ({
+                title: item.title,
+                description: item.tag,
+                href: item.isComingSoon ? undefined : `/work/${item.slug}`,
+                image: item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image,
+                imagePosition: item.slug === "smartsheet-reports" ? "70% 18%" : undefined,
+                statusLabel: item.isComingSoon ? "Coming soon" : undefined,
+              }))}
+              className="staged-work-rise"
+              style={relatedStyle}
+            />
+          </section>
+        </main>
+
+        <footer className="work-footer">
+          <div>
+            <p>Graham Bunt</p>
+            <p>©2026</p>
+          </div>
+        </footer>
+
+        <div aria-hidden="true" className="viewport-bottom-blur" />
+      </div>
+    );
+  }
 
   return (
     <div className={`case-study-page ${sequenceReady ? "sequence-ready" : ""}`}>
@@ -875,7 +1194,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
               title: item.title,
               description: item.tag,
               href: item.isComingSoon ? undefined : `/work/${item.slug}`,
-              image: item.featuredImage ?? item.heroImage ?? item.image,
+              image: item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image,
               imagePosition: item.slug === "smartsheet-reports" ? "70% 18%" : undefined,
               statusLabel: item.isComingSoon ? "Coming soon" : undefined,
             }))}

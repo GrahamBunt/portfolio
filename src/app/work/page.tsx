@@ -111,7 +111,7 @@ export default function WorkPage() {
               title: project.title,
               description: getWorkListingMeta(project.tag),
               href: project.isComingSoon ? undefined : `/work/${project.slug}`,
-              image: project.featuredImage ?? project.heroImage ?? project.image,
+              image: project.thumbnailImage ?? project.featuredImage ?? project.heroImage ?? project.image,
               imagePosition: project.slug === "smartsheet-reports" ? "70% 18%" : undefined,
               statusLabel: project.isComingSoon ? "Coming soon" : undefined,
             }))}
