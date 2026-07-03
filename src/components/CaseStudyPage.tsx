@@ -102,12 +102,6 @@ function easeOutCubic(value: number) {
 function getCaseStudyPreloadImageSrcs(project: CaseStudy) {
   const srcs = new Set<string>();
 
-  project.deckSlides?.forEach((slide) => {
-    if (slide.src) {
-      srcs.add(slide.src);
-    }
-  });
-
   project.blocks?.forEach((block) => {
     if (block.type === "showcase") {
       block.items.forEach((item) => srcs.add(item.src));
@@ -605,66 +599,199 @@ function CaseStudyDeckScroller({
 }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const [motion, setMotion] = useState({
-    transform: 0,
-    firstSlideWidth: 1180,
-  });
+  const geometryRef = useRef<{
+    viewportWidth: number;
+    scrollableDistance: number;
+    earlyActivationOffset: number;
+    slideWidth: number;
+    heroWidth: number;
+    gap: number;
+    targetFirstCenteredTransform: number;
+  } | null>(null);
 
   useLayoutEffect(() => {
-    let frame = 0;
+    let scrollFrame = 0;
+    let resizeFrame = 0;
 
-    function measure() {
+    function readGeometry() {
       const section = sectionRef.current;
       const track = trackRef.current;
-      const firstSlide = track?.firstElementChild as HTMLElement | null;
-      const lastSlide = track?.lastElementChild as HTMLElement | null;
 
-      if (!section || !track || !firstSlide || !lastSlide) {
+      if (!section || !track) {
         return;
       }
 
       const viewportWidth = window.innerWidth;
-      const rect = section.getBoundingClientRect();
-      const scrollableDistance = Math.max(1, section.offsetHeight - window.innerHeight);
-      const earlyActivationOffset = Math.min(window.innerHeight * 0.9, 820);
-      const progress = clamp((earlyActivationOffset - rect.top) / (scrollableDistance + earlyActivationOffset), 0, 1);
-      const scaleProgress = easeOutCubic(progress / 0.27);
-      const horizontalProgress = smoothstep((progress - 0.07) / 0.93);
+      const computedTrack = window.getComputedStyle(track);
+      const gap = Number.parseFloat(computedTrack.columnGap || computedTrack.gap) || 0;
       const slideWidth = Math.min(viewportWidth * 0.76, 1180);
       const maxHeroWidth = Math.min(viewportWidth - 96, 1480);
       const heroWidth = Math.max(slideWidth, maxHeroWidth);
-      const firstSlideWidth = heroWidth - (heroWidth - slideWidth) * scaleProgress;
-      const firstCenteredTransform = viewportWidth / 2 - firstSlideWidth / 2;
-      const targetFirstCenteredTransform = viewportWidth / 2 - slideWidth / 2;
-      const lastCenteredTransform = viewportWidth / 2 - (lastSlide.offsetLeft + lastSlide.offsetWidth / 2);
-      const transform = firstCenteredTransform + (lastCenteredTransform - targetFirstCenteredTransform) * horizontalProgress;
 
-      setMotion({
-        transform,
-        firstSlideWidth,
-      });
+      geometryRef.current = {
+        viewportWidth,
+        scrollableDistance: Math.max(1, section.offsetHeight - window.innerHeight),
+        earlyActivationOffset: Math.min(window.innerHeight * 0.9, 820),
+        slideWidth,
+        heroWidth,
+        gap,
+        targetFirstCenteredTransform: viewportWidth / 2 - slideWidth / 2,
+      };
+    }
+
+    function measure() {
+      const section = sectionRef.current;
+      const geometry = geometryRef.current;
+
+      if (!section || !geometry) {
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      const progress = clamp(
+        (geometry.earlyActivationOffset - rect.top) / (geometry.scrollableDistance + geometry.earlyActivationOffset),
+        0,
+        1,
+      );
+      const scaleProgress = easeOutCubic(progress / 0.27);
+      const horizontalProgress = smoothstep((progress - 0.07) / 0.93);
+      const firstSlideWidth = geometry.heroWidth - (geometry.heroWidth - geometry.slideWidth) * scaleProgress;
+      const firstCenteredTransform = geometry.viewportWidth / 2 - firstSlideWidth / 2;
+      const lastSlideCenter = slides.length > 1
+        ? firstSlideWidth + geometry.gap + Math.max(0, slides.length - 2) * (geometry.slideWidth + geometry.gap) + geometry.slideWidth / 2
+        : firstSlideWidth / 2;
+      const lastCenteredTransform = geometry.viewportWidth / 2 - lastSlideCenter;
+      const transform = firstCenteredTransform + (lastCenteredTransform - geometry.targetFirstCenteredTransform) * horizontalProgress;
+
+      section.style.setProperty("--deck-track-transform", `${transform}px`);
+      section.style.setProperty("--deck-first-width", `${firstSlideWidth}px`);
     }
 
     function requestMeasure() {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(measure);
+      cancelAnimationFrame(scrollFrame);
+      scrollFrame = requestAnimationFrame(measure);
     }
 
-    requestMeasure();
+    function requestGeometryMeasure() {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => {
+        readGeometry();
+        measure();
+      });
+    }
+
+    readGeometry();
+    measure();
     window.addEventListener("scroll", requestMeasure, { passive: true });
-    window.addEventListener("resize", requestMeasure);
+    window.addEventListener("resize", requestGeometryMeasure);
 
     return () => {
-      cancelAnimationFrame(frame);
+      cancelAnimationFrame(scrollFrame);
+      cancelAnimationFrame(resizeFrame);
       window.removeEventListener("scroll", requestMeasure);
-      window.removeEventListener("resize", requestMeasure);
+      window.removeEventListener("resize", requestGeometryMeasure);
     };
   }, [slides.length]);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    const timers: number[] = [];
+    const idleCallbacks: number[] = [];
+    const warmedImages: HTMLImageElement[] = [];
+    const browserWindow = window as Window & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    let observer: IntersectionObserver | null = null;
+    let remainingStarted = false;
+
+    function schedule(callback: () => void, delay: number) {
+      const timer = window.setTimeout(callback, delay);
+      timers.push(timer);
+    }
+
+    function scheduleIdle(callback: () => void, timeout: number) {
+      if (browserWindow.requestIdleCallback) {
+        const handle = browserWindow.requestIdleCallback(callback, { timeout });
+        idleCallbacks.push(handle);
+        return;
+      }
+
+      schedule(callback, Math.min(timeout, 500));
+    }
+
+    function scheduleWarmImage(src: string, shouldDecode: boolean, delay: number, timeout: number, fetchPriority: "auto" | "low" = "auto") {
+      schedule(() => {
+        scheduleIdle(() => warmImage(src, shouldDecode, fetchPriority), timeout);
+      }, delay);
+    }
+
+    function warmImage(src: string, shouldDecode = false, fetchPriority: "auto" | "low" = "auto") {
+      const image = new window.Image();
+      (image as HTMLImageElement & { fetchPriority?: "auto" | "low" }).fetchPriority = fetchPriority;
+      image.decoding = "async";
+      image.loading = "eager";
+      image.src = src;
+      warmedImages.push(image);
+
+      if (shouldDecode) {
+        image.decode?.().catch(() => undefined);
+      }
+    }
+
+    schedule(() => {
+      slides.slice(1, 4).forEach((slide, index) => {
+        const src = slide.src;
+
+        if (src) {
+          scheduleWarmImage(src, true, index * 160, 900);
+        }
+      });
+    }, 240);
+
+    function warmRemainingSlides() {
+      if (remainingStarted) {
+        return;
+      }
+
+      remainingStarted = true;
+      slides.slice(4).forEach((slide, index) => {
+        const src = slide.src;
+
+        if (src) {
+          scheduleWarmImage(src, index < 2, index * 220, 1800 + index * 120, index < 2 ? "auto" : "low");
+        }
+      });
+    }
+
+    if (section && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            warmRemainingSlides();
+            observer?.disconnect();
+          }
+        },
+        { rootMargin: "1800px 0px" },
+      );
+      observer.observe(section);
+    } else {
+      schedule(warmRemainingSlides, 1200);
+    }
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      idleCallbacks.forEach((handle) => browserWindow.cancelIdleCallback?.(handle));
+      warmedImages.forEach((image) => {
+        image.onload = null;
+        image.onerror = null;
+      });
+      observer?.disconnect();
+    };
+  }, [slides]);
+
   const style = {
     "--deck-scroll-height": `${Math.max(620, slides.length * 142)}vh`,
-    "--deck-track-transform": `${motion.transform}px`,
-    "--deck-first-width": `${motion.firstSlideWidth}px`,
   } as CSSProperties;
 
   if (!slides.length) {
@@ -683,9 +810,9 @@ function CaseStudyDeckScroller({
                     ref={index === 0 ? imageRef : undefined}
                     src={slide.src}
                     alt=""
-                    loading="eager"
+                    loading={index < 3 ? "eager" : "lazy"}
                     decoding="async"
-                    fetchPriority={index < 4 ? "high" : "auto"}
+                    fetchPriority={index < 3 ? "high" : "auto"}
                     onLoad={index === 0 ? onHeroImageLoad : undefined}
                     onError={index === 0 ? onHeroImageError : undefined}
                   />
