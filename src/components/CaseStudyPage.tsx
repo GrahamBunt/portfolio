@@ -608,7 +608,6 @@ function CaseStudyDeckScroller({
   const [motion, setMotion] = useState({
     transform: 0,
     firstSlideWidth: 1180,
-    firstSlideRadius: 10,
   });
 
   useLayoutEffect(() => {
@@ -627,14 +626,14 @@ function CaseStudyDeckScroller({
       const viewportWidth = window.innerWidth;
       const rect = section.getBoundingClientRect();
       const scrollableDistance = Math.max(1, section.offsetHeight - window.innerHeight);
-      const earlyActivationOffset = Math.min(window.innerHeight * 0.86, 780);
+      const earlyActivationOffset = Math.min(window.innerHeight * 0.9, 820);
       const progress = clamp((earlyActivationOffset - rect.top) / (scrollableDistance + earlyActivationOffset), 0, 1);
-      const scaleProgress = easeOutCubic(progress / 0.3);
-      const horizontalProgress = smoothstep((progress - 0.08) / 0.92);
-      const heroWidth = Math.min(viewportWidth - 40, 1680);
+      const scaleProgress = easeOutCubic(progress / 0.27);
+      const horizontalProgress = smoothstep((progress - 0.07) / 0.93);
       const slideWidth = Math.min(viewportWidth * 0.76, 1180);
+      const maxHeroWidth = Math.min(viewportWidth - 96, 1480);
+      const heroWidth = Math.max(slideWidth, maxHeroWidth);
       const firstSlideWidth = heroWidth - (heroWidth - slideWidth) * scaleProgress;
-      const firstSlideRadius = 22 - 12 * scaleProgress;
       const firstCenteredTransform = viewportWidth / 2 - firstSlideWidth / 2;
       const targetFirstCenteredTransform = viewportWidth / 2 - slideWidth / 2;
       const lastCenteredTransform = viewportWidth / 2 - (lastSlide.offsetLeft + lastSlide.offsetWidth / 2);
@@ -643,7 +642,6 @@ function CaseStudyDeckScroller({
       setMotion({
         transform,
         firstSlideWidth,
-        firstSlideRadius,
       });
     }
 
@@ -667,7 +665,6 @@ function CaseStudyDeckScroller({
     "--deck-scroll-height": `${Math.max(620, slides.length * 142)}vh`,
     "--deck-track-transform": `${motion.transform}px`,
     "--deck-first-width": `${motion.firstSlideWidth}px`,
-    "--deck-first-radius": `${motion.firstSlideRadius}px`,
   } as CSSProperties;
 
   if (!slides.length) {

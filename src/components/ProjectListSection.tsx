@@ -50,12 +50,12 @@ export function ProjectListSection({
         {items.map((item, index) => {
           const href = item.href;
           const isDisabled = disableLinks || !href;
-          const hasComingSoonStatus = item.statusLabel?.toLowerCase() === "coming soon";
+          const shouldShowPlaceholder = !item.image;
           const rowContent = (
             <>
               <div className="work-project-row-bg" aria-hidden="true" />
               <div className="work-project-row-content">
-                {hasComingSoonStatus ? (
+                {shouldShowPlaceholder ? (
                   <div className="work-project-thinking-thumb" aria-hidden="true">
                     <svg viewBox="0 0 24 24" focusable="false">
                       <circle cx="12" cy="12" r="8" />

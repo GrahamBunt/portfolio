@@ -243,6 +243,7 @@ export const featuredWork: WorkItem = {
   tag: "Smartsheet • 2025–2026",
   image: "/work/smartsheet-reports/empty-mock-hero.jpg",
   heroImage: "/work/smartsheet-reports/empty-mock-hero.jpg",
+  thumbnailImage: "/work/smartsheet-reports/thumbnail.png",
   featuredImage: "/work/smartsheet-reports/orange-peak-final-card.jpg",
   summary: "Led the design effort for modernizing and positioning Smartsheet's primary data aggregation surface.",
   overview: {
@@ -501,6 +502,7 @@ export const otherWork: WorkItem[] = [
     slug: "resource-management-integration",
     tag: "Smartsheet • 2023–2025",
     image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
+    thumbnailImage: "/work/resource-management-integration/thumbnail.jpg",
     summary: "Resource Management Integration",
     isComingSoon: true,
     gallery: [],
@@ -512,6 +514,7 @@ export const otherWork: WorkItem[] = [
     tag: "KPMG • 2021–2022",
     image: "/masonry/amig.png",
     heroImage: "/work/american-modern-insurance/cs2-01.png",
+    thumbnailImage: "/work/american-modern-insurance/thumbnail.png",
     summary: "A concise case study placeholder for the American Modern Insurance experience design work.",
     caseStudyLayout: "deck",
     deckSlides: [

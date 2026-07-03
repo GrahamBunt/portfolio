@@ -2999,25 +2999,23 @@ body {
 }
 
 .case-study-deck-slide {
+  --deck-slide-radius: 10px;
   position: relative;
   display: block;
   width: min(76vw, 1180px);
   flex: 0 0 min(76vw, 1180px);
   aspect-ratio: 16 / 9;
-  overflow: visible;
-  border-radius: 0;
+  overflow: hidden;
+  overflow: clip;
+  border-radius: var(--deck-slide-radius);
   background: #151515;
+  clip-path: inset(0 round var(--deck-slide-radius));
   margin: 0;
 }
 
 .case-study-deck-slide.is-hero-slide {
-  width: var(--deck-first-width, min(calc(100vw - 40px), 1680px));
-  flex-basis: var(--deck-first-width, min(calc(100vw - 40px), 1680px));
-}
-
-.case-study-deck-slide.is-hero-slide .case-study-deck-slide-frame {
-  border-radius: var(--deck-first-radius, 10px);
-  clip-path: inset(0 round var(--deck-first-radius, 10px));
+  width: var(--deck-first-width, max(min(76vw, 1180px), min(calc(100vw - 96px), 1480px)));
+  flex-basis: var(--deck-first-width, max(min(76vw, 1180px), min(calc(100vw - 96px), 1480px)));
 }
 
 .case-study-deck-slide-frame {
@@ -3025,9 +3023,9 @@ body {
   inset: 0;
   overflow: hidden;
   overflow: clip;
-  border-radius: 10px;
+  border-radius: var(--deck-slide-radius);
   background: #151515;
-  clip-path: inset(0 round 10px);
+  clip-path: inset(0 round var(--deck-slide-radius));
   contain: paint;
   transform: translateZ(0);
   box-shadow:
