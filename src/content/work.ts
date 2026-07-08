@@ -60,6 +60,21 @@ export type CaseStudyBlock =
       width?: CaseStudyBlockWidth;
     }
   | {
+      type: "editorialIntro";
+      title: string;
+      body: string[];
+      width?: CaseStudyBlockWidth;
+    }
+  | {
+      type: "editorialSplit";
+      number: string;
+      title: string;
+      body: string[];
+      artifact?: CaseStudyEditorialArtifact;
+      media?: CaseStudyEditorialMedia;
+      width?: CaseStudyBlockWidth;
+    }
+  | {
       type: "editorialPullout";
       variant: "metric" | "quote" | "phrase";
       label?: string;
@@ -233,6 +248,34 @@ export type CaseStudyEditorialPulloutItem = {
 export type CaseStudyEditorialCard = {
   title: string;
   body: string;
+};
+
+export type CaseStudyEditorialArtifact =
+  | {
+      type: "metric";
+      value: string;
+      label: string;
+      body?: string;
+    }
+  | {
+      type: "metrics";
+      items: CaseStudyEditorialPulloutItem[];
+    }
+  | {
+      type: "phrase";
+      value: string;
+      label?: string;
+    }
+  | {
+      type: "cards";
+      items: CaseStudyEditorialCard[];
+    };
+
+export type CaseStudyEditorialMedia = {
+  label: string;
+  src: string;
+  aspectRatio?: number;
+  caption?: string;
 };
 
 export type CaseStudyShowcaseItem = {
@@ -532,143 +575,119 @@ export const otherWork: WorkItem[] = [
     summary: "A case study on integrating an acquired resource management platform into the core Smartsheet product.",
     blocks: [
       {
-        type: "text",
-        title: "How do you successfully integrate an acquired platform into an existing product?",
+        type: "editorialIntro",
+        width: "full",
+        title: "How do you successfully integrate an acquired product into an existing product?",
         body: [
-          "Smartsheet acquired a product called 10,000ft to strengthen its resource management offering and stay competitive in the collaborative work management space.",
-          "I joined a few years later, when the product had been rebranded to Resource Management and the company's focus was shifting from improving the standalone experience to integrating its capabilities into the core of Smartsheet. Over time, we explored a series of strategies. Some succeeded, others didn't, but together they gave me a perspective on integrating acquired products that I couldn't have gained any other way.",
+          "Smartsheet acquired 10,000ft to strengthen its resource management offering. I joined after it had been rebranded to Resource Management, as the company's focus shifted from improving the standalone product to integrating its capabilities into the core Smartsheet experience.",
         ],
       },
       {
-        type: "text",
-        eyebrow: "01",
+        type: "editorialSplit",
+        number: "01",
         title: "Investing in the standalone product",
         body: [
-          "My early work focused on improving Resource Management through Project Access Management, Capacity View, and localization. At the time, investing in the standalone product felt like the right way to change the perception that the experience was dated.",
+          "My early work focused on improving Resource Management through Project Access Management, Capacity View, and localization. Investing in the standalone product felt like the right way to change the perception that the experience was dated.",
         ],
+        media: {
+          label: "Capacity View",
+          src: "/masonry/capacity.png",
+          aspectRatio: 900 / 1120,
+        },
       },
       {
-        type: "media",
-        width: "wide",
-        label: "Capacity View",
-        src: "/masonry/capacity.png",
-        aspectRatio: 900 / 1120,
-      },
-      {
-        type: "text",
-        eyebrow: "02",
+        type: "editorialSplit",
+        number: "02",
         title: "Strengthening the integration",
         body: [
-          "We found friction throughout the existing integration. Connecting Resource Management to a Smartsheet sheet required a separate login, complicated setup, and manual project mapping, so we unified authentication, simplified setup, and brought a workload schedule directly into Smartsheet.",
+          "The existing integration had friction everywhere: separate login, complicated setup, and manual project mapping. We unified authentication, simplified setup, and brought a workload schedule directly into Smartsheet.",
         ],
+        artifact: {
+          type: "metric",
+          value: "4.2%",
+          label: "Smartsheet customers using Resource Management.",
+          body: "Improving the integration mattered, but reducing friction alone did not create the adoption lift we expected.",
+        },
+        media: {
+          label: "Workload schedule",
+          src: "/masonry/workload-schedule.png",
+          aspectRatio: 1,
+        },
       },
       {
-        type: "editorialPullout",
-        variant: "phrase",
-        value: "Reduce friction -> increase adoption",
-        label: "The hypothesis was simple. If setup felt native, more Smartsheet customers would naturally upgrade to Resource Management.",
-      },
-      {
-        type: "editorialPullout",
-        variant: "metric",
-        value: "4.2%",
-        label: "of Smartsheet customers were using Resource Management",
-        body: "The experience improved dramatically, but adoption and upgrades barely moved.",
-      },
-      {
-        type: "media",
-        width: "wide",
-        label: "Workload schedule",
-        src: "/masonry/workload-schedule.png",
-        aspectRatio: 1,
-      },
-      {
-        type: "text",
-        eyebrow: "03",
+        type: "editorialSplit",
+        number: "03",
         title: "Protecting the business",
         body: [
-          "While we continued investing in the integration, immediate customer needs kept surfacing. I defined the direction for bringing Resource Management report data into Smartsheet sheets, then partnered closely with a junior designer as a player-coach to deliver the feature.",
+          "Immediate customer needs kept surfacing while we worked on the broader integration. I defined the direction for bringing Resource Management report data into Smartsheet sheets, then coached a junior designer through delivery.",
         ],
+        artifact: {
+          type: "metrics",
+          items: [
+            {
+              value: "≈ $850K ARR",
+              label: "protected",
+            },
+            {
+              value: "≈ $300K ARR",
+              label: "influenced",
+            },
+          ],
+        },
+        media: {
+          label: "Resource Management report data",
+          src: "/work/resource-management-integration/thumbnail.jpg",
+          aspectRatio: 16 / 9,
+        },
       },
       {
-        type: "editorialPullout",
-        variant: "metric",
-        items: [
-          {
-            value: "~$850K ARR",
-            label: "protected",
-          },
-          {
-            value: "~$300K ARR",
-            label: "influenced",
-          },
-        ],
-      },
-      {
-        type: "media",
-        width: "wide",
-        label: "Resource Management report data",
-        src: "/work/resource-management-integration/thumbnail.jpg",
-        aspectRatio: 16 / 9,
-      },
-      {
-        type: "text",
-        eyebrow: "04",
+        type: "editorialSplit",
+        number: "04",
         title: "Committing to a direction",
         body: [
-          "When I returned from parental leave, the integration strategy had changed. An engineer had explored embedding the entire Resource Management product into Smartsheet's navigation during a hackathon, and leadership decided to move forward with it.",
+          "When I returned from parental leave, the strategy had changed. A hackathon prototype embedded the entire product into Smartsheet navigation, and leadership chose to move forward. The team rallied around a direction we had not intentionally set out to create.",
         ],
-      },
-      {
-        type: "editorialPullout",
-        variant: "phrase",
-        value: "Disagree and commit",
-        label: "A team rallying around a strategy it had not intentionally chosen.",
+        artifact: {
+          type: "phrase",
+          value: "Disagree and commit",
+          label: "A team aligning behind inherited strategy.",
+        },
       },
       {
         type: "editorialPullout",
         variant: "quote",
-        width: "wide",
+        width: "full",
         body: "If you don't define a coherent and bold strategy, you'll eventually inherit one.",
       },
       {
-        type: "media",
-        width: "wide",
-        label: "Embedded Resource Management direction",
-        src: "/work/resource-management-integration/thumbnail.jpg",
-        aspectRatio: 16 / 9,
-      },
-      {
-        type: "text",
-        eyebrow: "05",
+        type: "editorialSplit",
+        number: "05",
         title: "Building the future",
         body: [
-          "Resource Management was now being brought into Smartsheet, but the business itself was under pressure. Revenue was declining, private equity was preparing to acquire the company, and we needed a clear plan to make the new direction work.",
+          "Resource Management was being brought into Smartsheet while the business was under pressure. I helped shape a path forward through initiatives that made demand visible and created new reasons for customers to care.",
         ],
-      },
-      {
-        type: "editorialCards",
-        width: "wide",
-        items: [
-          {
-            title: "Cold Start",
-            body: "Introduced an upsell experience and sales-assisted onboarding flow to make demand visible while we worked toward self-service.",
-          },
-          {
-            title: "Scenario Planning",
-            body: "Defined a long-requested planning capability with Product, User Research, and Sales to give Resource Management new momentum.",
-          },
-        ],
-      },
-      {
-        type: "media",
-        width: "wide",
-        label: "Future Resource Management planning",
-        src: "/work/resource-management-integration/thumbnail.jpg",
-        aspectRatio: 16 / 9,
+        artifact: {
+          type: "cards",
+          items: [
+            {
+              title: "Cold Start",
+              body: "Business visibility, upsell path, sales-assisted onboarding, self-service direction.",
+            },
+            {
+              title: "Scenario Planning",
+              body: "Tiger team, net-new capability, new sales momentum.",
+            },
+          ],
+        },
+        media: {
+          label: "Future Resource Management planning",
+          src: "/work/resource-management-integration/thumbnail.jpg",
+          aspectRatio: 16 / 9,
+        },
       },
       {
         type: "text",
+        width: "content",
         title: "What I believe now",
         body: [
           "Over three years, we tried improving the product, strengthening the integration, protecting the business, and ultimately redefining its future. Each approach solved a different problem, but none fully addressed the same underlying question: Where did Resource Management truly belong?",

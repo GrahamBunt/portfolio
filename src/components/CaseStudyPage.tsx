@@ -110,6 +110,10 @@ function getCaseStudyPreloadImageSrcs(project: CaseStudy) {
     if (block.type === "media" && block.src) {
       srcs.add(block.src);
     }
+
+    if (block.type === "editorialSplit" && block.media?.src) {
+      srcs.add(block.media.src);
+    }
   });
 
   return Array.from(srcs);
@@ -938,6 +942,82 @@ function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: 
   );
 }
 
+function CaseStudyEditorialIntroBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialIntro" }> }) {
+  return (
+    <section className={`case-study-editorial-intro case-study-block ${getBlockWidthClass(block.width ?? "large")}`}>
+      <h2>{block.title}</h2>
+      <div className="case-study-editorial-intro-body">
+        {block.body.map((paragraph) => (
+          <p key={paragraph} className="font-inter-display">{paragraph}</p>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CaseStudyEditorialArtifact({ artifact }: { artifact: NonNullable<Extract<CaseStudyBlock, { type: "editorialSplit" }>["artifact"]> }) {
+  if (artifact.type === "metrics") {
+    return (
+      <div className="case-study-editorial-artifact is-metrics">
+        {artifact.items.map((item) => (
+          <div key={`${item.value}-${item.label}`} className="case-study-editorial-artifact-metric">
+            <p className="case-study-editorial-artifact-value font-inter-display">{item.value}</p>
+            <p className="case-study-editorial-artifact-label font-inter-display">{item.label}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (artifact.type === "cards") {
+    return (
+      <div className="case-study-editorial-artifact is-cards">
+        {artifact.items.map((item) => (
+          <article key={item.title} className="case-study-editorial-artifact-card">
+            <h3>{item.title}</h3>
+            <p className="font-inter-display">{item.body}</p>
+          </article>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`case-study-editorial-artifact is-${artifact.type}`}>
+      <p className="case-study-editorial-artifact-value font-inter-display">{artifact.value}</p>
+      {artifact.label ? <p className="case-study-editorial-artifact-label font-inter-display">{artifact.label}</p> : null}
+      {artifact.type === "metric" && artifact.body ? (
+        <p className="case-study-editorial-artifact-body font-inter-display">{artifact.body}</p>
+      ) : null}
+    </div>
+  );
+}
+
+function CaseStudyEditorialSplitBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialSplit" }> }) {
+  return (
+    <section className={`case-study-editorial-split case-study-block ${getBlockWidthClass(block.width ?? "full")}`}>
+      <div className="case-study-editorial-rail">
+        <p className="case-study-editorial-number font-inter-display">{block.number}</p>
+        <h2>{block.title}</h2>
+        {block.artifact ? <CaseStudyEditorialArtifact artifact={block.artifact} /> : null}
+      </div>
+      <div className="case-study-editorial-main">
+        <div className="case-study-editorial-copy">
+          {block.body.map((paragraph) => (
+            <p key={paragraph} className="font-inter-display">{paragraph}</p>
+          ))}
+        </div>
+        {block.media ? (
+          <figure className="case-study-editorial-media">
+            <img src={block.media.src} alt="" style={block.media.aspectRatio ? { aspectRatio: block.media.aspectRatio } : undefined} />
+            {block.media.caption ? <figcaption className="font-inter-display">{block.media.caption}</figcaption> : null}
+          </figure>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 function CaseStudyEditorialPulloutBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialPullout" }> }) {
   if (block.variant === "quote") {
     return (
@@ -1048,6 +1128,14 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
   if (block.type === "text") {
     return <CaseStudyTextBlock block={block} />;
+  }
+
+  if (block.type === "editorialIntro") {
+    return <CaseStudyEditorialIntroBlock block={block} />;
+  }
+
+  if (block.type === "editorialSplit") {
+    return <CaseStudyEditorialSplitBlock block={block} />;
   }
 
   if (block.type === "editorialPullout") {
