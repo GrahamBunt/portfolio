@@ -60,6 +60,15 @@ export type CaseStudyBlock =
       width?: CaseStudyBlockWidth;
     }
   | {
+      type: "editorialPullout";
+      variant: "metric" | "quote" | "phrase";
+      label?: string;
+      value?: string;
+      body?: string;
+      items?: CaseStudyEditorialPulloutItem[];
+      width?: CaseStudyBlockWidth;
+    }
+  | {
       type: "narrative";
       body: string[];
       width?: CaseStudyBlockWidth;
@@ -208,6 +217,12 @@ export type CaseStudyImpactOutcome = {
   number: string;
   title: string;
   body: string;
+};
+
+export type CaseStudyEditorialPulloutItem = {
+  value: string;
+  label: string;
+  body?: string;
 };
 
 export type CaseStudyShowcaseItem = {
@@ -510,7 +525,8 @@ export const otherWork: WorkItem[] = [
         type: "text",
         title: "How do you successfully integrate an acquired platform into an existing product?",
         body: [
-          "Smartsheet acquired a product called 10,000ft to strengthen its resource management offering and stay competitive in the collaborative work management space. I joined the team a few years later, when the product was rebranded to Resource Management and the company's focus was shifting from improving the standalone experience to integrating its capabilities into the core of Smartsheet.",
+          "Smartsheet acquired a product called 10,000ft to strengthen its resource management offering and stay competitive in the collaborative work management space.",
+          "I joined the team a few years later, when the product was rebranded to Resource Management and the company's focus was shifting from improving the standalone experience to integrating its capabilities into the core of Smartsheet.",
           "Over my time there, we explored a series of different integration strategies. Some succeeded, others didn't, but together they gave me a perspective on integrating acquired products that I couldn't have gained any other way.",
         ],
       },
@@ -519,24 +535,47 @@ export const otherWork: WorkItem[] = [
         title: "Investing in the standalone product",
         body: [
           "My early work focused on improving Resource Management through Project Access Management, Capacity View, and preparing the product for international expansion through localization.",
-          "At the time, this felt like the right strategy. Resource Management already felt dated, and investing in the experience gave us hope we could change that perception. It wasn't until later that the focus shifted toward a different question: How do we get more Smartsheet customers using Resource Management?",
+          "At the time, this felt like the right strategy. Resource Management already felt dated, and investing in the experience gave us hope we could change that perception.",
+          "It wasn't until later that the focus shifted toward a different question: How do we get more Smartsheet customers using Resource Management?",
         ],
       },
       {
         type: "text",
         title: "Strengthening the integration",
         body: [
-          "We took a hard look at the existing integration and found friction everywhere. Connecting Resource Management to a Smartsheet sheet required a separate login, a complicated setup flow, and manual project mapping. We unified authentication, redesigned setup, simplified mapping, and brought a workload schedule directly into Smartsheet.",
-          "The hypothesis was simple: if we reduced friction, adoption would follow and customers would naturally upgrade to Resource Management. With only 4.2% of Smartsheet customers using the product, even a small increase could have a meaningful business impact.",
+          "We took a hard look at the existing integration and found friction everywhere.",
+          "Connecting Resource Management to a Smartsheet sheet required a separate login, a complicated setup flow, and manual project mapping. We unified authentication, redesigned setup, simplified mapping, and brought a workload schedule directly into Smartsheet.",
+          "The hypothesis was simple: if we reduced friction, adoption would follow and customers would naturally upgrade to Resource Management.",
           "The experience improved dramatically, but adoption and upgrades barely moved.",
         ],
+      },
+      {
+        type: "editorialPullout",
+        variant: "metric",
+        value: "4.2%",
+        label: "of Smartsheet customers were using Resource Management",
+        body: "Even a small lift in adoption could have created meaningful business impact.",
       },
       {
         type: "text",
         title: "Protecting the business",
         body: [
           "While we continued investing in the integration, immediate customer needs kept surfacing. One of those was giving customers a way to bring Resource Management report data into Smartsheet sheets and keep it automatically refreshed.",
-          "I defined the product direction, then partnered closely with a junior designer as a player-coach to deliver the feature. The work protected approximately $850K in annual recurring revenue and influenced another $300K.",
+          "I defined the product direction, then partnered closely with a junior designer as a player-coach to deliver the feature.",
+        ],
+      },
+      {
+        type: "editorialPullout",
+        variant: "metric",
+        items: [
+          {
+            value: "~$850K ARR",
+            label: "protected",
+          },
+          {
+            value: "~$300K ARR",
+            label: "influenced",
+          },
         ],
       },
       {
@@ -545,15 +584,28 @@ export const otherWork: WorkItem[] = [
         body: [
           "When I returned from parental leave, I came back to a very different integration strategy.",
           "An engineer had explored embedding the entire Resource Management product into Smartsheet's navigation during a hackathon, and leadership decided to move forward with it. The broader team found ourselves in \"disagree and commit\" mode as we rallied around a direction none of us had intentionally set out to create.",
-          "Looking back, this experience shaped one of my strongest product opinions: If you don't define a coherent and bold strategy, you'll eventually inherit one.",
+          "Looking back, this experience shaped one of my strongest product opinions.",
         ],
+      },
+      {
+        type: "editorialPullout",
+        variant: "phrase",
+        value: "Disagree and commit",
+        label: "A team rallying around a strategy it had not intentionally chosen.",
+      },
+      {
+        type: "editorialPullout",
+        variant: "quote",
+        width: "wide",
+        body: "If you don't define a coherent and bold strategy, you'll eventually inherit one.",
       },
       {
         type: "text",
         title: "Building the future",
         body: [
           "Resource Management was now being brought into Smartsheet, but the business itself was under pressure. Revenue was declining, private equity was preparing to acquire the company, and we needed a clear plan to make the new direction work.",
-          "I helped shape that plan through two initiatives. Cold Start gave us visibility into demand by introducing an upsell experience and a sales-assisted onboarding flow while we worked toward a self-service path. At the same time, I partnered with Product, User Research, and Sales to define Scenario Planning, a capability customers had been asking for for years that finally gave Resource Management new momentum.",
+          "I helped shape that plan through two initiatives. Cold Start gave us visibility into demand by introducing an upsell experience and a sales-assisted onboarding flow while we worked toward a self-service path.",
+          "At the same time, I partnered with Product, User Research, and Sales to define Scenario Planning, a capability customers had been asking for for years that finally gave Resource Management new momentum.",
         ],
       },
       {

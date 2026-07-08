@@ -938,6 +938,40 @@ function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: 
   );
 }
 
+function CaseStudyEditorialPulloutBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialPullout" }> }) {
+  if (block.variant === "quote") {
+    return (
+      <figure className={`case-study-editorial-pullout case-study-block ${getBlockWidthClass(block.width)} is-quote`}>
+        <blockquote>
+          <p>{block.body}</p>
+        </blockquote>
+      </figure>
+    );
+  }
+
+  return (
+    <aside className={`case-study-editorial-pullout case-study-block ${getBlockWidthClass(block.width)} is-${block.variant}`}>
+      {block.items?.length ? (
+        <div className="case-study-editorial-pullout-grid">
+          {block.items.map((item) => (
+            <div key={`${item.value}-${item.label}`} className="case-study-editorial-pullout-item">
+              <p className="case-study-editorial-pullout-value font-inter-display">{item.value}</p>
+              <p className="case-study-editorial-pullout-label font-inter-display">{item.label}</p>
+              {item.body ? <p className="case-study-editorial-pullout-body font-inter-display">{item.body}</p> : null}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="case-study-editorial-pullout-item">
+          {block.value ? <p className="case-study-editorial-pullout-value font-inter-display">{block.value}</p> : null}
+          {block.label ? <p className="case-study-editorial-pullout-label font-inter-display">{block.label}</p> : null}
+          {block.body ? <p className="case-study-editorial-pullout-body font-inter-display">{block.body}</p> : null}
+        </div>
+      )}
+    </aside>
+  );
+}
+
 function CaseStudyNarrativeBlock({ block }: { block: Extract<CaseStudyBlock, { type: "narrative" }> }) {
   return (
     <section className={`case-study-narrative case-study-block ${getBlockWidthClass(block.width ?? "wide")} font-inter-display`}>
@@ -1001,6 +1035,10 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
   if (block.type === "text") {
     return <CaseStudyTextBlock block={block} />;
+  }
+
+  if (block.type === "editorialPullout") {
+    return <CaseStudyEditorialPulloutBlock block={block} />;
   }
 
   if (block.type === "narrative") {
