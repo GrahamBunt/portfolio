@@ -3234,14 +3234,15 @@ body {
 .case-study-editorial-intro {
   display: flex;
   width: 100%;
-  max-width: min(1180px, calc(100vw - 40px));
+  max-width: min(760px, calc(100vw - 40px));
   flex-direction: column;
-  gap: 32px;
-  align-items: flex-start;
+  gap: 28px;
+  align-items: center;
+  text-align: center;
 }
 
 .case-study-editorial-intro h2 {
-  max-width: 1080px;
+  max-width: 760px;
   color: #ffffff;
   font-family: var(--font-instrument-serif), serif;
   font-size: 46px;
@@ -3255,7 +3256,7 @@ body {
 .case-study-editorial-intro-body {
   display: flex;
   width: 100%;
-  max-width: 640px;
+  max-width: 620px;
   flex-direction: column;
   gap: 20px;
 }
@@ -3272,8 +3273,9 @@ body {
   display: grid;
   width: 100%;
   max-width: min(1180px, calc(100vw - 40px));
-  grid-template-columns: minmax(220px, 0.86fr) minmax(0, 1.14fr);
-  gap: clamp(44px, 7vw, 96px);
+  grid-template-columns: minmax(240px, 0.82fr) minmax(0, 1.18fr);
+  column-gap: clamp(44px, 7vw, 96px);
+  row-gap: 36px;
   align-items: start;
   border-top: 1px solid rgba(255, 255, 255, 0.13);
   padding-top: 56px;
@@ -3283,11 +3285,11 @@ body {
   margin-top: -28px;
 }
 
-.case-study-editorial-rail {
+.case-study-editorial-heading {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 24px;
+  gap: 18px;
 }
 
 .case-study-editorial-number {
@@ -3299,7 +3301,7 @@ body {
   margin: 0;
 }
 
-.case-study-editorial-rail h2 {
+.case-study-editorial-heading h2 {
   max-width: 360px;
   color: #ffffff;
   font-family: var(--font-instrument-serif), serif;
@@ -3398,6 +3400,25 @@ body {
   margin: 0;
 }
 
+.case-study-editorial-story {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.case-study-editorial-split.is-stat .case-study-editorial-story,
+.case-study-editorial-split.is-metrics .case-study-editorial-story {
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 0.62fr);
+  gap: 34px;
+}
+
+.case-study-editorial-split.is-future .case-study-editorial-story {
+  grid-template-columns: minmax(0, 0.82fr) minmax(280px, 1fr);
+  gap: 38px;
+}
+
 .case-study-editorial-main {
   display: flex;
   min-width: 0;
@@ -3413,12 +3434,29 @@ body {
   gap: 20px;
 }
 
+.case-study-editorial-split.is-direction .case-study-editorial-copy {
+  gap: 28px;
+}
+
 .case-study-editorial-copy p {
   color: rgba(255, 255, 255, 0.68);
   font-size: 19px;
   font-weight: 500;
   line-height: 30px;
   margin: 0;
+}
+
+.case-study-editorial-media-grid {
+  display: grid;
+  grid-column: 1 / -1;
+  width: 100%;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  padding-top: 2px;
+}
+
+.case-study-editorial-media-grid.is-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .case-study-editorial-media {
@@ -3437,6 +3475,28 @@ body {
   height: auto;
   border-radius: inherit;
   object-fit: cover;
+}
+
+.case-study-editorial-placeholder {
+  display: flex;
+  width: 100%;
+  min-height: 260px;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+    #111111;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.case-study-editorial-placeholder span {
+  max-width: 260px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: center;
 }
 
 .case-study-editorial-media figcaption {
@@ -4014,7 +4074,7 @@ body {
     font-size: 64px;
   }
 
-  .case-study-editorial-rail h2 {
+  .case-study-editorial-heading h2 {
     font-size: 48px;
   }
 
@@ -6149,7 +6209,7 @@ body {
     font-size: 82px;
   }
 
-  .case-study-editorial-rail h2 {
+  .case-study-editorial-heading h2 {
     font-size: 56px;
   }
 
@@ -6329,11 +6389,11 @@ body {
     margin-top: -36px;
   }
 
-  .case-study-editorial-rail {
+  .case-study-editorial-heading {
     gap: 18px;
   }
 
-  .case-study-editorial-rail h2 {
+  .case-study-editorial-heading h2 {
     font-size: 38px;
   }
 
@@ -6352,6 +6412,13 @@ body {
 
   .case-study-editorial-copy {
     max-width: none;
+  }
+
+  .case-study-editorial-split.is-stat .case-study-editorial-story,
+  .case-study-editorial-split.is-metrics .case-study-editorial-story,
+  .case-study-editorial-split.is-future .case-study-editorial-story,
+  .case-study-editorial-media-grid.is-pair {
+    grid-template-columns: 1fr;
   }
 
   .case-study-editorial-pullout-grid {

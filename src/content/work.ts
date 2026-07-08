@@ -70,8 +70,9 @@ export type CaseStudyBlock =
       number: string;
       title: string;
       body: string[];
+      variant?: "simple" | "stat" | "metrics" | "direction" | "future";
       artifact?: CaseStudyEditorialArtifact;
-      media?: CaseStudyEditorialMedia;
+      media?: CaseStudyEditorialMedia | CaseStudyEditorialMedia[];
       width?: CaseStudyBlockWidth;
     }
   | {
@@ -273,7 +274,7 @@ export type CaseStudyEditorialArtifact =
 
 export type CaseStudyEditorialMedia = {
   label: string;
-  src: string;
+  src?: string;
   aspectRatio?: number;
   caption?: string;
 };
@@ -573,6 +574,7 @@ export const otherWork: WorkItem[] = [
     heroImage: "/work/resource-management-integration/thumbnail.jpg",
     thumbnailImage: "/work/resource-management-integration/thumbnail.jpg",
     summary: "A case study on integrating an acquired resource management platform into the core Smartsheet product.",
+    isComingSoon: true,
     blocks: [
       {
         type: "editorialIntro",
@@ -585,22 +587,23 @@ export const otherWork: WorkItem[] = [
       {
         type: "editorialSplit",
         number: "01",
+        variant: "simple",
         title: "Investing in the standalone product",
         body: [
           "My early work focused on improving Resource Management through Project Access Management, Capacity View, and localization. Investing in the standalone product felt like the right way to change the perception that the experience was dated.",
         ],
         media: {
-          label: "Capacity View",
-          src: "/masonry/capacity.png",
-          aspectRatio: 900 / 1120,
+          label: "Placeholder image: early standalone product work",
+          aspectRatio: 16 / 9,
         },
       },
       {
         type: "editorialSplit",
         number: "02",
+        variant: "stat",
         title: "Strengthening the integration",
         body: [
-          "The existing integration had friction everywhere: separate login, complicated setup, and manual project mapping. We unified authentication, simplified setup, and brought a workload schedule directly into Smartsheet.",
+          "The existing integration had friction everywhere: separate login, complicated setup, and manual project mapping. We unified authentication, simplified setup, and brought a workload schedule directly into Smartsheet. The hypothesis was simple: reduce friction and adoption would follow.",
         ],
         artifact: {
           type: "metric",
@@ -609,14 +612,14 @@ export const otherWork: WorkItem[] = [
           body: "Improving the integration mattered, but reducing friction alone did not create the adoption lift we expected.",
         },
         media: {
-          label: "Workload schedule",
-          src: "/masonry/workload-schedule.png",
+          label: "Placeholder image: integration setup and workload schedule",
           aspectRatio: 1,
         },
       },
       {
         type: "editorialSplit",
         number: "03",
+        variant: "metrics",
         title: "Protecting the business",
         body: [
           "Immediate customer needs kept surfacing while we worked on the broader integration. I defined the direction for bringing Resource Management report data into Smartsheet sheets, then coached a junior designer through delivery.",
@@ -635,14 +638,14 @@ export const otherWork: WorkItem[] = [
           ],
         },
         media: {
-          label: "Resource Management report data",
-          src: "/work/resource-management-integration/thumbnail.jpg",
+          label: "Placeholder image: reporting integration",
           aspectRatio: 16 / 9,
         },
       },
       {
         type: "editorialSplit",
         number: "04",
+        variant: "direction",
         title: "Committing to a direction",
         body: [
           "When I returned from parental leave, the strategy had changed. A hackathon prototype embedded the entire product into Smartsheet navigation, and leadership chose to move forward. The team rallied around a direction we had not intentionally set out to create.",
@@ -662,6 +665,7 @@ export const otherWork: WorkItem[] = [
       {
         type: "editorialSplit",
         number: "05",
+        variant: "future",
         title: "Building the future",
         body: [
           "Resource Management was being brought into Smartsheet while the business was under pressure. I helped shape a path forward through initiatives that made demand visible and created new reasons for customers to care.",
@@ -679,11 +683,16 @@ export const otherWork: WorkItem[] = [
             },
           ],
         },
-        media: {
-          label: "Future Resource Management planning",
-          src: "/work/resource-management-integration/thumbnail.jpg",
-          aspectRatio: 16 / 9,
-        },
+        media: [
+          {
+            label: "Placeholder image: Cold Start",
+            aspectRatio: 16 / 9,
+          },
+          {
+            label: "Placeholder image: Scenario Planning",
+            aspectRatio: 16 / 9,
+          },
+        ],
       },
       {
         type: "text",
@@ -859,6 +868,7 @@ export const otherWork: WorkItem[] = [
 
 export const allWork = [featuredWork, ...otherWork];
 export const routeableWork = allWork.filter((item) => !item.isComingSoon);
+const locallyRouteableWork = process.env.NODE_ENV === "production" ? routeableWork : allWork;
 
 const fallbackGallery = [
   "https://framerusercontent.com/images/GmLtgWMAItPR9A4q6e8dZ9MFUDo.png?width=3200&height=2400",
@@ -867,7 +877,7 @@ const fallbackGallery = [
 ];
 
 export function getCaseStudy(slug: string) {
-  const project = routeableWork.find((item) => item.slug === slug);
+  const project = locallyRouteableWork.find((item) => item.slug === slug);
 
   if (!project) return undefined;
 

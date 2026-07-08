@@ -111,8 +111,13 @@ function getCaseStudyPreloadImageSrcs(project: CaseStudy) {
       srcs.add(block.src);
     }
 
-    if (block.type === "editorialSplit" && block.media?.src) {
-      srcs.add(block.media.src);
+    if (block.type === "editorialSplit" && block.media) {
+      const mediaItems = Array.isArray(block.media) ? block.media : [block.media];
+      mediaItems.forEach((item) => {
+        if (item.src) {
+          srcs.add(item.src);
+        }
+      });
     }
   });
 
@@ -993,27 +998,46 @@ function CaseStudyEditorialArtifact({ artifact }: { artifact: NonNullable<Extrac
   );
 }
 
-function CaseStudyEditorialSplitBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialSplit" }> }) {
+function CaseStudyEditorialMediaSlots({ media }: { media: NonNullable<Extract<CaseStudyBlock, { type: "editorialSplit" }>["media"]> }) {
+  const items = Array.isArray(media) ? media : [media];
+
   return (
-    <section className={`case-study-editorial-split case-study-block ${getBlockWidthClass(block.width ?? "full")}`}>
-      <div className="case-study-editorial-rail">
+    <div className={`case-study-editorial-media-grid ${items.length > 1 ? "is-pair" : ""}`}>
+      {items.map((item) => (
+        <figure key={item.label} className={`case-study-editorial-media ${item.src ? "has-image" : "is-placeholder"}`}>
+          {item.src ? (
+            <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
+          ) : (
+            <div className="case-study-editorial-placeholder" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined}>
+              <span className="font-inter-display">{item.label}</span>
+            </div>
+          )}
+          {item.caption ? <figcaption className="font-inter-display">{item.caption}</figcaption> : null}
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+function CaseStudyEditorialSplitBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialSplit" }> }) {
+  const artifact = block.artifact ? <CaseStudyEditorialArtifact artifact={block.artifact} /> : null;
+
+  return (
+    <section className={`case-study-editorial-split case-study-block ${getBlockWidthClass(block.width ?? "full")} is-${block.variant ?? "simple"}`}>
+      <div className="case-study-editorial-heading">
         <p className="case-study-editorial-number font-inter-display">{block.number}</p>
         <h2>{block.title}</h2>
-        {block.artifact ? <CaseStudyEditorialArtifact artifact={block.artifact} /> : null}
       </div>
-      <div className="case-study-editorial-main">
+      <div className="case-study-editorial-story">
         <div className="case-study-editorial-copy">
           {block.body.map((paragraph) => (
             <p key={paragraph} className="font-inter-display">{paragraph}</p>
           ))}
+          {block.variant === "direction" ? artifact : null}
         </div>
-        {block.media ? (
-          <figure className="case-study-editorial-media">
-            <img src={block.media.src} alt="" style={block.media.aspectRatio ? { aspectRatio: block.media.aspectRatio } : undefined} />
-            {block.media.caption ? <figcaption className="font-inter-display">{block.media.caption}</figcaption> : null}
-          </figure>
-        ) : null}
+        {block.variant !== "direction" ? artifact : null}
       </div>
+      {block.media ? <CaseStudyEditorialMediaSlots media={block.media} /> : null}
     </section>
   );
 }
