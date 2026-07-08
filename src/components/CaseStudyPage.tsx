@@ -972,6 +972,19 @@ function CaseStudyEditorialPulloutBlock({ block }: { block: Extract<CaseStudyBlo
   );
 }
 
+function CaseStudyEditorialCardsBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialCards" }> }) {
+  return (
+    <section className={`case-study-editorial-cards case-study-block ${getBlockWidthClass(block.width ?? "wide")}`}>
+      {block.items.map((item) => (
+        <article key={item.title} className="case-study-editorial-card">
+          <h3>{item.title}</h3>
+          <p className="font-inter-display">{item.body}</p>
+        </article>
+      ))}
+    </section>
+  );
+}
+
 function CaseStudyNarrativeBlock({ block }: { block: Extract<CaseStudyBlock, { type: "narrative" }> }) {
   return (
     <section className={`case-study-narrative case-study-block ${getBlockWidthClass(block.width ?? "wide")} font-inter-display`}>
@@ -1039,6 +1052,10 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
   if (block.type === "editorialPullout") {
     return <CaseStudyEditorialPulloutBlock block={block} />;
+  }
+
+  if (block.type === "editorialCards") {
+    return <CaseStudyEditorialCardsBlock block={block} />;
   }
 
   if (block.type === "narrative") {
