@@ -501,10 +501,70 @@ export const otherWork: WorkItem[] = [
     title: "Resource Management Integration",
     slug: "resource-management-integration",
     tag: "Smartsheet • 2023–2025",
-    image: "https://framerusercontent.com/images/M4zg6qfsk1D0olgL6pjgR084nI.jpg?scale-down-to=512&width=2160&height=1620",
+    image: "/work/resource-management-integration/thumbnail.jpg",
+    heroImage: "/work/resource-management-integration/thumbnail.jpg",
     thumbnailImage: "/work/resource-management-integration/thumbnail.jpg",
-    summary: "Resource Management Integration",
-    isComingSoon: true,
+    summary: "A case study on integrating an acquired resource management platform into the core Smartsheet product.",
+    blocks: [
+      {
+        type: "text",
+        title: "How do you successfully integrate an acquired platform into an existing product?",
+        body: [
+          "Smartsheet acquired a product called 10,000ft to strengthen its resource management offering and stay competitive in the collaborative work management space. I joined the team a few years later, when the product was rebranded to Resource Management and the company's focus was shifting from improving the standalone experience to integrating its capabilities into the core of Smartsheet.",
+          "Over my time there, we explored a series of different integration strategies. Some succeeded, others didn't, but together they gave me a perspective on integrating acquired products that I couldn't have gained any other way.",
+        ],
+      },
+      {
+        type: "text",
+        title: "Investing in the standalone product",
+        body: [
+          "My early work focused on improving Resource Management through Project Access Management, Capacity View, and preparing the product for international expansion through localization.",
+          "At the time, this felt like the right strategy. Resource Management already felt dated, and investing in the experience gave us hope we could change that perception. It wasn't until later that the focus shifted toward a different question: How do we get more Smartsheet customers using Resource Management?",
+        ],
+      },
+      {
+        type: "text",
+        title: "Strengthening the integration",
+        body: [
+          "We took a hard look at the existing integration and found friction everywhere. Connecting Resource Management to a Smartsheet sheet required a separate login, a complicated setup flow, and manual project mapping. We unified authentication, redesigned setup, simplified mapping, and brought a workload schedule directly into Smartsheet.",
+          "The hypothesis was simple: if we reduced friction, adoption would follow and customers would naturally upgrade to Resource Management. With only 4.2% of Smartsheet customers using the product, even a small increase could have a meaningful business impact.",
+          "The experience improved dramatically, but adoption and upgrades barely moved.",
+        ],
+      },
+      {
+        type: "text",
+        title: "Protecting the business",
+        body: [
+          "While we continued investing in the integration, immediate customer needs kept surfacing. One of those was giving customers a way to bring Resource Management report data into Smartsheet sheets and keep it automatically refreshed.",
+          "I defined the product direction, then partnered closely with a junior designer as a player-coach to deliver the feature. The work protected approximately $850K in annual recurring revenue and influenced another $300K.",
+        ],
+      },
+      {
+        type: "text",
+        title: "Committing to a direction",
+        body: [
+          "When I returned from parental leave, I came back to a very different integration strategy.",
+          "An engineer had explored embedding the entire Resource Management product into Smartsheet's navigation during a hackathon, and leadership decided to move forward with it. The broader team found ourselves in \"disagree and commit\" mode as we rallied around a direction none of us had intentionally set out to create.",
+          "Looking back, this experience shaped one of my strongest product opinions: If you don't define a coherent and bold strategy, you'll eventually inherit one.",
+        ],
+      },
+      {
+        type: "text",
+        title: "Building the future",
+        body: [
+          "Resource Management was now being brought into Smartsheet, but the business itself was under pressure. Revenue was declining, private equity was preparing to acquire the company, and we needed a clear plan to make the new direction work.",
+          "I helped shape that plan through two initiatives. Cold Start gave us visibility into demand by introducing an upsell experience and a sales-assisted onboarding flow while we worked toward a self-service path. At the same time, I partnered with Product, User Research, and Sales to define Scenario Planning, a capability customers had been asking for for years that finally gave Resource Management new momentum.",
+        ],
+      },
+      {
+        type: "text",
+        title: "What I believe now",
+        body: [
+          "Over three years, we tried improving the product, strengthening the integration, protecting the business, and ultimately redefining its future. Each approach solved a different problem, but none fully addressed the same underlying question: Where did Resource Management truly belong?",
+          "I came away believing there are only two sustainable paths when integrating an acquired product. Continue investing in it as a standalone product, or rebuild its capabilities natively within the core experience. The middle ground proved difficult for customers, challenging for engineering, and ultimately limited the product's long-term potential.",
+        ],
+      },
+    ],
     gallery: [],
     notes: [],
   },
