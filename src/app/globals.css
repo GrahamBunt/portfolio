@@ -3084,10 +3084,6 @@ body {
   max-width: 520px;
 }
 
-.case-study-spotlight .case-study-placeholder {
-  margin-top: 0;
-}
-
 .case-study-step-flow {
   display: flex;
   flex-direction: column;
@@ -3377,6 +3373,10 @@ body {
 .case-study-text-section + .case-study-placeholder,
 .case-study-editorial-pullout + .case-study-placeholder {
   margin-top: -92px;
+}
+
+.case-study-spotlight .case-study-text-section + .case-study-placeholder {
+  margin-top: 0;
 }
 
 .case-study-editorial-pullout + .case-study-editorial-pullout {
