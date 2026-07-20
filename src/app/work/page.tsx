@@ -9,6 +9,7 @@ import { ProjectListSection } from "@/components/ProjectListSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import { featuredWork, otherWork } from "@/content/work";
+import { preventTextOrphans } from "@/lib/typography";
 
 function ArrowIcon() {
   return (
@@ -94,7 +95,7 @@ export default function WorkPage() {
             </div>
             <div className="work-featured-title">
               <div>
-                <h2>{featuredWork.title}</h2>
+                <h2>{preventTextOrphans(featuredWork.title)}</h2>
                 <p>
                   <ProjectMeta value={getWorkListingMeta(featuredWork.tag)} />
                 </p>

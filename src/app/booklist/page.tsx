@@ -8,6 +8,7 @@ import { ExploreSection } from "@/components/ExploreSection";
 import { SiteNav } from "@/components/SiteNav";
 import { aboutContent } from "@/content/about";
 import { booklist2026 } from "@/content/books";
+import { preventTextOrphans } from "@/lib/typography";
 
 const BOOKLIST_TWEET_URL = "https://x.com/gtbunt/status/2053832719331701229";
 const BOOKLIST_EXPLORE_LINKS = [
@@ -102,8 +103,8 @@ export default function BooklistPage() {
                     {book.status ? <span className="book-cover-sash">{book.status}</span> : null}
                   </div>
                   <div className="book-card-meta font-inter-display">
-                    <h3>{book.title}</h3>
-                    <p>{book.author}</p>
+                    <h3>{preventTextOrphans(book.title)}</h3>
+                    <p>{preventTextOrphans(book.author)}</p>
                     <Stars rating={book.rating} pending={book.ratingPending} />
                   </div>
                 </article>
@@ -121,10 +122,10 @@ export default function BooklistPage() {
                 </div>
               </div>
               <p className="book-tweet-copy">
-                I shoulda bought a kindle for a loooong time ago. It’s so much better.
+                {preventTextOrphans("I shoulda bought a kindle for a loooong time ago. It’s so much better.")}
                 <br />
                 <br />
-                Get a pop socket for it too.
+                {preventTextOrphans("Get a pop socket for it too.")}
               </p>
               <div className="book-tweet-media" aria-hidden="true">
                 <img src="/booklist/kindle-pop-socket-back.jpg" alt="" />

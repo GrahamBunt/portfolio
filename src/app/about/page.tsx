@@ -8,6 +8,7 @@ import { ContactSection } from "@/components/ContactSection";
 import { SiteNav } from "@/components/SiteNav";
 import { SocialIcon } from "@/components/SocialIcon";
 import { aboutContent, type AboutContent } from "@/content/about";
+import { preventTextOrphans } from "@/lib/typography";
 
 const ABOUT_IMAGE =
   "https://framerusercontent.com/images/0Qe7tP8xBjkqUS3NHrAj3ZRvZ60.png?width=900&height=1120";
@@ -202,7 +203,7 @@ export default function AboutPage() {
                       })}
                     />
                   ) : (
-                    paragraph
+                    preventTextOrphans(paragraph)
                   )}
                 </p>
               ))}
@@ -228,7 +229,7 @@ export default function AboutPage() {
                       })}
                     />
                   ) : (
-                    item.label
+                    preventTextOrphans(item.label)
                   )}
                 </a>
               ))}
@@ -247,7 +248,7 @@ export default function AboutPage() {
                 })}
               />
             ) : (
-              draft.contact.title
+              preventTextOrphans(draft.contact.title)
             )
           }
           description={
@@ -259,7 +260,7 @@ export default function AboutPage() {
                 })}
               />
             ) : (
-              draft.contact.description
+              preventTextOrphans(draft.contact.description)
             )
           }
           action={
@@ -288,7 +289,7 @@ export default function AboutPage() {
                 })}
               />
             ) : (
-              draft.footer.name
+              preventTextOrphans(draft.footer.name)
             )}
           </p>
           <p>

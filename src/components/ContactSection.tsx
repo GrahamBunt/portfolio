@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
+import { preventTextOrphans } from "@/lib/typography";
 
 type ContactSectionProps = {
   title?: ReactNode;
@@ -31,6 +32,10 @@ function CheckIcon() {
       <polyline points="20 6 9 17 4 12" />
     </svg>
   );
+}
+
+function renderTypographicNode(node: ReactNode) {
+  return typeof node === "string" ? preventTextOrphans(node) : node;
 }
 
 export function ContactSection({
@@ -80,10 +85,10 @@ export function ContactSection({
     >
       <header className={`flex w-full flex-col gap-2.5 ${isLeft ? "items-start" : "items-center"}`}>
         <h2 className="w-full font-[family-name:var(--font-instrument-serif)] text-[48px] leading-[56px] text-white">
-          {title}
+          {renderTypographicNode(title)}
         </h2>
         <p className="font-inter-display w-full text-2xl font-medium leading-8 text-white/65">
-          {description}
+          {renderTypographicNode(description)}
         </p>
       </header>
       <button

@@ -8,6 +8,7 @@ import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
 import { SiteNav } from "@/components/SiteNav";
 import type { CaseStudyBlock, CaseStudyBlockWidth, CaseStudyOverview, WorkItem } from "@/content/work";
+import { preventTextOrphans } from "@/lib/typography";
 
 type CaseStudy = WorkItem;
 
@@ -113,11 +114,7 @@ function getCaseStudyPreloadImageSrcs(project: CaseStudy) {
 
     if (block.type === "editorialSplit" && block.media) {
       const mediaItems = Array.isArray(block.media) ? block.media : [block.media];
-      mediaItems.forEach((item) => {
-        if (item.src) {
-          srcs.add(item.src);
-        }
-      });
+      mediaItems.forEach((item) => srcs.add(item.src));
     }
   });
 
@@ -316,7 +313,7 @@ function CaseStudyViewGridBlock({ block }: { block: Extract<CaseStudyBlock, { ty
             <span className="case-study-view-card-icon">
               <img src={item.icon} alt="" aria-hidden="true" />
             </span>
-            <h2>{item.title}</h2>
+            <h2>{preventTextOrphans(item.title)}</h2>
           </div>
         </article>
       ))}
@@ -379,8 +376,8 @@ function CaseStudyProblemCardsBlock({ block }: { block: Extract<CaseStudyBlock, 
                 ) : null}
                 <p className="case-study-problem-audience font-inter-display">{item.audience}</p>
               </div>
-              <h2>{item.title}</h2>
-              <p className="case-study-problem-body font-inter-display">{item.body}</p>
+              <h2>{preventTextOrphans(item.title)}</h2>
+              <p className="case-study-problem-body font-inter-display">{preventTextOrphans(item.body)}</p>
             </div>
           </article>
         ))}
@@ -434,8 +431,8 @@ function CaseStudySpecSamplesBlock({ block }: { block: Extract<CaseStudyBlock, {
             </div>
             <div className="case-study-spec-sample-title-row">
               <div>
-                <h3>{item.title}</h3>
-                <p className="font-inter-display">{item.description}</p>
+                <h3>{preventTextOrphans(item.title)}</h3>
+                <p className="font-inter-display">{preventTextOrphans(item.description)}</p>
               </div>
               <span className="case-study-spec-sample-arrow" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
@@ -459,20 +456,20 @@ function CaseStudyImpactBlock({ block }: { block: Extract<CaseStudyBlock, { type
         <div className="case-study-impact-label">
           <p className="font-inter-display">{block.label}</p>
         </div>
-        <h2>{block.statement}</h2>
+        <h2>{preventTextOrphans(block.statement)}</h2>
       </div>
       <div className={`case-study-impact-outcomes ${outcomeCountClass}`}>
         {block.outcomes.map((item) => (
           <article key={item.number}>
             <span className="font-inter-display">{item.number}</span>
             <div>
-              <h3>{item.title}</h3>
-              <p className="font-inter-display">{item.body}</p>
+              <h3>{preventTextOrphans(item.title)}</h3>
+              <p className="font-inter-display">{preventTextOrphans(item.body)}</p>
             </div>
           </article>
         ))}
       </div>
-      {block.footnote ? <p className="case-study-impact-footnote font-inter-display">{block.footnote}</p> : null}
+      {block.footnote ? <p className="case-study-impact-footnote font-inter-display">{preventTextOrphans(block.footnote)}</p> : null}
     </section>
   );
 }
@@ -486,8 +483,8 @@ function CaseStudyShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { ty
         <header className="case-study-showcase-header">
           {block.label ? <p className="case-study-showcase-label font-inter-display">{block.label}</p> : null}
           <div>
-            {block.title ? <h2>{block.title}</h2> : null}
-            {block.body ? <p className="font-inter-display">{block.body}</p> : null}
+            {block.title ? <h2>{preventTextOrphans(block.title)}</h2> : null}
+            {block.body ? <p className="font-inter-display">{preventTextOrphans(block.body)}</p> : null}
           </div>
         </header>
       ) : null}
@@ -495,8 +492,8 @@ function CaseStudyShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { ty
         {block.items.map((item, index) => (
           <figure key={item.title} className={`case-study-showcase-item ${item.span === "half" ? "is-half" : "is-full"}`}>
             <figcaption>
-              <h3>{item.title}</h3>
-              <p className="font-inter-display">{item.description}</p>
+              <h3>{preventTextOrphans(item.title)}</h3>
+              <p className="font-inter-display">{preventTextOrphans(item.description)}</p>
             </figcaption>
             <div className="case-study-showcase-media">
               <img src={item.src} alt="" loading="eager" decoding="async" fetchPriority={index < 2 ? "high" : "auto"} />
@@ -572,8 +569,8 @@ function CaseStudyPresentationScrollerBlock({ block }: { block: Extract<CaseStud
           <header className="case-study-presentation-header">
             {block.label ? <p className="case-study-showcase-label font-inter-display">{block.label}</p> : null}
             <div>
-              {block.title ? <h2>{block.title}</h2> : null}
-              {block.body ? <p className="font-inter-display">{block.body}</p> : null}
+              {block.title ? <h2>{preventTextOrphans(block.title)}</h2> : null}
+              {block.body ? <p className="font-inter-display">{preventTextOrphans(block.body)}</p> : null}
             </div>
           </header>
         ) : null}
@@ -584,8 +581,8 @@ function CaseStudyPresentationScrollerBlock({ block }: { block: Extract<CaseStud
               {slide.src ? <img src={slide.src} alt="" /> : <div className="case-study-presentation-placeholder" aria-hidden="true" />}
               <div className="case-study-presentation-copy font-inter-display">
                 {slide.eyebrow ? <span>{slide.eyebrow}</span> : null}
-                <h3>{slide.title}</h3>
-                {slide.description ? <p>{slide.description}</p> : null}
+                <h3>{preventTextOrphans(slide.title)}</h3>
+                {slide.description ? <p>{preventTextOrphans(slide.description)}</p> : null}
               </div>
             </article>
           ))}
@@ -841,7 +838,7 @@ function CaseStudySpotlightBlock({ block }: { block: Extract<CaseStudyBlock, { t
   return (
     <section className="case-study-spotlight case-study-block" aria-labelledby="case-study-spotlight-title">
       <article className="case-study-text-section case-study-block case-study-block-content">
-        <h2 id="case-study-spotlight-title">{block.title}</h2>
+        <h2 id="case-study-spotlight-title">{preventTextOrphans(block.title)}</h2>
         <CaseStudySectionBody body={block.body} />
       </article>
       <CaseStudyMediaBlock
@@ -868,7 +865,7 @@ function CaseStudyStepFlowBlock({ block }: { block: Extract<CaseStudyBlock, { ty
     >
       {block.title || block.label ? (
         <header className="case-study-step-flow-header" style={stepFlowHeaderStyle}>
-          {block.title ? <h2 style={stepFlowTitleStyle}>{block.title}</h2> : null}
+          {block.title ? <h2 style={stepFlowTitleStyle}>{preventTextOrphans(block.title)}</h2> : null}
           {block.label ? <p className="font-inter-display" style={sectionLabelStyle}>{block.label}</p> : null}
         </header>
       ) : null}
@@ -888,8 +885,10 @@ function CaseStudyStepFlowBlock({ block }: { block: Extract<CaseStudyBlock, { ty
               >
                 {index + 1}
               </span>
-              <h2 style={stepTitleStyle}>{item.title}</h2>
-              <p className="font-inter-display" style={{ ...stepDescriptionStyle, gridColumn: "1 / -1" }}>{item.description}</p>
+              <h2 style={stepTitleStyle}>{preventTextOrphans(item.title)}</h2>
+              <p className="font-inter-display" style={{ ...stepDescriptionStyle, gridColumn: "1 / -1" }}>
+                {preventTextOrphans(item.description)}
+              </p>
             </div>
           </article>
         ))}
@@ -911,7 +910,7 @@ function CaseStudySectionBody({
     <div className="case-study-section-body" style={style}>
       {body.map((paragraph) => (
         <p key={paragraph} className="font-inter-display" style={paragraphStyle}>
-          {paragraph}
+          {preventTextOrphans(paragraph)}
         </p>
       ))}
     </div>
@@ -933,13 +932,13 @@ function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: 
         <div className="font-inter-display" style={{ ...staticOverviewCopyWrapStyle, maxWidth: 520, textAlign: "left" }}>
           {introRevealText.map((paragraph) => (
             <p key={paragraph} style={{ ...overviewCopyStyle, width: "100%", maxWidth: 520 }}>
-              {paragraph}
+              {preventTextOrphans(paragraph)}
             </p>
           ))}
         </div>
       ) : (
         <>
-          {block.title ? <h2>{block.title}</h2> : null}
+          {block.title ? <h2>{preventTextOrphans(block.title)}</h2> : null}
           <CaseStudySectionBody body={block.body} />
         </>
       )}
@@ -950,69 +949,39 @@ function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: 
 function CaseStudyEditorialIntroBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialIntro" }> }) {
   return (
     <section className={`case-study-editorial-intro case-study-block ${getBlockWidthClass(block.width ?? "large")}`}>
-      <h2>{block.title}</h2>
+      <h2>{preventTextOrphans(block.title)}</h2>
       <div className="case-study-editorial-intro-body">
         {block.body.map((paragraph) => (
-          <p key={paragraph} className="font-inter-display">{paragraph}</p>
+          <p key={paragraph} className="font-inter-display">{preventTextOrphans(paragraph)}</p>
         ))}
       </div>
     </section>
   );
 }
 
-function CaseStudyEditorialArtifact({ artifact }: { artifact: NonNullable<Extract<CaseStudyBlock, { type: "editorialSplit" }>["artifact"]> }) {
-  if (artifact.type === "metrics") {
-    return (
-      <div className="case-study-editorial-artifact is-metrics">
-        {artifact.items.map((item) => (
-          <div key={`${item.value}-${item.label}`} className="case-study-editorial-artifact-metric">
-            <p className="case-study-editorial-artifact-value font-inter-display">{item.value}</p>
-            <p className="case-study-editorial-artifact-label font-inter-display">{item.label}</p>
-          </div>
-        ))}
-      </div>
-    );
-  }
+function renderEditorialInline(text: string) {
+  return preventTextOrphans(text).split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={`${part}-${index}`} className="case-study-editorial-emphasis">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
 
-  if (artifact.type === "cards") {
-    return (
-      <div className="case-study-editorial-artifact is-cards">
-        {artifact.items.map((item) => (
-          <article key={item.title} className="case-study-editorial-artifact-card">
-            <h3>{item.title}</h3>
-            <p className="font-inter-display">{item.body}</p>
-          </article>
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div className={`case-study-editorial-artifact is-${artifact.type}`}>
-      <p className="case-study-editorial-artifact-value font-inter-display">{artifact.value}</p>
-      {artifact.label ? <p className="case-study-editorial-artifact-label font-inter-display">{artifact.label}</p> : null}
-      {artifact.type === "metric" && artifact.body ? (
-        <p className="case-study-editorial-artifact-body font-inter-display">{artifact.body}</p>
-      ) : null}
-    </div>
-  );
+    return part;
+  });
 }
 
-function CaseStudyEditorialMediaSlots({ media }: { media: NonNullable<Extract<CaseStudyBlock, { type: "editorialSplit" }>["media"]> }) {
+function CaseStudyEditorialMedia({ media }: { media: NonNullable<Extract<CaseStudyBlock, { type: "editorialSplit" }>["media"]> }) {
   const items = Array.isArray(media) ? media : [media];
 
   return (
     <div className={`case-study-editorial-media-grid ${items.length > 1 ? "is-pair" : ""}`}>
       {items.map((item) => (
-        <figure key={item.label} className={`case-study-editorial-media ${item.src ? "has-image" : "is-placeholder"}`}>
-          {item.src ? (
-            <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
-          ) : (
-            <div className="case-study-editorial-placeholder" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined}>
-              <span className="font-inter-display">{item.label}</span>
-            </div>
-          )}
-          {item.caption ? <figcaption className="font-inter-display">{item.caption}</figcaption> : null}
+        <figure key={`${item.label}-${item.src}`} className="case-study-editorial-media">
+          <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
+          {item.caption ? <figcaption className="font-inter-display">{preventTextOrphans(item.caption)}</figcaption> : null}
         </figure>
       ))}
     </div>
@@ -1020,24 +989,19 @@ function CaseStudyEditorialMediaSlots({ media }: { media: NonNullable<Extract<Ca
 }
 
 function CaseStudyEditorialSplitBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialSplit" }> }) {
-  const artifact = block.artifact ? <CaseStudyEditorialArtifact artifact={block.artifact} /> : null;
-
   return (
-    <section className={`case-study-editorial-split case-study-block ${getBlockWidthClass(block.width ?? "full")} is-${block.variant ?? "simple"}`}>
-      <div className="case-study-editorial-heading">
-        <p className="case-study-editorial-number font-inter-display">{block.number}</p>
-        <h2>{block.title}</h2>
+    <section className={`case-study-editorial-split case-study-block ${getBlockWidthClass(block.width ?? "full")}`}>
+      <div className="case-study-editorial-rail">
+        <h2>{preventTextOrphans(block.title)}</h2>
       </div>
-      <div className="case-study-editorial-story">
+      <div className="case-study-editorial-main">
         <div className="case-study-editorial-copy">
           {block.body.map((paragraph) => (
-            <p key={paragraph} className="font-inter-display">{paragraph}</p>
+            <p key={paragraph} className="font-inter-display">{renderEditorialInline(paragraph)}</p>
           ))}
-          {block.variant === "direction" ? artifact : null}
         </div>
-        {block.variant !== "direction" ? artifact : null}
+        {block.media ? <CaseStudyEditorialMedia media={block.media} /> : null}
       </div>
-      {block.media ? <CaseStudyEditorialMediaSlots media={block.media} /> : null}
     </section>
   );
 }
@@ -1047,7 +1011,7 @@ function CaseStudyEditorialPulloutBlock({ block }: { block: Extract<CaseStudyBlo
     return (
       <figure className={`case-study-editorial-pullout case-study-block ${getBlockWidthClass(block.width)} is-quote`}>
         <blockquote>
-          <p>{block.body}</p>
+          {block.body ? <p>{preventTextOrphans(block.body)}</p> : null}
         </blockquote>
       </figure>
     );
@@ -1061,7 +1025,7 @@ function CaseStudyEditorialPulloutBlock({ block }: { block: Extract<CaseStudyBlo
             <div key={`${item.value}-${item.label}`} className="case-study-editorial-pullout-item">
               <p className="case-study-editorial-pullout-value font-inter-display">{item.value}</p>
               <p className="case-study-editorial-pullout-label font-inter-display">{item.label}</p>
-              {item.body ? <p className="case-study-editorial-pullout-body font-inter-display">{item.body}</p> : null}
+              {item.body ? <p className="case-study-editorial-pullout-body font-inter-display">{preventTextOrphans(item.body)}</p> : null}
             </div>
           ))}
         </div>
@@ -1069,23 +1033,10 @@ function CaseStudyEditorialPulloutBlock({ block }: { block: Extract<CaseStudyBlo
         <div className="case-study-editorial-pullout-item">
           {block.value ? <p className="case-study-editorial-pullout-value font-inter-display">{block.value}</p> : null}
           {block.label ? <p className="case-study-editorial-pullout-label font-inter-display">{block.label}</p> : null}
-          {block.body ? <p className="case-study-editorial-pullout-body font-inter-display">{block.body}</p> : null}
+          {block.body ? <p className="case-study-editorial-pullout-body font-inter-display">{preventTextOrphans(block.body)}</p> : null}
         </div>
       )}
     </aside>
-  );
-}
-
-function CaseStudyEditorialCardsBlock({ block }: { block: Extract<CaseStudyBlock, { type: "editorialCards" }> }) {
-  return (
-    <section className={`case-study-editorial-cards case-study-block ${getBlockWidthClass(block.width ?? "wide")}`}>
-      {block.items.map((item) => (
-        <article key={item.title} className="case-study-editorial-card">
-          <h3>{item.title}</h3>
-          <p className="font-inter-display">{item.body}</p>
-        </article>
-      ))}
-    </section>
   );
 }
 
@@ -1115,13 +1066,13 @@ function CaseStudyOverviewBlock({ overview }: { overview: CaseStudyOverview }) {
             </div>
           ))}
         </dl>
-        {overview.summary ? <p className="case-study-overview-summary">{overview.summary}</p> : null}
+        {overview.summary ? <p className="case-study-overview-summary">{preventTextOrphans(overview.summary)}</p> : null}
       </aside>
       <div className="case-study-overview-copy">
         <div style={staticOverviewCopyWrapStyle}>
           {overview.body.map((paragraph, index) => (
             <p key={paragraph} style={index === 0 ? overviewLeadCopyStyle : overviewSupportingCopyStyle}>
-              {paragraph}
+              {preventTextOrphans(paragraph)}
             </p>
           ))}
         </div>
@@ -1164,10 +1115,6 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
 
   if (block.type === "editorialPullout") {
     return <CaseStudyEditorialPulloutBlock block={block} />;
-  }
-
-  if (block.type === "editorialCards") {
-    return <CaseStudyEditorialCardsBlock block={block} />;
   }
 
   if (block.type === "narrative") {
@@ -1243,7 +1190,7 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
       {block.mediaSide === "left" ? media : null}
       <article className="case-study-text-section case-study-block case-study-block-content">
         {block.eyebrow ? <p className="case-study-section-eyebrow font-inter-display">{block.eyebrow}</p> : null}
-        <h2>{block.title}</h2>
+        <h2>{preventTextOrphans(block.title)}</h2>
         <CaseStudySectionBody body={block.body} />
       </article>
       {block.mediaSide === "left" ? null : media}
@@ -1471,13 +1418,13 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                     <div className="case-study-media-shell">
                       <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
                     </div>
-                    <figcaption className="font-inter-display">{item.caption}</figcaption>
+                    <figcaption className="font-inter-display">{preventTextOrphans(item.caption)}</figcaption>
                   </figure>
 
                   {project.notes[index] ? (
                     <article className="case-study-note">
-                      <h2>{project.notes[index].title}</h2>
-                      <p className="font-inter-display">{project.notes[index].body}</p>
+                      <h2>{preventTextOrphans(project.notes[index].title)}</h2>
+                      <p className="font-inter-display">{preventTextOrphans(project.notes[index].body)}</p>
                     </article>
                   ) : null}
                 </div>

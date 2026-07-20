@@ -70,8 +70,6 @@ export type CaseStudyBlock =
       number: string;
       title: string;
       body: string[];
-      variant?: "simple" | "stat" | "metrics" | "direction" | "future";
-      artifact?: CaseStudyEditorialArtifact;
       media?: CaseStudyEditorialMedia | CaseStudyEditorialMedia[];
       width?: CaseStudyBlockWidth;
     }
@@ -82,11 +80,6 @@ export type CaseStudyBlock =
       value?: string;
       body?: string;
       items?: CaseStudyEditorialPulloutItem[];
-      width?: CaseStudyBlockWidth;
-    }
-  | {
-      type: "editorialCards";
-      items: CaseStudyEditorialCard[];
       width?: CaseStudyBlockWidth;
     }
   | {
@@ -246,35 +239,9 @@ export type CaseStudyEditorialPulloutItem = {
   body?: string;
 };
 
-export type CaseStudyEditorialCard = {
-  title: string;
-  body: string;
-};
-
-export type CaseStudyEditorialArtifact =
-  | {
-      type: "metric";
-      value: string;
-      label: string;
-      body?: string;
-    }
-  | {
-      type: "metrics";
-      items: CaseStudyEditorialPulloutItem[];
-    }
-  | {
-      type: "phrase";
-      value: string;
-      label?: string;
-    }
-  | {
-      type: "cards";
-      items: CaseStudyEditorialCard[];
-    };
-
 export type CaseStudyEditorialMedia = {
   label: string;
-  src?: string;
+  src: string;
   aspectRatio?: number;
   caption?: string;
 };
@@ -587,74 +554,52 @@ export const otherWork: WorkItem[] = [
       {
         type: "editorialSplit",
         number: "01",
-        variant: "simple",
         title: "Investing in the standalone product",
         body: [
           "My early work focused on improving Resource Management through Project Access Management, Capacity View, and localization. Investing in the standalone product felt like the right way to change the perception that the experience was dated.",
         ],
         media: {
-          label: "Placeholder image: early standalone product work",
-          aspectRatio: 16 / 9,
+          label: "Capacity View",
+          src: "/masonry/capacity.png",
+          aspectRatio: 900 / 1120,
         },
       },
       {
         type: "editorialSplit",
         number: "02",
-        variant: "stat",
         title: "Strengthening the integration",
         body: [
-          "The existing integration had friction everywhere: separate login, complicated setup, and manual project mapping. We unified authentication, simplified setup, and brought a workload schedule directly into Smartsheet. The hypothesis was simple: reduce friction and adoption would follow.",
+          "The existing integration had friction everywhere: separate login, complicated setup, and manual project mapping. We unified authentication, simplified setup, and brought a workload schedule directly into Smartsheet.",
+          "The adoption problem was clear. Only **4.2%** of Smartsheet customers were using Resource Management, so even a small lift could have mattered. The experience improved, but reducing friction alone did not create the upgrade motion we expected.",
         ],
-        artifact: {
-          type: "metric",
-          value: "4.2%",
-          label: "Smartsheet customers using Resource Management.",
-          body: "Improving the integration mattered, but reducing friction alone did not create the adoption lift we expected.",
-        },
         media: {
-          label: "Placeholder image: integration setup and workload schedule",
+          label: "Workload schedule",
+          src: "/masonry/workload-schedule.png",
           aspectRatio: 1,
         },
       },
       {
         type: "editorialSplit",
         number: "03",
-        variant: "metrics",
         title: "Protecting the business",
         body: [
           "Immediate customer needs kept surfacing while we worked on the broader integration. I defined the direction for bringing Resource Management report data into Smartsheet sheets, then coached a junior designer through delivery.",
+          "That work protected **≈ $850K ARR** and influenced another **≈ $300K ARR**. It was not the boldest integration strategy, but it solved a real customer need and protected the business while the larger direction was still forming.",
         ],
-        artifact: {
-          type: "metrics",
-          items: [
-            {
-              value: "≈ $850K ARR",
-              label: "protected",
-            },
-            {
-              value: "≈ $300K ARR",
-              label: "influenced",
-            },
-          ],
-        },
         media: {
-          label: "Placeholder image: reporting integration",
+          label: "Resource Management report data",
+          src: "/work/resource-management-integration/thumbnail.jpg",
           aspectRatio: 16 / 9,
         },
       },
       {
         type: "editorialSplit",
         number: "04",
-        variant: "direction",
         title: "Committing to a direction",
         body: [
-          "When I returned from parental leave, the strategy had changed. A hackathon prototype embedded the entire product into Smartsheet navigation, and leadership chose to move forward. The team rallied around a direction we had not intentionally set out to create.",
+          "When I returned from parental leave, the strategy had changed. A hackathon prototype embedded the entire product into Smartsheet navigation, and leadership chose to move forward.",
+          "The broader team found itself in **\"disagree and commit\"** mode, rallying around a direction we had not intentionally set out to create.",
         ],
-        artifact: {
-          type: "phrase",
-          value: "Disagree and commit",
-          label: "A team aligning behind inherited strategy.",
-        },
       },
       {
         type: "editorialPullout",
@@ -665,32 +610,22 @@ export const otherWork: WorkItem[] = [
       {
         type: "editorialSplit",
         number: "05",
-        variant: "future",
         title: "Building the future",
         body: [
           "Resource Management was being brought into Smartsheet while the business was under pressure. I helped shape a path forward through initiatives that made demand visible and created new reasons for customers to care.",
+          "**Cold Start** gave us business visibility through an upsell path, sales-assisted onboarding, and a clearer route toward self-service.",
+          "**Scenario Planning** created a tiger-team path toward a net-new capability customers had been asking for, giving Sales a more compelling story and the product new momentum.",
         ],
-        artifact: {
-          type: "cards",
-          items: [
-            {
-              title: "Cold Start",
-              body: "Business visibility, upsell path, sales-assisted onboarding, self-service direction.",
-            },
-            {
-              title: "Scenario Planning",
-              body: "Tiger team, net-new capability, new sales momentum.",
-            },
-          ],
-        },
         media: [
           {
-            label: "Placeholder image: Cold Start",
+            label: "Cold Start direction",
+            src: "/work/resource-management-integration/thumbnail.jpg",
             aspectRatio: 16 / 9,
           },
           {
-            label: "Placeholder image: Scenario Planning",
-            aspectRatio: 16 / 9,
+            label: "Scenario Planning direction",
+            src: "/masonry/workload-schedule.png",
+            aspectRatio: 1,
           },
         ],
       },

@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { preventTextOrphans, splitTypographicWords } from "@/lib/typography";
 
 type ScrollRevealTextProps = {
   text: string | string[];
@@ -68,9 +69,9 @@ export function ScrollRevealText({
   const linesKeyRef = useRef("");
   const [linesByParagraph, setLinesByParagraph] = useState<string[][][] | null>(null);
   const textKey = Array.isArray(text) ? text.join(" ") : text;
-  const paragraphs = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
+  const paragraphs = useMemo(() => (Array.isArray(text) ? text : [text]).map(preventTextOrphans), [text]);
   const wordsByParagraph = useMemo(
-    () => paragraphs.map((paragraph) => paragraph.trim().split(/\s+/).filter(Boolean)),
+    () => paragraphs.map(splitTypographicWords),
     [paragraphs],
   );
 

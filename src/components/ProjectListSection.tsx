@@ -2,6 +2,7 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { ProjectMeta } from "@/components/ProjectMeta";
+import { preventTextOrphans } from "@/lib/typography";
 
 export type ProjectListItem = {
   title: string;
@@ -27,6 +28,10 @@ type ProjectListSectionProps = {
   renderDescription?: (item: ProjectListItem, index: number) => ReactNode;
 };
 
+function renderTypographicNode(node: ReactNode) {
+  return typeof node === "string" ? preventTextOrphans(node) : node;
+}
+
 export function ProjectListSection({
   title,
   description,
@@ -44,8 +49,8 @@ export function ProjectListSection({
 
   return (
     <section className={`work-all-projects ${className ?? ""}`} style={style}>
-      <h3 className={titleClassName}>{title}</h3>
-      {description ? <p className={descriptionClassName}>{description}</p> : null}
+      <h3 className={titleClassName}>{renderTypographicNode(title)}</h3>
+      {description ? <p className={descriptionClassName}>{renderTypographicNode(description)}</p> : null}
       <div className="work-project-list">
         {items.map((item, index) => {
           const href = item.href;
@@ -73,8 +78,8 @@ export function ProjectListSection({
                   />
                 )}
                 <div className="work-project-copy">
-                  <p>{renderTitle ? renderTitle(item, index) : item.title}</p>
-                  <p>{renderDescription ? renderDescription(item, index) : <ProjectMeta value={item.description} />}</p>
+                  <p>{renderTitle ? renderTypographicNode(renderTitle(item, index)) : preventTextOrphans(item.title)}</p>
+                  <p>{renderDescription ? renderTypographicNode(renderDescription(item, index)) : <ProjectMeta value={item.description} />}</p>
                 </div>
                 {item.statusLabel ? <span className="work-project-status font-inter-display">{item.statusLabel}</span> : null}
               </div>

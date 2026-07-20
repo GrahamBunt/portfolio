@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { preventTextOrphans, splitTypographicWords } from "@/lib/typography";
 
 type AnimatedDescriptionProps = {
   text: string;
@@ -15,10 +16,6 @@ type MeasuredLine = {
   text: string;
 };
 
-function splitWords(text: string) {
-  return text.trim().split(/\s+/);
-}
-
 export function AnimatedDescription({
   text,
   ready,
@@ -28,7 +25,8 @@ export function AnimatedDescription({
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const [lines, setLines] = useState<MeasuredLine[]>([]);
-  const words = useMemo(() => splitWords(text), [text]);
+  const displayText = useMemo(() => preventTextOrphans(text), [text]);
+  const words = useMemo(() => splitTypographicWords(text), [text]);
 
   useLayoutEffect(() => {
     const paragraph = paragraphRef.current;
@@ -78,7 +76,7 @@ export function AnimatedDescription({
         ))}
       </span>
       <span className="animated-description-lines" aria-hidden="true">
-        {(lines.length ? lines : [{ id: "fallback", text }]).map((line, index) => (
+        {(lines.length ? lines : [{ id: "fallback", text: displayText }]).map((line, index) => (
           <span
             key={line.id}
             className="animated-description-line"
