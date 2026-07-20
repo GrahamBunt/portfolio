@@ -132,7 +132,7 @@ export default function AboutPage() {
       <SiteNav />
 
       {tuneMode ? (
-        <div className="tune-panel font-inter-display" role="region" aria-label="About tuning controls">
+        <div className="tune-panel font-sans-preview" role="region" aria-label="About tuning controls">
           <span>{saveStatus === "saving" ? "Saving..." : saveStatus === "saved" ? "Saved" : saveStatus === "error" ? "Save failed" : "Tune mode"}</span>
           <button type="button" onClick={saveContent} disabled={saveStatus === "saving"}>
             Save
@@ -174,7 +174,7 @@ export default function AboutPage() {
               </span>
             </h1>
             {tuneMode ? (
-              <p className="font-inter-display">
+              <p className="font-sans-preview">
                 <EditableText
                   value={draft.hero.description}
                   onChange={(value) => updateDraft((content) => {
@@ -213,7 +213,7 @@ export default function AboutPage() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="nav-item-pill about-social-link font-inter-display text-base font-medium leading-6 text-white"
+                  className="nav-item-pill about-social-link font-sans-preview text-base font-medium leading-6 text-white"
                   target="_blank"
                   rel="noreferrer"
                   onClick={tuneMode ? (event) => event.preventDefault() : undefined}

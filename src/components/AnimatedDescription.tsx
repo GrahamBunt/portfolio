@@ -63,7 +63,7 @@ export function AnimatedDescription({
   return (
     <p
       ref={paragraphRef}
-      className={`animated-description font-inter-display ${ready ? "is-ready" : "opacity-0"} ${className}`}
+      className={`animated-description font-sans-preview ${ready ? "is-ready" : "opacity-0"} ${className}`}
       style={ready ? ({ "--description-delay": delay } as CSSProperties) : undefined}
       aria-label={text}
     >

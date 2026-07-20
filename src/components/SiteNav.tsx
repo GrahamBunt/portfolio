@@ -39,7 +39,7 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
           />
         </Link>
         {showBack ? (
-          <Link href="/work" aria-label="Back to projects" className="nav-item-pill nav-back-pill text-white">
+          <Link href="/work" aria-label="Back to projects" className="nav-item-pill nav-back-pill font-sans-preview font-medium text-white">
             <span className="nav-back-icon">
               <BackIcon />
             </span>
@@ -47,7 +47,7 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
           </Link>
         ) : null}
       </div>
-      <div className="site-nav-links font-inter-display flex items-center gap-2.5 text-base font-medium leading-6">
+      <div className="site-nav-links font-sans-preview flex items-center gap-2.5 text-base font-medium leading-6">
         {NAV_LINKS.map((link) => (
           <Link
             key={link.href}

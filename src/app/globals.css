@@ -1,19 +1,23 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/inter-display-400.woff2") format("woff2");
-  font-display: swap;
+  font-family: "Neue Montreal";
+  src: url("/fonts/neue-montreal-regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/inter-display.woff2") format("woff2");
-  font-display: swap;
+  font-family: "Neue Montreal";
+  src: url("/fonts/neue-montreal-medium.woff2") format("woff2");
   font-style: normal;
   font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  --font-sans-preview: "Neue Montreal";
 }
 
 body {
@@ -21,8 +25,8 @@ body {
   color: #ffffff;
 }
 
-.font-inter-display {
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+.font-sans-preview {
+  font-family: var(--font-sans-preview), sans-serif;
 }
 
 .scroll-reveal-line {
@@ -761,7 +765,7 @@ body {
   width: 100%;
   color: rgba(255, 255, 255, 0.65);
   font-size: 21px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -869,7 +873,7 @@ body {
 .work-featured-title h2 {
   width: max-content;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 24px;
@@ -885,9 +889,9 @@ body {
 .work-featured-title p {
   width: max-content;
   color: rgba(255, 255, 255, 0.6);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -953,7 +957,7 @@ body {
   box-sizing: border-box;
   width: 100%;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 21px;
   font-weight: 500;
   line-height: 28px;
@@ -1085,9 +1089,9 @@ body {
 .work-project-row-content p {
   width: 100%;
   overflow: hidden;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
   text-overflow: ellipsis;
@@ -1096,6 +1100,7 @@ body {
 
 .work-project-row-content p:first-child {
   color: #ffffff;
+  font-weight: 500;
 }
 
 .work-project-row-content p:last-child {
@@ -1112,7 +1117,7 @@ body {
   background: #f6b73c;
   color: #161006;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1;
   padding: 0 10px;
   white-space: nowrap;
@@ -1166,7 +1171,7 @@ body {
 .book-year-section h2 {
   color: rgba(255, 255, 255, 0.65);
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -1215,9 +1220,9 @@ body {
   padding: 0;
   background: #b7e6bf;
   color: #123f22;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 9.5px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.045em;
   line-height: 1;
   pointer-events: none;
@@ -1245,14 +1250,14 @@ body {
 .book-card-meta h3 {
   color: #ffffff;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 24px;
 }
 
 .book-card-meta p {
   color: rgba(255, 255, 255, 0.65);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 22px;
 }
 
@@ -1341,21 +1346,21 @@ body {
 .book-tweet-header p {
   color: #ffffff;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 24px;
 }
 
 .book-tweet-header span {
   color: rgba(255, 255, 255, 0.65);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 22px;
 }
 
 .book-tweet-copy {
   color: #ffffff;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 30px;
 }
 
@@ -1381,7 +1386,7 @@ body {
 .book-tweet-date {
   color: rgba(255, 255, 255, 0.58);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 24px;
 }
 
@@ -1497,7 +1502,7 @@ body {
   padding-top: 2px;
   color: rgba(255, 255, 255, 0.48);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 24px;
   white-space: nowrap;
   transition: color 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -1511,7 +1516,7 @@ body {
   align-items: center;
   color: #ffffff;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   transition: color 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
@@ -1532,7 +1537,7 @@ body {
   overflow: hidden;
   color: rgba(255, 255, 255, 0.48);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 24px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1560,9 +1565,9 @@ body {
 
 .work-footer p {
   color: rgba(255, 255, 255, 0.65);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -1638,8 +1643,8 @@ body {
 }
 
 .about-bio p {
-  font-family: "Inter Display", var(--font-inter), sans-serif;
-  font-weight: 500;
+  font-family: var(--font-sans-preview), sans-serif;
+  font-weight: 400;
   margin: 0;
 }
 
@@ -1688,9 +1693,9 @@ body {
   width: 100%;
   box-sizing: border-box;
   color: rgba(255, 255, 255, 0.65);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 32px;
   margin: 0 0 20px;
   padding: 0 20px;
@@ -1743,7 +1748,7 @@ body {
 .case-study-top-meta {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
 }
 
@@ -1866,7 +1871,7 @@ body {
 .case-study-meta dt,
 .case-study-meta dd {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -1927,7 +1932,7 @@ body {
   margin: 0;
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
 }
 
@@ -1941,7 +1946,7 @@ body {
   max-width: 300px;
   color: rgba(255, 255, 255, 0.62);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -1957,8 +1962,8 @@ body {
 .case-study-overview-copy p {
   color: #ffffff;
   font-size: clamp(25px, 2.25vw, 34px);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
-  font-weight: 500;
+  font-family: var(--font-sans-preview), sans-serif;
+  font-weight: 400;
   line-height: 1.28;
   letter-spacing: 0;
   margin: 0;
@@ -2027,9 +2032,9 @@ body {
 
 .case-study-view-card-heading h2 {
   color: rgba(255, 255, 255, 0.65);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 18px;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 24px;
   margin: 0;
 }
@@ -2088,7 +2093,7 @@ body {
 .case-study-comparison-image-frame span {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
 }
 
@@ -2104,9 +2109,9 @@ body {
   background: rgba(0, 0, 0, 0.88);
   box-shadow: none;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 14px;
-  font-weight: 550;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 18px;
   padding: 7px 12px;
@@ -2139,7 +2144,7 @@ body {
 .case-study-problem-header p {
   color: rgba(255, 255, 255, 0.36);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0;
@@ -2270,7 +2275,7 @@ body {
   border-radius: 999px;
   color: #ffffff;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1;
 }
 
@@ -2304,7 +2309,7 @@ body {
 
 .case-study-problem-card h2 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(25px, 2.25vw, 34px);
   font-weight: var(--problem-title-weight);
   letter-spacing: -0.01em;
@@ -2316,7 +2321,7 @@ body {
   max-width: 680px;
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 28px;
   margin: clamp(44px, 4.6vw, 76px) 0 0;
@@ -2347,7 +2352,7 @@ body {
 .case-study-spec-samples-header p {
   color: rgba(255, 255, 255, 0.36);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0;
@@ -2509,7 +2514,7 @@ body {
 
 .case-study-spec-sample-title-row h3 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 24px;
@@ -2526,7 +2531,7 @@ body {
   max-width: 560px;
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -2593,9 +2598,9 @@ body {
 .case-study-impact-heading h2 {
   max-width: 940px;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
@@ -2658,7 +2663,7 @@ body {
 
 .case-study-impact-outcomes h3 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 0;
@@ -2670,7 +2675,7 @@ body {
 .case-study-impact-footnote {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -2723,9 +2728,9 @@ body {
 .case-study-showcase-header h2 {
   max-width: 940px;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
@@ -2736,7 +2741,7 @@ body {
   max-width: 680px;
   color: rgba(255, 255, 255, 0.65);
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 30px;
   margin: 24px 0 0;
 }
@@ -2786,7 +2791,7 @@ body {
 
 .case-study-showcase-item h3 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 0;
@@ -2797,7 +2802,7 @@ body {
 .case-study-showcase-item p {
   color: rgba(255, 255, 255, 0.62);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -2840,9 +2845,9 @@ body {
 .case-study-presentation-header h2 {
   max-width: 780px;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
@@ -2853,7 +2858,7 @@ body {
   max-width: 620px;
   color: rgba(255, 255, 255, 0.62);
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 30px;
   margin: 18px 0 0;
 }
@@ -2930,7 +2935,7 @@ body {
 .case-study-presentation-copy span {
   color: rgba(255, 255, 255, 0.52);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 20px;
 }
@@ -2938,7 +2943,7 @@ body {
 .case-study-presentation-copy h3 {
   color: #ffffff;
   font-size: clamp(26px, 3vw, 46px);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.08;
   margin: 0;
@@ -2948,7 +2953,7 @@ body {
   max-width: 460px;
   color: rgba(255, 255, 255, 0.68);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -3120,7 +3125,7 @@ body {
 .case-study-step-flow-header p {
   color: rgba(255, 255, 255, 0.36);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0;
@@ -3168,7 +3173,7 @@ body {
 .case-study-step-media span {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
 }
 
@@ -3189,13 +3194,13 @@ body {
   background: #ffffff;
   color: #000000;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 28px;
 }
 
 .case-study-step-copy h2 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 28px;
@@ -3206,7 +3211,7 @@ body {
   grid-column: 1 / -1;
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -3243,9 +3248,9 @@ body {
 .case-study-editorial-intro h2 {
   max-width: 1080px;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
@@ -3263,7 +3268,7 @@ body {
 .case-study-editorial-intro-body p {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -3288,7 +3293,7 @@ body {
 .case-study-editorial-rail h2 {
   max-width: 360px;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 0;
@@ -3315,7 +3320,7 @@ body {
 .case-study-editorial-copy p {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -3323,7 +3328,7 @@ body {
 .case-study-editorial-emphasis {
   display: inline;
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: inherit;
 }
@@ -3360,7 +3365,7 @@ body {
 .case-study-editorial-media figcaption {
   color: rgba(255, 255, 255, 0.46);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 20px;
   margin: 0;
 }
@@ -3428,7 +3433,7 @@ body {
   max-width: 420px;
   color: rgba(255, 255, 255, 0.82);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 26px;
 }
 
@@ -3436,7 +3441,7 @@ body {
   max-width: 420px;
   color: rgba(255, 255, 255, 0.56);
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 26px;
 }
 
@@ -3466,7 +3471,7 @@ body {
 
 .case-study-editorial-pullout.is-quote p {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -3520,7 +3525,7 @@ body {
 
 .case-study-text-section h2 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 28px;
@@ -3537,7 +3542,7 @@ body {
 .case-study-section-body p {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -3619,14 +3624,14 @@ body {
   left: 14px;
   color: rgba(255, 255, 255, 0.65);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 20px;
 }
 
 .case-study-placeholder span {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
 }
 
@@ -3723,7 +3728,7 @@ body {
   background: rgba(0, 0, 0, 0.84);
   color: #ffffff;
   font-size: 14px;
-  font-weight: 550;
+  font-weight: 400;
   line-height: 18px;
   padding: 7px 12px;
   white-space: nowrap;
@@ -3759,7 +3764,7 @@ body {
 .case-study-media-card figcaption {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -3784,7 +3789,7 @@ body {
 .case-study-note p {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -3816,7 +3821,7 @@ body {
   padding: 6px;
   color: rgba(255, 255, 255, 0.72);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 20px;
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
@@ -3834,6 +3839,7 @@ body {
   color: #000000;
   cursor: pointer;
   font: inherit;
+  font-weight: 500;
   padding: 0 12px;
 }
 
@@ -3970,9 +3976,9 @@ body {
 
 .spec-sandbox-intro p {
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0 0 16px;
@@ -4012,9 +4018,9 @@ body {
 
 .spec-sandbox-variant-header p {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -4022,9 +4028,9 @@ body {
 .spec-sandbox-variant-header span {
   max-width: 420px;
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 22px;
   text-align: right;
 }
@@ -4078,9 +4084,9 @@ body {
   gap: 10px;
   border-radius: 999px;
   color: #101010;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 18px;
   padding: 0 16px;
   white-space: nowrap;
@@ -4124,9 +4130,9 @@ body {
 .spec-sandbox-caption {
   max-width: 560px;
   color: rgba(255, 255, 255, 0.42);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 18px;
   margin: 0;
 }
@@ -4174,7 +4180,7 @@ body {
   background: #000000;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
   color: #ffffff;
-  font-weight: 550;
+  font-weight: 400;
 }
 
 .spec-sandbox-variant.is-black-chip .spec-sandbox-card:hover img,
@@ -4270,9 +4276,9 @@ body {
 
 .impact-sandbox-intro p {
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0 0 16px;
@@ -4312,9 +4318,9 @@ body {
 
 .impact-variant-header p {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -4322,9 +4328,9 @@ body {
 .impact-variant-header span {
   max-width: 420px;
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 22px;
   text-align: right;
 }
@@ -4360,9 +4366,9 @@ body {
 .impact-c-statement p,
 .impact-d-primary span {
   color: rgba(255, 255, 255, 0.48);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 13px;
-  font-weight: 650;
+  font-weight: 400;
   letter-spacing: 0.12em;
   line-height: 18px;
   margin: 0;
@@ -4374,7 +4380,7 @@ body {
 .impact-c-statement h2,
 .impact-d-primary h2 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.4vw, 48px);
   font-weight: 400;
   letter-spacing: 0;
@@ -4387,9 +4393,9 @@ body {
 .impact-c-footer,
 .impact-d-note p {
   color: rgba(255, 255, 255, 0.62);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -4413,9 +4419,9 @@ body {
 .impact-c-decisions article > span,
 .impact-d-cards article > span {
   color: #ff5a00;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 14px;
-  font-weight: 650;
+  font-weight: 400;
   letter-spacing: 0.08em;
   line-height: 20px;
 }
@@ -4426,9 +4432,9 @@ body {
 .impact-d-cards h3,
 .impact-d-note h3 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -4438,9 +4444,9 @@ body {
 .impact-c-decisions p,
 .impact-d-cards p {
   color: rgba(255, 255, 255, 0.58);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 24px;
   margin: 0;
 }
@@ -4503,6 +4509,7 @@ body {
 .impact-c-statement h2 {
   font-family: var(--font-instrument-serif), serif;
   font-size: clamp(48px, 6vw, 80px);
+  font-weight: 400;
   line-height: 0.98;
 }
 
@@ -4645,9 +4652,9 @@ body {
 .impact-type-ledger-statement p,
 .impact-type-index-main p {
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 14px;
-  font-weight: 650;
+  font-weight: 400;
   letter-spacing: 0.12em;
   line-height: 20px;
   margin: 0;
@@ -4693,9 +4700,9 @@ body {
 
 .impact-type-option-header p {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -4703,9 +4710,9 @@ body {
 .impact-type-option-header span,
 .impact-type-footnote {
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 22px;
 }
 
@@ -4730,7 +4737,7 @@ body {
 .impact-type-ledger-statement h2,
 .impact-type-index-main h2 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(34px, 4.8vw, 68px);
   font-weight: 400;
   letter-spacing: 0;
@@ -4740,9 +4747,9 @@ body {
 
 .impact-type-lede span {
   color: rgba(255, 255, 255, 0.62);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 19px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 30px;
 }
 
@@ -4763,7 +4770,7 @@ body {
 .impact-type-index-item > span {
   display: block;
   color: #ff5a00;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(34px, 5vw, 76px);
   font-weight: 400;
   letter-spacing: 0;
@@ -4777,9 +4784,9 @@ body {
 .impact-type-index-item h3,
 .impact-type-index-note h3 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0 0 12px;
 }
@@ -4790,9 +4797,9 @@ body {
 .impact-type-index-item p,
 .impact-type-index-note p {
   color: rgba(255, 255, 255, 0.58);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 25px;
   margin: 0;
 }
@@ -4847,6 +4854,7 @@ body {
 .impact-type-ledger-statement h2 {
   font-family: var(--font-instrument-serif), serif;
   font-size: clamp(54px, 7vw, 96px);
+  font-weight: 400;
   line-height: 0.96;
 }
 
@@ -4971,9 +4979,9 @@ body {
 .impact-focus-refined article p,
 .impact-focus-rail-statement p {
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 14px;
-  font-weight: 650;
+  font-weight: 400;
   letter-spacing: 0.12em;
   line-height: 20px;
   margin: 0;
@@ -5019,9 +5027,9 @@ body {
 
 .impact-focus-option-header p {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -5029,9 +5037,9 @@ body {
 .impact-focus-option-header span {
   max-width: 520px;
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 22px;
   text-align: right;
 }
@@ -5085,7 +5093,7 @@ body {
 .impact-focus-rail-items article > span {
   display: block;
   color: #ff5a00;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(42px, 4.4vw, 68px);
   font-weight: 400;
   letter-spacing: 0;
@@ -5097,9 +5105,9 @@ body {
 .impact-focus-refined h3,
 .impact-focus-rail-items h3 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(22px, 1.7vw, 28px);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 1.16;
   margin: 0 0 12px;
@@ -5110,9 +5118,9 @@ body {
 .impact-focus-refined li p,
 .impact-focus-rail-items p {
   color: rgba(255, 255, 255, 0.58);
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(16px, 1.25vw, 18px);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.5;
   margin: 0;
 }
@@ -5173,7 +5181,7 @@ body {
 
 .impact-focus-refined article h2 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(34px, 3.8vw, 56px);
   font-weight: 400;
   letter-spacing: 0;
@@ -5325,7 +5333,7 @@ body {
 .impact-circle-label p {
   color: #ff5a00;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0;
@@ -5392,15 +5400,15 @@ body {
   background: #ffffff;
   color: #000000;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 28px;
 }
 
 .impact-circle-outcomes h2 {
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0 0 10px;
@@ -5410,7 +5418,7 @@ body {
   grid-column: 1 / -1;
   color: rgba(255, 255, 255, 0.58);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 16px 0 0;
 }
@@ -5441,7 +5449,7 @@ body {
 .label-sandbox-treatment-copy p {
   color: rgba(255, 255, 255, 0.58);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 24px;
   margin: 0;
 }
@@ -5469,7 +5477,7 @@ body {
   align-items: center;
   color: rgba(255, 255, 255, 0.58);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 20px;
 }
 
@@ -5480,7 +5488,7 @@ body {
 
 .label-sandbox-controls strong {
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   text-align: right;
 }
 
@@ -5502,7 +5510,7 @@ body {
 .label-sandbox-treatment-copy h2 {
   color: #ffffff;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0 0 8px;
@@ -5576,7 +5584,7 @@ body {
 .problem-sandbox-treatment-header p {
   color: rgba(255, 255, 255, 0.36);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0;
@@ -5589,7 +5597,7 @@ body {
 .problem-sandbox-intro h1 {
   max-width: 940px;
   color: #ffffff;
-  font-family: "Inter Display", var(--font-inter), sans-serif;
+  font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -5621,7 +5629,7 @@ body {
   max-width: 560px;
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   text-align: right;
 }
@@ -5673,7 +5681,7 @@ body {
 .problem-sandbox-audience {
   color: #ffffff;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }
@@ -5690,7 +5698,7 @@ body {
 .problem-sandbox-body {
   color: rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 28px;
   margin: 0;
 }

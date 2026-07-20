@@ -92,7 +92,7 @@ export default function BooklistPage() {
           </header>
 
           <section className="book-year-section staged-work-rise" style={gridDelay} aria-labelledby="books-2026">
-            <h2 id="books-2026" className="font-inter-display">
+            <h2 id="books-2026" className="font-sans-preview">
               2026
             </h2>
             <div className="book-grid">
@@ -102,7 +102,7 @@ export default function BooklistPage() {
                     <img className="book-cover-frame" src={book.cover} alt="" />
                     {book.status ? <span className="book-cover-sash">{book.status}</span> : null}
                   </div>
-                  <div className="book-card-meta font-inter-display">
+                  <div className="book-card-meta font-sans-preview">
                     <h3>{preventTextOrphans(book.title)}</h3>
                     <p>{preventTextOrphans(book.author)}</p>
                     <Stars rating={book.rating} pending={book.ratingPending} />
@@ -113,7 +113,7 @@ export default function BooklistPage() {
           </section>
 
           <aside className="book-tweet-section staged-work-rise" style={tweetDelay} aria-label="Related tweet">
-            <a className="book-tweet-card font-inter-display" href={BOOKLIST_TWEET_URL} target="_blank" rel="noreferrer">
+            <a className="book-tweet-card font-sans-preview" href={BOOKLIST_TWEET_URL} target="_blank" rel="noreferrer">
               <div className="book-tweet-header">
                 <img src="/avatar.jpg" alt="" />
                 <div>

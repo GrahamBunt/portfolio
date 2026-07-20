@@ -69,7 +69,7 @@ export default function BookmarksPage() {
               {bookmarks.map((bookmark) => (
                 <a
                   key={`${bookmark.date}-${bookmark.title}`}
-                  className="bookmark-row font-inter-display"
+                  className="bookmark-row font-sans-preview"
                   href={bookmark.href}
                   target="_blank"
                   rel="noreferrer"

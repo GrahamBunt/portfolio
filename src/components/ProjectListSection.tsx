@@ -81,7 +81,7 @@ export function ProjectListSection({
                   <p>{renderTitle ? renderTypographicNode(renderTitle(item, index)) : preventTextOrphans(item.title)}</p>
                   <p>{renderDescription ? renderTypographicNode(renderDescription(item, index)) : <ProjectMeta value={item.description} />}</p>
                 </div>
-                {item.statusLabel ? <span className="work-project-status font-inter-display">{item.statusLabel}</span> : null}
+                {item.statusLabel ? <span className="work-project-status font-sans-preview">{item.statusLabel}</span> : null}
               </div>
             </>
           );

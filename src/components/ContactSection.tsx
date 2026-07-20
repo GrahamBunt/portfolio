@@ -87,7 +87,7 @@ export function ContactSection({
         <h2 className="w-full font-[family-name:var(--font-instrument-serif)] text-[48px] leading-[56px] text-white">
           {renderTypographicNode(title)}
         </h2>
-        <p className="font-inter-display w-full text-2xl font-medium leading-8 text-white/65">
+        <p className="font-sans-preview w-full text-2xl font-normal leading-8 text-white/65">
           {renderTypographicNode(description)}
         </p>
       </header>
@@ -95,7 +95,7 @@ export function ContactSection({
         type="button"
         onClick={handleCopy}
         aria-live="polite"
-        className="nav-item-pill font-inter-display relative inline-flex min-w-40 items-center justify-center px-7 text-base font-medium leading-6 text-white"
+        className="nav-item-pill font-sans-preview relative inline-flex min-w-40 items-center justify-center px-7 text-base font-medium leading-6 text-white"
       >
         <span className="sr-only">{copied ? "Copied email address" : `Copy ${email}`}</span>
         <span aria-hidden="true" className="grid grid-cols-[18px_auto] items-center gap-2.5 opacity-0">

@@ -31,13 +31,13 @@ type ProblemCardDialStyle = CSSProperties & {
 
 const defaultProblemCardDials: ProblemCardDials = {
   padding: 42,
-  titleWeight: 400,
+  titleWeight: 500,
   subtitleWeight: 500,
 };
 
 const overviewCopyStyle: CSSProperties = {
   color: "#ffffff",
-  fontFamily: '"Inter Display", var(--font-inter), sans-serif',
+  fontFamily: 'var(--font-sans-preview), sans-serif',
   fontSize: "clamp(25px, 2.25vw, 34px)",
   fontWeight: 400,
   lineHeight: 1.24,
@@ -71,7 +71,7 @@ const hiddenMetadataLabelStyle: CSSProperties = {
 const overviewMetaPrimaryStyle: CSSProperties = {
   color: "#ffffff",
   fontSize: 20,
-  fontWeight: 500,
+  fontWeight: 400,
   lineHeight: "28px",
   margin: 0,
 };
@@ -79,7 +79,7 @@ const overviewMetaPrimaryStyle: CSSProperties = {
 const overviewMetaSecondaryStyle: CSSProperties = {
   color: "rgba(255, 255, 255, 0.65)",
   fontSize: 18,
-  fontWeight: 500,
+  fontWeight: 400,
   lineHeight: "28px",
   margin: 0,
 };
@@ -181,7 +181,7 @@ const stepNumberStyle: CSSProperties = {
   background: "#ffffff",
   color: "#000000",
   fontSize: 14,
-  fontWeight: 600,
+  fontWeight: 500,
   lineHeight: "28px",
 };
 
@@ -206,7 +206,7 @@ const stepFlowTitleStyle: CSSProperties = {
 const sectionLabelStyle: CSSProperties = {
   color: "rgba(255, 255, 255, 0.36)",
   fontSize: 16,
-  fontWeight: 600,
+  fontWeight: 500,
   letterSpacing: "0.12em",
   lineHeight: "23px",
   margin: 0,
@@ -215,7 +215,7 @@ const sectionLabelStyle: CSSProperties = {
 
 const stepTitleStyle: CSSProperties = {
   color: "#ffffff",
-  fontFamily: '"Inter Display", var(--font-inter), sans-serif',
+  fontFamily: 'var(--font-sans-preview), sans-serif',
   fontSize: 20,
   fontWeight: 500,
   lineHeight: "28px",
@@ -225,7 +225,7 @@ const stepTitleStyle: CSSProperties = {
 const stepDescriptionStyle: CSSProperties = {
   color: "rgba(255, 255, 255, 0.65)",
   fontSize: 18,
-  fontWeight: 500,
+  fontWeight: 400,
   lineHeight: "28px",
   margin: 0,
 };
@@ -274,7 +274,7 @@ function CaseStudyMediaBlock({
               key={item.src ?? item.label}
               className={`case-study-bento-tile ${item.span === "large" ? "is-large" : ""} ${item.src ? "has-image" : ""} ${item.fit === "contain" ? "is-contain" : ""}`}
             >
-              {item.src ? <img src={item.src} alt="" /> : <span className="case-study-bento-tile-chip font-inter-display">{item.label}</span>}
+              {item.src ? <img src={item.src} alt="" /> : <span className="case-study-bento-tile-chip font-sans-preview">{item.label}</span>}
             </div>
           ))}
         </div>
@@ -297,9 +297,9 @@ function CaseStudyMediaBlock({
       ) : src ? (
         <img src={src} alt="" />
       ) : (
-        <span className="font-inter-display">{label}</span>
+        <span className="font-sans-preview">{label}</span>
       )}
-      {caption && !isVideo ? <figcaption className="font-inter-display">{caption}</figcaption> : null}
+      {caption && !isVideo ? <figcaption className="font-sans-preview">{caption}</figcaption> : null}
     </figure>
   );
 }
@@ -330,7 +330,7 @@ function CaseStudyComparisonBlock({ block }: { block: Extract<CaseStudyBlock, { 
       {block.items.map((item) => (
         <figure key={item.title} className={`case-study-comparison-panel ${item.src ? "has-image" : ""}`}>
           <div className="case-study-comparison-image-frame">
-            {item.src ? <img src={item.src} alt="" /> : <span className="font-inter-display">{item.label}</span>}
+            {item.src ? <img src={item.src} alt="" /> : <span className="font-sans-preview">{item.label}</span>}
             {item.watermark ? (
               <span className="case-study-comparison-watermark" aria-hidden="true">
                 {item.title}
@@ -357,7 +357,7 @@ function CaseStudyProblemCardsBlock({ block }: { block: Extract<CaseStudyBlock, 
       style={dialStyle}
     >
       <header className="case-study-problem-header">
-        <p className="font-inter-display" style={sectionLabelStyle}>{block.label}</p>
+        <p className="font-sans-preview" style={sectionLabelStyle}>{block.label}</p>
       </header>
       <div className="case-study-problem-grid">
         {block.items.map((item) => (
@@ -374,10 +374,10 @@ function CaseStudyProblemCardsBlock({ block }: { block: Extract<CaseStudyBlock, 
                     {item.avatar ? <img src={item.avatar} alt="" /> : item.audience.slice(0, 1)}
                   </div>
                 ) : null}
-                <p className="case-study-problem-audience font-inter-display">{item.audience}</p>
+                <p className="case-study-problem-audience font-sans-preview">{item.audience}</p>
               </div>
               <h2>{preventTextOrphans(item.title)}</h2>
-              <p className="case-study-problem-body font-inter-display">{preventTextOrphans(item.body)}</p>
+              <p className="case-study-problem-body font-sans-preview">{preventTextOrphans(item.body)}</p>
             </div>
           </article>
         ))}
@@ -393,7 +393,7 @@ function CaseStudySpecSamplesBlock({ block }: { block: Extract<CaseStudyBlock, {
       aria-label={block.label}
     >
       <header className="case-study-spec-samples-header">
-        <p className="font-inter-display" style={sectionLabelStyle}>{block.label}</p>
+        <p className="font-sans-preview" style={sectionLabelStyle}>{block.label}</p>
       </header>
       <div className="case-study-spec-samples-grid">
         {block.items.map((item) => (
@@ -432,7 +432,7 @@ function CaseStudySpecSamplesBlock({ block }: { block: Extract<CaseStudyBlock, {
             <div className="case-study-spec-sample-title-row">
               <div>
                 <h3>{preventTextOrphans(item.title)}</h3>
-                <p className="font-inter-display">{preventTextOrphans(item.description)}</p>
+                <p className="font-sans-preview">{preventTextOrphans(item.description)}</p>
               </div>
               <span className="case-study-spec-sample-arrow" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
@@ -454,22 +454,22 @@ function CaseStudyImpactBlock({ block }: { block: Extract<CaseStudyBlock, { type
     <section className={`case-study-impact case-study-block ${getBlockWidthClass(block.width ?? "full")}`}>
       <div className="case-study-impact-heading">
         <div className="case-study-impact-label">
-          <p className="font-inter-display">{block.label}</p>
+          <p className="font-sans-preview">{block.label}</p>
         </div>
         <h2>{preventTextOrphans(block.statement)}</h2>
       </div>
       <div className={`case-study-impact-outcomes ${outcomeCountClass}`}>
         {block.outcomes.map((item) => (
           <article key={item.number}>
-            <span className="font-inter-display">{item.number}</span>
+            <span className="font-sans-preview">{item.number}</span>
             <div>
               <h3>{preventTextOrphans(item.title)}</h3>
-              <p className="font-inter-display">{preventTextOrphans(item.body)}</p>
+              <p className="font-sans-preview">{preventTextOrphans(item.body)}</p>
             </div>
           </article>
         ))}
       </div>
-      {block.footnote ? <p className="case-study-impact-footnote font-inter-display">{preventTextOrphans(block.footnote)}</p> : null}
+      {block.footnote ? <p className="case-study-impact-footnote font-sans-preview">{preventTextOrphans(block.footnote)}</p> : null}
     </section>
   );
 }
@@ -481,10 +481,10 @@ function CaseStudyShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { ty
     <section className={`case-study-showcase case-study-block ${getBlockWidthClass(block.width ?? "full")}`}>
       {hasHeader ? (
         <header className="case-study-showcase-header">
-          {block.label ? <p className="case-study-showcase-label font-inter-display">{block.label}</p> : null}
+          {block.label ? <p className="case-study-showcase-label font-sans-preview">{block.label}</p> : null}
           <div>
             {block.title ? <h2>{preventTextOrphans(block.title)}</h2> : null}
-            {block.body ? <p className="font-inter-display">{preventTextOrphans(block.body)}</p> : null}
+            {block.body ? <p className="font-sans-preview">{preventTextOrphans(block.body)}</p> : null}
           </div>
         </header>
       ) : null}
@@ -493,7 +493,7 @@ function CaseStudyShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { ty
           <figure key={item.title} className={`case-study-showcase-item ${item.span === "half" ? "is-half" : "is-full"}`}>
             <figcaption>
               <h3>{preventTextOrphans(item.title)}</h3>
-              <p className="font-inter-display">{preventTextOrphans(item.description)}</p>
+              <p className="font-sans-preview">{preventTextOrphans(item.description)}</p>
             </figcaption>
             <div className="case-study-showcase-media">
               <img src={item.src} alt="" loading="eager" decoding="async" fetchPriority={index < 2 ? "high" : "auto"} />
@@ -567,10 +567,10 @@ function CaseStudyPresentationScrollerBlock({ block }: { block: Extract<CaseStud
       <div className="case-study-presentation-sticky">
         {block.label || block.title || block.body ? (
           <header className="case-study-presentation-header">
-            {block.label ? <p className="case-study-showcase-label font-inter-display">{block.label}</p> : null}
+            {block.label ? <p className="case-study-showcase-label font-sans-preview">{block.label}</p> : null}
             <div>
               {block.title ? <h2>{preventTextOrphans(block.title)}</h2> : null}
-              {block.body ? <p className="font-inter-display">{preventTextOrphans(block.body)}</p> : null}
+              {block.body ? <p className="font-sans-preview">{preventTextOrphans(block.body)}</p> : null}
             </div>
           </header>
         ) : null}
@@ -579,7 +579,7 @@ function CaseStudyPresentationScrollerBlock({ block }: { block: Extract<CaseStud
           {block.slides.map((slide, index) => (
             <article key={`${slide.eyebrow ?? index}-${slide.title}`} className={`case-study-presentation-slide ${index === 0 ? "is-hero-slide" : ""}`}>
               {slide.src ? <img src={slide.src} alt="" /> : <div className="case-study-presentation-placeholder" aria-hidden="true" />}
-              <div className="case-study-presentation-copy font-inter-display">
+              <div className="case-study-presentation-copy font-sans-preview">
                 {slide.eyebrow ? <span>{slide.eyebrow}</span> : null}
                 <h3>{preventTextOrphans(slide.title)}</h3>
                 {slide.description ? <p>{preventTextOrphans(slide.description)}</p> : null}
@@ -866,27 +866,27 @@ function CaseStudyStepFlowBlock({ block }: { block: Extract<CaseStudyBlock, { ty
       {block.title || block.label ? (
         <header className="case-study-step-flow-header" style={stepFlowHeaderStyle}>
           {block.title ? <h2 style={stepFlowTitleStyle}>{preventTextOrphans(block.title)}</h2> : null}
-          {block.label ? <p className="font-inter-display" style={sectionLabelStyle}>{block.label}</p> : null}
+          {block.label ? <p className="font-sans-preview" style={sectionLabelStyle}>{block.label}</p> : null}
         </header>
       ) : null}
       <div className="case-study-step-flow-grid" style={stepFlowGridStyle}>
         {block.items.map((item, index) => (
           <article key={item.title} className="case-study-step-card" style={stepCardStyle}>
             <figure className="case-study-step-media" style={stepMediaStyle}>
-              {item.image ? <img src={item.image} alt="" /> : <span className="font-inter-display">{item.label}</span>}
+              {item.image ? <img src={item.image} alt="" /> : <span className="font-sans-preview">{item.label}</span>}
             </figure>
             <div
               className="case-study-step-copy"
               style={stepCopyStyle}
             >
               <span
-                className="case-study-step-number font-inter-display"
+                className="case-study-step-number font-sans-preview"
                 style={stepNumberStyle}
               >
                 {index + 1}
               </span>
               <h2 style={stepTitleStyle}>{preventTextOrphans(item.title)}</h2>
-              <p className="font-inter-display" style={{ ...stepDescriptionStyle, gridColumn: "1 / -1" }}>
+              <p className="font-sans-preview" style={{ ...stepDescriptionStyle, gridColumn: "1 / -1" }}>
                 {preventTextOrphans(item.description)}
               </p>
             </div>
@@ -909,7 +909,7 @@ function CaseStudySectionBody({
   return (
     <div className="case-study-section-body" style={style}>
       {body.map((paragraph) => (
-        <p key={paragraph} className="font-inter-display" style={paragraphStyle}>
+        <p key={paragraph} className="font-sans-preview" style={paragraphStyle}>
           {preventTextOrphans(paragraph)}
         </p>
       ))}
@@ -927,9 +927,9 @@ function CaseStudyTextBlock({ block }: { block: Extract<CaseStudyBlock, { type: 
       className={`case-study-text-section case-study-block ${getBlockWidthClass(block.width)} ${block.align === "center" ? "is-centered" : ""}`}
       style={block.align === "center" ? { alignItems: "center", textAlign } : undefined}
     >
-      {block.eyebrow ? <p className="case-study-section-eyebrow font-inter-display">{block.eyebrow}</p> : null}
+      {block.eyebrow ? <p className="case-study-section-eyebrow font-sans-preview">{block.eyebrow}</p> : null}
       {introRevealText ? (
-        <div className="font-inter-display" style={{ ...staticOverviewCopyWrapStyle, maxWidth: 520, textAlign: "left" }}>
+        <div className="font-sans-preview" style={{ ...staticOverviewCopyWrapStyle, maxWidth: 520, textAlign: "left" }}>
           {introRevealText.map((paragraph) => (
             <p key={paragraph} style={{ ...overviewCopyStyle, width: "100%", maxWidth: 520 }}>
               {preventTextOrphans(paragraph)}
@@ -952,7 +952,7 @@ function CaseStudyEditorialIntroBlock({ block }: { block: Extract<CaseStudyBlock
       <h2>{preventTextOrphans(block.title)}</h2>
       <div className="case-study-editorial-intro-body">
         {block.body.map((paragraph) => (
-          <p key={paragraph} className="font-inter-display">{preventTextOrphans(paragraph)}</p>
+          <p key={paragraph} className="font-sans-preview">{preventTextOrphans(paragraph)}</p>
         ))}
       </div>
     </section>
@@ -981,7 +981,7 @@ function CaseStudyEditorialMedia({ media }: { media: NonNullable<Extract<CaseStu
       {items.map((item) => (
         <figure key={`${item.label}-${item.src}`} className="case-study-editorial-media">
           <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
-          {item.caption ? <figcaption className="font-inter-display">{preventTextOrphans(item.caption)}</figcaption> : null}
+          {item.caption ? <figcaption className="font-sans-preview">{preventTextOrphans(item.caption)}</figcaption> : null}
         </figure>
       ))}
     </div>
@@ -997,7 +997,7 @@ function CaseStudyEditorialSplitBlock({ block }: { block: Extract<CaseStudyBlock
       <div className="case-study-editorial-main">
         <div className="case-study-editorial-copy">
           {block.body.map((paragraph) => (
-            <p key={paragraph} className="font-inter-display">{renderEditorialInline(paragraph)}</p>
+            <p key={paragraph} className="font-sans-preview">{renderEditorialInline(paragraph)}</p>
           ))}
         </div>
         {block.media ? <CaseStudyEditorialMedia media={block.media} /> : null}
@@ -1023,17 +1023,17 @@ function CaseStudyEditorialPulloutBlock({ block }: { block: Extract<CaseStudyBlo
         <div className="case-study-editorial-pullout-grid">
           {block.items.map((item) => (
             <div key={`${item.value}-${item.label}`} className="case-study-editorial-pullout-item">
-              <p className="case-study-editorial-pullout-value font-inter-display">{item.value}</p>
-              <p className="case-study-editorial-pullout-label font-inter-display">{item.label}</p>
-              {item.body ? <p className="case-study-editorial-pullout-body font-inter-display">{preventTextOrphans(item.body)}</p> : null}
+              <p className="case-study-editorial-pullout-value font-sans-preview">{item.value}</p>
+              <p className="case-study-editorial-pullout-label font-sans-preview">{item.label}</p>
+              {item.body ? <p className="case-study-editorial-pullout-body font-sans-preview">{preventTextOrphans(item.body)}</p> : null}
             </div>
           ))}
         </div>
       ) : (
         <div className="case-study-editorial-pullout-item">
-          {block.value ? <p className="case-study-editorial-pullout-value font-inter-display">{block.value}</p> : null}
-          {block.label ? <p className="case-study-editorial-pullout-label font-inter-display">{block.label}</p> : null}
-          {block.body ? <p className="case-study-editorial-pullout-body font-inter-display">{preventTextOrphans(block.body)}</p> : null}
+          {block.value ? <p className="case-study-editorial-pullout-value font-sans-preview">{block.value}</p> : null}
+          {block.label ? <p className="case-study-editorial-pullout-label font-sans-preview">{block.label}</p> : null}
+          {block.body ? <p className="case-study-editorial-pullout-body font-sans-preview">{preventTextOrphans(block.body)}</p> : null}
         </div>
       )}
     </aside>
@@ -1042,7 +1042,7 @@ function CaseStudyEditorialPulloutBlock({ block }: { block: Extract<CaseStudyBlo
 
 function CaseStudyNarrativeBlock({ block }: { block: Extract<CaseStudyBlock, { type: "narrative" }> }) {
   return (
-    <section className={`case-study-narrative case-study-block ${getBlockWidthClass(block.width ?? "wide")} font-inter-display`}>
+    <section className={`case-study-narrative case-study-block ${getBlockWidthClass(block.width ?? "wide")} font-sans-preview`}>
       <ScrollRevealText
         text={block.body}
         style={overviewCopyStyle}
@@ -1054,7 +1054,7 @@ function CaseStudyNarrativeBlock({ block }: { block: Extract<CaseStudyBlock, { t
 
 function CaseStudyOverviewBlock({ overview }: { overview: CaseStudyOverview }) {
   return (
-    <section className="case-study-overview case-study-block font-inter-display">
+    <section className="case-study-overview case-study-block font-sans-preview">
       <aside className="case-study-overview-details">
         <dl className="case-study-overview-meta">
           {overview.items.map((item, index) => (
@@ -1084,7 +1084,7 @@ function CaseStudyOverviewBlock({ overview }: { overview: CaseStudyOverview }) {
 function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
   if (block.type === "metadata") {
     return (
-      <dl className="case-study-meta case-study-block case-study-block-content font-inter-display">
+      <dl className="case-study-meta case-study-block case-study-block-content font-sans-preview">
         {block.items.map((item) => (
           <div key={item.label}>
             <dt>{item.label}</dt>
@@ -1189,7 +1189,7 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
     >
       {block.mediaSide === "left" ? media : null}
       <article className="case-study-text-section case-study-block case-study-block-content">
-        {block.eyebrow ? <p className="case-study-section-eyebrow font-inter-display">{block.eyebrow}</p> : null}
+        {block.eyebrow ? <p className="case-study-section-eyebrow font-sans-preview">{block.eyebrow}</p> : null}
         <h2>{preventTextOrphans(block.title)}</h2>
         <CaseStudySectionBody body={block.body} />
       </article>
@@ -1319,7 +1319,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
             <div className="case-study-top">
               <header className="work-heading case-study-heading">
                 <div
-                  className={`case-study-top-meta font-inter-display ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
+                  className={`case-study-top-meta font-sans-preview ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
                   style={sequenceReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
                 >
                   <ProjectMeta value={project.tag} />
@@ -1379,7 +1379,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
           <div className="case-study-top">
             <header className="work-heading case-study-heading">
               <div
-                className={`case-study-top-meta font-inter-display ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
+                className={`case-study-top-meta font-sans-preview ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
                 style={sequenceReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
               >
                 <ProjectMeta value={project.tag} />
@@ -1418,13 +1418,13 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                     <div className="case-study-media-shell">
                       <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
                     </div>
-                    <figcaption className="font-inter-display">{preventTextOrphans(item.caption)}</figcaption>
+                    <figcaption className="font-sans-preview">{preventTextOrphans(item.caption)}</figcaption>
                   </figure>
 
                   {project.notes[index] ? (
                     <article className="case-study-note">
                       <h2>{preventTextOrphans(project.notes[index].title)}</h2>
-                      <p className="font-inter-display">{preventTextOrphans(project.notes[index].body)}</p>
+                      <p className="font-sans-preview">{preventTextOrphans(project.notes[index].body)}</p>
                     </article>
                   ) : null}
                 </div>
