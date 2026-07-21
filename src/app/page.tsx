@@ -119,7 +119,7 @@ export default function Home() {
                             />
                           ) : null}
                         </div>
-                        <figcaption className="text-base font-normal text-white/65">
+                        <figcaption className="text-base font-medium text-white/65">
                           {project.title}
                         </figcaption>
                       </figure>
@@ -134,7 +134,7 @@ export default function Home() {
         <ContactSection />
 
         <footer className="mt-[-20px] flex h-[148px] w-full items-start justify-center pt-20">
-          <div className="font-sans-preview flex w-full max-w-[560px] items-start justify-between gap-5 p-5 text-lg font-normal leading-7 text-white/65">
+          <div className="font-sans-preview flex w-full max-w-[560px] items-start justify-between gap-5 p-5 text-lg font-medium leading-7 text-white/65">
             <span>Graham Bunt</span>
             <span>©2026</span>
           </div>

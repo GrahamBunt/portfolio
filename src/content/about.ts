@@ -40,8 +40,8 @@ export const aboutContent: AboutContent = {
     description: "I like building software with great people.",
   },
   bio: [
-    "I'm currently with Smartsheet, where I design enterprise products that help teams manage work. I have a track record of turning ambiguity into clear direction and making complex systems easier to use. I care deeply about craft and building products that feel intuitive, thoughtful, and visually refined. Most of all, I enjoy working with great people to bring ambitious ideas to life.",
-    "Outside of work, my wife and I are raising two daughters (Rory and Mara) and wrangling two golden retrievers (Maverick and Bodhi). Living in Utah, I spend my free time hiking, mountain biking, and snowboarding. I'm also a land-locked surfer, so every summer we head back to the Jersey Shore. It's where I grew up, and still my favorite place to surf.",
+    "I'm currently at Smartsheet, where I design enterprise products that help teams manage work. I enjoy bringing clarity to ambiguous problems and making complex systems easier to use. I care deeply about craft and believe the best products feel intuitive, thoughtful, and visually refined.",
+    "Outside of work, my wife and I are raising two daughters (Rory and Mara) and wrangling two golden retrievers (Maverick and Bodhi). Living in Utah, I spend my free time hiking, mountain biking, and snowboarding. I'm also a land-locked surfer, so every summer we try to get back to the Jersey Shore, where I grew up and still my favorite place to surf.",
   ],
   social: [
     {
