@@ -3983,7 +3983,7 @@ body {
   color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0 0 16px;
@@ -4283,7 +4283,7 @@ body {
   color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0 0 16px;
@@ -4659,7 +4659,7 @@ body {
   color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 20px;
   margin: 0;
@@ -4986,7 +4986,7 @@ body {
   color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 20px;
   margin: 0;
@@ -5338,7 +5338,7 @@ body {
 .impact-circle-label p {
   color: #ff5a00;
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0;
@@ -5454,7 +5454,7 @@ body {
 .label-sandbox-treatment-copy p {
   color: rgba(255, 255, 255, 0.58);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 24px;
   margin: 0;
 }
@@ -5589,7 +5589,7 @@ body {
 .problem-sandbox-treatment-header p {
   color: rgba(255, 255, 255, 0.36);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 23px;
   margin: 0;
