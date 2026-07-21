@@ -3,7 +3,7 @@ import { Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
+  variable: "--font-display-serif",
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],

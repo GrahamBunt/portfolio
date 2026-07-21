@@ -79,7 +79,7 @@ export default function BooklistPage() {
       <main className="booklist-main">
         <section className="booklist-section" aria-label="Booklist">
           <header className="work-heading booklist-heading">
-            <h1 className="font-[family-name:var(--font-instrument-serif)]">
+            <h1 className="font-[family-name:var(--font-display-serif)]">
               <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
                 Booklist
               </span>

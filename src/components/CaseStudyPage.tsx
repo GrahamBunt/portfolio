@@ -196,7 +196,7 @@ const stepFlowHeaderStyle: CSSProperties = {
 
 const stepFlowTitleStyle: CSSProperties = {
   color: "#ffffff",
-  fontFamily: "var(--font-instrument-serif), serif",
+  fontFamily: "var(--font-display-serif), serif",
   fontSize: "clamp(38px, 4.4vw, 64px)",
   fontWeight: 400,
   lineHeight: 1,
@@ -1324,7 +1324,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 >
                   <ProjectMeta value={project.tag} />
                 </div>
-                <h1 className="font-[family-name:var(--font-instrument-serif)]">
+                <h1 className="font-[family-name:var(--font-display-serif)]">
                   <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                     {title}
                   </span>
@@ -1384,7 +1384,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
               >
                 <ProjectMeta value={project.tag} />
               </div>
-              <h1 className="font-[family-name:var(--font-instrument-serif)]">
+              <h1 className="font-[family-name:var(--font-display-serif)]">
                 <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                   {title}
                 </span>

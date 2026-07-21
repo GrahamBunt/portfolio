@@ -64,9 +64,9 @@ export default function WorkPage() {
       <main className="work-main">
         <section className="work-products" aria-label="Projects">
           <header className="work-heading">
-            <h1 className="font-[family-name:var(--font-instrument-serif)]">
+            <h1 className="font-[family-name:var(--font-display-serif)]">
               <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
-                <em>Select</em> work
+                <span>Select</span> work
               </span>
             </h1>
             <AnimatedDescription

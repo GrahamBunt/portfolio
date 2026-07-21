@@ -29,6 +29,11 @@ body {
   font-family: var(--font-sans-preview), sans-serif;
 }
 
+.home-hero-emphasis {
+  font-family: var(--font-display-serif), "Instrument Serif", serif;
+  font-style: italic !important;
+}
+
 .scroll-reveal-line {
   --line-fill: 0%;
   --line-edge: 7%;
@@ -758,7 +763,7 @@ body {
 }
 
 .work-heading h1 em {
-  font-style: italic;
+  font-style: normal;
 }
 
 .work-heading p {
@@ -1683,7 +1688,7 @@ body {
 }
 
 .work-all-projects h3.about-explore-title {
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: 48px;
   font-weight: 400;
   line-height: 56px;
@@ -1759,7 +1764,7 @@ body {
 .work-heading.case-study-heading h1 {
   max-width: 940px;
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(34px, 4.4vw, 66px);
   font-weight: 400;
   letter-spacing: 0;
@@ -3115,7 +3120,7 @@ body {
 
 .case-study-step-flow-header h2 {
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(38px, 4.4vw, 64px);
   font-weight: 400;
   line-height: 1;
@@ -3779,7 +3784,7 @@ body {
 
 .case-study-note h2 {
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: 32px;
   font-weight: 400;
   line-height: 40px;
@@ -3987,7 +3992,7 @@ body {
 
 .spec-sandbox-intro h1 {
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(54px, 7vw, 112px);
   font-weight: 400;
   letter-spacing: 0;
@@ -4287,7 +4292,7 @@ body {
 
 .impact-sandbox-intro h1 {
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(54px, 7vw, 112px);
   font-weight: 400;
   letter-spacing: 0;
@@ -4507,7 +4512,7 @@ body {
 }
 
 .impact-c-statement h2 {
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(48px, 6vw, 80px);
   font-weight: 400;
   line-height: 0.98;
@@ -4667,7 +4672,7 @@ body {
 
 .impact-type-intro h1 {
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(54px, 7vw, 112px);
   font-weight: 400;
   letter-spacing: 0;
@@ -4852,7 +4857,7 @@ body {
 }
 
 .impact-type-ledger-statement h2 {
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(54px, 7vw, 96px);
   font-weight: 400;
   line-height: 0.96;
@@ -4994,7 +4999,7 @@ body {
 
 .impact-focus-intro h1 {
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(54px, 7vw, 112px);
   font-weight: 400;
   letter-spacing: 0;
@@ -5062,7 +5067,7 @@ body {
 .impact-focus-rail-statement h2 {
   max-width: 540px;
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(48px, 5vw, 82px);
   font-weight: 400;
   letter-spacing: 0;
@@ -5135,7 +5140,7 @@ body {
 .impact-focus-topline h2 {
   max-width: 920px;
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(50px, 5.8vw, 94px);
   font-weight: 400;
   letter-spacing: 0;
@@ -5342,7 +5347,7 @@ body {
 .impact-circle-heading h1 {
   max-width: 940px;
   color: #ffffff;
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(34px, 4.4vw, 66px);
   font-weight: 400;
   letter-spacing: 0;

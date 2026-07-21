@@ -84,7 +84,7 @@ export function ContactSection({
       className={`flex w-full max-w-[560px] flex-col gap-[30px] p-5 ${isLeft ? "items-start text-left" : "items-center text-center"}`}
     >
       <header className={`flex w-full flex-col gap-2.5 ${isLeft ? "items-start" : "items-center"}`}>
-        <h2 className="w-full font-[family-name:var(--font-instrument-serif)] text-[48px] leading-[56px] text-white">
+        <h2 className="w-full font-[family-name:var(--font-display-serif)] text-[48px] leading-[56px] text-white">
           {renderTypographicNode(title)}
         </h2>
         <p className="font-sans-preview w-full text-2xl font-normal leading-8 text-white/65">

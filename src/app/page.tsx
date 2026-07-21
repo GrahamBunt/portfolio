@@ -35,9 +35,9 @@ export default function Home() {
           data-section="intro"
           className="flex w-full max-w-[900px] flex-col items-center gap-[30px] overflow-hidden p-5 text-center"
         >
-          <h1 className="w-full font-[family-name:var(--font-instrument-serif)] text-[38px] leading-[46px] tracking-[0] text-white min-[810px]:text-[58px] min-[810px]:leading-[66px]">
+          <h1 className="w-full font-[family-name:var(--font-display-serif)] text-[38px] leading-[46px] tracking-[0] text-white min-[810px]:text-[58px] min-[810px]:leading-[66px]">
             <span className={fontsReady ? "animate-reveal" : "opacity-0"}>
-              Graham Bunt is a <em className="italic">Product Designer</em>
+              Graham Bunt is a <em className="home-hero-emphasis">Product Designer</em>
             </span>
             <span
               className={fontsReady ? "animate-reveal" : "opacity-0"}

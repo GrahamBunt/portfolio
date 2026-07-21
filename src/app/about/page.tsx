@@ -146,18 +146,18 @@ export default function AboutPage() {
       <main className="about-main">
         <section className="about-section" aria-label="About">
           <header className="work-heading about-heading">
-            <h1 className="font-[family-name:var(--font-instrument-serif)]">
+            <h1 className="font-[family-name:var(--font-display-serif)]">
               <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
                 {tuneMode ? (
                   <>
-                    <em>
+                    <span>
                       <EditableText
                         value={draft.hero.titleItalic}
                         onChange={(value) => updateDraft((content) => {
                           content.hero.titleItalic = value;
                         })}
                       />
-                    </em>
+                    </span>
                     <EditableText
                       value={draft.hero.titleRest}
                       onChange={(value) => updateDraft((content) => {
@@ -167,7 +167,7 @@ export default function AboutPage() {
                   </>
                 ) : (
                   <>
-                    <em>{draft.hero.titleItalic}</em>
+                    <span>{draft.hero.titleItalic}</span>
                     {draft.hero.titleRest}
                   </>
                 )}
