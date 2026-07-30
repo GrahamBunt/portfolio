@@ -39,8 +39,8 @@ function renderTypographicNode(node: ReactNode) {
 }
 
 export function ContactSection({
-  title = "Contact",
-  description = "I’m always excited to meet new people, collaborate on ideas, and discuss opportunities.",
+  title = "Get in touch",
+  description = "I'm always excited to chat, collaborate on ideas, and discuss opportunities.",
   action = DEFAULT_EMAIL,
   align = "center",
   email = DEFAULT_EMAIL,
@@ -84,10 +84,10 @@ export function ContactSection({
       className={`flex w-full max-w-[560px] flex-col gap-[30px] p-5 ${isLeft ? "items-start text-left" : "items-center text-center"}`}
     >
       <header className={`flex w-full flex-col gap-2.5 ${isLeft ? "items-start" : "items-center"}`}>
-        <h2 className="w-full font-[family-name:var(--font-display-serif)] text-[48px] leading-[56px] text-white">
+        <h2 className="display-serif-type w-full font-[family-name:var(--font-display-serif)] text-[44px] font-normal leading-[52px] text-white">
           {renderTypographicNode(title)}
         </h2>
-        <p className="font-sans-preview w-full text-2xl font-normal leading-8 text-white/65">
+        <p className="contact-description font-sans-preview w-full font-normal text-white/65">
           {renderTypographicNode(description)}
         </p>
       </header>

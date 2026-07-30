@@ -64,9 +64,11 @@ function EditableText({
 
 export default function AboutPage() {
   const [fontsReady, setFontsReady] = useState(false);
+  const [portraitImageReady, setPortraitImageReady] = useState(false);
   const [tuneMode, setTuneMode] = useState(false);
   const [draft, setDraft] = useState<AboutContent>(() => cloneContent());
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const sequenceReady = fontsReady && portraitImageReady;
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -74,8 +76,13 @@ export default function AboutPage() {
     }
     window.scrollTo(0, 0);
 
+    const imagePreload = new window.Image();
+    imagePreload.onload = () => setPortraitImageReady(true);
+    imagePreload.onerror = () => setPortraitImageReady(true);
+    imagePreload.src = ABOUT_IMAGE;
+
     document.fonts.ready
-      .then(() => new Promise((resolve) => setTimeout(resolve, 250)))
+      .then(() => new Promise((resolve) => setTimeout(resolve, 120)))
       .then(() => setFontsReady(true));
 
     const tuneModeTimer = window.setTimeout(() => {
@@ -89,15 +96,15 @@ export default function AboutPage() {
   }, []);
 
   const portraitDelay = {
-    "--rise-delay": "520ms",
-    "--rise-duration": "1.08s",
+    "--rise-delay": "380ms",
+    "--rise-duration": "0.78s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
 
   const bioDelay = {
-    "--rise-delay": "640ms",
-    "--rise-duration": "0.88s",
+    "--rise-delay": "480ms",
+    "--rise-duration": "0.68s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -128,7 +135,7 @@ export default function AboutPage() {
   };
 
   return (
-    <div className={`about-page ${fontsReady ? "sequence-ready" : ""}`}>
+    <div className={`about-page ${sequenceReady ? "sequence-ready" : ""}`}>
       <SiteNav />
 
       {tuneMode ? (
@@ -146,8 +153,8 @@ export default function AboutPage() {
       <main className="about-main">
         <section className="about-section" aria-label="About">
           <header className="work-heading about-heading">
-            <h1 className="font-[family-name:var(--font-display-serif)]">
-              <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
+            <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
+              <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                 {tuneMode ? (
                   <>
                     <span>
@@ -174,7 +181,7 @@ export default function AboutPage() {
               </span>
             </h1>
             {tuneMode ? (
-              <p className="font-sans-preview">
+              <p className="about-heading-description font-sans-preview">
                 <EditableText
                   value={draft.hero.description}
                   onChange={(value) => updateDraft((content) => {
@@ -183,7 +190,12 @@ export default function AboutPage() {
                 />
               </p>
             ) : (
-              <AnimatedDescription ready={fontsReady} delay="260ms" text={draft.hero.description} />
+              <AnimatedDescription
+                ready={sequenceReady}
+                delay="260ms"
+                text={draft.hero.description}
+                className="about-heading-description"
+              />
             )}
           </header>
 
@@ -208,32 +220,34 @@ export default function AboutPage() {
                 </p>
               ))}
             </div>
-            <div className="about-social">
-              {draft.social.map((item, index) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="nav-item-pill about-social-link font-sans-preview text-base font-medium leading-6 text-white"
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={tuneMode ? (event) => event.preventDefault() : undefined}
-                >
-                  <span className="about-social-icon">
-                    <SocialIcon icon={item.icon} />
-                  </span>
-                  {tuneMode ? (
-                    <EditableText
-                      value={item.label}
-                      onChange={(value) => updateDraft((content) => {
-                        content.social[index].label = value;
-                      })}
-                    />
-                  ) : (
-                    preventTextOrphans(item.label)
-                  )}
-                </a>
-              ))}
-            </div>
+            {draft.social.length ? (
+              <div className="about-social">
+                {draft.social.map((item, index) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="nav-item-pill about-social-link font-sans-preview text-base font-medium leading-6 text-white"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={tuneMode ? (event) => event.preventDefault() : undefined}
+                  >
+                    <span className="about-social-icon">
+                      <SocialIcon icon={item.icon} />
+                    </span>
+                    {tuneMode ? (
+                      <EditableText
+                        value={item.label}
+                        onChange={(value) => updateDraft((content) => {
+                          content.social[index].label = value;
+                        })}
+                      />
+                    ) : (
+                      preventTextOrphans(item.label)
+                    )}
+                  </a>
+                ))}
+              </div>
+            ) : null}
           </div>
         </section>
 

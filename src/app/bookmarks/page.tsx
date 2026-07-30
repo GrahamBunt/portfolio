@@ -56,7 +56,7 @@ export default function BookmarksPage() {
       <main className="bookmarks-main">
         <section className="bookmarks-section" aria-label="Bookmarks">
           <header className="work-heading bookmarks-heading">
-            <h1 className="font-[family-name:var(--font-display-serif)]">
+            <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
               <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
                 {bookmarksPageContent.title}
               </span>

@@ -276,7 +276,7 @@ export type CaseStudyNote = {
 export const featuredWork: WorkItem = {
   title: "Smartsheet Reports",
   slug: "smartsheet-reports",
-  tag: "Smartsheet • 08.2025–04.2026",
+  tag: "Smartsheet • 2025–2026",
   image: "/work/smartsheet-reports/empty-mock-hero.jpg",
   heroImage: "/work/smartsheet-reports/empty-mock-hero.jpg",
   thumbnailImage: "/work/smartsheet-reports/thumbnail.png",
@@ -484,103 +484,60 @@ export const otherWork: WorkItem[] = [
     image: "/work/resource-management-integration/thumbnail.jpg",
     heroImage: "/work/resource-management-integration/thumbnail.jpg",
     thumbnailImage: "/work/resource-management-integration/thumbnail.jpg",
-    summary: "A case study on integrating an acquired resource management platform into the core Smartsheet product.",
-    isComingSoon: true,
+    summary: "Shaped the integration strategy for an acquired resource management platform inside Smartsheet.",
+    overview: {
+      items: [
+        { label: "Role", value: "Product designer" },
+        { label: "Company", value: "Smartsheet" },
+        { label: "Focus", value: "Integration strategy" },
+        { label: "Duration", value: "3 years" },
+      ],
+      body: [
+        "Smartsheet acquired 10,000ft to bring resource management into the platform. My work sat in the messy middle: improving the standalone product, reducing integration friction, protecting revenue, and clarifying where the capability should live.",
+      ],
+    },
     blocks: [
       {
-        type: "editorialIntro",
+        type: "split",
+        title: "Core question",
+        body: [
+          "The work kept returning to one question: where should Resource Management actually live?",
+          "We could keep investing in it as a standalone product, reduce the friction between products, or rebuild its strongest capabilities natively inside Smartsheet.",
+        ],
+        media: {
+          label: "Resource Management strategy placeholder",
+        },
+      },
+      {
+        type: "split",
+        title: "Integration bets",
+        body: [
+          "We tried multiple paths instead of one linear roadmap: improving the standalone product, simplifying setup, unifying access, and surfacing workload planning inside Smartsheet.",
+          "Those bets improved the experience, but they exposed the deeper issue: better access did not automatically create demand.",
+        ],
+        variant: "feature",
+        media: {
+          label: "Integration bets placeholder",
+        },
+      },
+      {
+        type: "split",
+        title: "Business reality",
+        body: [
+          "Only 4.2% of Smartsheet customers were using Resource Management, so the integration needed to create demand, not just remove friction.",
+          "While the broader strategy was still forming, I defined the direction for bringing Resource Management report data into Smartsheet sheets and coached a junior designer through delivery. That work protected about $850K ARR and influenced another $300K ARR.",
+        ],
+        media: {
+          label: "Business reality placeholder",
+        },
+      },
+      {
+        type: "impact",
         width: "full",
-        title: "How do you successfully integrate an acquired product into an existing product?",
-        body: [
-          "Smartsheet acquired 10,000ft to strengthen its resource management offering. I joined after it had been rebranded to Resource Management, as the company's focus shifted from improving the standalone product to integrating its capabilities into the core Smartsheet experience.",
-        ],
-      },
-      {
-        type: "editorialSplit",
-        number: "01",
-        title: "Investing in the standalone product",
-        body: [
-          "My early work focused on improving Resource Management through Project Access Management, Capacity View, and localization. Investing in the standalone product felt like the right way to change the perception that the experience was dated.",
-        ],
-        media: {
-          label: "Capacity View",
-          src: "/masonry/capacity.png",
-          aspectRatio: 900 / 1120,
-        },
-      },
-      {
-        type: "editorialSplit",
-        number: "02",
-        title: "Strengthening the integration",
-        body: [
-          "The existing integration had friction everywhere: separate login, complicated setup, and manual project mapping. We unified authentication, simplified setup, and brought a workload schedule directly into Smartsheet.",
-          "The adoption problem was clear. Only **4.2%** of Smartsheet customers were using Resource Management, so even a small lift could have mattered. The experience improved, but reducing friction alone did not create the upgrade motion we expected.",
-        ],
-        media: {
-          label: "Workload schedule",
-          src: "/masonry/workload-schedule.png",
-          aspectRatio: 1,
-        },
-      },
-      {
-        type: "editorialSplit",
-        number: "03",
-        title: "Protecting the business",
-        body: [
-          "Immediate customer needs kept surfacing while we worked on the broader integration. I defined the direction for bringing Resource Management report data into Smartsheet sheets, then coached a junior designer through delivery.",
-          "That work protected **≈ $850K ARR** and influenced another **≈ $300K ARR**. It was not the boldest integration strategy, but it solved a real customer need and protected the business while the larger direction was still forming.",
-        ],
-        media: {
-          label: "Resource Management report data",
-          src: "/work/resource-management-integration/thumbnail.jpg",
-          aspectRatio: 16 / 9,
-        },
-      },
-      {
-        type: "editorialSplit",
-        number: "04",
-        title: "Committing to a direction",
-        body: [
-          "When I returned from parental leave, the strategy had changed. A hackathon prototype embedded the entire product into Smartsheet navigation, and leadership chose to move forward.",
-          "The broader team found itself in **\"disagree and commit\"** mode, rallying around a direction we had not intentionally set out to create.",
-        ],
-      },
-      {
-        type: "editorialPullout",
-        variant: "quote",
-        width: "full",
-        body: "If you don't define a coherent and bold strategy, you'll eventually inherit one.",
-      },
-      {
-        type: "editorialSplit",
-        number: "05",
-        title: "Building the future",
-        body: [
-          "Resource Management was being brought into Smartsheet while the business was under pressure. I helped shape a path forward through initiatives that made demand visible and created new reasons for customers to care.",
-          "**Cold Start** gave us business visibility through an upsell path, sales-assisted onboarding, and a clearer route toward self-service.",
-          "**Scenario Planning** created a tiger-team path toward a net-new capability customers had been asking for, giving Sales a more compelling story and the product new momentum.",
-        ],
-        media: [
-          {
-            label: "Cold Start direction",
-            src: "/work/resource-management-integration/thumbnail.jpg",
-            aspectRatio: 16 / 9,
-          },
-          {
-            label: "Scenario Planning direction",
-            src: "/masonry/workload-schedule.png",
-            aspectRatio: 1,
-          },
-        ],
-      },
-      {
-        type: "text",
-        width: "content",
-        title: "What I believe now",
-        body: [
-          "Over three years, we tried improving the product, strengthening the integration, protecting the business, and ultimately redefining its future. Each approach solved a different problem, but none fully addressed the same underlying question: Where did Resource Management truly belong?",
-          "I came away believing there are only two sustainable paths when integrating an acquired product. Continue investing in it as a standalone product, or rebuild its capabilities natively within the core experience. The middle ground proved difficult for customers, challenging for engineering, and ultimately limited the product's long-term potential.",
-        ],
+        label: "Strategic takeaway",
+        statement: "The project reframed acquisition integration as a product strategy problem, not a UX polish problem.",
+        outcomes: [],
+        footnote: "The middle ground was the trap. Resource Management either needed to be treated as a real standalone business or have its strongest capabilities rebuilt natively inside Smartsheet.",
       },
     ],
     gallery: [],
@@ -593,7 +550,7 @@ export const otherWork: WorkItem[] = [
     image: "/masonry/amig.png",
     heroImage: "/work/american-modern-insurance/cs2-01.png",
     thumbnailImage: "/work/american-modern-insurance/thumbnail.png",
-    summary: "A concise case study placeholder for the American Modern Insurance experience design work.",
+    summary: "Designed an insurance platform experience that simplified quoting, policy servicing, and operational handoff.",
     caseStudyLayout: "deck",
     deckSlides: [
       {
@@ -665,10 +622,10 @@ export const otherWork: WorkItem[] = [
     slug: "metlife-mexico",
     tag: "KPMG • 2021",
     image: "/work/metlife-mexico/thumbnail.png",
-    thumbnailImage: "/work/metlife-mexico/thumbnail.png",
+    thumbnailImage: "/work/metlife-mexico/metlife-grid-display.png",
     heroImage: "/work/metlife-mexico/metlife-grid-display.png",
     featuredImage: "/work/metlife-mexico/home-dashboard.png",
-    summary: "A concise case study for a MetLife Mexico agent portal designed to centralize portfolio management, client service, and sales activity.",
+    summary: "Designed an agent portal that centralized client management, policy servicing, and sales activity.",
     overview: {
       items: [
         { label: "Role", value: "Lead designer" },
@@ -677,7 +634,7 @@ export const otherWork: WorkItem[] = [
         { label: "Deliverable", value: "Agent Portal MVP" },
       ],
       body: [
-        "MetLife Mexico needed a centralized workspace where agents could manage their business from one place.",
+        "MetLife Mexico needed a centralized workspace where agents could manage client relationships, policy servicing, sales activity, and performance from one place. I led the design of an agent portal MVP that translated research into a clear operating hub: a home dashboard for daily priorities, client and policy tools for relationship management, activity tracking for follow-ups and service requests, and performance views that connected product knowledge back to business outcomes.",
       ],
     },
     blocks: [
@@ -708,34 +665,6 @@ export const otherWork: WorkItem[] = [
             description: "Connect product knowledge with portfolio performance.",
             src: "/work/metlife-mexico/performance-display-optimized.png",
             span: "full",
-          },
-        ],
-      },
-      {
-        type: "impact",
-        width: "full",
-        label: "Business impact",
-        statement: "The MVP established a shared vision for MetLife Mexico's future agent platform.",
-        outcomes: [
-          {
-            number: "01",
-            title: "Unified workflows",
-            body: "Combined sales, servicing, and performance into one workspace.",
-          },
-          {
-            number: "02",
-            title: "Validated with agents",
-            body: "20 interviews shaped the MVP before implementation.",
-          },
-          {
-            number: "03",
-            title: "Clear implementation path",
-            body: "Delivered build-ready flows and prototypes.",
-          },
-          {
-            number: "04",
-            title: "Executive alignment",
-            body: "Created a shared vision for the future agent experience.",
           },
         ],
       },

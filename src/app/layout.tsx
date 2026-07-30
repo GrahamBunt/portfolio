@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { Instrument_Serif } from "next/font/google";
+import { DisplayTypeDial } from "@/components/DisplayTypeDial";
 import "./globals.css";
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-display-serif",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-});
 
 export const metadata: Metadata = {
   title: "Graham Bunt — Product Designer",
@@ -21,8 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${instrumentSerif.variable} font-sans-preview antialiased`}>
+      <body className="font-sans-preview antialiased">
         {children}
+        <DisplayTypeDial />
       </body>
     </html>
   );

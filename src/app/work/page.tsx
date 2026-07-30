@@ -1,14 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
-import { ProjectListSection } from "@/components/ProjectListSection";
-import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
-import { featuredWork, otherWork } from "@/content/work";
+import { allWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
 
 function ArrowIcon() {
@@ -19,8 +17,8 @@ function ArrowIcon() {
   );
 }
 
-function getWorkListingMeta(tag: string) {
-  return tag;
+function getProjectImage(project: (typeof allWork)[number]) {
+  return project.thumbnailImage ?? project.featuredImage ?? project.heroImage ?? project.image;
 }
 
 export default function WorkPage() {
@@ -34,25 +32,20 @@ export default function WorkPage() {
     }
     window.scrollTo(0, 0);
 
-    const caseStudyHero = featuredWork.heroImage ?? featuredWork.image;
-    const heroPreload = new window.Image();
-    heroPreload.src = caseStudyHero;
+    const firstProjectImage = getProjectImage(allWork[0]);
+    const imagePreload = new window.Image();
+    imagePreload.onload = () => setFeaturedImageReady(true);
+    imagePreload.onerror = () => setFeaturedImageReady(true);
+    imagePreload.src = firstProjectImage;
 
     document.fonts.ready
-      .then(() => new Promise((resolve) => setTimeout(resolve, 250)))
+      .then(() => new Promise((resolve) => setTimeout(resolve, 120)))
       .then(() => setFontsReady(true));
   }, []);
 
-  const featuredDelay = {
-    "--rise-delay": "520ms",
-    "--rise-duration": "1.08s",
-    "--rise-blur": "0px",
-    "--rise-animation": "work-rise-in-clean",
-  } as CSSProperties;
-
   const allProjectsDelay = {
-    "--rise-delay": "640ms",
-    "--rise-duration": "0.88s",
+    "--rise-delay": "380ms",
+    "--rise-duration": "0.78s",
     "--rise-blur": "0px",
     "--rise-animation": "work-rise-in-clean",
   } as CSSProperties;
@@ -64,61 +57,65 @@ export default function WorkPage() {
       <main className="work-main">
         <section className="work-products" aria-label="Projects">
           <header className="work-heading">
-            <h1 className="font-[family-name:var(--font-display-serif)]">
-              <span className={`work-title-reveal ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
+            <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
+              <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                 <span>Select</span> work
               </span>
             </h1>
             <AnimatedDescription
-              ready={fontsReady}
+              ready={sequenceReady}
               delay="260ms"
-              text="Product designs focused on simplicity, usefulness, and scale."
+              text="Product designs focused on simplicity, usefulness, and enterprise scale."
             />
           </header>
 
-          <Link
-            href={`/work/${featuredWork.slug}`}
-            className="work-featured staged-work-rise"
-            style={featuredDelay}
-          >
-            <div className="work-featured-media">
-              <Image
-                src={featuredWork.featuredImage ?? featuredWork.image}
-                alt=""
-                fill
-                priority
-                sizes="(max-width: 640px) calc(100vw - 40px), 560px"
-                quality={92}
-                onLoad={() => setFeaturedImageReady(true)}
-                onError={() => setFeaturedImageReady(true)}
-              />
-            </div>
-            <div className="work-featured-title">
-              <div>
-                <h2>{preventTextOrphans(featuredWork.title)}</h2>
-                <p>
-                  <ProjectMeta value={getWorkListingMeta(featuredWork.tag)} />
-                </p>
-              </div>
-              <span className="work-featured-arrow">
-                <ArrowIcon />
-              </span>
-            </div>
-          </Link>
+          <section className="work-project-card-section staged-work-rise" style={allProjectsDelay} aria-label="Projects">
+            <div className="work-project-card-grid">
+              {allWork.map((project) => {
+                const href = project.isComingSoon ? undefined : `/work/${project.slug}`;
+                const cardContent = (
+                  <>
+                    <figure className="case-study-next-up-media">
+                      <img
+                        src={getProjectImage(project)}
+                        alt=""
+                        loading={project.slug === allWork[0].slug ? "eager" : "lazy"}
+                        decoding="async"
+                        style={{
+                          objectPosition: project.slug === "smartsheet-reports" ? "70% 18%" : undefined,
+                        }}
+                      />
+                    </figure>
+                    <div className="case-study-next-up-copy">
+                      <div className="case-study-next-up-title-row">
+                        <h3>{preventTextOrphans(project.title)}</h3>
+                        {href ? (
+                          <span className="case-study-next-up-arrow">
+                            <ArrowIcon />
+                          </span>
+                        ) : null}
+                      </div>
+                      <p className="font-sans-preview">{preventTextOrphans(project.summary)}</p>
+                    </div>
+                  </>
+                );
 
-          <ProjectListSection
-            title="All projects"
-            items={otherWork.map((project) => ({
-              title: project.title,
-              description: getWorkListingMeta(project.tag),
-              href: project.isComingSoon ? undefined : `/work/${project.slug}`,
-              image: project.thumbnailImage ?? project.featuredImage ?? project.heroImage ?? project.image,
-              imagePosition: project.slug === "smartsheet-reports" ? "70% 18%" : undefined,
-              statusLabel: project.isComingSoon ? "Coming soon" : undefined,
-            }))}
-            className="staged-work-rise"
-            style={allProjectsDelay}
-          />
+                if (!href) {
+                  return (
+                    <article key={project.slug} className="case-study-next-up-card work-project-card is-disabled">
+                      {cardContent}
+                    </article>
+                  );
+                }
+
+                return (
+                  <Link key={project.slug} href={href} className="case-study-next-up-card work-project-card">
+                    {cardContent}
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
         </section>
       </main>
 

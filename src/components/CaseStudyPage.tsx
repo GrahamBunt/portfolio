@@ -134,6 +134,18 @@ function getCaseStudyPreloadImageSrcs(project: CaseStudy) {
       const mediaItems = Array.isArray(block.media) ? block.media : [block.media];
       mediaItems.forEach((item) => srcs.add(item.src));
     }
+
+    if (block.type === "split") {
+      if (block.media.src) {
+        srcs.add(block.media.src);
+      }
+
+      block.media.bentoItems?.forEach((item) => {
+        if (item.src) {
+          srcs.add(item.src);
+        }
+      });
+    }
   });
 
   return Array.from(srcs);
@@ -1703,6 +1715,160 @@ function CaseStudySmartsheetBlocks({
   );
 }
 
+function CaseStudyStructuredMedia({ block }: { block: Extract<CaseStudyBlock, { type: "split" }> }) {
+  const hasMedia = Boolean(block.media.src || block.media.bentoItems?.length);
+
+  return (
+    <div className="case-study-structured-media">
+      {hasMedia ? (
+        <CaseStudyMediaBlock
+          label={block.media.label}
+          src={block.media.src}
+          caption={block.media.caption}
+          bentoItems={block.media.bentoItems}
+          aspectRatio={16 / 10}
+          width="full"
+        />
+      ) : (
+        <CaseStudySmartsheetFullMedia label={block.media.label} placeholder />
+      )}
+    </div>
+  );
+}
+
+function CaseStudyStructuredSplitSection({ block }: { block: Extract<CaseStudyBlock, { type: "split" }> }) {
+  return (
+    <section className="case-study-structured-section case-study-block" aria-label={block.title}>
+      <CaseStudySmartsheetSpineSection label={block.title}>
+        <CaseStudySmartsheetProse body={block.body} />
+      </CaseStudySmartsheetSpineSection>
+      <CaseStudyStructuredMedia block={block} />
+    </section>
+  );
+}
+
+function CaseStudyStructuredShowcaseGrid({
+  block,
+  showTitles = true,
+}: {
+  block: Extract<CaseStudyBlock, { type: "showcase" }>;
+  showTitles?: boolean;
+}) {
+  return (
+    <div className="case-study-structured-image-grid">
+      {block.items.map((item, index) => (
+        <figure key={`${item.title}-${item.src}`} className="case-study-structured-image-card">
+          <div className="case-study-structured-image-media">
+            <img src={item.src} alt="" loading={index < 2 ? "eager" : "lazy"} decoding="async" fetchPriority={index < 2 ? "high" : "auto"} />
+          </div>
+          <figcaption className={showTitles ? undefined : "is-description-only"}>
+            {showTitles ? <h3>{preventTextOrphans(item.title)}</h3> : null}
+            <p className={`${showTitles ? "" : "case-study-heading-summary "}font-sans-preview`}>{preventTextOrphans(item.description)}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+function CaseStudyStructuredShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { type: "showcase" }> }) {
+  return (
+    <div className="case-study-structured-media case-study-block">
+      <CaseStudyStructuredShowcaseGrid block={block} />
+    </div>
+  );
+}
+
+function CaseStudyMetLifeSnapshotBlocks({
+  overview,
+  blocks,
+}: {
+  overview?: CaseStudyOverview;
+  blocks: CaseStudyBlock[];
+}) {
+  const showcaseBlock = blocks.find((block): block is Extract<CaseStudyBlock, { type: "showcase" }> => block.type === "showcase");
+
+  return overview ? (
+    <CaseStudySmartsheetSpineSection label="Snapshot" contentClassName="case-study-metlife-snapshot-spine">
+      <div className="case-study-metlife-snapshot-content">
+        <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
+        {showcaseBlock ? <CaseStudyStructuredShowcaseGrid block={showcaseBlock} showTitles={false} /> : null}
+      </div>
+    </CaseStudySmartsheetSpineSection>
+  ) : null;
+}
+
+function CaseStudyStructuredBlocks({
+  overview,
+  blocks,
+  overviewLabel = "Information",
+  showOverviewPlaceholder = true,
+  impactAsProse = false,
+}: {
+  overview?: CaseStudyOverview;
+  blocks: CaseStudyBlock[];
+  overviewLabel?: string;
+  showOverviewPlaceholder?: boolean;
+  impactAsProse?: boolean;
+}) {
+  return (
+    <>
+      {overview ? (
+        <CaseStudySmartsheetSpineSection label={overviewLabel}>
+          <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
+        </CaseStudySmartsheetSpineSection>
+      ) : null}
+      {overview && showOverviewPlaceholder ? (
+        <div className="case-study-structured-media case-study-block">
+          <CaseStudySmartsheetFullMedia label="Resource Management overview placeholder" placeholder />
+        </div>
+      ) : null}
+
+      {blocks.map((block, index) => {
+        if (block.type === "text") {
+          return (
+            <CaseStudySmartsheetSpineSection key={`${block.title}-${index}`} label={block.title ?? "Section"}>
+              <CaseStudySmartsheetProse body={block.body} />
+            </CaseStudySmartsheetSpineSection>
+          );
+        }
+
+        if (block.type === "split") {
+          return <CaseStudyStructuredSplitSection key={`${block.title}-${index}`} block={block} />;
+        }
+
+        if (block.type === "showcase") {
+          return <CaseStudyStructuredShowcaseBlock key={`${block.type}-${index}`} block={block} />;
+        }
+
+        if (block.type === "impact") {
+          if (impactAsProse) {
+            const impactBody = [
+              block.statement,
+              ...block.outcomes.map((item) => `${item.title}: ${item.body}`),
+              ...(block.footnote ? [block.footnote] : []),
+            ];
+
+            return (
+              <CaseStudySmartsheetSpineSection key={`${block.label}-${index}`} label={block.label}>
+                <CaseStudySmartsheetProse body={impactBody} />
+              </CaseStudySmartsheetSpineSection>
+            );
+          }
+
+          return (
+            <CaseStudySmartsheetSpineSection key={`${block.label}-${index}`} label={block.label}>
+              <CaseStudySmartsheetImpactBlock block={block} />
+            </CaseStudySmartsheetSpineSection>
+          );
+        }
+
+        return <CaseStudyBlockView key={`${block.type}-${index}`} block={block} />;
+      })}
+    </>
+  );
+}
+
 function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
   if (block.type === "metadata") {
     return (
@@ -1836,9 +2002,9 @@ function CaseStudyNextUpSection({
   }
 
   return (
-    <section className="case-study-next-up case-study-block staged-work-rise" style={style} aria-label="Next up">
+    <section className="case-study-next-up case-study-block staged-work-rise" style={style} aria-label="Up next">
       <div className="case-study-next-up-rail">
-        <h2 className="font-sans-preview">Next up</h2>
+        <h2 className="font-sans-preview">Up next</h2>
       </div>
       <div className="case-study-next-up-grid">
         {nextItems.map((item) => {
@@ -1891,10 +2057,14 @@ function CaseStudyNextUpSection({
 
 export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const isSmartsheetReportsCaseStudy = project.slug === "smartsheet-reports";
+  const isResourceManagementCaseStudy = project.slug === "resource-management-integration";
+  const isMetLifeMexicoCaseStudy = project.slug === "metlife-mexico";
+  const isStructuredCaseStudy = isSmartsheetReportsCaseStudy || isResourceManagementCaseStudy || isMetLifeMexicoCaseStudy;
+  const usesPlaceholderHero = isResourceManagementCaseStudy;
   const [fontsReady, setFontsReady] = useState(false);
   const [heroImageReady, setHeroImageReady] = useState(false);
   const heroImageRef = useRef<HTMLImageElement | null>(null);
-  const sequenceReady = fontsReady && heroImageReady;
+  const sequenceReady = fontsReady && (usesPlaceholderHero || heroImageReady);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -1908,6 +2078,10 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   }, []);
 
   useEffect(() => {
+    if (usesPlaceholderHero) {
+      return;
+    }
+
     const image = heroImageRef.current;
     let frame = 0;
 
@@ -1923,7 +2097,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
     frame = requestAnimationFrame(() => setHeroImageReady(true));
 
     return () => cancelAnimationFrame(frame);
-  }, [project.heroImage, project.image]);
+  }, [project.heroImage, project.image, usesPlaceholderHero]);
 
   useEffect(() => {
     const imageSrcs = getCaseStudyPreloadImageSrcs(project);
@@ -2001,7 +2175,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const title = project.displayTitle ?? project.title;
   const isDeckCaseStudy = project.caseStudyLayout === "deck" && Boolean(project.deckSlides?.length);
   const projectTagParts = project.tag.split(" • ");
-  const smartsheetHeaderDate = projectTagParts[projectTagParts.length - 1] ?? project.tag;
+  const structuredHeaderDate = projectTagParts[projectTagParts.length - 1] ?? project.tag;
 
   if (isDeckCaseStudy && project.deckSlides) {
     return (
@@ -2018,7 +2192,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 >
                   <ProjectMeta value={project.tag} />
                 </div>
-                <h1 className="font-[family-name:var(--font-display-serif)]">
+                <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
                   <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                     {title}
                   </span>
@@ -2051,7 +2225,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   }
 
   return (
-    <div className={`case-study-page ${isSmartsheetReportsCaseStudy ? "is-smartsheet-reports" : ""} ${sequenceReady ? "sequence-ready" : ""}`}>
+    <div className={`case-study-page ${isStructuredCaseStudy ? "is-structured-case-study" : ""} ${isSmartsheetReportsCaseStudy ? "is-smartsheet-reports" : ""} ${isResourceManagementCaseStudy ? "is-resource-management-integration" : ""} ${isMetLifeMexicoCaseStudy ? "is-metlife-mexico" : ""} ${sequenceReady ? "sequence-ready" : ""}`}>
       <SiteNav showBack />
 
       <main className="case-study-main">
@@ -2062,18 +2236,18 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 className={`case-study-top-meta font-sans-preview ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
                 style={sequenceReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
               >
-                {isSmartsheetReportsCaseStudy ? (
-                  <span className="case-study-header-eyebrow">{preventTextOrphans(smartsheetHeaderDate)}</span>
+                {isStructuredCaseStudy ? (
+                  <span className="case-study-header-eyebrow">{preventTextOrphans(structuredHeaderDate)}</span>
                 ) : (
                   <ProjectMeta value={project.tag} />
                 )}
               </div>
-              <h1 className="font-[family-name:var(--font-display-serif)]">
+              <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
                 <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                   {title}
                 </span>
               </h1>
-              {isSmartsheetReportsCaseStudy ? (
+              {isStructuredCaseStudy ? (
                 <p
                   className={`case-study-heading-summary font-sans-preview ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
                   style={sequenceReady ? { "--rise-delay": "520ms", "--rise-duration": "0.9s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
@@ -2084,23 +2258,36 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
             </header>
           </div>
 
-          <figure className={`case-study-hero case-study-hero-full ${sequenceReady ? "case-study-hero-reveal" : "opacity-0"}`} style={heroStyle}>
-            <img
-              ref={heroImageRef}
-              src={project.heroImage ?? project.image}
-              alt=""
-              loading="eager"
-              decoding="async"
-              fetchPriority="high"
-              onLoad={handleHeroImageLoad}
-              onError={() => setHeroImageReady(true)}
-            />
+          <figure
+            className={`case-study-hero case-study-hero-full ${usesPlaceholderHero ? "is-placeholder" : ""} ${sequenceReady ? "case-study-hero-reveal" : "opacity-0"}`}
+            style={heroStyle}
+            aria-label={usesPlaceholderHero ? "Resource Management hero placeholder" : undefined}
+          >
+            {usesPlaceholderHero ? null : (
+              <img
+                ref={heroImageRef}
+                src={project.heroImage ?? project.image}
+                alt=""
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+                onLoad={handleHeroImageLoad}
+                onError={() => setHeroImageReady(true)}
+              />
+            )}
           </figure>
         </section>
 
         <section className="case-study-body" aria-label="Project details">
           {isSmartsheetReportsCaseStudy ? (
             <CaseStudySmartsheetBlocks overview={overview} blocks={caseStudyBlocks} />
+          ) : isResourceManagementCaseStudy ? (
+            <CaseStudyStructuredBlocks
+              overview={overview}
+              blocks={caseStudyBlocks}
+            />
+          ) : isMetLifeMexicoCaseStudy ? (
+            <CaseStudyMetLifeSnapshotBlocks overview={overview} blocks={caseStudyBlocks} />
           ) : (
             <>
               {overview ? (

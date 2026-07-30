@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SocialIcon } from "@/components/SocialIcon";
 
 const NAV_LINKS = [
   { label: "Work", href: "/work" },
@@ -58,6 +59,17 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
             {link.label}
           </Link>
         ))}
+        <a
+          href="https://www.linkedin.com/in/grahambunt/"
+          className="nav-item-pill nav-link-linkedin text-white"
+          aria-label="LinkedIn"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span className="nav-linkedin-icon">
+            <SocialIcon icon="linkedin" />
+          </span>
+        </a>
       </div>
     </nav>
   );

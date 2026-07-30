@@ -32,6 +32,14 @@ function renderTypographicNode(node: ReactNode) {
   return typeof node === "string" ? preventTextOrphans(node) : node;
 }
 
+function ArrowIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+      <path d="M5 13h11.17l-4.88 4.88c-.39.39-.39 1.03 0 1.42.39.39 1.02.39 1.41 0l6.59-6.59c.39-.39.39-1.02 0-1.41l-6.58-6.6a.9959.9959 0 0 0-1.41 0c-.39.39-.39 1.02 0 1.41L16.17 11H5c-.55 0-1 .45-1 1s.45 1 1 1z" />
+    </svg>
+  );
+}
+
 export function ProjectListSection({
   title,
   description,
@@ -68,18 +76,27 @@ export function ProjectListSection({
                     </svg>
                   </div>
                 ) : (
-                  <img
-                    src={item.image}
-                    alt=""
-                    style={{
-                      objectFit: item.imageFit,
-                      objectPosition: item.imagePosition,
-                    }}
-                  />
+                  <span className="work-project-thumb">
+                    <img
+                      src={item.image}
+                      alt=""
+                      style={{
+                        objectFit: item.imageFit,
+                        objectPosition: item.imagePosition,
+                      }}
+                    />
+                  </span>
                 )}
                 <div className="work-project-copy">
-                  <p>{renderTitle ? renderTypographicNode(renderTitle(item, index)) : preventTextOrphans(item.title)}</p>
-                  <p>{renderDescription ? renderTypographicNode(renderDescription(item, index)) : <ProjectMeta value={item.description} />}</p>
+                  <div className="work-project-title-row">
+                    <p className="work-project-title">{renderTitle ? renderTypographicNode(renderTitle(item, index)) : preventTextOrphans(item.title)}</p>
+                    {!isDisabled ? (
+                      <span className="work-inline-arrow">
+                        <ArrowIcon />
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="work-project-description">{renderDescription ? renderTypographicNode(renderDescription(item, index)) : <ProjectMeta value={item.description} />}</p>
                 </div>
                 {item.statusLabel ? <span className="work-project-status font-sans-preview">{item.statusLabel}</span> : null}
               </div>

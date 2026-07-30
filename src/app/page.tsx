@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ContactSection } from "@/components/ContactSection";
 import { SiteNav } from "@/components/SiteNav";
-import { SOCIAL_LINKS, SocialIcon } from "@/components/SocialIcon";
 import { projects } from "@/content/projects";
 
 export default function Home() {
@@ -22,10 +21,6 @@ export default function Home() {
       .then(() => setFontsReady(true));
   }, []);
 
-  // Tight unified sequence (fontsReady = t0):
-  // H1 spans: 0-950ms / 100-1050ms
-  // Social links and masonry share the Select Work blur/wipe rise; middle column trails slightly.
-
   return (
     <main className={`flex min-h-screen flex-col items-center bg-black pt-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
       <div className="canvas flex flex-col items-center gap-5">
@@ -35,7 +30,7 @@ export default function Home() {
           data-section="intro"
           className="flex w-full max-w-[900px] flex-col items-center gap-[30px] overflow-hidden p-5 text-center"
         >
-          <h1 className="w-full font-[family-name:var(--font-display-serif)] text-[38px] leading-[46px] tracking-[0] text-white min-[810px]:text-[58px] min-[810px]:leading-[66px]">
+          <h1 className="home-hero-title display-serif-type w-full font-[family-name:var(--font-display-serif)] text-[36px] font-normal leading-[44px] tracking-[0] text-white min-[810px]:text-[54px] min-[810px]:leading-[62px]">
             <span className={fontsReady ? "animate-reveal" : "opacity-0"}>
               Graham Bunt is a <em className="home-hero-emphasis">Product Designer</em>
             </span>
@@ -46,28 +41,6 @@ export default function Home() {
               based in Salt Lake City, Utah.
             </span>
           </h1>
-          <div
-            className={`social-links ${fontsReady ? "animate-social-reveal" : "opacity-0"}`}
-            style={fontsReady ? ({
-              "--rise-delay": "260ms",
-              "--rise-duration": "0.84s",
-            } as CSSProperties) : undefined}
-          >
-            {SOCIAL_LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="social-icon-button"
-                aria-label={link.label}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span className="social-icon-glyph">
-                  <SocialIcon icon={link.icon} />
-                </span>
-              </a>
-            ))}
-          </div>
         </section>
 
         <section className="flex w-full flex-col items-center gap-[60px] overflow-hidden px-5 py-[60px]">

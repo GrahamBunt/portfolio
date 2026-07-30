@@ -1,15 +1,5 @@
 export type SocialIconName = "x" | "linkedin" | "github";
 
-export const SOCIAL_LINKS = [
-  { label: "X", href: "https://x.com/gtbunt", icon: "x" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/grahambunt/", icon: "linkedin" },
-  { label: "GitHub", href: "https://github.com/GrahamBunt", icon: "github" },
-] as const satisfies Array<{
-  label: string;
-  href: string;
-  icon: SocialIconName;
-}>;
-
 export function SocialIcon({ icon }: { icon: SocialIconName }) {
   if (icon === "x") {
     return (
