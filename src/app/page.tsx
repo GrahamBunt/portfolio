@@ -27,7 +27,7 @@ export default function Home() {
   // Social links and masonry share the Select Work blur/wipe rise; middle column trails slightly.
 
   return (
-    <main className={`flex min-h-screen flex-col items-center bg-black py-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
+    <main className={`flex min-h-screen flex-col items-center bg-black pt-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
       <div className="canvas flex flex-col items-center gap-5">
         <SiteNav />
 
@@ -133,10 +133,10 @@ export default function Home() {
 
         <ContactSection />
 
-        <footer className="mt-[-20px] flex h-[148px] w-full items-start justify-center pt-20">
-          <div className="font-sans-preview flex w-full max-w-[560px] items-start justify-between gap-5 p-5 text-lg font-medium leading-7 text-white/65">
-            <span>Graham Bunt</span>
-            <span>©2026</span>
+        <footer className="work-footer">
+          <div>
+            <p>Graham Bunt</p>
+            <p>©2026</p>
           </div>
         </footer>
       </div>

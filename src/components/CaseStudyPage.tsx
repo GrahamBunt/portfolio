@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import type { CSSProperties, RefObject, SyntheticEvent } from "react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ProjectListSection } from "@/components/ProjectListSection";
+import Link from "next/link";
+import type { CSSProperties, ReactNode, RefObject, SyntheticEvent, UIEvent } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
 import { SiteNav } from "@/components/SiteNav";
@@ -58,6 +58,16 @@ const overviewSupportingCopyStyle: CSSProperties = {
   color: "rgba(255, 255, 255, 0.65)",
 };
 
+const smartsheetOverviewCopyStyle: CSSProperties = {
+  color: "#ffffff",
+  fontFamily: 'var(--font-sans-preview), sans-serif',
+  fontSize: 21,
+  fontWeight: 400,
+  lineHeight: 1.5,
+  letterSpacing: 0,
+  margin: 0,
+};
+
 const hiddenMetadataLabelStyle: CSSProperties = {
   position: "absolute",
   width: 1,
@@ -85,6 +95,14 @@ const overviewMetaSecondaryStyle: CSSProperties = {
 };
 
 const narrativeParagraphSpeeds = [1, 1.25];
+
+function ArrowIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+      <path d="M5 13h11.17l-4.88 4.88c-.39.39-.39 1.03 0 1.42.39.39 1.02.39 1.41 0l6.59-6.59c.39-.39.39-1.02 0-1.41l-6.58-6.6a.9959.9959 0 0 0-1.41 0c-.39.39-.39 1.02 0 1.41L16.17 11H5c-.55 0-1 .45-1 1s.45 1 1 1z" />
+    </svg>
+  );
+}
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -216,9 +234,9 @@ const sectionLabelStyle: CSSProperties = {
 const stepTitleStyle: CSSProperties = {
   color: "#ffffff",
   fontFamily: 'var(--font-sans-preview), sans-serif',
-  fontSize: 20,
-  fontWeight: 500,
-  lineHeight: "28px",
+  fontSize: 21,
+  fontWeight: 400,
+  lineHeight: 1.5,
   margin: 0,
 };
 
@@ -306,7 +324,7 @@ function CaseStudyMediaBlock({
 
 function CaseStudyViewGridBlock({ block }: { block: Extract<CaseStudyBlock, { type: "viewGrid" }> }) {
   return (
-    <section className={`case-study-view-grid case-study-block ${getBlockWidthClass(block.width)}`} aria-label="Report views">
+    <section className={`case-study-view-grid case-study-block ${getBlockWidthClass(block.width)}`} aria-label="report views">
       {block.items.map((item) => (
         <article key={item.kind} className="case-study-view-card">
           <div className="case-study-view-card-heading">
@@ -325,7 +343,7 @@ function CaseStudyComparisonBlock({ block }: { block: Extract<CaseStudyBlock, { 
   return (
     <section
       className={`case-study-comparison case-study-block ${getBlockWidthClass(block.width ?? "full")}`}
-      aria-label="Report experience comparison"
+      aria-label="report experience comparison"
     >
       {block.items.map((item) => (
         <figure key={item.title} className={`case-study-comparison-panel ${item.src ? "has-image" : ""}`}>
@@ -343,7 +361,15 @@ function CaseStudyComparisonBlock({ block }: { block: Extract<CaseStudyBlock, { 
   );
 }
 
-function CaseStudyProblemCardsBlock({ block }: { block: Extract<CaseStudyBlock, { type: "problemCards" }> }) {
+function CaseStudyProblemCardsBlock({
+  block,
+  showHeader = true,
+  useProblemBadges = false,
+}: {
+  block: Extract<CaseStudyBlock, { type: "problemCards" }>;
+  showHeader?: boolean;
+  useProblemBadges?: boolean;
+}) {
   const dialStyle: ProblemCardDialStyle = {
     "--problem-card-padding": `${defaultProblemCardDials.padding}px`,
     "--problem-title-weight": defaultProblemCardDials.titleWeight,
@@ -356,12 +382,14 @@ function CaseStudyProblemCardsBlock({ block }: { block: Extract<CaseStudyBlock, 
       aria-label={block.label}
       style={dialStyle}
     >
-      <header className="case-study-problem-header">
-        <p className="font-sans-preview" style={sectionLabelStyle}>{block.label}</p>
-      </header>
+      {showHeader ? (
+        <header className="case-study-problem-header">
+          <p className="font-sans-preview" style={sectionLabelStyle}>{block.label}</p>
+        </header>
+      ) : null}
       <div className="case-study-problem-grid">
         {block.items.map((item) => (
-          <article key={item.title} className={`case-study-problem-card is-${item.tone} ${item.image ? "has-image" : ""}`}>
+          <article key={item.title} className={`case-study-problem-card is-${item.tone} ${item.image ? "has-image" : ""} ${useProblemBadges ? "has-problem-badge" : ""}`}>
             {item.image ? (
               <div className="case-study-problem-image" aria-hidden="true">
                 <img src={item.image} alt="" loading="eager" decoding="async" fetchPriority="high" />
@@ -374,7 +402,9 @@ function CaseStudyProblemCardsBlock({ block }: { block: Extract<CaseStudyBlock, 
                     {item.avatar ? <img src={item.avatar} alt="" /> : item.audience.slice(0, 1)}
                   </div>
                 ) : null}
-                <p className="case-study-problem-audience font-sans-preview">{item.audience}</p>
+                <p className="case-study-problem-audience font-sans-preview">
+                  {useProblemBadges ? `${item.audience} problem` : item.audience}
+                </p>
               </div>
               <h2>{preventTextOrphans(item.title)}</h2>
               <p className="case-study-problem-body font-sans-preview">{preventTextOrphans(item.body)}</p>
@@ -386,15 +416,23 @@ function CaseStudyProblemCardsBlock({ block }: { block: Extract<CaseStudyBlock, 
   );
 }
 
-function CaseStudySpecSamplesBlock({ block }: { block: Extract<CaseStudyBlock, { type: "specSamples" }> }) {
+function CaseStudySpecSamplesBlock({
+  block,
+  showHeader = true,
+}: {
+  block: Extract<CaseStudyBlock, { type: "specSamples" }>;
+  showHeader?: boolean;
+}) {
   return (
     <section
       className={`case-study-spec-samples case-study-block ${getBlockWidthClass(block.width ?? "full")}`}
       aria-label={block.label}
     >
-      <header className="case-study-spec-samples-header">
-        <p className="font-sans-preview" style={sectionLabelStyle}>{block.label}</p>
-      </header>
+      {showHeader ? (
+        <header className="case-study-spec-samples-header">
+          <p className="font-sans-preview" style={sectionLabelStyle}>{block.label}</p>
+        </header>
+      ) : null}
       <div className="case-study-spec-samples-grid">
         {block.items.map((item) => (
           <a key={item.title} className="case-study-spec-sample-card" href={item.href} target="_blank" rel="noreferrer">
@@ -854,42 +892,55 @@ function CaseStudySpotlightBlock({ block }: { block: Extract<CaseStudyBlock, { t
   );
 }
 
-function CaseStudyStepFlowBlock({ block }: { block: Extract<CaseStudyBlock, { type: "stepFlow" }> }) {
+function CaseStudyStepFlowBlock({
+  block,
+  showHeader = true,
+  hideItemCopy = false,
+}: {
+  block: Extract<CaseStudyBlock, { type: "stepFlow" }>;
+  showHeader?: boolean;
+  hideItemCopy?: boolean;
+}) {
   const maxWidth = block.width === "content" ? 520 : block.width === "wide" ? 720 : 1680;
+  const gridStyle = hideItemCopy ? undefined : stepFlowGridStyle;
+  const cardStyle = hideItemCopy ? undefined : stepCardStyle;
+  const mediaStyle = hideItemCopy ? undefined : stepMediaStyle;
 
   return (
     <section
-      className={`case-study-step-flow case-study-block ${getBlockWidthClass(block.width ?? "full")}`}
+      className={`case-study-step-flow case-study-block ${hideItemCopy ? "is-media-only" : ""} ${getBlockWidthClass(block.width ?? "full")}`}
       style={{ ...stepFlowStyle, maxWidth }}
       aria-label="Core report definition steps"
     >
-      {block.title || block.label ? (
+      {showHeader && (block.title || block.label) ? (
         <header className="case-study-step-flow-header" style={stepFlowHeaderStyle}>
           {block.title ? <h2 style={stepFlowTitleStyle}>{preventTextOrphans(block.title)}</h2> : null}
           {block.label ? <p className="font-sans-preview" style={sectionLabelStyle}>{block.label}</p> : null}
         </header>
       ) : null}
-      <div className="case-study-step-flow-grid" style={stepFlowGridStyle}>
+      <div className="case-study-step-flow-grid" style={gridStyle}>
         {block.items.map((item, index) => (
-          <article key={item.title} className="case-study-step-card" style={stepCardStyle}>
-            <figure className="case-study-step-media" style={stepMediaStyle}>
+          <article key={item.title} className="case-study-step-card" style={cardStyle}>
+            <figure className="case-study-step-media" style={mediaStyle}>
               {item.image ? <img src={item.image} alt="" /> : <span className="font-sans-preview">{item.label}</span>}
             </figure>
-            <div
-              className="case-study-step-copy"
-              style={stepCopyStyle}
-            >
-              <span
-                className="case-study-step-number font-sans-preview"
-                style={stepNumberStyle}
+            {hideItemCopy ? null : (
+              <div
+                className="case-study-step-copy"
+                style={stepCopyStyle}
               >
-                {index + 1}
-              </span>
-              <h2 style={stepTitleStyle}>{preventTextOrphans(item.title)}</h2>
-              <p className="font-sans-preview" style={{ ...stepDescriptionStyle, gridColumn: "1 / -1" }}>
-                {preventTextOrphans(item.description)}
-              </p>
-            </div>
+                <span
+                  className="case-study-step-number font-sans-preview"
+                  style={stepNumberStyle}
+                >
+                  {index + 1}
+                </span>
+                <h2 style={stepTitleStyle}>{preventTextOrphans(item.title)}</h2>
+                <p className="font-sans-preview" style={{ ...stepDescriptionStyle, gridColumn: "1 / -1" }}>
+                  {preventTextOrphans(item.description)}
+                </p>
+              </div>
+            )}
           </article>
         ))}
       </div>
@@ -1052,32 +1103,603 @@ function CaseStudyNarrativeBlock({ block }: { block: Extract<CaseStudyBlock, { t
   );
 }
 
-function CaseStudyOverviewBlock({ overview }: { overview: CaseStudyOverview }) {
+function CaseStudyOverviewBlock({
+  overview,
+  subtleCopy = false,
+  hideDetails = false,
+}: {
+  overview: CaseStudyOverview;
+  subtleCopy?: boolean;
+  hideDetails?: boolean;
+}) {
   return (
-    <section className="case-study-overview case-study-block font-sans-preview">
-      <aside className="case-study-overview-details">
-        <dl className="case-study-overview-meta">
-          {overview.items.map((item, index) => (
-            <div key={item.label} className={index === 0 ? "is-primary" : undefined}>
-              <dt style={hiddenMetadataLabelStyle}>{item.label}</dt>
-              <dd style={index === 0 ? overviewMetaPrimaryStyle : overviewMetaSecondaryStyle}>
-                <ProjectMeta value={item.value} />
-              </dd>
-            </div>
-          ))}
-        </dl>
-        {overview.summary ? <p className="case-study-overview-summary">{preventTextOrphans(overview.summary)}</p> : null}
-      </aside>
+    <section className={`case-study-overview case-study-block font-sans-preview ${hideDetails ? "is-copy-only" : ""}`}>
+      {hideDetails ? null : (
+        <aside className="case-study-overview-details">
+          <dl className="case-study-overview-meta">
+            {overview.items.map((item, index) => (
+              <div key={item.label} className={index === 0 ? "is-primary" : undefined}>
+                <dt style={hiddenMetadataLabelStyle}>{item.label}</dt>
+                <dd style={index === 0 ? overviewMetaPrimaryStyle : overviewMetaSecondaryStyle}>
+                  <ProjectMeta value={item.value} />
+                </dd>
+              </div>
+            ))}
+          </dl>
+          {overview.summary ? <p className="case-study-overview-summary">{preventTextOrphans(overview.summary)}</p> : null}
+        </aside>
+      )}
       <div className="case-study-overview-copy">
         <div style={staticOverviewCopyWrapStyle}>
           {overview.body.map((paragraph, index) => (
-            <p key={paragraph} style={index === 0 ? overviewLeadCopyStyle : overviewSupportingCopyStyle}>
+            <p key={paragraph} style={subtleCopy ? smartsheetOverviewCopyStyle : index === 0 ? overviewLeadCopyStyle : overviewSupportingCopyStyle}>
               {preventTextOrphans(paragraph)}
             </p>
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function CaseStudySmartsheetSpineSection({
+  label,
+  children,
+  contentClassName = "",
+}: {
+  label: string;
+  children: ReactNode;
+  contentClassName?: string;
+}) {
+  return (
+    <section className="case-study-spine-section case-study-block" aria-label={label}>
+      <div className="case-study-spine-rail">
+        <p className="font-sans-preview">{label}</p>
+      </div>
+      <div className={`case-study-spine-content ${contentClassName}`}>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function CaseStudySmartsheetProse({
+  body,
+  title,
+}: {
+  body: string[];
+  title?: string;
+}) {
+  return (
+    <div className="case-study-spine-prose font-sans-preview">
+      {title ? <h2>{preventTextOrphans(title)}</h2> : null}
+      {body.map((paragraph) => (
+        <p key={paragraph}>{preventTextOrphans(paragraph)}</p>
+      ))}
+    </div>
+  );
+}
+
+const smartsheetProblemSlides = [
+  {
+    eyebrow: "01",
+    title: "Admin-only controls",
+    body: "Aggregation and display settings lived in one configuration layer, making the report hard to understand and harder to change.",
+  },
+  {
+    eyebrow: "02",
+    title: "Rigid consumption",
+    body: "Collaborators could view the output, but they had no way to filter, group, or sort the data for their own working context.",
+  },
+  {
+    eyebrow: "03",
+    title: "Source selection friction",
+    body: "Choosing the sheets that fed a report required too much setup knowledge and gave builders little confidence in what they were creating.",
+  },
+  {
+    eyebrow: "04",
+    title: "Field management drift",
+    body: "Fields, columns, and source data relationships were difficult to reason about once multiple sheets entered the report.",
+  },
+  {
+    eyebrow: "05",
+    title: "Row criteria complexity",
+    body: "Defining which rows belonged in a report exposed the full complexity of the data model without enough guidance.",
+  },
+];
+
+const smartsheetExplorationCopy = [
+  "Initial explorations were AI-first. They moved someone from intent to a configurable report preview quickly, then let them refine from there. The direction was compelling, but once we started sharing it, the feedback centered on first-time creation instead of the deeper paradigm shift reports needed.",
+  "I made the call to put the first-time experience on the shelf and refocus the team on the crux of the report. Creators needed to set the data boundaries, while collaborators needed freedom to explore the data inside those boundaries. Solving that foundation first would make the right creation flow clearer later. Without it, the first-time experience was just wrapping around an unresolved model.",
+];
+
+const smartsheetSolutionCopy = [
+  "The final model separated data boundaries from display controls. Source Data answered which sheets, fields, and rows belonged in the report. Toolbar controls answered how someone wanted to explore the data inside those boundaries.",
+  "That framing shaped the final design: one Source Data entry point for setting boundaries, three focused setup steps for sheets, fields, and rows, and display controls that could evolve through filters, grouping, sorting, and calculations without reopening Source Data or changing the underlying data boundary.",
+];
+
+const smartsheetViewPrimitiveCopy = [
+  "The strategy was to build reports from the same view primitives that powered Smartsheet's primary asset: the sheet. That gave reports and sheets a shared interaction model while keeping Source Data separate from display choices.",
+  "That meant partnering closely with the Views team as they introduced Custom Views, a nascent sheet capability for saving display customizations to a view. The same model worked for reports, but the language had to stay clear: Source Data defined the data boundary, while saved views stored display choices. Grouping and summary calculations became shared view controls that sheets would eventually need too.",
+];
+
+function CaseStudySmartsheetProblemCarousel() {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToSlide = (index: number) => {
+    const nextIndex = Math.max(0, Math.min(smartsheetProblemSlides.length - 1, index));
+    const viewport = viewportRef.current;
+
+    setActiveSlide(nextIndex);
+
+    if (!viewport) {
+      return;
+    }
+
+    viewport.scrollTo({
+      left: viewport.clientWidth * nextIndex,
+      behavior: "smooth",
+    });
+  };
+
+  const handleSlideScroll = (event: UIEvent<HTMLDivElement>) => {
+    const viewport = event.currentTarget;
+    const nextIndex = Math.round(viewport.scrollLeft / viewport.clientWidth);
+
+    if (nextIndex !== activeSlide) {
+      setActiveSlide(Math.max(0, Math.min(smartsheetProblemSlides.length - 1, nextIndex)));
+    }
+  };
+
+  return (
+    <section className="case-study-smartsheet-carousel case-study-block" aria-label="legacy report problem analysis">
+      <div className="case-study-smartsheet-carousel-shell">
+        <div
+          ref={viewportRef}
+          className="case-study-smartsheet-carousel-viewport"
+          onScroll={handleSlideScroll}
+        >
+          <div className="case-study-smartsheet-carousel-track">
+            {smartsheetProblemSlides.map((slide) => (
+              <article
+                key={slide.title}
+                className="case-study-smartsheet-slide"
+                aria-label={`${slide.eyebrow}. ${slide.title}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="case-study-smartsheet-carousel-dots" aria-label="Problem slide position">
+        {smartsheetProblemSlides.map((slide, index) => (
+          <button
+            key={slide.title}
+            className={index === activeSlide ? "is-active" : ""}
+            type="button"
+            aria-label={`Show problem slide ${index + 1}`}
+            aria-current={index === activeSlide ? "true" : undefined}
+            onClick={() => scrollToSlide(index)}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CaseStudySmartsheetFullMedia({
+  label,
+  src,
+  placeholder = false,
+}: {
+  label: string;
+  src?: string;
+  placeholder?: boolean;
+}) {
+  return (
+    <figure className={`case-study-smartsheet-full-media case-study-block ${placeholder ? "is-placeholder" : ""}`} aria-label={label}>
+      {src && !placeholder ? <img src={src} alt="" loading="lazy" decoding="async" /> : null}
+    </figure>
+  );
+}
+
+function CaseStudySmartsheetExplorationMedia() {
+  const optionItems = [
+    {
+      title: "Creation-first",
+      body: "Optimize setup, but leave ownership unclear after the report exists.",
+    },
+    {
+      title: "Single surface",
+      body: "Expose every control together, but make the experience harder to reason about.",
+    },
+    {
+      title: "Data boundaries + display controls",
+      body: "Protect source boundaries while giving collaborators room to shape the data inside them.",
+      selected: true,
+    },
+  ];
+
+  return (
+    <div className="case-study-smartsheet-exploration-media">
+      <div className="case-study-smartsheet-ai-explorations">
+        <figure aria-label="AI-assisted report creation exploration placeholder" />
+        <figure aria-label="Guided report draft exploration">
+          <img src="/masonry/smartassist.png" alt="" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+
+      <div className="case-study-smartsheet-option-map" aria-label="Configuration model options">
+        {optionItems.map((item) => (
+          <article key={item.title} className={item.selected ? "is-selected" : undefined}>
+            <span className="font-sans-preview">{item.selected ? "Selected model" : "Option"}</span>
+            <h3 className="font-sans-preview">{preventTextOrphans(item.title)}</h3>
+            <p className="font-sans-preview">{preventTextOrphans(item.body)}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CaseStudySmartsheetViewBento() {
+  const tiles = [
+    {
+      label: "Custom views menu",
+      className: "is-custom-views",
+      src: "/work/smartsheet-reports/custom-views-side.jpg",
+    },
+    {
+      label: "Grouping surface",
+      className: "is-grouping-surface",
+      src: "/work/smartsheet-reports/grouping-control-final.png",
+    },
+    {
+      label: "Summary calculations",
+      className: "is-summary-calculations",
+      src: "/work/smartsheet-reports/summary-calculation.jpg",
+    },
+    {
+      label: "Calculate menu",
+      className: "is-calculate-menu",
+      src: "/work/smartsheet-reports/calculate.jpg",
+    },
+    {
+      label: "Three-level grouping logic",
+      className: "is-grouping-logic",
+      src: "/work/smartsheet-reports/grouping-control-final.png",
+    },
+  ];
+
+  return (
+    <div className="case-study-smartsheet-view-bento">
+      {tiles.map((tile) => (
+        <figure
+          key={tile.label}
+          className={`case-study-smartsheet-view-bento-tile ${tile.className}`}
+          aria-label={tile.label}
+        >
+          <img src={tile.src} alt="" loading="lazy" decoding="async" />
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+function CaseStudySmartsheetPullingSection({
+  block,
+  stepFlow,
+  label,
+  body,
+  mediaMode = "source",
+  mediaCount = 1,
+}: {
+  block: Extract<CaseStudyBlock, { type: "split" }>;
+  stepFlow?: Extract<CaseStudyBlock, { type: "stepFlow" }>;
+  label?: string;
+  body?: string[];
+  mediaMode?: "source" | "placeholder" | "exploration";
+  mediaCount?: number;
+}) {
+  const sectionLabel = label ?? block.title;
+  const sectionBody = body ?? block.body;
+  const showPlaceholders = mediaMode === "placeholder";
+  const showExplorationMedia = mediaMode === "exploration";
+
+  return (
+    <section className="case-study-smartsheet-pulling-section case-study-block" aria-label={sectionLabel}>
+      <CaseStudySmartsheetSpineSection label={sectionLabel}>
+        <CaseStudySmartsheetProse body={sectionBody} />
+      </CaseStudySmartsheetSpineSection>
+      <div className="case-study-smartsheet-solution-media">
+        {showExplorationMedia ? (
+          <CaseStudySmartsheetExplorationMedia />
+        ) : showPlaceholders
+          ? Array.from({ length: mediaCount }).map((_, index) => (
+              <CaseStudySmartsheetFullMedia
+                key={`${sectionLabel}-placeholder-${index + 1}`}
+                label={`${sectionLabel} placeholder ${index + 1}`}
+                placeholder
+              />
+            ))
+          : <CaseStudySmartsheetFullMedia label={block.media.label} src={block.media.src} />}
+        {!showPlaceholders && stepFlow ? <CaseStudyStepFlowBlock block={stepFlow} showHeader={false} hideItemCopy /> : null}
+      </div>
+    </section>
+  );
+}
+
+function CaseStudySmartsheetViewPrimitiveSection() {
+  return (
+    <section className="case-study-smartsheet-pulling-section case-study-smartsheet-view-parity-section case-study-block" aria-label="Convergence">
+      <CaseStudySmartsheetSpineSection label="Convergence">
+        <CaseStudySmartsheetProse body={smartsheetViewPrimitiveCopy} />
+      </CaseStudySmartsheetSpineSection>
+      <div className="case-study-smartsheet-solution-media">
+        <CaseStudySmartsheetViewBento />
+        <CaseStudySmartsheetFullMedia
+          label="Custom views expanded view"
+          src="/work/smartsheet-reports/custom-views-side.jpg"
+        />
+      </div>
+    </section>
+  );
+}
+
+function getSmartsheetSpineLabel(block: CaseStudyBlock) {
+  if (block.type === "split") {
+    if (block.title === "Pulling the configuration model apart") {
+      return "Pulling the configuration model apart";
+    }
+
+    if (block.title === "Aligning with nascent capabilities") {
+      return "Views become personal";
+    }
+
+    if (block.title === "Contributing new features") {
+      return "Extending the sheet";
+    }
+  }
+
+  if (block.type === "stepFlow") {
+    return "The source model";
+  }
+
+  if (block.type === "specSamples") {
+    return "Prototype and spec";
+  }
+
+  if (block.type === "spotlight") {
+    return "Platform ambiguity";
+  }
+
+  if (block.type === "impact") {
+    return "Leadership impact";
+  }
+
+  if (block.type === "text" && block.title === "Carrying the work forward") {
+    return "Carrying it forward";
+  }
+
+  return null;
+}
+
+function CaseStudySmartsheetSplitBlock({ block }: { block: Extract<CaseStudyBlock, { type: "split" }> }) {
+  return (
+    <div className="case-study-spine-stack">
+      <CaseStudySmartsheetProse body={block.body} />
+      <CaseStudyMediaBlock
+        label={block.media.label}
+        src={block.media.src}
+        caption={block.media.caption}
+        aspectRatio={block.media.aspectRatio}
+        bentoItems={block.media.bentoItems}
+        fill={block.variant === "feature"}
+        width="full"
+      />
+    </div>
+  );
+}
+
+function CaseStudySmartsheetPivotSpotlightSection({ block }: { block: Extract<CaseStudyBlock, { type: "spotlight" }> }) {
+  return (
+    <section className="case-study-smartsheet-pivot-spotlight case-study-block" aria-label={block.title}>
+      <CaseStudySmartsheetSpineSection label="Platform ambiguity">
+        <CaseStudySmartsheetProse body={block.body} />
+      </CaseStudySmartsheetSpineSection>
+      <div className="case-study-smartsheet-pivot-media">
+        <CaseStudyMediaBlock
+          label={block.media.label}
+          src={block.media.src}
+          videoSrc={block.media.videoSrc}
+          embedSrc={block.media.embedSrc}
+          caption={block.media.caption}
+          aspectRatio={block.media.aspectRatio}
+          width={block.media.width}
+        />
+      </div>
+    </section>
+  );
+}
+
+function CaseStudySmartsheetImpactBlock({ block }: { block: Extract<CaseStudyBlock, { type: "impact" }> }) {
+  return (
+    <div className="case-study-spine-impact font-sans-preview">
+      <p className="case-study-spine-impact-statement">{preventTextOrphans(block.statement)}</p>
+      {block.outcomes.length ? (
+        <ul className="case-study-spine-impact-outcomes">
+          {block.outcomes.map((item) => (
+            <li key={item.title}>
+              <span className="case-study-spine-impact-number">{item.number}</span>
+              <p>{preventTextOrphans(`${item.title} — ${item.body}`)}</p>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {block.footnote ? <p>{preventTextOrphans(block.footnote)}</p> : null}
+    </div>
+  );
+}
+
+function CaseStudySmartsheetBlocks({
+  overview,
+  blocks,
+}: {
+  overview?: CaseStudyOverview;
+  blocks: CaseStudyBlock[];
+}) {
+  const spotlightBlock = blocks.find(
+    (block): block is Extract<CaseStudyBlock, { type: "spotlight" }> => block.type === "spotlight",
+  );
+  const impactBlock = blocks.find(
+    (block): block is Extract<CaseStudyBlock, { type: "impact" }> => block.type === "impact",
+  );
+
+  function renderPivotBand() {
+    if (!spotlightBlock) {
+      return null;
+    }
+
+    return (
+      <section key="smartsheet-pivot-band" className="case-study-smartsheet-pivot-band" aria-label="Platform ambiguity">
+        <CaseStudySmartsheetPivotSpotlightSection block={spotlightBlock} />
+      </section>
+    );
+  }
+
+  function renderImpactSection() {
+    if (!impactBlock) {
+      return null;
+    }
+
+    return (
+      <CaseStudySmartsheetSpineSection key="smartsheet-leadership-impact" label="Leadership impact">
+        <CaseStudySmartsheetImpactBlock block={impactBlock} />
+      </CaseStudySmartsheetSpineSection>
+    );
+  }
+
+  function renderEnding() {
+    return (
+      <Fragment key="smartsheet-ending">
+        {renderPivotBand()}
+        {renderImpactSection()}
+      </Fragment>
+    );
+  }
+
+  return (
+    <>
+      {overview ? (
+        <CaseStudySmartsheetSpineSection label="Information">
+          <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
+        </CaseStudySmartsheetSpineSection>
+      ) : null}
+
+      {blocks.map((block, index) => {
+        const previousBlock = blocks[index - 1];
+        if (block.type === "comparison") {
+          return null;
+        }
+
+        const nextBlock = blocks[index + 1];
+
+        if (block.type === "text" && block.title === "More than a reskin" && nextBlock?.type === "problemCards") {
+          return null;
+        }
+
+        if (block.type === "problemCards" && previousBlock?.type === "text" && previousBlock.title === "More than a reskin") {
+          const pullingBlock = blocks.find(
+            (candidate): candidate is Extract<CaseStudyBlock, { type: "split" }> =>
+              candidate.type === "split" && candidate.title === "Pulling the configuration model apart",
+          );
+
+          return (
+            <div key="smartsheet-problem-cards-and-carousel" className="case-study-smartsheet-problem-intro">
+              <CaseStudyProblemCardsBlock block={block} showHeader={false} useProblemBadges />
+              <CaseStudySmartsheetProblemCarousel />
+              {pullingBlock ? (
+                <CaseStudySmartsheetPullingSection
+                  block={pullingBlock}
+                  label="Exploration"
+                  body={smartsheetExplorationCopy}
+                  mediaMode="exploration"
+                />
+              ) : null}
+            </div>
+          );
+        }
+
+        if (block.type === "split" && block.title === "Pulling the configuration model apart") {
+          return (
+            <CaseStudySmartsheetPullingSection
+              key={`${block.title}-${index}`}
+              block={block}
+              stepFlow={nextBlock?.type === "stepFlow" ? nextBlock : undefined}
+              label="Source data model"
+              body={smartsheetSolutionCopy}
+            />
+          );
+        }
+
+        if (block.type === "stepFlow" && previousBlock?.type === "split" && previousBlock.title === "Pulling the configuration model apart") {
+          return null;
+        }
+
+        if (block.type === "split" && block.title === "Aligning with nascent capabilities") {
+          return (
+            <Fragment key={`${block.title}-${index}`}>
+              <CaseStudySmartsheetViewPrimitiveSection />
+              {renderEnding()}
+            </Fragment>
+          );
+        }
+
+        if (block.type === "split" && block.title === "Contributing new features") {
+          return null;
+        }
+
+        if (
+          block.type === "specSamples" ||
+          block.type === "spotlight" ||
+          block.type === "impact"
+        ) {
+          return null;
+        }
+
+        const label = getSmartsheetSpineLabel(block);
+
+        if (!label) {
+          return <CaseStudyBlockView key={`${block.type}-${index}`} block={block} />;
+        }
+
+        if (block.type === "split") {
+          return (
+            <CaseStudySmartsheetSpineSection key={`${block.title}-${index}`} label={label} contentClassName="is-media">
+              <CaseStudySmartsheetSplitBlock block={block} />
+            </CaseStudySmartsheetSpineSection>
+          );
+        }
+
+        if (block.type === "stepFlow") {
+          return (
+            <CaseStudySmartsheetSpineSection key={`${block.type}-${index}`} label={label} contentClassName="is-wide">
+              <CaseStudyStepFlowBlock block={block} showHeader={false} />
+            </CaseStudySmartsheetSpineSection>
+          );
+        }
+
+        if (block.type === "text") {
+          return (
+            <CaseStudySmartsheetSpineSection key={`${block.title}-${index}`} label={label}>
+              <CaseStudySmartsheetProse body={block.body} />
+            </CaseStudySmartsheetSpineSection>
+          );
+        }
+
+        return <CaseStudyBlockView key={`${block.type}-${index}`} block={block} />;
+      })}
+    </>
   );
 }
 
@@ -1198,7 +1820,77 @@ function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
   );
 }
 
+function CaseStudyNextUpSection({
+  related,
+  style,
+}: {
+  related: WorkItem[];
+  style?: CSSProperties;
+}) {
+  const routeableItems = related.filter((item) => !item.isComingSoon);
+  const fallbackItems = related.filter((item) => item.isComingSoon);
+  const nextItems = [...routeableItems, ...fallbackItems].slice(0, 2);
+
+  if (!nextItems.length) {
+    return null;
+  }
+
+  return (
+    <section className="case-study-next-up case-study-block staged-work-rise" style={style} aria-label="Next up">
+      <div className="case-study-next-up-rail">
+        <h2 className="font-sans-preview">Next up</h2>
+      </div>
+      <div className="case-study-next-up-grid">
+        {nextItems.map((item) => {
+          const href = item.isComingSoon ? undefined : `/work/${item.slug}`;
+          const cardContent = (
+            <>
+              <figure className="case-study-next-up-media">
+                <img
+                  src={item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    objectPosition: item.slug === "smartsheet-reports" ? "70% 18%" : undefined,
+                  }}
+                />
+              </figure>
+              <div className="case-study-next-up-copy">
+                <div className="case-study-next-up-title-row">
+                  <h3>{preventTextOrphans(item.title)}</h3>
+                  {href ? (
+                    <span className="case-study-next-up-arrow">
+                      <ArrowIcon />
+                    </span>
+                  ) : null}
+                </div>
+                <p className="font-sans-preview">{preventTextOrphans(item.summary)}</p>
+              </div>
+            </>
+          );
+
+          if (!href) {
+            return (
+              <article key={item.slug} className="case-study-next-up-card is-disabled">
+                {cardContent}
+              </article>
+            );
+          }
+
+          return (
+            <Link key={item.slug} href={href} className="case-study-next-up-card">
+              {cardContent}
+            </Link>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
+  const isSmartsheetReportsCaseStudy = project.slug === "smartsheet-reports";
   const [fontsReady, setFontsReady] = useState(false);
   const [heroImageReady, setHeroImageReady] = useState(false);
   const heroImageRef = useRef<HTMLImageElement | null>(null);
@@ -1308,6 +2000,8 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const hasCaseStudyBlocks = caseStudyBlocks.length > 0;
   const title = project.displayTitle ?? project.title;
   const isDeckCaseStudy = project.caseStudyLayout === "deck" && Boolean(project.deckSlides?.length);
+  const projectTagParts = project.tag.split(" • ");
+  const smartsheetHeaderDate = projectTagParts[projectTagParts.length - 1] ?? project.tag;
 
   if (isDeckCaseStudy && project.deckSlides) {
     return (
@@ -1341,21 +2035,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
             onHeroImageError={() => setHeroImageReady(true)}
           />
 
-          <section className="work-products case-study-related" aria-label="More case studies">
-            <ProjectListSection
-              title="All projects"
-              items={related.map((item) => ({
-                title: item.title,
-                description: item.tag,
-                href: item.isComingSoon ? undefined : `/work/${item.slug}`,
-                image: item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image,
-                imagePosition: item.slug === "smartsheet-reports" ? "70% 18%" : undefined,
-                statusLabel: item.isComingSoon ? "Coming soon" : undefined,
-              }))}
-              className="staged-work-rise"
-              style={relatedStyle}
-            />
-          </section>
+          <CaseStudyNextUpSection related={related} style={relatedStyle} />
         </main>
 
         <footer className="work-footer">
@@ -1371,7 +2051,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   }
 
   return (
-    <div className={`case-study-page ${sequenceReady ? "sequence-ready" : ""}`}>
+    <div className={`case-study-page ${isSmartsheetReportsCaseStudy ? "is-smartsheet-reports" : ""} ${sequenceReady ? "sequence-ready" : ""}`}>
       <SiteNav showBack />
 
       <main className="case-study-main">
@@ -1382,13 +2062,25 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 className={`case-study-top-meta font-sans-preview ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
                 style={sequenceReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
               >
-                <ProjectMeta value={project.tag} />
+                {isSmartsheetReportsCaseStudy ? (
+                  <span className="case-study-header-eyebrow">{preventTextOrphans(smartsheetHeaderDate)}</span>
+                ) : (
+                  <ProjectMeta value={project.tag} />
+                )}
               </div>
               <h1 className="font-[family-name:var(--font-display-serif)]">
                 <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                   {title}
                 </span>
               </h1>
+              {isSmartsheetReportsCaseStudy ? (
+                <p
+                  className={`case-study-heading-summary font-sans-preview ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
+                  style={sequenceReady ? { "--rise-delay": "520ms", "--rise-duration": "0.9s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
+                >
+                  {preventTextOrphans(project.summary)}
+                </p>
+              ) : null}
             </header>
           </div>
 
@@ -1407,8 +2099,16 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
         </section>
 
         <section className="case-study-body" aria-label="Project details">
-          {overview ? <CaseStudyOverviewBlock overview={overview} /> : null}
-          {hasCaseStudyBlocks
+          {isSmartsheetReportsCaseStudy ? (
+            <CaseStudySmartsheetBlocks overview={overview} blocks={caseStudyBlocks} />
+          ) : (
+            <>
+              {overview ? (
+                <CaseStudyOverviewBlock
+                  overview={overview}
+                />
+              ) : null}
+              {hasCaseStudyBlocks
             ? caseStudyBlocks.map((block, index) => (
                 <CaseStudyBlockView key={`${block.type}-${index}`} block={block} />
               ))
@@ -1429,23 +2129,11 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                   ) : null}
                 </div>
               ))}
+            </>
+          )}
         </section>
 
-        <section className="work-products case-study-related" aria-label="More case studies">
-          <ProjectListSection
-            title="All projects"
-            items={related.map((item) => ({
-              title: item.title,
-              description: item.tag,
-              href: item.isComingSoon ? undefined : `/work/${item.slug}`,
-              image: item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image,
-              imagePosition: item.slug === "smartsheet-reports" ? "70% 18%" : undefined,
-              statusLabel: item.isComingSoon ? "Coming soon" : undefined,
-            }))}
-            className="staged-work-rise"
-            style={relatedStyle}
-          />
-        </section>
+        <CaseStudyNextUpSection related={related} style={relatedStyle} />
       </main>
 
       <footer className="work-footer">

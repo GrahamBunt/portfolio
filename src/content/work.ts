@@ -276,12 +276,12 @@ export type CaseStudyNote = {
 export const featuredWork: WorkItem = {
   title: "Smartsheet Reports",
   slug: "smartsheet-reports",
-  tag: "Smartsheet • 2025–2026",
+  tag: "Smartsheet • 08.2025–04.2026",
   image: "/work/smartsheet-reports/empty-mock-hero.jpg",
   heroImage: "/work/smartsheet-reports/empty-mock-hero.jpg",
   thumbnailImage: "/work/smartsheet-reports/thumbnail.png",
   featuredImage: "/work/smartsheet-reports/orange-peak-final-card.jpg",
-  summary: "Led the design effort for modernizing and positioning Smartsheet's primary data aggregation surface.",
+  summary: "Led the redesign of one of Smartsheet's primary assets and aligned three converging teams around a clear platform direction.",
   overview: {
     items: [
       { label: "Role", value: "Lead designer" },
@@ -290,82 +290,24 @@ export const featuredWork: WorkItem = {
       { label: "Duration", value: "8 months" },
     ],
     body: [
-      "The Report asset in Smartsheet combines data across multiple Sheets.",
-      "I led the effort to modernize the experience and help leadership decide how Reports should fit alongside adjacent platform capabilities.",
+      "Smartsheet spent most of the early to mid 2020s rebuilding the core views within its primary asset, the sheet. Bringing those new views to the report—the surface that combines data across multiple sheets—was the natural next step.",
+      "I was the designer responsible for executing the modernization strategy for reports. The project quickly grew beyond a visual refresh. We rethought the entire experience by improving aggregation, addressing years of customer feedback, and resolving long-standing usability issues. When the work began to overlap with adjacent platform capabilities, I stepped in to align three converging teams and help leadership define where reports fit within the broader Smartsheet platform.",
     ],
   },
   blocks: [
-    {
-      type: "stepFlow",
-      width: "full",
-      label: "HOW IT WORKS",
-      items: [
-        {
-          title: "Select Sheets",
-          description: "Choose the Sheets that power the Report.",
-          image: "/work/smartsheet-reports/asset-picker.png",
-          label: "Select Sheets placeholder",
-        },
-        {
-          title: "Manage fields",
-          description: "Choose columns or summary fields to include.",
-          image: "/work/smartsheet-reports/manage-fields.png",
-          label: "Manage fields placeholder",
-        },
-        {
-          title: "Define rows",
-          description: "Choose which rows are included.",
-          image: "/work/smartsheet-reports/define-rows.png",
-          label: "Define rows placeholder",
-        },
-      ],
-    },
-    {
-      type: "text",
-      title: "Smartsheet spent much of the 2020s rebuilding the core views within its primary asset, the Sheet.",
-      align: "center",
-      width: "full",
-      body: [
-        "Bringing those new views to the Report was the natural next step.",
-      ],
-    },
-    {
-      type: "viewGrid",
-      width: "wide",
-      items: [
-        {
-          title: "Table",
-          description: "Organize work in a table with rows and customizable columns.",
-          icon: "/work/smartsheet-reports/view-icons/table.svg",
-          kind: "table",
-        },
-        {
-          title: "Board",
-          description: "Manage agile work with cards on a Kanban board.",
-          icon: "/work/smartsheet-reports/view-icons/board.svg",
-          kind: "board",
-        },
-        {
-          title: "Timeline",
-          description: "Visualize related tasks and milestones across time.",
-          icon: "/work/smartsheet-reports/view-icons/timeline.svg",
-          kind: "timeline",
-        },
-      ],
-    },
     {
       type: "comparison",
       width: "full",
       items: [
         {
           title: "Old table report",
-          label: "Legacy Report mockup placeholder",
+          label: "Legacy report mockup placeholder",
           src: "/work/smartsheet-reports/legacy-table-report.png",
           watermark: "Old",
         },
         {
           title: "New table report",
-          label: "New Report mockup placeholder",
+          label: "New report mockup placeholder",
           src: "/work/smartsheet-reports/new-table-report.png",
           watermark: "New",
         },
@@ -376,7 +318,7 @@ export const featuredWork: WorkItem = {
       title: "More than a reskin",
       body: [
         "Early explorations made it clear there were fundamental issues preventing people from getting the most out of the tool.",
-        "The legacy Report bundled data aggregation and display controls into one admin-only configuration layer. Collaborators, anyone shared to the Report below admin level, got a read-only view with no ability to explore the data themselves. At the same time, the creation experience felt cumbersome and unintuitive, creating unnecessary friction for report builders.",
+        "The legacy report bundled data aggregation and display controls into one admin-only configuration layer. Collaborators, anyone shared to the report below admin level, got a read-only view with no ability to explore the data themselves. At the same time, the creation experience felt cumbersome and unintuitive, creating unnecessary friction for report builders.",
       ],
     },
     {
@@ -387,7 +329,7 @@ export const featuredWork: WorkItem = {
         {
           audience: "Collaborator",
           title: "Rigid consumption",
-          body: "Collabs are stuck with the admin’s setup, unable to filter, group, or sort the data for their own needs.",
+          body: "The top customer request was giving collaborators control to filter, group, and sort reports for their own needs.",
           tone: "red",
           avatar: "/work/smartsheet-reports/problem-avatars/collaborator-card.jpg",
           image: "/work/smartsheet-reports/problem-people/collaborator-optimized.jpg",
@@ -395,7 +337,7 @@ export const featuredWork: WorkItem = {
         {
           audience: "Creator",
           title: "Guidance & usability",
-          body: "Defining which Sheets, fields, and rows belonged in the Report was complex, with clunky controls and little guidance.",
+          body: "Defining which sheets, fields, and rows belonged in the report was complex, with clunky controls and little guidance.",
           tone: "amber",
           avatar: "/work/smartsheet-reports/problem-avatars/creator-card.jpg",
           image: "/work/smartsheet-reports/problem-people/creator-optimized.jpg",
@@ -417,11 +359,36 @@ export const featuredWork: WorkItem = {
       mediaSide: "right",
     },
     {
+      type: "stepFlow",
+      width: "full",
+      label: "HOW IT WORKS",
+      items: [
+        {
+          title: "Select sheets",
+          description: "Choose the sheets that power the report.",
+          image: "/work/smartsheet-reports/asset-picker.png",
+          label: "Select sheets placeholder",
+        },
+        {
+          title: "Manage fields",
+          description: "Choose columns or summary fields to include.",
+          image: "/work/smartsheet-reports/manage-fields.png",
+          label: "Manage fields placeholder",
+        },
+        {
+          title: "Define rows",
+          description: "Choose which rows are included.",
+          image: "/work/smartsheet-reports/define-rows.png",
+          label: "Define rows placeholder",
+        },
+      ],
+    },
+    {
       type: "split",
       title: "Aligning with nascent capabilities",
       body: [
-        "The Sheet team was introducing a new way to save filters, groups, and sorts to views. This lent itself to the ability for admins to maintain curation of display controls while enabling collaborators to deviate.",
-        "I worked with that team to keep Sheets and Reports consistent, since both used the same view primitives.",
+        "The sheet team was introducing a new way to save filters, groups, and sorts to views. This lent itself to the ability for admins to maintain curation of display controls while enabling collaborators to deviate.",
+        "I worked with that team to keep sheets and reports consistent, since both used the same view primitives.",
       ],
       variant: "feature",
       media: {
@@ -434,7 +401,7 @@ export const featuredWork: WorkItem = {
       type: "split",
       title: "Contributing new features",
       body: [
-        "Reports needed grouping and summary calculations to reach parity with the legacy experience. Those features did not exist in the Sheet, so we designed with the intention to extend back to the Sheet.",
+        "Grouping and summary calculations were required for reports to reach parity with the legacy experience. Those features did not exist in the sheet, so we designed with the intention to extend back to the sheet.",
       ],
       variant: "feature",
       media: {
@@ -484,10 +451,10 @@ export const featuredWork: WorkItem = {
     },
     {
       type: "spotlight",
-      title: "Defending the Report's right to exist",
+      title: "Defending the report's right to exist",
       body: [
-        "Halfway through the project, our CPO asked whether Reports needed to exist at all. The question was fair: Smartsheet had several tools built on the table primitive, and customers were confused which tool was right for their job.",
-        "Reports, Custom Views, and Dynamic View all touched the same problem space, but no one owned the overlap strategy. I stepped in to lead the alignment across teams, map tradeoffs, and drive the group toward a clear path forward.",
+        "Before moving into implementation, our CPO raised a bigger question: did reports need to exist as a separate asset at all? The question was fair because reports, Custom Views, and Dynamic View all touched overlapping table-based workflows, and customers were not always sure which tool was right for the job.",
+        "I led the alignment across three converging teams, mapped trade-offs, and defended why reports should remain separate. That strategy became the formal path forward: avoid an expensive migration of millions of legacy reports, clarify the asset's role in-product, and extend grouping and calculations back into sheets.",
       ],
       media: {
         label: "Cross-team alignment walkthrough",
@@ -500,32 +467,9 @@ export const featuredWork: WorkItem = {
       type: "impact",
       width: "full",
       label: "Leadership impact",
-      statement: "I turned cross-team ambiguity into a clear direction people could build toward.",
-      outcomes: [
-        {
-          number: "01",
-          title: "Reports stayed separate",
-          body: "Avoid a risky and expensive migration path for millions of existing Reports.",
-        },
-        {
-          number: "02",
-          title: "Sheet gained parity",
-          body: "Extend grouping and summaries into Sheets to reduce Report dependency.",
-        },
-        {
-          number: "03",
-          title: "Reports got clearer framing",
-          body: "Explore naming around Reports’ real value: combining Sheet data into one view.",
-        },
-      ],
-    },
-    {
-      type: "text",
-      title: "Carrying the work forward",
-      body: [
-        "A company reorg moved me to another team before all planned releases were complete. I partnered with the incoming designer and PM to transfer the work and shape future releases, including Report rebranding and Smart Assist (AI) integration.",
-        "This project clarified the kind of impact I want to have: stepping into ambiguity, connecting teams, and turning competing directions into a product strategy people can build toward.",
-      ],
+      statement: "I turned platform ambiguity into a clear product direction for reports. I defended the asset's role, aligned three converging teams, and established the source data model as the foundation for the next generation of the experience.",
+      outcomes: [],
+      footnote: "From there, the release path was clear. Deliver immediate customer value by shipping the new report experience and letting legacy users move over to it. Implement the first-time setup flow and land users in the new experience by default. Bring AI into the workflow once Smartsheet's nascent copilot capability was ready and stable.",
     },
   ],
   gallery: [],
