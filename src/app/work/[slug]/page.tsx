@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { CaseStudyPage } from "@/components/CaseStudyPage";
 import { allWork, getCaseStudy, routeableWork } from "@/content/work";
 
+const mvpCaseStudySlugs = ["smartsheet-reports", "metlife-mexico"];
+
 type ProjectPageProps = {
   params: Promise<{
     slug: string;
@@ -37,7 +39,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   if (!project) notFound();
 
-  const related = allWork.filter((item) => item.slug !== project.slug);
+  const related = allWork.filter((item) => mvpCaseStudySlugs.includes(item.slug) && item.slug !== project.slug);
 
   return <CaseStudyPage project={project} related={related} />;
 }

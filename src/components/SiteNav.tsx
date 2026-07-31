@@ -4,7 +4,6 @@ import Link from "next/link";
 import { SocialIcon } from "@/components/SocialIcon";
 
 const NAV_LINKS = [
-  { label: "Work", href: "/work" },
   { label: "About", href: "/about" },
 ];
 
@@ -40,7 +39,7 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
           />
         </Link>
         {showBack ? (
-          <Link href="/work" aria-label="Back to projects" className="nav-item-pill nav-back-pill font-sans-preview font-medium text-white">
+          <Link href="/" aria-label="Back home" className="nav-item-pill nav-back-pill font-sans-preview font-medium text-white">
             <span className="nav-back-icon">
               <BackIcon />
             </span>
@@ -53,7 +52,7 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
           <Link
             key={link.href}
             href={link.href}
-            className={`nav-item-pill text-white ${link.href === "/work" ? "nav-link-projects" : "nav-link-about"}`}
+            className="nav-item-pill nav-link-about text-white"
             aria-label={link.label}
           >
             {link.label}

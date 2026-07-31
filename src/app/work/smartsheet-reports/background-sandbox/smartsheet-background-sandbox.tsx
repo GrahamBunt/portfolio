@@ -4,6 +4,8 @@ import { useState } from "react";
 import { CaseStudyPage } from "@/components/CaseStudyPage";
 import { allWork, featuredWork } from "@/content/work";
 
+const mvpCaseStudySlugs = ["smartsheet-reports", "metlife-mexico"];
+
 const variants = [
   {
     id: "opening-band",
@@ -23,7 +25,7 @@ type VariantId = (typeof variants)[number]["id"];
 
 export function SmartsheetBackgroundSandbox() {
   const [activeVariant, setActiveVariant] = useState<VariantId>("opening-band");
-  const related = allWork.filter((item) => item.slug !== featuredWork.slug);
+  const related = allWork.filter((item) => mvpCaseStudySlugs.includes(item.slug) && item.slug !== featuredWork.slug);
 
   return (
     <div className={`case-study-background-sandbox is-${activeVariant}`}>

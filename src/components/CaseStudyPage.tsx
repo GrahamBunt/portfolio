@@ -2006,7 +2006,7 @@ function CaseStudyNextUpSection({
       <div className="case-study-next-up-rail">
         <h2 className="font-sans-preview">Up next</h2>
       </div>
-      <div className="case-study-next-up-grid">
+      <div className={`case-study-next-up-grid ${nextItems.length === 1 ? "has-one-card" : ""}`}>
         {nextItems.map((item) => {
           const href = item.isComingSoon ? undefined : `/work/${item.slug}`;
           const cardContent = (
@@ -2247,14 +2247,6 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                   {title}
                 </span>
               </h1>
-              {isStructuredCaseStudy ? (
-                <p
-                  className={`case-study-heading-summary font-sans-preview ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
-                  style={sequenceReady ? { "--rise-delay": "520ms", "--rise-duration": "0.9s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
-                >
-                  {preventTextOrphans(project.summary)}
-                </p>
-              ) : null}
             </header>
           </div>
 
