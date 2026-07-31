@@ -2006,7 +2006,7 @@ function CaseStudyNextUpSection({
       <div className="case-study-next-up-rail">
         <h2 className="font-sans-preview">Up next</h2>
       </div>
-      <div className={`case-study-next-up-grid ${nextItems.length === 1 ? "has-one-card" : ""}`}>
+      <div className="case-study-next-up-grid">
         {nextItems.map((item) => {
           const href = item.isComingSoon ? undefined : `/work/${item.slug}`;
           const cardContent = (

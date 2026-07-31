@@ -1216,7 +1216,7 @@ body {
 
 .home-featured-work-card .case-study-next-up-media {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 3 / 2;
 }
 
 .home-featured-work-card .case-study-next-up-copy p {
@@ -5384,15 +5384,6 @@ body {
   margin-left: auto;
 }
 
-.case-study-next-up-grid.has-one-card {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.case-study-next-up-grid.has-one-card > .case-study-next-up-card {
-  width: 100%;
-  max-width: none;
-}
-
 .case-study-next-up-card {
   display: flex;
   min-width: 0;
@@ -5408,7 +5399,7 @@ body {
 
 .case-study-next-up-media {
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 10 / 9;
   overflow: hidden;
   border-radius: 10px;
   background: #171717;
