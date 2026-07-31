@@ -44,10 +44,11 @@ export default function WorkPage() {
   }, []);
 
   const allProjectsDelay = {
-    "--rise-delay": "380ms",
-    "--rise-duration": "0.78s",
+    "--rise-delay": "220ms",
+    "--rise-duration": "0.58s",
+    "--rise-distance": "8px",
     "--rise-blur": "0px",
-    "--rise-animation": "work-rise-in-clean",
+    "--rise-animation": "quiet-rise-in",
   } as CSSProperties;
 
   return (
@@ -64,7 +65,7 @@ export default function WorkPage() {
             </h1>
             <AnimatedDescription
               ready={sequenceReady}
-              delay="260ms"
+              delay="140ms"
               text="Product designs focused on simplicity, usefulness, and enterprise scale."
             />
           </header>

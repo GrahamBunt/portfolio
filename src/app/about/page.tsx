@@ -96,17 +96,19 @@ export default function AboutPage() {
   }, []);
 
   const portraitDelay = {
-    "--rise-delay": "380ms",
-    "--rise-duration": "0.78s",
+    "--rise-delay": "220ms",
+    "--rise-duration": "0.58s",
+    "--rise-distance": "8px",
     "--rise-blur": "0px",
-    "--rise-animation": "work-rise-in-clean",
+    "--rise-animation": "quiet-rise-in",
   } as CSSProperties;
 
   const bioDelay = {
-    "--rise-delay": "480ms",
-    "--rise-duration": "0.68s",
+    "--rise-delay": "260ms",
+    "--rise-duration": "0.58s",
+    "--rise-distance": "6px",
     "--rise-blur": "0px",
-    "--rise-animation": "work-rise-in-clean",
+    "--rise-animation": "quiet-rise-in",
   } as CSSProperties;
 
   const updateDraft = (updater: (content: AboutContent) => void) => {
@@ -192,7 +194,7 @@ export default function AboutPage() {
             ) : (
               <AnimatedDescription
                 ready={sequenceReady}
-                delay="260ms"
+                delay="140ms"
                 text={draft.hero.description}
                 className="about-heading-description"
               />

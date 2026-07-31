@@ -252,6 +252,22 @@ body {
   to { opacity: 1; }
 }
 
+@keyframes quiet-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise-distance, 8px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes quiet-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes rise-in {
   0% {
     opacity: 0;
@@ -455,9 +471,18 @@ body {
     fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.home-page .animate-reveal,
 .work-page .animate-reveal,
 .about-page .animate-reveal {
-  animation-duration: 0.74s, 0.84s, 0.74s, 0.74s;
+  transform: translateY(6px);
+  filter: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+  animation: quiet-rise-in 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-page .animate-reveal {
+  animation-duration: 0.64s;
 }
 
 .animate-reveal-compact {
@@ -519,6 +544,22 @@ body {
 
 .sequence-ready .staged-work-rise {
   animation: var(--rise-animation, work-rise-in) var(--rise-duration, 0.9s) cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+.home-page .staged-work-rise,
+.work-page .staged-work-rise,
+.about-page .staged-work-rise {
+  transform: translateY(var(--rise-distance, 8px));
+  filter: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.home-page.sequence-ready .staged-work-rise,
+.work-page.sequence-ready .staged-work-rise,
+.about-page.sequence-ready .staged-work-rise {
+  animation: quiet-rise-in var(--rise-duration, 0.58s) cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: var(--rise-delay, 0ms);
 }
 
@@ -976,18 +1017,15 @@ body {
 
 .work-page.sequence-ready .animated-description.is-ready .animated-description-line,
 .about-page.sequence-ready .animated-description.is-ready .animated-description-line {
-  animation-duration: 0.48s;
+  animation: quiet-fade-in 0.52s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  animation-delay: calc(var(--description-delay, 0ms) + var(--line-delay, 0ms));
 }
 
 .work-page .work-heading .animated-description-line,
 .about-page .work-heading .animated-description-line {
   transform: none;
   filter: none;
-}
-
-.work-page.sequence-ready .work-heading .animated-description.is-ready .animated-description-line,
-.about-page.sequence-ready .work-heading .animated-description.is-ready .animated-description-line {
-  animation-name: description-line-swipe-only;
+  clip-path: none;
 }
 
 .work-featured {
@@ -1897,16 +1935,17 @@ body {
 }
 
 .about-bio p {
+  color: #ffffff;
   font-family: var(--font-sans-preview), sans-serif;
+  font-size: 21px;
   font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
   margin: 0;
 }
 
 .about-bio p {
   width: 100%;
-  color: #ffffff;
-  font-size: 18px;
-  line-height: 28px;
 }
 
 .about-social {

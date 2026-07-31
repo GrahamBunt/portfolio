@@ -17,12 +17,12 @@ export default function Home() {
     window.scrollTo(0, 0);
 
     document.fonts.ready
-      .then(() => new Promise((r) => setTimeout(r, 350)))
+      .then(() => new Promise((r) => setTimeout(r, 140)))
       .then(() => setFontsReady(true));
   }, []);
 
   return (
-    <main className={`flex min-h-screen flex-col items-center bg-black pt-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
+    <main className={`home-page flex min-h-screen flex-col items-center bg-black pt-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
       <div className="canvas flex flex-col items-center gap-5">
         <SiteNav />
 
@@ -46,11 +46,10 @@ export default function Home() {
         <section className="flex w-full flex-col items-center gap-[60px] overflow-hidden px-5 py-[60px]">
           <div className="flex w-full max-w-[1680px] flex-col gap-[30px] min-[810px]:flex-row min-[810px]:items-start min-[810px]:gap-5">
             {[0, 1, 2].map((colIndex) => {
-              // Outer columns (0, 2) rise together; middle (1) trails slightly.
               const isMiddle = colIndex === 1;
-              const columnDelay = isMiddle ? "840ms" : "680ms";
-              const columnDuration = isMiddle ? "1.46s" : "1.38s";
-              const mobileColumnDelay = `${680 + colIndex * 80}ms`;
+              const columnDelay = isMiddle ? "300ms" : "240ms";
+              const columnDuration = isMiddle ? "0.68s" : "0.64s";
+              const mobileColumnDelay = `${240 + colIndex * 40}ms`;
 
               return (
                 <div
@@ -60,8 +59,8 @@ export default function Home() {
                     {
                       "--rise-delay": columnDelay,
                       "--rise-duration": columnDuration,
-                      "--rise-distance": "96px",
-                      "--rise-animation": "work-rise-in-clean",
+                      "--rise-distance": "10px",
+                      "--rise-animation": "quiet-rise-in",
                       "--rise-blur": "0px",
                       "--mobile-rise-delay": mobileColumnDelay,
                     } as CSSProperties
@@ -72,7 +71,7 @@ export default function Home() {
                     const shouldLoadEarly = globalIndex < 6;
 
                     return (
-                      <figure key={project.slug} className="flex flex-col gap-2.5">
+                      <figure key={project.slug} className="flex flex-col">
                         <div
                           className="relative overflow-hidden rounded-[10px] bg-white/10"
                           style={{
@@ -92,9 +91,6 @@ export default function Home() {
                             />
                           ) : null}
                         </div>
-                        <figcaption className="text-base font-medium text-white/65">
-                          {project.title}
-                        </figcaption>
                       </figure>
                     );
                   })}
