@@ -1956,13 +1956,14 @@ body {
   gap: 20px;
 }
 
-.about-bio p {
+.about-bio p,
+.about-copy p {
   color: #ffffff;
   font-family: var(--font-sans-preview), sans-serif;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 1.5;
+  line-height: 28px;
   margin: 0;
 }
 
