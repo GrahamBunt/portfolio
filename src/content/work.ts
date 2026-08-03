@@ -4,6 +4,8 @@ export type WorkItem = {
   slug: string;
   tag: string;
   image: string;
+  homepageImage?: string;
+  upNextImage?: string;
   thumbnailImage?: string;
   heroImage?: string;
   featuredImage?: string;
@@ -278,7 +280,9 @@ export const featuredWork: WorkItem = {
   slug: "smartsheet-reports",
   tag: "Smartsheet • 2025–2026",
   image: "/work/smartsheet-reports/empty-mock-hero.jpg",
-  heroImage: "/work/smartsheet-reports/empty-mock-hero.jpg",
+  homepageImage: "/work/smartsheet-reports/homepage-card.png",
+  upNextImage: "/work/smartsheet-reports/up-next.png",
+  heroImage: "/work/smartsheet-reports/hero.png",
   thumbnailImage: "/work/smartsheet-reports/thumbnail.png",
   featuredImage: "/work/smartsheet-reports/orange-peak-final-card.jpg",
   summary: "Led the redesign of one of Smartsheet's primary assets and aligned three converging teams around a clear platform direction.",
@@ -290,8 +294,8 @@ export const featuredWork: WorkItem = {
       { label: "Duration", value: "8 months" },
     ],
     body: [
-      "Smartsheet spent most of the early to mid 2020s rebuilding the core views within its primary asset, the sheet. Bringing those new views to the report—the surface that combines data across multiple sheets—was the natural next step.",
-      "I was the designer responsible for executing the modernization strategy for reports. The project quickly grew beyond a visual refresh. We rethought the entire experience by improving aggregation, addressing years of customer feedback, and resolving long-standing usability issues. When the work began to overlap with adjacent platform capabilities, I stepped in to align three converging teams and help leadership define where reports fit within the broader Smartsheet platform.",
+      "Smartsheet spent much of the early to mid-2020s rebuilding the core views within its primary asset, the sheet. Bringing those new views to reports, the surface that combines data across multiple sheets, was the natural next step.",
+      "I was the designer responsible for executing this modernization strategy, but the project quickly grew beyond a visual refresh. We rethought the entire aggregation experience, addressing top customer feedback and resolving long-standing usability issues. When the work began to overlap with adjacent platform capabilities, I stepped in to align three converging teams and define reports' role within Smartsheet.",
     ],
   },
   blocks: [
@@ -453,8 +457,8 @@ export const featuredWork: WorkItem = {
       type: "spotlight",
       title: "Defending the report's right to exist",
       body: [
-        "Before moving into implementation, our CPO raised a bigger question: did reports need to exist as a separate asset at all? The question was fair because reports, Custom Views, and Dynamic View all touched overlapping table-based workflows, and customers were not always sure which tool was right for the job.",
-        "I led the alignment across three converging teams, mapped trade-offs, and defended why reports should remain separate. That strategy became the formal path forward: avoid an expensive migration of millions of legacy reports, clarify the asset's role in-product, and extend grouping and calculations back into sheets.",
+        "Midway through our project, the CPO posed an existential question: should reports exist as a separate asset? The question was fair. Reports, sheets, and dynamic views had begun to overlap, leaving customers unsure which tool was right for the job.",
+        "I aligned three teams around a strategy to keep reports separate, avoiding a costly migration of millions of legacy reports while clarifying its role within the platform and driving greater parity between sheets and reports.",
       ],
       media: {
         label: "Cross-team alignment walkthrough",
@@ -466,10 +470,10 @@ export const featuredWork: WorkItem = {
     {
       type: "impact",
       width: "full",
-      label: "Leadership impact",
-      statement: "I turned platform ambiguity into a clear product direction for reports. I defended the asset's role, aligned three converging teams, and established the source data model as the foundation for the next generation of the experience.",
+      label: "Reflection",
+      statement: "The hardest part of this project wasn't redesigning the interface. It was defining the role reports should play within the platform and getting the team aligned. Once we had a shared direction, every downstream decision got easier, and the design work became an exercise in execution rather than existential debate.",
       outcomes: [],
-      footnote: "From there, the release path was clear. Deliver immediate customer value by shipping the new report experience and letting legacy users move over to it. Implement the first-time setup flow and land users in the new experience by default. Bring AI into the workflow once Smartsheet's nascent copilot capability was ready and stable.",
+      footnote: "Strategy and alignment are often the biggest constraints in product development, and where I've found design can have the greatest impact.",
     },
   ],
   gallery: [],

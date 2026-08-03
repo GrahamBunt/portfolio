@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import type { CSSProperties, ReactNode, RefObject, SyntheticEvent, UIEvent } from "react";
+import type { CSSProperties, ReactNode, RefObject, SyntheticEvent } from "react";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
@@ -1192,112 +1192,15 @@ function CaseStudySmartsheetProse({
   );
 }
 
-const smartsheetProblemSlides = [
-  {
-    eyebrow: "01",
-    title: "Admin-only controls",
-    body: "Aggregation and display settings lived in one configuration layer, making the report hard to understand and harder to change.",
-  },
-  {
-    eyebrow: "02",
-    title: "Rigid consumption",
-    body: "Collaborators could view the output, but they had no way to filter, group, or sort the data for their own working context.",
-  },
-  {
-    eyebrow: "03",
-    title: "Source selection friction",
-    body: "Choosing the sheets that fed a report required too much setup knowledge and gave builders little confidence in what they were creating.",
-  },
-  {
-    eyebrow: "04",
-    title: "Field management drift",
-    body: "Fields, columns, and source data relationships were difficult to reason about once multiple sheets entered the report.",
-  },
-  {
-    eyebrow: "05",
-    title: "Row criteria complexity",
-    body: "Defining which rows belonged in a report exposed the full complexity of the data model without enough guidance.",
-  },
-];
-
 const smartsheetExplorationCopy = [
-  "Initial explorations were AI-first. They moved someone from intent to a configurable report preview quickly, then let them refine from there. The direction was compelling, but once we started sharing it, the feedback centered on first-time creation instead of the deeper paradigm shift reports needed.",
-  "I made the call to put the first-time experience on the shelf and refocus the team on the crux of the report. Creators needed to set the data boundaries, while collaborators needed freedom to explore the data inside those boundaries. Solving that foundation first would make the right creation flow clearer later. Without it, the first-time experience was just wrapping around an unresolved model.",
-];
-
-const smartsheetSolutionCopy = [
-  "The final model separated data boundaries from display controls. Source Data answered which sheets, fields, and rows belonged in the report. Toolbar controls answered how someone wanted to explore the data inside those boundaries.",
-  "That framing shaped the final design: one Source Data entry point for setting boundaries, three focused setup steps for sheets, fields, and rows, and display controls that could evolve through filters, grouping, sorting, and calculations without reopening Source Data or changing the underlying data boundary.",
+  "The main challenge was giving collaborators access to the toolbar while preserving admin control over what data belonged in the report and how it was aggregated.",
+  "The final solution separated source data controls from display controls. Source data answered which sheets, fields, and rows belonged in the report and how the data was aggregated. The rest of the toolbar controls could then let collaborators explore the data within those bounds.",
 ];
 
 const smartsheetViewPrimitiveCopy = [
-  "The strategy was to build reports from the same view primitives that powered Smartsheet's primary asset: the sheet. That gave reports and sheets a shared interaction model while keeping Source Data separate from display choices.",
-  "That meant partnering closely with the Views team as they introduced Custom Views, a nascent sheet capability for saving display customizations to a view. The same model worked for reports, but the language had to stay clear: Source Data defined the data boundary, while saved views stored display choices. Grouping and summary calculations became shared view controls that sheets would eventually need too.",
+  "With the strategy in place, we modernized reports through a series of incremental releases.",
+  "The modern table view was introduced with refreshed grouping and calculation designs, so customers could switch from the legacy view with their reports intact. Source data came next, opening the toolbar to collaborators while preserving admin control. The final step was a new first-time experience making the modern view the default starting place.",
 ];
-
-function CaseStudySmartsheetProblemCarousel() {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const viewportRef = useRef<HTMLDivElement | null>(null);
-
-  const scrollToSlide = (index: number) => {
-    const nextIndex = Math.max(0, Math.min(smartsheetProblemSlides.length - 1, index));
-    const viewport = viewportRef.current;
-
-    setActiveSlide(nextIndex);
-
-    if (!viewport) {
-      return;
-    }
-
-    viewport.scrollTo({
-      left: viewport.clientWidth * nextIndex,
-      behavior: "smooth",
-    });
-  };
-
-  const handleSlideScroll = (event: UIEvent<HTMLDivElement>) => {
-    const viewport = event.currentTarget;
-    const nextIndex = Math.round(viewport.scrollLeft / viewport.clientWidth);
-
-    if (nextIndex !== activeSlide) {
-      setActiveSlide(Math.max(0, Math.min(smartsheetProblemSlides.length - 1, nextIndex)));
-    }
-  };
-
-  return (
-    <section className="case-study-smartsheet-carousel case-study-block" aria-label="legacy report problem analysis">
-      <div className="case-study-smartsheet-carousel-shell">
-        <div
-          ref={viewportRef}
-          className="case-study-smartsheet-carousel-viewport"
-          onScroll={handleSlideScroll}
-        >
-          <div className="case-study-smartsheet-carousel-track">
-            {smartsheetProblemSlides.map((slide) => (
-              <article
-                key={slide.title}
-                className="case-study-smartsheet-slide"
-                aria-label={`${slide.eyebrow}. ${slide.title}`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="case-study-smartsheet-carousel-dots" aria-label="Problem slide position">
-        {smartsheetProblemSlides.map((slide, index) => (
-          <button
-            key={slide.title}
-            className={index === activeSlide ? "is-active" : ""}
-            type="button"
-            aria-label={`Show problem slide ${index + 1}`}
-            aria-current={index === activeSlide ? "true" : undefined}
-            onClick={() => scrollToSlide(index)}
-          />
-        ))}
-      </div>
-    </section>
-  );
-}
 
 function CaseStudySmartsheetFullMedia({
   label,
@@ -1443,8 +1346,8 @@ function CaseStudySmartsheetPullingSection({
 
 function CaseStudySmartsheetViewPrimitiveSection() {
   return (
-    <section className="case-study-smartsheet-pulling-section case-study-smartsheet-view-parity-section case-study-block" aria-label="Convergence">
-      <CaseStudySmartsheetSpineSection label="Convergence">
+    <section className="case-study-smartsheet-pulling-section case-study-smartsheet-view-parity-section case-study-block" aria-label="Execution">
+      <CaseStudySmartsheetSpineSection label="Execution">
         <CaseStudySmartsheetProse body={smartsheetViewPrimitiveCopy} />
       </CaseStudySmartsheetSpineSection>
       <div className="case-study-smartsheet-solution-media">
@@ -1482,11 +1385,11 @@ function getSmartsheetSpineLabel(block: CaseStudyBlock) {
   }
 
   if (block.type === "spotlight") {
-    return "Platform ambiguity";
+    return "Ambiguity";
   }
 
   if (block.type === "impact") {
-    return "Leadership impact";
+    return block.label;
   }
 
   if (block.type === "text" && block.title === "Carrying the work forward") {
@@ -1516,7 +1419,7 @@ function CaseStudySmartsheetSplitBlock({ block }: { block: Extract<CaseStudyBloc
 function CaseStudySmartsheetPivotSpotlightSection({ block }: { block: Extract<CaseStudyBlock, { type: "spotlight" }> }) {
   return (
     <section className="case-study-smartsheet-pivot-spotlight case-study-block" aria-label={block.title}>
-      <CaseStudySmartsheetSpineSection label="Platform ambiguity">
+      <CaseStudySmartsheetSpineSection label="Ambiguity">
         <CaseStudySmartsheetProse body={block.body} />
       </CaseStudySmartsheetSpineSection>
       <div className="case-study-smartsheet-pivot-media">
@@ -1573,7 +1476,7 @@ function CaseStudySmartsheetBlocks({
     }
 
     return (
-      <section key="smartsheet-pivot-band" className="case-study-smartsheet-pivot-band" aria-label="Platform ambiguity">
+      <section key="smartsheet-pivot-band" className="case-study-smartsheet-pivot-band" aria-label="Ambiguity">
         <CaseStudySmartsheetPivotSpotlightSection block={spotlightBlock} />
       </section>
     );
@@ -1585,18 +1488,9 @@ function CaseStudySmartsheetBlocks({
     }
 
     return (
-      <CaseStudySmartsheetSpineSection key="smartsheet-leadership-impact" label="Leadership impact">
+      <CaseStudySmartsheetSpineSection key="smartsheet-reflection" label={impactBlock.label}>
         <CaseStudySmartsheetImpactBlock block={impactBlock} />
       </CaseStudySmartsheetSpineSection>
-    );
-  }
-
-  function renderEnding() {
-    return (
-      <Fragment key="smartsheet-ending">
-        {renderPivotBand()}
-        {renderImpactSection()}
-      </Fragment>
     );
   }
 
@@ -1606,6 +1500,14 @@ function CaseStudySmartsheetBlocks({
         <CaseStudySmartsheetSpineSection label="Information">
           <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
         </CaseStudySmartsheetSpineSection>
+      ) : null}
+      {overview ? (
+        <div className="case-study-smartsheet-solution-media case-study-block">
+          <CaseStudySmartsheetFullMedia
+            label="Legacy report toolbar limitation"
+            src="/work/smartsheet-reports/legacy-report.png"
+          />
+        </div>
       ) : null}
 
       {blocks.map((block, index) => {
@@ -1626,32 +1528,22 @@ function CaseStudySmartsheetBlocks({
               candidate.type === "split" && candidate.title === "Pulling the configuration model apart",
           );
 
-          return (
-            <div key="smartsheet-problem-cards-and-carousel" className="case-study-smartsheet-problem-intro">
-              <CaseStudyProblemCardsBlock block={block} showHeader={false} useProblemBadges />
-              <CaseStudySmartsheetProblemCarousel />
-              {pullingBlock ? (
-                <CaseStudySmartsheetPullingSection
-                  block={pullingBlock}
-                  label="Exploration"
-                  body={smartsheetExplorationCopy}
-                  mediaMode="exploration"
-                />
-              ) : null}
-            </div>
-          );
+          return pullingBlock ? (
+            <Fragment key="smartsheet-paradigm-and-platform-ambiguity">
+              <CaseStudySmartsheetPullingSection
+                block={pullingBlock}
+                label="Paradigm"
+                body={smartsheetExplorationCopy}
+                mediaMode="placeholder"
+                mediaCount={2}
+              />
+              {renderPivotBand()}
+            </Fragment>
+          ) : null;
         }
 
         if (block.type === "split" && block.title === "Pulling the configuration model apart") {
-          return (
-            <CaseStudySmartsheetPullingSection
-              key={`${block.title}-${index}`}
-              block={block}
-              stepFlow={nextBlock?.type === "stepFlow" ? nextBlock : undefined}
-              label="Source data model"
-              body={smartsheetSolutionCopy}
-            />
-          );
+          return null;
         }
 
         if (block.type === "stepFlow" && previousBlock?.type === "split" && previousBlock.title === "Pulling the configuration model apart") {
@@ -1662,7 +1554,7 @@ function CaseStudySmartsheetBlocks({
           return (
             <Fragment key={`${block.title}-${index}`}>
               <CaseStudySmartsheetViewPrimitiveSection />
-              {renderEnding()}
+              {renderImpactSection()}
             </Fragment>
           );
         }
@@ -2009,11 +1901,12 @@ function CaseStudyNextUpSection({
       <div className="case-study-next-up-grid">
         {nextItems.map((item) => {
           const href = item.isComingSoon ? undefined : `/work/${item.slug}`;
+          const cardClassName = `case-study-next-up-card is-${item.slug}`;
           const cardContent = (
             <>
               <figure className="case-study-next-up-media">
                 <img
-                  src={item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image}
+                  src={item.upNextImage ?? item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image}
                   alt=""
                   loading="lazy"
                   decoding="async"
@@ -2038,14 +1931,14 @@ function CaseStudyNextUpSection({
 
           if (!href) {
             return (
-              <article key={item.slug} className="case-study-next-up-card is-disabled">
+              <article key={item.slug} className={`${cardClassName} is-disabled`}>
                 {cardContent}
               </article>
             );
           }
 
           return (
-            <Link key={item.slug} href={href} className="case-study-next-up-card">
+            <Link key={item.slug} href={href} className={cardClassName}>
               {cardContent}
             </Link>
           );
