@@ -1262,27 +1262,27 @@ function CaseStudySmartsheetViewBento() {
     {
       label: "Custom views menu",
       className: "is-custom-views",
-      src: "/work/smartsheet-reports/custom-views-side.jpg",
+      src: "/work/smartsheet-reports/bento-top-left.png",
     },
     {
       label: "Grouping surface",
       className: "is-grouping-surface",
-      src: "/work/smartsheet-reports/grouping-control-final.png",
+      src: "/work/smartsheet-reports/bento-top-right.png",
     },
     {
       label: "Summary calculations",
       className: "is-summary-calculations",
-      src: "/work/smartsheet-reports/summary-calculation.jpg",
+      src: "/work/smartsheet-reports/bento-bottom-left.png",
     },
     {
       label: "Calculate menu",
       className: "is-calculate-menu",
-      src: "/work/smartsheet-reports/calculate.jpg",
+      src: "/work/smartsheet-reports/bento-bottom-middle.png",
     },
     {
       label: "Three-level grouping logic",
       className: "is-grouping-logic",
-      src: "/work/smartsheet-reports/grouping-control-final.png",
+      src: "/work/smartsheet-reports/bento-bottom-right.png",
     },
   ];
 
@@ -1306,6 +1306,7 @@ function CaseStudySmartsheetPullingSection({
   stepFlow,
   label,
   body,
+  mediaItems,
   mediaMode = "source",
   mediaCount = 1,
 }: {
@@ -1313,6 +1314,11 @@ function CaseStudySmartsheetPullingSection({
   stepFlow?: Extract<CaseStudyBlock, { type: "stepFlow" }>;
   label?: string;
   body?: string[];
+  mediaItems?: Array<{
+    label: string;
+    src?: string;
+    placeholder?: boolean;
+  }>;
   mediaMode?: "source" | "placeholder" | "exploration";
   mediaCount?: number;
 }) {
@@ -1329,7 +1335,16 @@ function CaseStudySmartsheetPullingSection({
       <div className="case-study-smartsheet-solution-media">
         {showExplorationMedia ? (
           <CaseStudySmartsheetExplorationMedia />
-        ) : showPlaceholders
+        ) : mediaItems?.length
+          ? mediaItems.map((item) => (
+              <CaseStudySmartsheetFullMedia
+                key={item.label}
+                label={item.label}
+                src={item.src}
+                placeholder={item.placeholder ?? !item.src}
+              />
+            ))
+          : showPlaceholders
           ? Array.from({ length: mediaCount }).map((_, index) => (
               <CaseStudySmartsheetFullMedia
                 key={`${sectionLabel}-placeholder-${index + 1}`}
@@ -1353,8 +1368,8 @@ function CaseStudySmartsheetViewPrimitiveSection() {
       <div className="case-study-smartsheet-solution-media">
         <CaseStudySmartsheetViewBento />
         <CaseStudySmartsheetFullMedia
-          label="Custom views expanded view"
-          src="/work/smartsheet-reports/custom-views-side.jpg"
+          label="Grouping levels"
+          src="/work/smartsheet-reports/grouping-levels.png"
         />
       </div>
     </section>
@@ -1535,7 +1550,12 @@ function CaseStudySmartsheetBlocks({
                 label="Paradigm"
                 body={smartsheetExplorationCopy}
                 mediaMode="placeholder"
-                mediaCount={2}
+                mediaItems={[
+                  {
+                    label: "Source data controls and display controls",
+                    src: "/work/smartsheet-reports/paradigm-1.png",
+                  },
+                ]}
               />
               {renderPivotBand()}
             </Fragment>
