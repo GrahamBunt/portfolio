@@ -627,7 +627,7 @@ export const otherWork: WorkItem[] = [
     tag: "KPMG • 2021",
     image: "/work/metlife-mexico/thumbnail.png",
     thumbnailImage: "/work/metlife-mexico/metlife-grid-display.png",
-    heroImage: "/work/metlife-mexico/metlife-grid-display.png",
+    heroImage: "/work/metlife-mexico/hero.png",
     featuredImage: "/work/metlife-mexico/home-dashboard.png",
     summary: "Designed an agent portal that centralized client management, policy servicing, and sales activity.",
     overview: {
