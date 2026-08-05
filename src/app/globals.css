@@ -4429,6 +4429,38 @@ body {
   gap: 120px;
 }
 
+.case-study-page.is-smartsheet-reports .case-study-smartsheet-pulling-section[aria-label="Paradigm"] {
+  --smartsheet-pivot-bg: #151515;
+  --smartsheet-pivot-body-gap: 120px;
+  --smartsheet-pivot-transition-depth: min(472.5px, calc(28.125vw - 11.25px));
+
+  position: relative;
+  isolation: isolate;
+}
+
+.case-study-page.is-smartsheet-reports .case-study-smartsheet-pulling-section[aria-label="Paradigm"]::before {
+  content: "";
+  position: absolute;
+  top: calc(100% - var(--smartsheet-pivot-transition-depth));
+  right: calc(50% - 50vw);
+  bottom: calc(-1 * var(--smartsheet-pivot-body-gap));
+  left: calc(50% - 50vw);
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(21, 21, 21, 0) 0%,
+    rgba(21, 21, 21, 0.72) 34%,
+    var(--smartsheet-pivot-bg) 62%,
+    var(--smartsheet-pivot-bg) 100%
+  );
+}
+
+.case-study-page.is-smartsheet-reports .case-study-smartsheet-pulling-section[aria-label="Paradigm"] > * {
+  position: relative;
+  z-index: 1;
+}
+
 .case-study-structured-section {
   display: flex;
   width: 100%;
@@ -4723,7 +4755,7 @@ body {
   color: #ffffff;
   margin-right: calc(50% - 50vw);
   margin-left: calc(50% - 50vw);
-  padding: clamp(88px, 7vw, 128px) 20px;
+  padding: 0 20px clamp(88px, 7vw, 128px);
 }
 
 .case-study-smartsheet-pivot-band .case-study-spine-rail p,
@@ -4995,6 +5027,10 @@ body {
 
   .case-study-smartsheet-pulling-section {
     gap: 96px;
+  }
+
+  .case-study-page.is-smartsheet-reports .case-study-smartsheet-pulling-section[aria-label="Paradigm"] {
+    --smartsheet-pivot-body-gap: 96px;
   }
 
   .case-study-structured-section {
