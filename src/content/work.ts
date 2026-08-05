@@ -626,6 +626,8 @@ export const otherWork: WorkItem[] = [
     slug: "metlife-mexico",
     tag: "KPMG • 2021",
     image: "/work/metlife-mexico/thumbnail.png",
+    homepageImage: "/work/metlife-mexico/homepage-card.png",
+    upNextImage: "/work/metlife-mexico/up-next.png",
     thumbnailImage: "/work/metlife-mexico/metlife-grid-display.png",
     heroImage: "/work/metlife-mexico/hero.png",
     featuredImage: "/work/metlife-mexico/home-dashboard.png",
@@ -638,7 +640,8 @@ export const otherWork: WorkItem[] = [
         { label: "Deliverable", value: "Agent Portal MVP" },
       ],
       body: [
-        "MetLife Mexico needed a centralized workspace where agents could manage client relationships, policy servicing, sales activity, and performance from one place. I led the design of an agent portal MVP that translated research into a clear operating hub: a home dashboard for daily priorities, client and policy tools for relationship management, activity tracking for follow-ups and service requests, and performance views that connected product knowledge back to business outcomes.",
+        "MetLife Mexico needed a centralized workspace where agents could manage client relationships, policy servicing, sales activity, and performance.",
+        "I led the design of an agent portal MVP that unified those workflows into a single experience, helping agents stay organized and manage the full customer lifecycle.",
       ],
     },
     blocks: [
