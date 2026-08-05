@@ -1701,7 +1701,7 @@ function CaseStudyMetLifeSnapshotBlocks({
   const showcaseBlock = blocks.find((block): block is Extract<CaseStudyBlock, { type: "showcase" }> => block.type === "showcase");
 
   return overview ? (
-    <CaseStudySmartsheetSpineSection label="Snapshot" contentClassName="case-study-metlife-snapshot-spine">
+    <CaseStudySmartsheetSpineSection label="Information" contentClassName="case-study-metlife-snapshot-spine">
       <div className="case-study-metlife-snapshot-content">
         <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
         {showcaseBlock ? <CaseStudyStructuredShowcaseGrid block={showcaseBlock} showTitles={false} /> : null}
