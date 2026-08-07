@@ -3906,7 +3906,7 @@ body {
 
 .case-study-page.is-structured-case-study {
   --case-study-section-spacing: 136px;
-  --case-study-copy-right-inset: clamp(32px, 3vw, 48px);
+  --case-study-copy-right-inset: clamp(40px, 4vw, 72px);
 }
 
 .case-study-page.is-structured-case-study .case-study-main,
