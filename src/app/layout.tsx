@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { DisplayTypeDial } from "@/components/DisplayTypeDial";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +15,6 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans-preview antialiased">
         {children}
-        <DisplayTypeDial />
       </body>
     </html>
   );

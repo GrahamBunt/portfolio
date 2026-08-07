@@ -24,7 +24,7 @@ function ArrowIcon() {
 }
 
 function getProjectImage(project: (typeof allWork)[number]) {
-  return project.homepageImage ?? project.thumbnailImage ?? project.featuredImage ?? project.heroImage ?? project.image;
+  return project.homepageImage ?? project.image;
 }
 
 export default function Home() {

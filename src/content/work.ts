@@ -281,12 +281,10 @@ export const featuredWork: WorkItem = {
   title: "Smartsheet Reports",
   slug: "smartsheet-reports",
   tag: "Smartsheet • 2025–2026",
-  image: "/work/smartsheet-reports/empty-mock-hero.jpg",
+  image: "/work/smartsheet-reports/homepage-card.png",
   homepageImage: "/work/smartsheet-reports/homepage-card.png",
   upNextImage: "/work/smartsheet-reports/up-next.png",
   heroImage: "/work/smartsheet-reports/hero-2x.jpg",
-  thumbnailImage: "/work/smartsheet-reports/thumbnail.png",
-  featuredImage: "/work/smartsheet-reports/orange-peak-final-card.jpg",
   summary: "Modernized one of Smartsheet's core platform capabilities while aligning three teams around its long-term direction.",
   cardMeta: "Smartsheet • Case Study • 2025–26",
   caseStudyMeta: "Case Study • Aug '25 – Feb '26",
@@ -305,133 +303,35 @@ export const featuredWork: WorkItem = {
   },
   blocks: [
     {
-      type: "comparison",
-      width: "full",
-      items: [
-        {
-          title: "Old table report",
-          label: "Legacy report mockup placeholder",
-          src: "/work/smartsheet-reports/legacy-table-report.png",
-          watermark: "Old",
-        },
-        {
-          title: "New table report",
-          label: "New report mockup placeholder",
-          src: "/work/smartsheet-reports/new-table-report.png",
-          watermark: "New",
-        },
-      ],
-    },
-    {
       type: "text",
       title: "More than a reskin",
-      body: [
-        "Early explorations made it clear there were fundamental issues preventing people from getting the most out of the tool.",
-        "The legacy report bundled data aggregation and display controls into one admin-only configuration layer. Collaborators, anyone shared to the report below admin level, got a read-only view with no ability to explore the data themselves. At the same time, the creation experience felt cumbersome and unintuitive, creating unnecessary friction for report builders.",
-      ],
+      body: [],
     },
     {
       type: "problemCards",
       width: "full",
       label: "TWO BIG PROBLEMS",
-      items: [
-        {
-          audience: "Collaborator",
-          title: "Rigid consumption",
-          body: "The top customer request was giving collaborators control to filter, group, and sort reports for their own needs.",
-          tone: "red",
-          avatar: "/work/smartsheet-reports/problem-avatars/collaborator-card.jpg",
-          image: "/work/smartsheet-reports/problem-people/collaborator-optimized.jpg",
-        },
-        {
-          audience: "Creator",
-          title: "Guidance & usability",
-          body: "Defining which sheets, fields, and rows belonged in the report was complex, with clunky controls and little guidance.",
-          tone: "amber",
-          avatar: "/work/smartsheet-reports/problem-avatars/creator-card.jpg",
-          image: "/work/smartsheet-reports/problem-people/creator-optimized.jpg",
-        },
-      ],
+      items: [],
     },
     {
       type: "split",
       title: "Pulling the configuration model apart",
-      body: [
-        "The core insight was that some admin controls were essential to defining what data was included and how it was aggregated, while other controls were purely for changing the display of data.",
-        "We consolidated source data to three steps and isolated them from the display controls in the toolbar.",
-      ],
+      body: [],
       variant: "feature",
       media: {
         label: "Configuration model",
-        src: "/work/smartsheet-reports/orange-peak-final-card.jpg",
       },
       mediaSide: "right",
-    },
-    {
-      type: "stepFlow",
-      width: "full",
-      label: "HOW IT WORKS",
-      items: [
-        {
-          title: "Select sheets",
-          description: "Choose the sheets that power the report.",
-          image: "/work/smartsheet-reports/asset-picker.png",
-          label: "Select sheets placeholder",
-        },
-        {
-          title: "Manage fields",
-          description: "Choose columns or summary fields to include.",
-          image: "/work/smartsheet-reports/manage-fields.png",
-          label: "Manage fields placeholder",
-        },
-        {
-          title: "Define rows",
-          description: "Choose which rows are included.",
-          image: "/work/smartsheet-reports/define-rows.png",
-          label: "Define rows placeholder",
-        },
-      ],
     },
     {
       type: "split",
       title: "Aligning with nascent capabilities",
-      body: [
-        "The sheet team was introducing a new way to save filters, groups, and sorts to views. This lent itself to the ability for admins to maintain curation of display controls while enabling collaborators to deviate.",
-        "I worked with that team to keep sheets and reports consistent, since both used the same view primitives.",
-      ],
+      body: [],
       variant: "feature",
       media: {
         label: "Custom Views",
-        src: "/work/smartsheet-reports/custom-views-side.jpg",
       },
       mediaSide: "left",
-    },
-    {
-      type: "split",
-      title: "Contributing new features",
-      body: [
-        "Grouping and summary calculations were required for reports to reach parity with the legacy experience. Those features did not exist in the sheet, so we designed with the intention to extend back to the sheet.",
-      ],
-      variant: "feature",
-      media: {
-        label: "Grouping and summaries placeholder",
-        bentoItems: [
-          {
-            label: "Summary calculations",
-            src: "/work/smartsheet-reports/summary-calculation.jpg",
-            span: "large",
-          },
-          {
-            label: "Calculate",
-            src: "/work/smartsheet-reports/calculate.jpg",
-          },
-          {
-            label: "Grouping control",
-            src: "/work/smartsheet-reports/grouping-control-final.png",
-          },
-        ],
-      },
-      mediaSide: "right",
     },
     {
       type: "specSamples",
@@ -486,155 +386,13 @@ export const featuredWork: WorkItem = {
 
 export const otherWork: WorkItem[] = [
   {
-    title: "Resource Management Integration",
-    slug: "resource-management-integration",
-    tag: "Smartsheet • 2023–2025",
-    image: "/work/resource-management-integration/thumbnail.jpg",
-    heroImage: "/work/resource-management-integration/thumbnail.jpg",
-    thumbnailImage: "/work/resource-management-integration/thumbnail.jpg",
-    summary: "Shaped the integration strategy for an acquired resource management platform inside Smartsheet.",
-    overview: {
-      items: [
-        { label: "Role", value: "Product designer" },
-        { label: "Company", value: "Smartsheet" },
-        { label: "Focus", value: "Integration strategy" },
-        { label: "Duration", value: "3 years" },
-      ],
-      body: [
-        "Smartsheet acquired 10,000ft to bring resource management into the platform. My work sat in the messy middle: improving the standalone product, reducing integration friction, protecting revenue, and clarifying where the capability should live.",
-      ],
-    },
-    blocks: [
-      {
-        type: "split",
-        title: "Core question",
-        body: [
-          "The work kept returning to one question: where should Resource Management actually live?",
-          "We could keep investing in it as a standalone product, reduce the friction between products, or rebuild its strongest capabilities natively inside Smartsheet.",
-        ],
-        media: {
-          label: "Resource Management strategy placeholder",
-        },
-      },
-      {
-        type: "split",
-        title: "Integration bets",
-        body: [
-          "We tried multiple paths instead of one linear roadmap: improving the standalone product, simplifying setup, unifying access, and surfacing workload planning inside Smartsheet.",
-          "Those bets improved the experience, but they exposed the deeper issue: better access did not automatically create demand.",
-        ],
-        variant: "feature",
-        media: {
-          label: "Integration bets placeholder",
-        },
-      },
-      {
-        type: "split",
-        title: "Business reality",
-        body: [
-          "Only 4.2% of Smartsheet customers were using Resource Management, so the integration needed to create demand, not just remove friction.",
-          "While the broader strategy was still forming, I defined the direction for bringing Resource Management report data into Smartsheet sheets and coached a junior designer through delivery. That work protected about $850K ARR and influenced another $300K ARR.",
-        ],
-        media: {
-          label: "Business reality placeholder",
-        },
-      },
-      {
-        type: "impact",
-        width: "full",
-        label: "Strategic takeaway",
-        statement: "The project reframed acquisition integration as a product strategy problem, not a UX polish problem.",
-        outcomes: [],
-        footnote: "The middle ground was the trap. Resource Management either needed to be treated as a real standalone business or have its strongest capabilities rebuilt natively inside Smartsheet.",
-      },
-    ],
-    gallery: [],
-    notes: [],
-  },
-  {
-    title: "American Modern Insurance",
-    slug: "american-modern-insurance",
-    tag: "KPMG • 2021–2022",
-    image: "/masonry/amig.png",
-    heroImage: "/work/american-modern-insurance/cs2-01.png",
-    thumbnailImage: "/work/american-modern-insurance/thumbnail.png",
-    summary: "Designed an insurance platform experience that simplified quoting, policy servicing, and operational handoff.",
-    caseStudyLayout: "deck",
-    deckSlides: [
-      {
-        title: "Opening slide",
-        src: "/work/american-modern-insurance/cs2-01.png",
-      },
-      {
-        title: "Discovery slide",
-        src: "/work/american-modern-insurance/cs2-02.png",
-      },
-      {
-        title: "Process slide",
-        src: "/work/american-modern-insurance/cs2-03.png",
-      },
-      {
-        title: "Experience slide",
-        src: "/work/american-modern-insurance/cs2-04.png",
-      },
-      {
-        title: "Final design slide",
-        src: "/work/american-modern-insurance/cs2-05.png",
-      },
-      {
-        title: "Slide 6",
-        src: "/work/american-modern-insurance/cs2-06.png",
-      },
-      {
-        title: "Slide 7",
-        src: "/work/american-modern-insurance/cs2-07.png",
-      },
-      {
-        title: "Slide 8",
-        src: "/work/american-modern-insurance/cs2-08.png",
-      },
-      {
-        title: "Slide 9",
-        src: "/work/american-modern-insurance/cs2-09.png",
-      },
-      {
-        title: "Slide 10",
-        src: "/work/american-modern-insurance/cs2-10.png",
-      },
-      {
-        title: "Slide 11",
-        src: "/work/american-modern-insurance/cs2-11.png",
-      },
-      {
-        title: "Slide 12",
-        src: "/work/american-modern-insurance/cs2-12.png",
-      },
-      {
-        title: "Slide 13",
-        src: "/work/american-modern-insurance/cs2-13.png",
-      },
-      {
-        title: "Slide 14",
-        src: "/work/american-modern-insurance/cs2-14.png",
-      },
-      {
-        title: "Final slide",
-        src: "/work/american-modern-insurance/cs2-15.png",
-      },
-    ],
-    gallery: [],
-    notes: [],
-  },
-  {
     title: "MetLife Mexico",
     slug: "metlife-mexico",
     tag: "KPMG • 2021",
-    image: "/work/metlife-mexico/thumbnail.png",
+    image: "/work/metlife-mexico/homepage-card.png",
     homepageImage: "/work/metlife-mexico/homepage-card.png",
     upNextImage: "/work/metlife-mexico/up-next.png",
-    thumbnailImage: "/work/metlife-mexico/metlife-grid-display.png",
     heroImage: "/work/metlife-mexico/hero-2x.jpg",
-    featuredImage: "/work/metlife-mexico/home-dashboard.png",
     summary: "Built the foundation for MetLife Mexico's digital agent experience, unifying fragmented workflows into a single product.",
     cardMeta: "KPMG • Summary • 2021",
     caseStudyMeta: "Summary • 2021",
@@ -688,8 +446,8 @@ export const otherWork: WorkItem[] = [
 ];
 
 export const allWork = [featuredWork, ...otherWork];
-export const routeableWork = allWork.filter((item) => !item.isComingSoon);
-const locallyRouteableWork = process.env.NODE_ENV === "production" ? routeableWork : allWork;
+export const routeableWork = allWork.filter((item) => ["smartsheet-reports", "metlife-mexico"].includes(item.slug));
+const locallyRouteableWork = routeableWork;
 
 const fallbackGallery = [
   "https://framerusercontent.com/images/GmLtgWMAItPR9A4q6e8dZ9MFUDo.png?width=3200&height=2400",
