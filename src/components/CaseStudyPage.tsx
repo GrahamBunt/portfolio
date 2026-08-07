@@ -524,12 +524,37 @@ function CaseStudyLazyVideo({
   }, [rootMargin]);
 
   useEffect(() => {
-    if (!autoPlay || !shouldLoad) {
+    if (!shouldLoad) {
+      return;
+    }
+
+    const node = videoRef.current;
+
+    if (!node) {
+      return;
+    }
+
+    node.load();
+
+    if (!autoPlay) {
+      return;
+    }
+
+    node.muted = true;
+    const frame = requestAnimationFrame(() => {
+      node.play().catch(() => undefined);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [autoPlay, shouldLoad, src]);
+
+  function handleAutoplayReady() {
+    if (!autoPlay) {
       return;
     }
 
     videoRef.current?.play().catch(() => undefined);
-  }, [autoPlay, shouldLoad]);
+  }
 
   return (
     <video
@@ -541,7 +566,9 @@ function CaseStudyLazyVideo({
       muted={muted}
       playsInline
       poster={poster}
-      preload={controls && shouldLoad ? "metadata" : "none"}
+      preload={shouldLoad ? (autoPlay ? "auto" : controls ? "metadata" : "none") : "none"}
+      onLoadedData={autoPlay ? handleAutoplayReady : undefined}
+      onCanPlay={autoPlay ? handleAutoplayReady : undefined}
       aria-hidden={ariaHidden ? true : undefined}
       aria-label={ariaLabel}
     />
@@ -580,7 +607,7 @@ function CaseStudySpecSamplesBlock({
               style={specSampleMediaStyle}
             >
               {item.video ? (
-                <CaseStudyLazyVideo src={item.video} poster={item.image} autoPlay loop muted ariaHidden />
+                <CaseStudyLazyVideo src={item.video} poster={item.image} autoPlay loop muted ariaHidden rootMargin="1800px 0px" />
               ) : item.image ? (
                 <img src={item.image} alt="" loading="lazy" decoding="async" aria-hidden="true" />
               ) : (
@@ -2156,9 +2183,8 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const isStructuredCaseStudy = isSmartsheetReportsCaseStudy || isResourceManagementCaseStudy || isMetLifeMexicoCaseStudy;
   const usesPlaceholderHero = isResourceManagementCaseStudy;
   const [fontsReady, setFontsReady] = useState(false);
-  const [heroImageReady, setHeroImageReady] = useState(false);
   const heroImageRef = useRef<HTMLImageElement | null>(null);
-  const sequenceReady = fontsReady && (usesPlaceholderHero || heroImageReady);
+  const sequenceReady = fontsReady;
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -2170,39 +2196,6 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
       .then(() => new Promise((resolve) => setTimeout(resolve, 350)))
       .then(() => setFontsReady(true));
   }, []);
-
-  useEffect(() => {
-    if (usesPlaceholderHero) {
-      return;
-    }
-
-    const image = heroImageRef.current;
-    let frame = 0;
-
-    if (!image?.complete) {
-      return;
-    }
-
-    if (image.decode) {
-      image.decode().catch(() => undefined).finally(() => setHeroImageReady(true));
-      return;
-    }
-
-    frame = requestAnimationFrame(() => setHeroImageReady(true));
-
-    return () => cancelAnimationFrame(frame);
-  }, [project.heroImage, project.image, usesPlaceholderHero]);
-
-  function handleHeroImageLoad(event: SyntheticEvent<HTMLImageElement>) {
-    const image = event.currentTarget;
-
-    if (image.decode) {
-      image.decode().catch(() => undefined).finally(() => setHeroImageReady(true));
-      return;
-    }
-
-    setHeroImageReady(true);
-  }
 
   const heroStyle = {
     "--rise-delay": "700ms",
@@ -2277,8 +2270,8 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
           <CaseStudyDeckScroller
             slides={project.deckSlides}
             imageRef={heroImageRef}
-            onHeroImageLoad={handleHeroImageLoad}
-            onHeroImageError={() => setHeroImageReady(true)}
+            onHeroImageLoad={() => undefined}
+            onHeroImageError={() => undefined}
           />
 
           <CaseStudyNextUpSection related={related} style={relatedStyle} />
@@ -2337,9 +2330,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 fill
                 preload
                 sizes="(max-width: 1720px) calc(100vw - 40px), 1680px"
-                quality={92}
-                onLoad={handleHeroImageLoad}
-                onError={() => setHeroImageReady(true)}
+                quality={82}
               />
             )}
           </figure>
