@@ -78,7 +78,7 @@ const styleVariants = [
 ];
 
 const title = "Smartsheet Reports";
-const summary = "Led the redesign of one of Smartsheet's primary assets and aligned three converging teams around a clear platform direction.";
+const summary = "Modernized one of Smartsheet's core platform capabilities while aligning three teams around its long-term direction.";
 
 export default function SmartsheetReportsDateSandboxPage() {
   return (

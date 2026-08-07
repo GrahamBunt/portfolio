@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ContactSection } from "@/components/ContactSection";
+import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import { allWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
@@ -100,6 +101,11 @@ export default function Home() {
                     </span>
                   </div>
                   <p className="font-sans-preview">{preventTextOrphans(project.summary)}</p>
+                  {project.cardMeta ? (
+                    <p className="case-study-next-up-meta font-sans-preview">
+                      <ProjectMeta value={project.cardMeta} />
+                    </p>
+                  ) : null}
                 </div>
               </Link>
             ))}

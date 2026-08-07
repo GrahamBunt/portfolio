@@ -94,12 +94,90 @@ const overviewMetaSecondaryStyle: CSSProperties = {
   margin: 0,
 };
 
+const specSampleMediaStyle: CSSProperties = {
+  position: "relative",
+};
+
+const specSampleChipStyle: CSSProperties = {
+  position: "absolute",
+  left: 8,
+  bottom: 8,
+  zIndex: 3,
+  display: "inline-flex",
+  maxWidth: "calc(100% - 16px)",
+  alignItems: "center",
+  gap: 0,
+  borderRadius: 4,
+  background: "rgba(0, 0, 0, 0.84)",
+  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.2)",
+  color: "#ffffff",
+  fontSize: 14,
+  fontWeight: 500,
+  letterSpacing: 0,
+  lineHeight: "16px",
+  padding: "5px 8px 5px 9px",
+  pointerEvents: "none",
+  textTransform: "none",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+};
+
+const specSampleChipTextStyle: CSSProperties = {
+  minWidth: 0,
+};
+
+const specSampleChipArrowStyle: CSSProperties = {
+  display: "inline-flex",
+  width: 14,
+  height: 14,
+  flex: "0 0 auto",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "currentColor",
+  marginLeft: 5,
+  opacity: 1,
+  overflow: "hidden",
+  transform: "translate(0, 0) scale(1)",
+};
+
+const legacyReportStatementStyle: CSSProperties = {
+  width: "100%",
+  maxWidth: 1120,
+  color: "#ffffff",
+  fontSize: 44,
+  fontWeight: 600,
+  letterSpacing: 0,
+  lineHeight: 1.14,
+  margin: "0 auto",
+  textAlign: "center",
+};
+
 const narrativeParagraphSpeeds = [1, 1.25];
 
 function ArrowIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
       <path d="M5 13h11.17l-4.88 4.88c-.39.39-.39 1.03 0 1.42.39.39 1.02.39 1.41 0l6.59-6.59c.39-.39.39-1.02 0-1.41l-6.58-6.6a.9959.9959 0 0 0-1.41 0c-.39.39-.39 1.02 0 1.41L16.17 11H5c-.55 0-1 .45-1 1s.45 1 1 1z" />
+    </svg>
+  );
+}
+
+function UpRightArrowIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      focusable="false"
+      style={{ display: "block", width: 14, height: 14 }}
+    >
+      <path
+        d="M7 17L17 7M9 7h8v8"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.25"
+      />
     </svg>
   );
 }
@@ -447,14 +525,24 @@ function CaseStudySpecSamplesBlock({
       ) : null}
       <div className="case-study-spec-samples-grid">
         {block.items.map((item) => (
-          <a key={item.title} className="case-study-spec-sample-card" href={item.href} target="_blank" rel="noreferrer">
-            <div className={`case-study-spec-sample-media is-${item.kind} ${item.image || item.video ? "has-image" : ""}`} aria-hidden="true">
+          <a
+            key={item.title}
+            className="case-study-spec-sample-card"
+            href={item.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${item.title}: ${item.action}`}
+          >
+            <div
+              className={`case-study-spec-sample-media is-${item.kind} ${item.image || item.video ? "has-image" : ""}`}
+              style={specSampleMediaStyle}
+            >
               {item.video ? (
-                <video src={item.video} autoPlay loop muted playsInline poster={item.image} />
+                <video src={item.video} autoPlay loop muted playsInline poster={item.image} aria-hidden="true" />
               ) : item.image ? (
-                <img src={item.image} alt="" />
+                <img src={item.image} alt="" aria-hidden="true" />
               ) : (
-                <div className="case-study-spec-sample-window">
+                <div className="case-study-spec-sample-window" aria-hidden="true">
                   <div className="case-study-spec-sample-window-bar">
                     <span />
                     <span />
@@ -478,16 +566,11 @@ function CaseStudySpecSamplesBlock({
                   </div>
                 </div>
               )}
-            </div>
-            <div className="case-study-spec-sample-title-row">
-              <div>
-                <h3>{preventTextOrphans(item.title)}</h3>
-                <p className="font-sans-preview">{preventTextOrphans(item.description)}</p>
-              </div>
-              <span className="case-study-spec-sample-arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M7.05 17.66a1 1 0 0 1 0-1.42l8.53-8.53H9.5a1 1 0 1 1 0-2h8.49a1 1 0 0 1 1 1v8.49a1 1 0 1 1-2 0V9.12l-8.53 8.54a1 1 0 0 1-1.41 0Z" />
-                </svg>
+              <span className="case-study-spec-sample-chip font-sans-preview" style={specSampleChipStyle} aria-hidden="true">
+                <span style={specSampleChipTextStyle}>{preventTextOrphans(item.title)}</span>
+                <span className="case-study-spec-sample-chip-arrow" style={specSampleChipArrowStyle}>
+                  <UpRightArrowIcon />
+                </span>
               </span>
             </div>
           </a>
@@ -1177,9 +1260,11 @@ function CaseStudySmartsheetSpineSection({
 
 function CaseStudySmartsheetProse({
   body,
+  bullets,
   title,
 }: {
   body: string[];
+  bullets?: string[];
   title?: string;
 }) {
   return (
@@ -1188,6 +1273,13 @@ function CaseStudySmartsheetProse({
       {body.map((paragraph) => (
         <p key={paragraph}>{preventTextOrphans(paragraph)}</p>
       ))}
+      {bullets?.length ? (
+        <ul>
+          {bullets.map((item) => (
+            <li key={item}>{preventTextOrphans(item)}</li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }
@@ -1198,21 +1290,37 @@ const smartsheetExplorationCopy = [
 ];
 
 const smartsheetViewPrimitiveCopy = [
-  "With the strategy in place, we modernized reports through a series of incremental releases.",
-  "The modern table view was introduced with refreshed grouping and calculation designs, so customers could switch from the legacy view with their reports intact. Source data came next, opening the toolbar to collaborators while preserving admin control. The final step was a new first-time experience making the modern view the default starting place.",
+  "With the strategy in place, we modernized reports through a series of releases:",
+];
+
+const smartsheetViewPrimitiveBullets = [
+  "Introduced the modern view with refreshed grouping and calculation designs, so customers could switch from legacy with their reports intact.",
+  "Source data, opening the toolbar to collaborators while preserving admin control.",
+  "New first-time experience making the modern view the default starting place.",
 ];
 
 function CaseStudySmartsheetFullMedia({
   label,
   src,
   placeholder = false,
+  className,
 }: {
   label: string;
   src?: string;
   placeholder?: boolean;
+  className?: string;
 }) {
+  const figureClassName = [
+    "case-study-smartsheet-full-media",
+    "case-study-block",
+    placeholder ? "is-placeholder" : "",
+    className ?? "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <figure className={`case-study-smartsheet-full-media case-study-block ${placeholder ? "is-placeholder" : ""}`} aria-label={label}>
+    <figure className={figureClassName} aria-label={label}>
       {src && !placeholder ? <img src={src} alt="" loading="lazy" decoding="async" /> : null}
     </figure>
   );
@@ -1359,18 +1467,35 @@ function CaseStudySmartsheetPullingSection({
   );
 }
 
-function CaseStudySmartsheetViewPrimitiveSection() {
+function CaseStudySmartsheetViewPrimitiveSection({
+  specSamplesBlock,
+}: {
+  specSamplesBlock?: Extract<CaseStudyBlock, { type: "specSamples" }>;
+}) {
   return (
     <section className="case-study-smartsheet-pulling-section case-study-smartsheet-view-parity-section case-study-block" aria-label="Execution">
       <CaseStudySmartsheetSpineSection label="Execution">
-        <CaseStudySmartsheetProse body={smartsheetViewPrimitiveCopy} />
+        <CaseStudySmartsheetProse body={smartsheetViewPrimitiveCopy} bullets={smartsheetViewPrimitiveBullets} />
       </CaseStudySmartsheetSpineSection>
       <div className="case-study-smartsheet-solution-media">
         <CaseStudySmartsheetViewBento />
         <CaseStudySmartsheetFullMedia
           label="Grouping levels"
           src="/work/smartsheet-reports/grouping-levels.png"
+          className="is-grouping-levels"
         />
+        {specSamplesBlock ? (
+          <div className="case-study-smartsheet-spec-band">
+            <div className="case-study-smartsheet-spec-band-inner">
+              <CaseStudySpecSamplesBlock block={specSamplesBlock} showHeader={false} />
+              <CaseStudySmartsheetFullMedia
+                label="Spec sample placeholder"
+                placeholder
+                className="is-spec-placeholder"
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -1484,6 +1609,9 @@ function CaseStudySmartsheetBlocks({
   const impactBlock = blocks.find(
     (block): block is Extract<CaseStudyBlock, { type: "impact" }> => block.type === "impact",
   );
+  const specSamplesBlock = blocks.find(
+    (block): block is Extract<CaseStudyBlock, { type: "specSamples" }> => block.type === "specSamples",
+  );
 
   function renderPivotBand() {
     if (!spotlightBlock) {
@@ -1512,17 +1640,23 @@ function CaseStudySmartsheetBlocks({
   return (
     <>
       {overview ? (
-        <CaseStudySmartsheetSpineSection label="Information">
+        <CaseStudySmartsheetSpineSection label="Context">
           <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
         </CaseStudySmartsheetSpineSection>
       ) : null}
       {overview ? (
-        <div className="case-study-smartsheet-solution-media case-study-block">
-          <CaseStudySmartsheetFullMedia
-            label="Legacy report toolbar limitation"
-            src="/work/smartsheet-reports/legacy-report.png"
-          />
-        </div>
+        <section className="case-study-smartsheet-legacy-band case-study-block" aria-label="Legacy report">
+          <div className="case-study-smartsheet-legacy-media">
+            <CaseStudySmartsheetFullMedia
+              label="Legacy report toolbar limitation"
+              src="/work/smartsheet-reports/legacy-report.png"
+              className="is-legacy-report-ui"
+            />
+            <p className="case-study-smartsheet-legacy-statement font-sans-preview" style={legacyReportStatementStyle}>
+              {preventTextOrphans("Only admins could edit the toolbar in the legacy report, while collaborators were completely shut out.")}
+            </p>
+          </div>
+        </section>
       ) : null}
 
       {blocks.map((block, index) => {
@@ -1547,7 +1681,7 @@ function CaseStudySmartsheetBlocks({
             <Fragment key="smartsheet-paradigm-and-platform-ambiguity">
               <CaseStudySmartsheetPullingSection
                 block={pullingBlock}
-                label="Paradigm"
+                label="New paradigm"
                 body={smartsheetExplorationCopy}
                 mediaMode="placeholder"
                 mediaItems={[
@@ -1573,7 +1707,7 @@ function CaseStudySmartsheetBlocks({
         if (block.type === "split" && block.title === "Aligning with nascent capabilities") {
           return (
             <Fragment key={`${block.title}-${index}`}>
-              <CaseStudySmartsheetViewPrimitiveSection />
+              <CaseStudySmartsheetViewPrimitiveSection specSamplesBlock={specSamplesBlock} />
               {renderImpactSection()}
             </Fragment>
           );
@@ -1701,7 +1835,7 @@ function CaseStudyMetLifeSnapshotBlocks({
   const showcaseBlock = blocks.find((block): block is Extract<CaseStudyBlock, { type: "showcase" }> => block.type === "showcase");
 
   return overview ? (
-    <CaseStudySmartsheetSpineSection label="Information" contentClassName="case-study-metlife-snapshot-spine">
+    <CaseStudySmartsheetSpineSection label="Context" contentClassName="case-study-metlife-snapshot-spine">
       <div className="case-study-metlife-snapshot-content">
         <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
         {showcaseBlock ? <CaseStudyStructuredShowcaseGrid block={showcaseBlock} showTitles={false} /> : null}
@@ -1945,6 +2079,11 @@ function CaseStudyNextUpSection({
                   ) : null}
                 </div>
                 <p className="font-sans-preview">{preventTextOrphans(item.summary)}</p>
+                {item.cardMeta ? (
+                  <p className="case-study-next-up-meta font-sans-preview">
+                    <ProjectMeta value={item.cardMeta} />
+                  </p>
+                ) : null}
               </div>
             </>
           );
@@ -2089,6 +2228,8 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const isDeckCaseStudy = project.caseStudyLayout === "deck" && Boolean(project.deckSlides?.length);
   const projectTagParts = project.tag.split(" • ");
   const structuredHeaderDate = projectTagParts[projectTagParts.length - 1] ?? project.tag;
+  const headerMeta = project.caseStudyMeta ?? project.cardMeta ?? project.tag;
+  const structuredHeaderMeta = project.caseStudyMeta ?? project.cardMeta ?? structuredHeaderDate;
 
   if (isDeckCaseStudy && project.deckSlides) {
     return (
@@ -2103,7 +2244,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                   className={`case-study-top-meta font-sans-preview ${sequenceReady ? "staged-work-rise" : "opacity-0"}`}
                   style={sequenceReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
                 >
-                  <ProjectMeta value={project.tag} />
+                  <ProjectMeta value={headerMeta} />
                 </div>
                 <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
                   <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
@@ -2150,9 +2291,11 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 style={sequenceReady ? { "--rise-delay": "90ms", "--rise-duration": "0.86s", "--rise-distance": "12px", "--rise-blur": "0px", "--rise-animation": "work-rise-in-clean" } as CSSProperties : undefined}
               >
                 {isStructuredCaseStudy ? (
-                  <span className="case-study-header-eyebrow">{preventTextOrphans(structuredHeaderDate)}</span>
+                  <span className="case-study-header-eyebrow">
+                    <ProjectMeta value={structuredHeaderMeta} />
+                  </span>
                 ) : (
-                  <ProjectMeta value={project.tag} />
+                  <ProjectMeta value={headerMeta} />
                 )}
               </div>
               <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">

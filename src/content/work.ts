@@ -10,6 +10,8 @@ export type WorkItem = {
   heroImage?: string;
   featuredImage?: string;
   summary: string;
+  cardMeta?: string;
+  caseStudyMeta?: string;
   isComingSoon?: boolean;
   caseStudyLayout?: "deck";
   deckSlides?: CaseStudyPresentationSlide[];
@@ -221,7 +223,7 @@ export type CaseStudyProblemCard = {
 
 export type CaseStudySpecSample = {
   title: string;
-  description: string;
+  description?: string;
   href: string;
   action: string;
   kind: "prototype" | "spec";
@@ -285,7 +287,9 @@ export const featuredWork: WorkItem = {
   heroImage: "/work/smartsheet-reports/hero.png",
   thumbnailImage: "/work/smartsheet-reports/thumbnail.png",
   featuredImage: "/work/smartsheet-reports/orange-peak-final-card.jpg",
-  summary: "Led the redesign of one of Smartsheet's primary assets and aligned three converging teams around a clear platform direction.",
+  summary: "Modernized one of Smartsheet's core platform capabilities while aligning three teams around its long-term direction.",
+  cardMeta: "Smartsheet • Case Study • 2025–26",
+  caseStudyMeta: "Case Study • Aug '25 – Feb '26",
   overview: {
     items: [
       { label: "Role", value: "Lead designer" },
@@ -294,8 +298,9 @@ export const featuredWork: WorkItem = {
       { label: "Duration", value: "8 months" },
     ],
     body: [
-      "Smartsheet spent much of the early to mid-2020s rebuilding the core views within its primary asset, the sheet. Bringing those new views to reports, the surface that combines data across multiple sheets, was the natural next step.",
-      "I was the designer responsible for executing this modernization strategy, but the project quickly grew beyond a visual refresh. We rethought the entire aggregation experience, addressing top customer feedback and resolving long-standing usability issues. When the work began to overlap with adjacent platform capabilities, I stepped in to align three converging teams and define reports' role within Smartsheet.",
+      "Smartsheet spent much of the early to mid-2020s rebuilding the core views within its primary asset, the sheet. Bringing those new views to reports, the surface that combines data across multiple sheets, was the next step in that platform strategy.",
+      "I was responsible for modernizing reports, but the project quickly grew beyond a visual refresh. We rethought the aggregation experience, addressed years of customer feedback, and resolved long-standing usability issues.",
+      "When the work began to overlap with adjacent platform capabilities, I stepped in to align three converging teams and help define the long-term role reports should play within Smartsheet.",
     ],
   },
   blocks: [
@@ -431,11 +436,10 @@ export const featuredWork: WorkItem = {
     {
       type: "specSamples",
       width: "full",
-      label: "SPEC SAMPLES",
+      label: "Spec samples",
       items: [
         {
-          title: "Figma Make",
-          description: "Prototype of grouping interaction and menu logic.",
+          title: "Grouping interaction and menu logic",
           href: "https://hush-drawn-49113008.figma.site/",
           action: "Open prototype",
           kind: "prototype",
@@ -443,8 +447,7 @@ export const featuredWork: WorkItem = {
           video: "/work/smartsheet-reports/figma-make-blue-bg.mp4",
         },
         {
-          title: "Figma Spec",
-          description: "Complete details for grouping and summary calculations.",
+          title: "Grouping and calculate spec excerpt",
           href: "https://www.figma.com/design/8eIcQsTHhBcBEFqeLdiNyz/Spec-Sample%E2%80%94Grouping---Calculate?node-id=4-154228&t=4yJ9LXBuoRZ3nhmm-1",
           action: "Open spec",
           kind: "spec",
@@ -458,7 +461,7 @@ export const featuredWork: WorkItem = {
       title: "Defending the report's right to exist",
       body: [
         "Before implementation, our CPO posed an existential question: should reports exist as a separate asset? The question was fair. Reports, sheets, and dynamic views had begun to overlap, leaving customers unsure which tool was right for the job.",
-        "I aligned three teams around a strategy to keep reports separate, avoiding a costly migration of millions of legacy reports while clarifying its role within the platform and driving greater parity between sheets and reports.",
+        "I aligned three teams around a strategy to keep reports separate, avoiding a costly migration of millions of legacy reports while clarifying its role within the platform and creating a shared direction for future investment.",
       ],
       media: {
         label: "Cross-team alignment walkthrough",
@@ -473,7 +476,7 @@ export const featuredWork: WorkItem = {
       label: "Reflection",
       statement: "The hardest part of this project wasn't redesigning the interface. It was defining the role reports should play within the platform and getting the team aligned. Once we had a shared direction, every downstream decision got easier, and the design work became an exercise in execution rather than existential debate.",
       outcomes: [],
-      footnote: "Strategy and alignment are often the biggest constraints in product development, and where I've found design can have the greatest impact.",
+      footnote: "Strategy and alignment are often the biggest obstacles in product development. They're also where I've found design can have the greatest impact.",
     },
   ],
   gallery: [],
@@ -631,7 +634,9 @@ export const otherWork: WorkItem[] = [
     thumbnailImage: "/work/metlife-mexico/metlife-grid-display.png",
     heroImage: "/work/metlife-mexico/hero.png",
     featuredImage: "/work/metlife-mexico/home-dashboard.png",
-    summary: "Designed an agent portal that centralized client management, policy servicing, and sales activity.",
+    summary: "Built the foundation for MetLife Mexico's digital agent experience, unifying fragmented workflows into a single product.",
+    cardMeta: "KPMG • Summary • 2021",
+    caseStudyMeta: "Summary • 2021",
     overview: {
       items: [
         { label: "Role", value: "Lead designer" },
@@ -641,7 +646,7 @@ export const otherWork: WorkItem[] = [
       ],
       body: [
         "MetLife Mexico needed a centralized workspace where agents could manage client relationships, policy servicing, sales activity, and performance.",
-        "I led the design of an agent portal MVP that unified those workflows into a single experience, helping agents stay organized and manage the full customer lifecycle.",
+        "I designed the MVP that unified those workflows into a single experience, laying the foundation for MetLife Mexico's digital agent experience.",
       ],
     },
     blocks: [
