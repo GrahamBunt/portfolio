@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import type { CSSProperties, ReactNode, RefObject, SyntheticEvent } from "react";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ProjectMeta } from "@/components/ProjectMeta";
@@ -196,39 +197,6 @@ function easeOutCubic(value: number) {
   return 1 - (1 - clamped) ** 3;
 }
 
-function getCaseStudyPreloadImageSrcs(project: CaseStudy) {
-  const srcs = new Set<string>();
-
-  project.blocks?.forEach((block) => {
-    if (block.type === "showcase") {
-      block.items.forEach((item) => srcs.add(item.src));
-    }
-
-    if (block.type === "media" && block.src) {
-      srcs.add(block.src);
-    }
-
-    if (block.type === "editorialSplit" && block.media) {
-      const mediaItems = Array.isArray(block.media) ? block.media : [block.media];
-      mediaItems.forEach((item) => srcs.add(item.src));
-    }
-
-    if (block.type === "split") {
-      if (block.media.src) {
-        srcs.add(block.media.src);
-      }
-
-      block.media.bentoItems?.forEach((item) => {
-        if (item.src) {
-          srcs.add(item.src);
-        }
-      });
-    }
-  });
-
-  return Array.from(srcs);
-}
-
 const staticOverviewCopyWrapStyle: CSSProperties = {
   display: "flex",
   width: "100%",
@@ -382,7 +350,7 @@ function CaseStudyMediaBlock({
               key={item.src ?? item.label}
               className={`case-study-bento-tile ${item.span === "large" ? "is-large" : ""} ${item.src ? "has-image" : ""} ${item.fit === "contain" ? "is-contain" : ""}`}
             >
-              {item.src ? <img src={item.src} alt="" /> : <span className="case-study-bento-tile-chip font-sans-preview">{item.label}</span>}
+              {item.src ? <img src={item.src} alt="" loading="lazy" decoding="async" /> : <span className="case-study-bento-tile-chip font-sans-preview">{item.label}</span>}
             </div>
           ))}
         </div>
@@ -397,13 +365,11 @@ function CaseStudyMediaBlock({
           />
         ) : (
           <div className="case-study-video-frame" style={{ aspectRatio: aspectRatio ?? 16 / 9 }}>
-            <video controls playsInline preload="metadata" aria-label={label}>
-              <source src={videoSrc} type="video/mp4" />
-            </video>
+            {videoSrc ? <CaseStudyLazyVideo src={videoSrc} controls ariaLabel={label} /> : null}
           </div>
         )
       ) : src ? (
-        <img src={src} alt="" />
+        <img src={src} alt="" loading="lazy" decoding="async" />
       ) : (
         <span className="font-sans-preview">{label}</span>
       )}
@@ -438,7 +404,7 @@ function CaseStudyComparisonBlock({ block }: { block: Extract<CaseStudyBlock, { 
       {block.items.map((item) => (
         <figure key={item.title} className={`case-study-comparison-panel ${item.src ? "has-image" : ""}`}>
           <div className="case-study-comparison-image-frame">
-            {item.src ? <img src={item.src} alt="" /> : <span className="font-sans-preview">{item.label}</span>}
+            {item.src ? <img src={item.src} alt="" loading="lazy" decoding="async" /> : <span className="font-sans-preview">{item.label}</span>}
             {item.watermark ? (
               <span className="case-study-comparison-watermark" aria-hidden="true">
                 {item.title}
@@ -482,7 +448,7 @@ function CaseStudyProblemCardsBlock({
           <article key={item.title} className={`case-study-problem-card is-${item.tone} ${item.image ? "has-image" : ""} ${useProblemBadges ? "has-problem-badge" : ""}`}>
             {item.image ? (
               <div className="case-study-problem-image" aria-hidden="true">
-                <img src={item.image} alt="" loading="eager" decoding="async" fetchPriority="high" />
+                <img src={item.image} alt="" loading="lazy" decoding="async" />
               </div>
             ) : null}
             <div className="case-study-problem-content">
@@ -503,6 +469,80 @@ function CaseStudyProblemCardsBlock({
         ))}
       </div>
     </section>
+  );
+}
+
+function CaseStudyLazyVideo({
+  ariaHidden = false,
+  ariaLabel,
+  autoPlay = false,
+  controls = false,
+  loop = false,
+  muted = false,
+  poster,
+  src,
+}: {
+  ariaHidden?: boolean;
+  ariaLabel?: string;
+  autoPlay?: boolean;
+  controls?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  poster?: string;
+  src: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const node = videoRef.current;
+
+    if (!node) {
+      return undefined;
+    }
+
+    if (typeof IntersectionObserver === "undefined") {
+      const frame = requestAnimationFrame(() => setShouldLoad(true));
+      return () => cancelAnimationFrame(frame);
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "640px 0px" },
+    );
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!autoPlay || !shouldLoad) {
+      return;
+    }
+
+    videoRef.current?.play().catch(() => undefined);
+  }, [autoPlay, shouldLoad]);
+
+  return (
+    <video
+      ref={videoRef}
+      src={shouldLoad ? src : undefined}
+      autoPlay={autoPlay && shouldLoad}
+      controls={controls}
+      loop={loop}
+      muted={muted}
+      playsInline
+      poster={poster}
+      preload="none"
+      aria-hidden={ariaHidden ? true : undefined}
+      aria-label={ariaLabel}
+    />
   );
 }
 
@@ -538,9 +578,9 @@ function CaseStudySpecSamplesBlock({
               style={specSampleMediaStyle}
             >
               {item.video ? (
-                <video src={item.video} autoPlay loop muted playsInline poster={item.image} aria-hidden="true" />
+                <CaseStudyLazyVideo src={item.video} poster={item.image} autoPlay loop muted ariaHidden />
               ) : item.image ? (
-                <img src={item.image} alt="" aria-hidden="true" />
+                <img src={item.image} alt="" loading="lazy" decoding="async" aria-hidden="true" />
               ) : (
                 <div className="case-study-spec-sample-window" aria-hidden="true">
                   <div className="case-study-spec-sample-window-bar">
@@ -622,14 +662,14 @@ function CaseStudyShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { ty
         </header>
       ) : null}
       <div className="case-study-showcase-grid">
-        {block.items.map((item, index) => (
+        {block.items.map((item) => (
           <figure key={item.title} className={`case-study-showcase-item ${item.span === "half" ? "is-half" : "is-full"}`}>
             <figcaption>
               <h3>{preventTextOrphans(item.title)}</h3>
               <p className="font-sans-preview">{preventTextOrphans(item.description)}</p>
             </figcaption>
             <div className="case-study-showcase-media">
-              <img src={item.src} alt="" loading="eager" decoding="async" fetchPriority={index < 2 ? "high" : "auto"} />
+              <img src={item.src} alt="" loading="lazy" decoding="async" />
             </div>
           </figure>
         ))}
@@ -711,7 +751,7 @@ function CaseStudyPresentationScrollerBlock({ block }: { block: Extract<CaseStud
         <div ref={trackRef} className="case-study-presentation-track">
           {block.slides.map((slide, index) => (
             <article key={`${slide.eyebrow ?? index}-${slide.title}`} className={`case-study-presentation-slide ${index === 0 ? "is-hero-slide" : ""}`}>
-              {slide.src ? <img src={slide.src} alt="" /> : <div className="case-study-presentation-placeholder" aria-hidden="true" />}
+              {slide.src ? <img src={slide.src} alt="" loading="lazy" decoding="async" /> : <div className="case-study-presentation-placeholder" aria-hidden="true" />}
               <div className="case-study-presentation-copy font-sans-preview">
                 {slide.eyebrow ? <span>{slide.eyebrow}</span> : null}
                 <h3>{preventTextOrphans(slide.title)}</h3>
@@ -949,9 +989,9 @@ function CaseStudyDeckScroller({
                     ref={index === 0 ? imageRef : undefined}
                     src={slide.src}
                     alt=""
-                    loading={index < 3 ? "eager" : "lazy"}
+                    loading={index === 0 ? "eager" : "lazy"}
                     decoding="async"
-                    fetchPriority={index < 3 ? "high" : "auto"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
                     onLoad={index === 0 ? onHeroImageLoad : undefined}
                     onError={index === 0 ? onHeroImageError : undefined}
                   />
@@ -1017,7 +1057,7 @@ function CaseStudyStepFlowBlock({
         {block.items.map((item, index) => (
           <article key={item.title} className="case-study-step-card" style={cardStyle}>
             <figure className="case-study-step-media" style={mediaStyle}>
-              {item.image ? <img src={item.image} alt="" /> : <span className="font-sans-preview">{item.label}</span>}
+              {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span className="font-sans-preview">{item.label}</span>}
             </figure>
             {hideItemCopy ? null : (
               <div
@@ -1126,7 +1166,7 @@ function CaseStudyEditorialMedia({ media }: { media: NonNullable<Extract<CaseStu
     <div className={`case-study-editorial-media-grid ${items.length > 1 ? "is-pair" : ""}`}>
       {items.map((item) => (
         <figure key={`${item.label}-${item.src}`} className="case-study-editorial-media">
-          <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
+          <img src={item.src} alt="" loading="lazy" decoding="async" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
           {item.caption ? <figcaption className="font-sans-preview">{preventTextOrphans(item.caption)}</figcaption> : null}
         </figure>
       ))}
@@ -1802,10 +1842,10 @@ function CaseStudyStructuredShowcaseGrid({
 }) {
   return (
     <div className="case-study-structured-image-grid">
-      {block.items.map((item, index) => (
+      {block.items.map((item) => (
         <figure key={`${item.title}-${item.src}`} className="case-study-structured-image-card">
           <div className="case-study-structured-image-media">
-            <img src={item.src} alt="" loading={index < 2 ? "eager" : "lazy"} decoding="async" fetchPriority={index < 2 ? "high" : "auto"} />
+            <img src={item.src} alt="" loading="lazy" decoding="async" />
           </div>
           <figcaption className={showTitles ? undefined : "is-description-only"}>
             {showTitles ? <h3>{preventTextOrphans(item.title)}</h3> : null}
@@ -2151,30 +2191,6 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
     return () => cancelAnimationFrame(frame);
   }, [project.heroImage, project.image, usesPlaceholderHero]);
 
-  useEffect(() => {
-    const imageSrcs = getCaseStudyPreloadImageSrcs(project);
-
-    if (!imageSrcs.length) {
-      return;
-    }
-
-    const images = imageSrcs.map((src) => {
-      const image = new window.Image();
-      image.decoding = "async";
-      image.loading = "eager";
-      image.src = src;
-      image.decode?.().catch(() => undefined);
-      return image;
-    });
-
-    return () => {
-      images.forEach((image) => {
-        image.onload = null;
-        image.onerror = null;
-      });
-    };
-  }, [project]);
-
   function handleHeroImageLoad(event: SyntheticEvent<HTMLImageElement>) {
     const image = event.currentTarget;
 
@@ -2312,13 +2328,14 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
             aria-label={usesPlaceholderHero ? "Resource Management hero placeholder" : undefined}
           >
             {usesPlaceholderHero ? null : (
-              <img
+              <Image
                 ref={heroImageRef}
                 src={project.heroImage ?? project.image}
                 alt=""
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
+                fill
+                preload
+                sizes="(max-width: 1720px) calc(100vw - 40px), 1680px"
+                quality={92}
                 onLoad={handleHeroImageLoad}
                 onError={() => setHeroImageReady(true)}
               />
@@ -2351,7 +2368,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 <div key={`${item.caption}-${item.src}`} className="case-study-gallery-group">
                   <figure className="case-study-media-card">
                     <div className="case-study-media-shell">
-                      <img src={item.src} alt="" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
+                      <img src={item.src} alt="" loading="lazy" decoding="async" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
                     </div>
                     <figcaption className="font-sans-preview">{preventTextOrphans(item.caption)}</figcaption>
                   </figure>

@@ -476,7 +476,7 @@ export const featuredWork: WorkItem = {
       label: "Reflection",
       statement: "The hardest part of this project wasn't redesigning the interface. It was defining the role reports should play within the platform and getting the team aligned. Once we had a shared direction, every downstream decision got easier, and the design work became an exercise in execution rather than existential debate.",
       outcomes: [],
-      footnote: "Strategy and alignment are often the biggest obstacles in product development. They're also where I've found design can have the greatest impact.",
+      footnote: "Defining a clear strategy and aligning teams around it are often the most challenging aspects of product development. They're also where I've found design can have the greatest impact.",
     },
   ],
   gallery: [],
