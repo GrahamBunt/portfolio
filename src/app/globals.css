@@ -1,15 +1,11 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Right Serif Casual Light";
+  font-family: "PP Right Serif";
   src:
-    local("PP Right Serif Casual Light"),
-    local("PPRightSerif-CasualLight"),
-    local("Right Serif Casual Light"),
-    local("RightSerifCasual-Light"),
-    local("PP Right Serif Casual"),
-    local("PPRightSerif-Casual"),
-    local("Right Serif Casual");
+    local("PP Right Serif Light"),
+    local("PPRightSerif-Light"),
+    url("/fonts/pp-right-serif-light.otf") format("opentype");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -33,7 +29,7 @@
 
 :root {
   --font-sans-preview: "Neue Montreal";
-  --font-display-serif: "Right Serif Casual Light", "PP Right Serif", "Right Serif", serif;
+  --font-display-serif: "PP Right Serif", "Right Serif Casual Light", "Right Serif", serif;
   --display-letter-spacing: -0.018em;
   --home-h1-line-height: 1.040;
   --text-description: #a6a6a6;
