@@ -460,7 +460,8 @@ export const featuredWork: WorkItem = {
       type: "spotlight",
       title: "Defending the report's right to exist",
       body: [
-        "Before implementation, our CPO posed an existential question: should reports exist as a separate asset? The question was fair. Reports, sheets, and dynamic views had begun to overlap, leaving customers unsure which tool was right for the job.",
+        "Before implementation, our CPO posed an existential question: should reports exist as a separate asset?",
+        "The question was fair. Reports, sheets, and dynamic views had begun to overlap, leaving customers unsure which tool was right for the job.",
         "I aligned three teams around a strategy to keep reports separate, avoiding a costly migration of millions of legacy reports while clarifying its role within the platform and creating a shared direction for future investment.",
       ],
       media: {

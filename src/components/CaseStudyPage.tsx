@@ -365,7 +365,7 @@ function CaseStudyMediaBlock({
           />
         ) : (
           <div className="case-study-video-frame" style={{ aspectRatio: aspectRatio ?? 16 / 9 }}>
-            {videoSrc ? <CaseStudyLazyVideo src={videoSrc} controls ariaLabel={label} /> : null}
+            {videoSrc ? <CaseStudyLazyVideo src={videoSrc} controls ariaLabel={label} rootMargin="1400px 0px" /> : null}
           </div>
         )
       ) : src ? (
@@ -480,6 +480,7 @@ function CaseStudyLazyVideo({
   loop = false,
   muted = false,
   poster,
+  rootMargin = "640px 0px",
   src,
 }: {
   ariaHidden?: boolean;
@@ -489,6 +490,7 @@ function CaseStudyLazyVideo({
   loop?: boolean;
   muted?: boolean;
   poster?: string;
+  rootMargin?: string;
   src: string;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -513,13 +515,13 @@ function CaseStudyLazyVideo({
           observer.disconnect();
         }
       },
-      { rootMargin: "640px 0px" },
+      { rootMargin },
     );
 
     observer.observe(node);
 
     return () => observer.disconnect();
-  }, []);
+  }, [rootMargin]);
 
   useEffect(() => {
     if (!autoPlay || !shouldLoad) {
@@ -539,7 +541,7 @@ function CaseStudyLazyVideo({
       muted={muted}
       playsInline
       poster={poster}
-      preload="none"
+      preload={controls && shouldLoad ? "metadata" : "none"}
       aria-hidden={ariaHidden ? true : undefined}
       aria-label={ariaLabel}
     />
@@ -1334,9 +1336,9 @@ const smartsheetViewPrimitiveCopy = [
 ];
 
 const smartsheetViewPrimitiveBullets = [
-  "Introduced the modern view with refreshed grouping and calculation designs, so customers could switch from legacy with their reports intact.",
-  "Source data, opening the toolbar to collaborators while preserving admin control.",
-  "New first-time experience making the modern view the default starting place.",
+  "Introduced the modern view with refreshed grouping and calculations, so customers could switch from legacy with their reports intact.",
+  "Added source data, opening the toolbar to collaborators while preserving admin control.",
+  "Launched a new first-time experience making the modern view the default starting place.",
 ];
 
 function CaseStudySmartsheetFullMedia({
