@@ -8,6 +8,8 @@ export type WorkItem = {
   upNextImage?: string;
   thumbnailImage?: string;
   heroImage?: string;
+  warmImageAssets?: string[];
+  warmVideoAssets?: string[];
   featuredImage?: string;
   summary: string;
   cardMeta?: string;
@@ -19,8 +21,6 @@ export type WorkItem = {
   blocks?: CaseStudyBlock[];
   metadata?: CaseStudyMetadata[];
   sections?: CaseStudySection[];
-  gallery: CaseStudyMedia[];
-  notes: CaseStudyNote[];
 };
 
 export type CaseStudyMetadata = {
@@ -97,6 +97,7 @@ export type CaseStudyBlock =
       src?: string;
       videoSrc?: string;
       embedSrc?: string;
+      poster?: string;
       caption?: string;
       aspectRatio?: number;
       width?: CaseStudyBlockWidth;
@@ -163,6 +164,7 @@ export type CaseStudyBlock =
         src?: string;
         videoSrc?: string;
         embedSrc?: string;
+        poster?: string;
         caption?: string;
         aspectRatio?: number;
         width?: CaseStudyBlockWidth;
@@ -264,27 +266,34 @@ export type CaseStudyPresentationSlide = {
   src?: string;
 };
 
-export type CaseStudyMedia = {
-  src: string;
-  caption: string;
-  aspectRatio?: number;
-};
-
-export type CaseStudyNote = {
-  title: string;
-  body: string;
-};
-
 // Pulled from Framer /work page. Featured project gets the hero treatment;
 // the rest render as compact list items.
 export const featuredWork: WorkItem = {
   title: "Smartsheet Reports",
   slug: "smartsheet-reports",
   tag: "Smartsheet • 2025–2026",
-  image: "/work/smartsheet-reports/homepage-card.png",
-  homepageImage: "/work/smartsheet-reports/homepage-card.png",
-  upNextImage: "/work/smartsheet-reports/up-next.png",
-  heroImage: "/work/smartsheet-reports/hero-2x.jpg",
+  image: "/work/smartsheet-reports/homepage-card-fast.webp",
+  homepageImage: "/work/smartsheet-reports/homepage-card-fast.webp",
+  upNextImage: "/work/smartsheet-reports/up-next-fast.webp",
+  heroImage: "/work/smartsheet-reports/hero-fast.webp",
+  warmImageAssets: [
+    "/work/smartsheet-reports/legacy-report-fast.webp",
+    "/work/smartsheet-reports/paradigm-1-fast.webp",
+    "/work/smartsheet-reports/bento-top-left-fast.webp",
+    "/work/smartsheet-reports/bento-top-right-fast.webp",
+    "/work/smartsheet-reports/bento-bottom-left-fast.webp",
+    "/work/smartsheet-reports/bento-bottom-middle-fast.webp",
+    "/work/smartsheet-reports/bento-bottom-right-fast.webp",
+    "/work/smartsheet-reports/grouping-levels-fast.webp",
+    "/work/smartsheet-reports/figma-make-prototype-fast.webp",
+    "/work/smartsheet-reports/figma-spec-fast.webp",
+    "/work/smartsheet-reports/smartassist-fast.webp",
+    "/work/smartsheet-reports/cross-team-walkthrough-poster.jpg",
+  ],
+  warmVideoAssets: [
+    "/work/smartsheet-reports/figma-make-blue-bg-loop.mp4",
+    "/work/smartsheet-reports/figma-spec-loop.mp4",
+  ],
   summary: "Modernized one of Smartsheet's core platform capabilities while aligning three teams around its long-term direction.",
   cardMeta: "Smartsheet • Case Study • 2025–26",
   caseStudyMeta: "Case Study • Aug '25 – Feb '26",
@@ -343,7 +352,7 @@ export const featuredWork: WorkItem = {
           href: "https://hush-drawn-49113008.figma.site/",
           action: "Open prototype",
           kind: "prototype",
-          image: "/work/smartsheet-reports/figma-make-prototype.png",
+          image: "/work/smartsheet-reports/figma-make-prototype-fast.webp",
           video: "/work/smartsheet-reports/figma-make-blue-bg-loop.mp4",
         },
         {
@@ -351,7 +360,7 @@ export const featuredWork: WorkItem = {
           href: "https://www.figma.com/design/8eIcQsTHhBcBEFqeLdiNyz/Spec-Sample%E2%80%94Grouping---Calculate?node-id=4-154228&t=4yJ9LXBuoRZ3nhmm-1",
           action: "Open spec",
           kind: "spec",
-          image: "/work/smartsheet-reports/figma-spec.png",
+          image: "/work/smartsheet-reports/figma-spec-fast.webp",
           video: "/work/smartsheet-reports/figma-spec-loop.mp4",
         },
       ],
@@ -366,7 +375,8 @@ export const featuredWork: WorkItem = {
       ],
       media: {
         label: "Cross-team alignment walkthrough",
-        videoSrc: "/work/smartsheet-reports/cross-team-walkthrough.mp4",
+        videoSrc: "/work/smartsheet-reports/cross-team-walkthrough-fast.mp4",
+        poster: "/work/smartsheet-reports/cross-team-walkthrough-poster.jpg",
         aspectRatio: 16 / 9,
         width: "large",
       },
@@ -380,8 +390,6 @@ export const featuredWork: WorkItem = {
       footnote: "Defining a clear strategy and aligning teams around it are often the most challenging aspects of product development. They're also where I've found design can have the greatest impact.",
     },
   ],
-  gallery: [],
-  notes: [],
 };
 
 export const otherWork: WorkItem[] = [
@@ -389,10 +397,16 @@ export const otherWork: WorkItem[] = [
     title: "MetLife Mexico",
     slug: "metlife-mexico",
     tag: "KPMG • 2021",
-    image: "/work/metlife-mexico/homepage-card.png",
-    homepageImage: "/work/metlife-mexico/homepage-card.png",
-    upNextImage: "/work/metlife-mexico/up-next.png",
-    heroImage: "/work/metlife-mexico/hero-2x.jpg",
+    image: "/work/metlife-mexico/homepage-card-fast.webp",
+    homepageImage: "/work/metlife-mexico/homepage-card-fast.webp",
+    upNextImage: "/work/metlife-mexico/up-next-fast.webp",
+    heroImage: "/work/metlife-mexico/hero-fast.webp",
+    warmImageAssets: [
+      "/work/metlife-mexico/dashboard-display-fast.webp",
+      "/work/metlife-mexico/clients-display-fast.webp",
+      "/work/metlife-mexico/activities-display-fast.webp",
+      "/work/metlife-mexico/performance-display-fast.webp",
+    ],
     summary: "Built the foundation for MetLife Mexico's digital agent experience, unifying fragmented workflows into a single product.",
     cardMeta: "KPMG • Summary • 2021",
     caseStudyMeta: "Summary • 2021",
@@ -416,32 +430,30 @@ export const otherWork: WorkItem[] = [
           {
             title: "Home dashboard",
             description: "A unified home for priorities, performance, and daily work.",
-            src: "/work/metlife-mexico/dashboard-display-optimized.png",
+            src: "/work/metlife-mexico/dashboard-display-fast.webp",
             span: "full",
           },
           {
             title: "Client relationships",
             description: "Manage clients, policies, and communication from one place.",
-            src: "/work/metlife-mexico/clients-display-optimized.png",
+            src: "/work/metlife-mexico/clients-display-fast.webp",
             span: "full",
           },
           {
             title: "Activities",
             description: "Track service requests, follow-ups, and daily sales work.",
-            src: "/work/metlife-mexico/activities-display-optimized.png",
+            src: "/work/metlife-mexico/activities-display-fast.webp",
             span: "full",
           },
           {
             title: "Products + performance",
             description: "Connect product knowledge with portfolio performance.",
-            src: "/work/metlife-mexico/performance-display-optimized.png",
+            src: "/work/metlife-mexico/performance-display-fast.webp",
             span: "full",
           },
         ],
       },
     ],
-    gallery: [],
-    notes: [],
   },
 ];
 
@@ -449,36 +461,10 @@ export const allWork = [featuredWork, ...otherWork];
 export const routeableWork = allWork.filter((item) => ["smartsheet-reports", "metlife-mexico"].includes(item.slug));
 const locallyRouteableWork = routeableWork;
 
-const fallbackGallery = [
-  "https://framerusercontent.com/images/GmLtgWMAItPR9A4q6e8dZ9MFUDo.png?width=3200&height=2400",
-  "https://framerusercontent.com/images/f9iUhvbT4lerSn7WvgX7fZz9M.png?width=3200&height=2400",
-  "https://framerusercontent.com/images/mMXRBILXNX0XeF5DQrx1eoAO4uo.png?width=3200&height=2400",
-];
-
 export function getCaseStudy(slug: string) {
   const project = locallyRouteableWork.find((item) => item.slug === slug);
 
   if (!project) return undefined;
 
-  return {
-    ...project,
-    gallery: project.gallery.length
-      ? project.gallery
-      : fallbackGallery.map((src, index) => ({
-          src,
-          caption: ["Exploration", "Interaction Detail", "System Direction"][index],
-        })),
-    notes: project.notes.length
-      ? project.notes
-      : [
-          {
-            title: "Context",
-            body: "A placeholder space for the project background, customer problem, and product constraints that shaped the work.",
-          },
-          {
-            title: "Process",
-            body: "Use this section to capture the design decisions, prototypes, tradeoffs, and moments that moved the project forward.",
-          },
-        ],
-  };
+  return project;
 }

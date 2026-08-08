@@ -315,6 +315,7 @@ function CaseStudyMediaBlock({
   src,
   videoSrc,
   embedSrc,
+  poster,
   caption,
   aspectRatio,
   bentoItems,
@@ -325,6 +326,7 @@ function CaseStudyMediaBlock({
   src?: string;
   videoSrc?: string;
   embedSrc?: string;
+  poster?: string;
   caption?: string;
   aspectRatio?: number;
   bentoItems?: {
@@ -365,7 +367,7 @@ function CaseStudyMediaBlock({
           />
         ) : (
           <div className="case-study-video-frame" style={{ aspectRatio: aspectRatio ?? 16 / 9 }}>
-            {videoSrc ? <CaseStudyLazyVideo src={videoSrc} controls ariaLabel={label} rootMargin="1400px 0px" /> : null}
+            {videoSrc ? <CaseStudyLazyVideo src={videoSrc} poster={poster} controls ariaLabel={label} rootMargin="2200px 0px" /> : null}
           </div>
         )
       ) : src ? (
@@ -607,7 +609,7 @@ function CaseStudySpecSamplesBlock({
               style={specSampleMediaStyle}
             >
               {item.video ? (
-                <CaseStudyLazyVideo src={item.video} poster={item.image} autoPlay loop muted ariaHidden rootMargin="1800px 0px" />
+                <CaseStudyLazyVideo src={item.video} poster={item.image} autoPlay loop muted ariaHidden rootMargin="3200px 0px" />
               ) : item.image ? (
                 <img src={item.image} alt="" loading="lazy" decoding="async" aria-hidden="true" />
               ) : (
@@ -1048,6 +1050,7 @@ function CaseStudySpotlightBlock({ block }: { block: Extract<CaseStudyBlock, { t
         src={block.media.src}
         videoSrc={block.media.videoSrc}
         embedSrc={block.media.embedSrc}
+        poster={block.media.poster}
         caption={block.media.caption}
         aspectRatio={block.media.aspectRatio}
         width={block.media.width}
@@ -1390,7 +1393,7 @@ function CaseStudySmartsheetFullMedia({
 
   return (
     <figure className={figureClassName} aria-label={label}>
-      {src && !placeholder ? <img src={src} alt="" loading="lazy" decoding="async" /> : null}
+      {src && !placeholder ? <img src={src} alt="" loading="eager" decoding="async" fetchPriority="low" /> : null}
     </figure>
   );
 }
@@ -1417,7 +1420,7 @@ function CaseStudySmartsheetExplorationMedia() {
       <div className="case-study-smartsheet-ai-explorations">
         <figure aria-label="AI-assisted report creation exploration placeholder" />
         <figure aria-label="Guided report draft exploration">
-          <img src="/masonry/smartassist.png" alt="" loading="lazy" decoding="async" />
+          <img src="/work/smartsheet-reports/smartassist-fast.webp" alt="" loading="eager" decoding="async" fetchPriority="low" />
         </figure>
       </div>
 
@@ -1439,27 +1442,27 @@ function CaseStudySmartsheetViewBento() {
     {
       label: "Custom views menu",
       className: "is-custom-views",
-      src: "/work/smartsheet-reports/bento-top-left.png",
+      src: "/work/smartsheet-reports/bento-top-left-fast.webp",
     },
     {
       label: "Grouping surface",
       className: "is-grouping-surface",
-      src: "/work/smartsheet-reports/bento-top-right.png",
+      src: "/work/smartsheet-reports/bento-top-right-fast.webp",
     },
     {
       label: "Summary calculations",
       className: "is-summary-calculations",
-      src: "/work/smartsheet-reports/bento-bottom-left.png",
+      src: "/work/smartsheet-reports/bento-bottom-left-fast.webp",
     },
     {
       label: "Calculate menu",
       className: "is-calculate-menu",
-      src: "/work/smartsheet-reports/bento-bottom-middle.png",
+      src: "/work/smartsheet-reports/bento-bottom-middle-fast.webp",
     },
     {
       label: "Three-level grouping logic",
       className: "is-grouping-logic",
-      src: "/work/smartsheet-reports/bento-bottom-right.png",
+      src: "/work/smartsheet-reports/bento-bottom-right-fast.webp",
     },
   ];
 
@@ -1471,7 +1474,7 @@ function CaseStudySmartsheetViewBento() {
           className={`case-study-smartsheet-view-bento-tile ${tile.className}`}
           aria-label={tile.label}
         >
-          <img src={tile.src} alt="" loading="lazy" decoding="async" />
+          <img src={tile.src} alt="" loading="eager" decoding="async" fetchPriority="low" />
         </figure>
       ))}
     </div>
@@ -1550,7 +1553,7 @@ function CaseStudySmartsheetViewPrimitiveSection({
         <CaseStudySmartsheetViewBento />
         <CaseStudySmartsheetFullMedia
           label="Grouping levels"
-          src="/work/smartsheet-reports/grouping-levels.png"
+          src="/work/smartsheet-reports/grouping-levels-fast.webp"
           className="is-grouping-levels"
         />
         {specSamplesBlock ? (
@@ -1637,6 +1640,7 @@ function CaseStudySmartsheetPivotSpotlightSection({ block }: { block: Extract<Ca
           src={block.media.src}
           videoSrc={block.media.videoSrc}
           embedSrc={block.media.embedSrc}
+          poster={block.media.poster}
           caption={block.media.caption}
           aspectRatio={block.media.aspectRatio}
           width={block.media.width}
@@ -1718,7 +1722,7 @@ function CaseStudySmartsheetBlocks({
           <div className="case-study-smartsheet-legacy-media">
             <CaseStudySmartsheetFullMedia
               label="Legacy report toolbar limitation"
-              src="/work/smartsheet-reports/legacy-report.png"
+              src="/work/smartsheet-reports/legacy-report-fast.webp"
               className="is-legacy-report-ui"
             />
             <p className="case-study-smartsheet-legacy-statement font-sans-preview" style={legacyReportStatementStyle}>
@@ -1756,7 +1760,7 @@ function CaseStudySmartsheetBlocks({
                 mediaItems={[
                   {
                     label: "Source data controls and display controls",
-                    src: "/work/smartsheet-reports/paradigm-1.png",
+                    src: "/work/smartsheet-reports/paradigm-1-fast.webp",
                   },
                 ]}
               />
@@ -1871,10 +1875,16 @@ function CaseStudyStructuredShowcaseGrid({
 }) {
   return (
     <div className="case-study-structured-image-grid">
-      {block.items.map((item) => (
+      {block.items.map((item, index) => (
         <figure key={`${item.title}-${item.src}`} className="case-study-structured-image-card">
           <div className="case-study-structured-image-media">
-            <img src={item.src} alt="" loading="lazy" decoding="async" />
+            <img
+              src={item.src}
+              alt=""
+              loading="eager"
+              decoding="async"
+              fetchPriority={index < 2 ? "auto" : "low"}
+            />
           </div>
           <figcaption className={showTitles ? undefined : "is-description-only"}>
             {showTitles ? <h3>{preventTextOrphans(item.title)}</h3> : null}
@@ -2197,6 +2207,60 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
       .then(() => setFontsReady(true));
   }, []);
 
+  useEffect(() => {
+    const warmImageAssets = project.warmImageAssets ?? [];
+    const warmVideoAssets = project.warmVideoAssets ?? [];
+
+    if (!warmImageAssets.length && !warmVideoAssets.length) {
+      return undefined;
+    }
+
+    const timers: number[] = [];
+    const warmedImages: HTMLImageElement[] = [];
+    const warmedLinks: HTMLLinkElement[] = [];
+
+    function schedule(callback: () => void, delay: number) {
+      const timer = window.setTimeout(callback, delay);
+      timers.push(timer);
+    }
+
+    function warmImage(src: string, fetchPriority: "auto" | "low") {
+      const image = new window.Image();
+      (image as HTMLImageElement & { fetchPriority?: "auto" | "low" }).fetchPriority = fetchPriority;
+      image.decoding = "async";
+      image.loading = "eager";
+      image.src = src;
+      warmedImages.push(image);
+      image.decode?.().catch(() => undefined);
+    }
+
+    function warmVideo(src: string) {
+      const link = document.createElement("link");
+      link.rel = "prefetch";
+      link.as = "video";
+      link.href = src;
+      document.head.appendChild(link);
+      warmedLinks.push(link);
+    }
+
+    warmImageAssets.forEach((src, index) => {
+      schedule(() => warmImage(src, index < 2 ? "auto" : "low"), 520 + index * 90);
+    });
+
+    warmVideoAssets.forEach((src, index) => {
+      schedule(() => warmVideo(src), 1600 + index * 260);
+    });
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      warmedImages.forEach((image) => {
+        image.onload = null;
+        image.onerror = null;
+      });
+      warmedLinks.forEach((link) => link.remove());
+    };
+  }, [project.warmImageAssets, project.warmVideoAssets]);
+
   const heroStyle = {
     "--rise-delay": "700ms",
     "--rise-duration": "1.72s",
@@ -2331,6 +2395,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 preload
                 sizes="(max-width: 1720px) calc(100vw - 40px), 1680px"
                 quality={82}
+                unoptimized={(project.heroImage ?? project.image).endsWith(".webp")}
               />
             )}
           </figure>
@@ -2353,27 +2418,9 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                   overview={overview}
                 />
               ) : null}
-              {hasCaseStudyBlocks
-            ? caseStudyBlocks.map((block, index) => (
+              {hasCaseStudyBlocks ? caseStudyBlocks.map((block, index) => (
                 <CaseStudyBlockView key={`${block.type}-${index}`} block={block} />
-              ))
-            : project.gallery.map((item, index) => (
-                <div key={`${item.caption}-${item.src}`} className="case-study-gallery-group">
-                  <figure className="case-study-media-card">
-                    <div className="case-study-media-shell">
-                      <img src={item.src} alt="" loading="lazy" decoding="async" style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined} />
-                    </div>
-                    <figcaption className="font-sans-preview">{preventTextOrphans(item.caption)}</figcaption>
-                  </figure>
-
-                  {project.notes[index] ? (
-                    <article className="case-study-note">
-                      <h2>{preventTextOrphans(project.notes[index].title)}</h2>
-                      <p className="font-sans-preview">{preventTextOrphans(project.notes[index].body)}</p>
-                    </article>
-                  ) : null}
-                </div>
-              ))}
+              )) : null}
             </>
           )}
         </section>

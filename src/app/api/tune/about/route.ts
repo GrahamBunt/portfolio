@@ -29,17 +29,6 @@ function isValidContent(value: unknown): value is AboutContent {
         isString(item.href, 300) &&
         (item.icon === "x" || item.icon === "linkedin" || item.icon === "github"),
     ) &&
-    !!content.explore &&
-    isString(content.explore.title, 80) &&
-    isString(content.explore.description, 500) &&
-    Array.isArray(content.explore.links) &&
-    content.explore.links.every(
-      (item) =>
-        isString(item.title, 80) &&
-        isString(item.description, 300) &&
-        isString(item.href, 300) &&
-        isString(item.image, 500),
-    ) &&
     !!content.contact &&
     isString(content.contact.title, 80) &&
     isString(content.contact.description, 500) &&
@@ -51,14 +40,7 @@ function isValidContent(value: unknown): value is AboutContent {
 }
 
 function renderAboutContent(content: AboutContent) {
-  return `export type AboutExploreLink = {
-  title: string;
-  description: string;
-  href: string;
-  image: string;
-};
-
-export type AboutContent = {
+  return `export type AboutContent = {
   hero: {
     titleItalic: string;
     titleRest: string;
@@ -70,11 +52,6 @@ export type AboutContent = {
     href: string;
     icon: "x" | "linkedin" | "github";
   }>;
-  explore: {
-    title: string;
-    description: string;
-    links: AboutExploreLink[];
-  };
   contact: {
     title: string;
     description: string;

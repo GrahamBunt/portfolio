@@ -86,8 +86,10 @@ export default function Home() {
                     className="object-cover"
                     sizes="(max-width: 809px) calc(100vw - 40px), (max-width: 1720px) calc((100vw - 60px) / 2), 830px"
                     loading={project.slug === "smartsheet-reports" ? "eager" : "lazy"}
+                    preload={project.slug === "smartsheet-reports"}
                     fetchPriority={project.slug === "smartsheet-reports" ? "high" : "auto"}
                     quality={92}
+                    unoptimized
                     style={{
                       objectPosition: project.slug === "smartsheet-reports" ? "70% 18%" : "50% 50%",
                     }}

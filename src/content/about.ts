@@ -1,10 +1,3 @@
-export type AboutExploreLink = {
-  title: string;
-  description: string;
-  href: string;
-  image: string;
-};
-
 export type AboutContent = {
   hero: {
     titleItalic: string;
@@ -17,11 +10,6 @@ export type AboutContent = {
     href: string;
     icon: "x" | "linkedin" | "github";
   }>;
-  explore: {
-    title: string;
-    description: string;
-    links: AboutExploreLink[];
-  };
   contact: {
     title: string;
     description: string;
@@ -44,39 +32,6 @@ export const aboutContent: AboutContent = {
     "Outside of work, my wife and I are raising two daughters and wrangling two golden retrievers. I spend any remaining free time running, mountain biking, and snowboarding. I'm also a land-locked surfer, so every summer we try to get back to the Jersey Shore, where I grew up and still my favorite place to surf.",
   ],
   social: [],
-  explore: {
-    title: "Explore",
-    description:
-      "A few places to learn more about my work, thinking, and curiousity.",
-    links: [
-      {
-        title: "Work",
-        description: "Products I've helped shape.",
-        href: "/work",
-        image:
-          "https://framerusercontent.com/images/GVAsfqwYw2uFROcE6bLZSJSaZik.png?width=240&height=240",
-      },
-      {
-        title: "Stack",
-        description: "Tools I'm currently using.",
-        href: "/tech-stack",
-        image:
-          "https://framerusercontent.com/images/sKCj51P5Pbroc1slvmbJ4edE2A.png?width=240&height=240",
-      },
-      {
-        title: "Booklist",
-        description: "What's pulling my curiousity lately.",
-        href: "/booklist",
-        image: "/explore-booklist.svg",
-      },
-      {
-        title: "Bookmarks",
-        description: "Saved ideas, references, and other finds.",
-        href: "/bookmarks",
-        image: "/explore-bookmarks.svg",
-      },
-    ],
-  },
   contact: {
     title: "Get in touch",
     description:

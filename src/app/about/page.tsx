@@ -11,7 +11,7 @@ import { aboutContent, type AboutContent } from "@/content/about";
 import { preventTextOrphans } from "@/lib/typography";
 
 const ABOUT_IMAGE =
-  "https://framerusercontent.com/images/0Qe7tP8xBjkqUS3NHrAj3ZRvZ60.png?width=900&height=1120";
+  "/about-portrait.webp";
 
 function cloneContent() {
   return JSON.parse(JSON.stringify(aboutContent)) as AboutContent;
