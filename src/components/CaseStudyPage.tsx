@@ -1560,11 +1560,6 @@ function CaseStudySmartsheetViewPrimitiveSection({
           <div className="case-study-smartsheet-spec-band">
             <div className="case-study-smartsheet-spec-band-inner">
               <CaseStudySpecSamplesBlock block={specSamplesBlock} showHeader={false} />
-              <CaseStudySmartsheetFullMedia
-                label="Spec sample placeholder"
-                placeholder
-                className="is-spec-placeholder"
-              />
             </div>
           </div>
         ) : null}

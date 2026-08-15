@@ -3836,10 +3836,6 @@ body {
   object-fit: cover;
 }
 
-.case-study-smartsheet-full-media.is-spec-placeholder {
-  width: 100%;
-}
-
 .case-study-smartsheet-exploration-media {
   display: flex;
   width: 100%;
