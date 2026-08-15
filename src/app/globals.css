@@ -4670,7 +4670,7 @@ body {
   color: #ffffff;
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0;
@@ -4691,7 +4691,7 @@ body {
   align-self: flex-start;
   color: #ffffff;
   font-size: 17px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 28px;
   padding: 0;
