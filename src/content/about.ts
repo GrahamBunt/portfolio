@@ -25,11 +25,12 @@ export const aboutContent: AboutContent = {
   hero: {
     titleItalic: "Hey there",
     titleRest: "—I'm Graham.",
-    description: "A strategic designer who blends systems thinking with craft to deliver quality digital experiences.",
+    description: "I work across the full spectrum of product design, from shaping product direction to designing interfaces with intent and driving quality through delivery.",
   },
   bio: [
-    "I'm currently at Smartsheet, where I design enterprise products that help teams manage work. I enjoy bringing clarity to ambiguous spaces and making complex systems easier to use. I care deeply about craft and believe the best products feel intuitive, thoughtful, and visually refined.",
-    "Outside of work, my wife and I are raising two daughters and wrangling two golden retrievers. I spend any remaining free time running, mountain biking, and snowboarding. I'm also a land-locked surfer, so every summer we try to get back to the Jersey Shore, where I grew up and still my favorite place to surf.",
+    "I’ve spent the last several years working on products where the path forward wasn’t always obvious. My work has spanned new products, major redesigns, platform integrations, and evolving existing products as customer and business needs change. Along the way, I’ve learned to think beyond the interface and consider the broader systems, teams, and business behind the product.",
+    "I’m comfortable moving between the big picture and the little details. I like inspiring people around a clear direction, working closely with product and engineering, and getting deep into the craft to make experiences feel intuitive, thoughtful, and visually refined.",
+    "Outside of work, my wife and I are raising two daughters and wrangling two golden retrievers. I spend the rest of my time exercising, mountain biking, and snowboarding. I'm also a land-locked surfer, so every summer we try to spend some time on the Jersey Shore—where I grew up and where I still love to surf.",
   ],
   social: [],
   contact: {

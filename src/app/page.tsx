@@ -10,7 +10,7 @@ import { SiteNav } from "@/components/SiteNav";
 import { allWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
 
-const featuredHomeProjectSlugs = ["smartsheet-reports", "metlife-mexico"];
+const featuredHomeProjectSlugs = ["smartsheet-reports", "resource-management-integration", "metlife-mexico"];
 const homeFeaturedProjects = featuredHomeProjectSlugs
   .map((slug) => allWork.find((project) => project.slug === slug))
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
@@ -48,22 +48,30 @@ export default function Home() {
 
         <section
           data-section="intro"
-          className="flex w-full max-w-[900px] flex-col items-center gap-[30px] overflow-hidden p-5 text-center"
+          className="home-identity-hero"
+          aria-labelledby="home-identity-title"
         >
-          <h1 className="home-hero-title display-serif-type w-full font-[family-name:var(--font-display-serif)] text-[36px] font-normal leading-[44px] tracking-[0] text-white min-[810px]:text-[54px] min-[810px]:leading-[62px]">
-            <span className={fontsReady ? "animate-reveal" : "opacity-0"}>
-              Graham Bunt is a <em className="home-hero-emphasis">Product Designer</em>
-            </span>
-            <span
-              className={fontsReady ? "animate-reveal" : "opacity-0"}
-              style={fontsReady ? { animationDelay: "100ms" } : undefined}
-            >
-              based in Salt Lake City, Utah.
+          <h1
+            id="home-identity-title"
+            className={`home-identity-lockup display-serif-type font-[family-name:var(--font-display-serif)] ${fontsReady ? "animate-reveal" : "opacity-0"}`}
+          >
+            <span className="home-identity-name home-identity-name-graham">GRAHAM</span>
+            <span className="home-identity-lower">
+              <span className="home-identity-support" aria-label="Shaping direction. Designing with intent. Driving quality.">
+                <span>Shaping direction</span>
+                <span>Designing with intent</span>
+                <span>Driving quality</span>
+              </span>
+              <span className="home-identity-name home-identity-name-bunt">BUNT</span>
+              <span className="home-identity-meta" aria-label="Product Designer. Salt Lake City, UT.">
+                <span>Product Designer</span>
+                <span>Salt Lake City, UT</span>
+              </span>
             </span>
           </h1>
         </section>
 
-        <section className="flex w-full flex-col items-center gap-[60px] overflow-hidden px-5 py-[60px]">
+        <section className="flex w-full flex-col items-center gap-[60px] overflow-hidden px-5 pb-[60px] pt-[96px]">
           <div
             className="home-featured-work-grid staged-work-rise"
             style={
@@ -91,7 +99,7 @@ export default function Home() {
                     quality={92}
                     unoptimized
                     style={{
-                      objectPosition: project.slug === "smartsheet-reports" ? "70% 18%" : "50% 50%",
+                      objectPosition: project.slug === "smartsheet-reports" || project.slug === "resource-management-integration" ? "70% 18%" : "50% 50%",
                     }}
                   />
                 </figure>

@@ -387,12 +387,74 @@ export const featuredWork: WorkItem = {
       label: "Reflection",
       statement: "The hardest part of this project wasn't redesigning the interface. It was defining the role reports should play within the platform and getting the team aligned. Once we had a shared direction, every downstream decision got easier, and the design work became an exercise in execution rather than existential debate.",
       outcomes: [],
-      footnote: "Defining a clear strategy and aligning teams around it are often the most challenging aspects of product development. They're also where I've found design can have the greatest impact.",
+      footnote: "Defining a clear strategy and aligning teams around it can be one of the biggest challenges in product development. It's also where I've found design can have the greatest impact.",
     },
   ],
 };
 
 export const otherWork: WorkItem[] = [
+  {
+    ...featuredWork,
+    title: "Resource Management Integration",
+    slug: "resource-management-integration",
+    displayTitle: "Resource Management Integration",
+    image: "/work/resource-management-integration/hero-updated.png",
+    homepageImage: "/work/resource-management-integration/homepage-card.png",
+    upNextImage: "/work/resource-management-integration/up-next.png",
+    heroImage: "/work/resource-management-integration/hero-updated.png",
+    summary: "Shaped the future of a declining $35M ARR acquisition while integrating its core capabilities into Smartsheet.",
+    cardMeta: "Smartsheet • Case Study • 2022–25",
+    caseStudyMeta: "Case Study • Mar ‘22 - Jan ‘25",
+    overview: {
+      items: [],
+      body: [
+        "Smartsheet acquired 10,000ft to bring resource management capabilities into the platform. By the time I joined the team, 10,000ft had been renamed Resource Management and the focus was on integrating the two products.",
+        "Resource Management was a declining $35M ARR business unit without a clear long-term direction. I worked across a series of initiatives that balanced customer needs, business priorities, and the broader question of how Resource Management could become a sustainable part of the Smartsheet platform.",
+      ],
+    },
+    blocks: [
+      {
+        type: "text",
+        title: "Creating demand",
+        body: [
+          "Only 4.2% of Smartsheet customers were using Resource Management, so we brought its strongest capabilities into Smartsheet to create demand for the premium product.",
+          "I replaced an error-prone 20+ click onboarding process with a simple column mapping experience that connected sheets to Resource Management projects. We also brought Resource Management's core workload schedule directly into the sheet. The experience improved, but we hadn't addressed the sales-assisted path required to become a paying customer, limiting our ability to materially move adoption.",
+        ],
+      },
+      {
+        type: "text",
+        title: "Customer retention",
+        body: [
+          "As we continued searching for a sustainable path to growth, our attention shifted to immediate customer retention. Several high-value renewals depended on tighter integration, including sending Resource Management report data into sheets and keeping it automatically synced.",
+          "I defined the direction for that integration using Smartsheet’s Data Shuttle, while acting as a player-coach for a junior designer through delivery. The release immediately protected roughly $850K ARR in renewals and influenced another $300K ARR shortly thereafter.",
+        ],
+      },
+      {
+        type: "text",
+        title: "Inherited strategy",
+        body: [
+          "Everything changed when an engineer on the team embedded the standalone Resource Management product into Smartsheet's global navigation as part of a hackathon project. The concept gained traction with leadership and became the direction the team rallied behind.",
+          "It wasn't a strategy our team had intentionally chosen, but that became an important lesson for me. If a product team doesn't define a clear and compelling strategy, it will eventually inherit one.",
+        ],
+      },
+      {
+        type: "text",
+        title: "Visibility and vision",
+        body: [
+          "With Resource Management in the global navigation, existing customers could access the product directly from Smartsheet. For everyone else, the new entry point led to an upsell page and the same sales-assisted motion we had relied on before. For the first time, we could see how many customers were discovering and showing interest in Resource Management, which became especially important as Smartsheet approached a private equity takeover.",
+          "From there, the focus was both fixing the path into Resource Management and giving customers new reasons to use it. I defined a self-serve experience that let customers select sheets in bulk, map their data to Resource Management, and start with projects, people, and workload data already in place. In parallel, I joined a sales and product tiger team to define Scenario Planning, a new tool for exploring staffing changes before committing them to a resource plan.",
+          "The self-serve vision became part of the plan to get the existing business healthy, while Scenario Planning brought new excitement and momentum to the product. Together, they became the vision I helped define for Resource Management and the foundation for a multi-year roadmap.",
+        ],
+      },
+      {
+        type: "impact",
+        label: "Perspective",
+        statement: "Resource Management taught me to think about product design through the lens of the business. We were constantly balancing customer needs, experience improvements, and long-term product bets with the realities of a declining business unit.",
+        outcomes: [],
+        footnote: "Some well-intentioned investments failed to move the needle, others directly protected revenue, and the vision we ultimately defined became a multi-year roadmap that endured through Smartsheet's private equity takeover.",
+      },
+    ],
+  },
   {
     title: "MetLife Mexico",
     slug: "metlife-mexico",
@@ -458,7 +520,7 @@ export const otherWork: WorkItem[] = [
 ];
 
 export const allWork = [featuredWork, ...otherWork];
-export const routeableWork = allWork.filter((item) => ["smartsheet-reports", "metlife-mexico"].includes(item.slug));
+export const routeableWork = allWork.filter((item) => ["smartsheet-reports", "resource-management-integration", "metlife-mexico"].includes(item.slug));
 const locallyRouteableWork = routeableWork;
 
 export function getCaseStudy(slug: string) {

@@ -1374,11 +1374,15 @@ const smartsheetViewPrimitiveBullets = [
 function CaseStudySmartsheetFullMedia({
   label,
   src,
+  srcSet,
+  sizes,
   placeholder = false,
   className,
 }: {
   label: string;
   src?: string;
+  srcSet?: string;
+  sizes?: string;
   placeholder?: boolean;
   className?: string;
 }) {
@@ -1393,8 +1397,198 @@ function CaseStudySmartsheetFullMedia({
 
   return (
     <figure className={figureClassName} aria-label={label}>
-      {src && !placeholder ? <img src={src} alt="" loading="eager" decoding="async" fetchPriority="low" /> : null}
+      {src && !placeholder ? (
+        <img
+          src={src}
+          srcSet={srcSet}
+          sizes={sizes}
+          alt=""
+          loading="eager"
+          decoding="async"
+          fetchPriority="low"
+        />
+      ) : null}
     </figure>
+  );
+}
+
+const resourceManagementArmsFrames = [
+  {
+    label: "Resource Management profile view",
+    src: "/work/resource-management-integration/arms-profile-ui.png",
+    src2x: "/work/resource-management-integration/arms-profile-ui-2x.png",
+  },
+  {
+    label: "Resource Management reports view",
+    src: "/work/resource-management-integration/arms-reports-ui.png",
+    src2x: "/work/resource-management-integration/arms-reports-ui-2x.png",
+  },
+  {
+    label: "Resource Management schedule view",
+    src: "/work/resource-management-integration/arms-schedule-ui.png",
+    src2x: "/work/resource-management-integration/arms-schedule-ui-2x.png",
+  },
+  {
+    label: "Resource Management capacity view",
+    src: "/work/resource-management-integration/arms-capacity-ui.png",
+    src2x: "/work/resource-management-integration/arms-capacity-ui-2x.png",
+  },
+  {
+    label: "Resource Management time and fees view",
+    src: "/work/resource-management-integration/arms-time-and-fees-ui.png",
+    src2x: "/work/resource-management-integration/arms-time-and-fees-ui-2x.png",
+  },
+];
+
+function CaseStudySmartsheetImageSequence({
+  label,
+  frames,
+  intervalMs = 1200,
+}: {
+  label: string;
+  frames: typeof resourceManagementArmsFrames;
+  intervalMs?: number;
+}) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isSequenceReady, setIsSequenceReady] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+
+  useEffect(() => {
+    let isCancelled = false;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const preloadFrames = async () => {
+      await Promise.all(
+        frames.map(async (frame) => {
+          const source = window.devicePixelRatio > 1.25 && frame.src2x ? frame.src2x : frame.src;
+          const image = new window.Image();
+          image.src = source;
+
+          if (image.decode) {
+            try {
+              await image.decode();
+              return;
+            } catch {
+              return;
+            }
+          }
+
+          await new Promise<void>((resolve) => {
+            image.onload = () => resolve();
+            image.onerror = () => resolve();
+          });
+        }),
+      );
+
+      if (!isCancelled) {
+        setIsSequenceReady(true);
+        setShouldAnimate(!prefersReducedMotion);
+      }
+    };
+
+    preloadFrames();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [frames]);
+
+  useEffect(() => {
+    if (!shouldAnimate) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveIndex((currentIndex) => (currentIndex + 1) % frames.length);
+    }, intervalMs);
+
+    return () => window.clearInterval(intervalId);
+  }, [frames.length, intervalMs, shouldAnimate]);
+
+  return (
+    <figure
+      className={`case-study-smartsheet-full-media is-image-sequence ${isSequenceReady ? "is-ready" : ""} case-study-block`}
+      aria-label={label}
+      style={{ backgroundColor: "#E8E4DC" }}
+    >
+      {frames.map((frame, index) => (
+        <div
+          key={frame.src}
+          className={`case-study-image-sequence-frame ${index === activeIndex ? "is-active" : ""}`}
+          aria-hidden={index !== activeIndex}
+          style={{ width: "min(1060px, calc(100% - 40px))" }}
+        >
+          <img
+            src={frame.src}
+            srcSet={frame.src2x ? `${frame.src} 1x, ${frame.src2x} 2x` : undefined}
+            alt={index === activeIndex ? frame.label : ""}
+            loading="eager"
+            decoding="async"
+            fetchPriority={index === 0 ? "high" : "low"}
+          />
+        </div>
+      ))}
+    </figure>
+  );
+}
+
+const resourceManagementPeopleImages = [
+  {
+    className: "is-dinner",
+    label: "Resource Management team dinner",
+    src: "/work/resource-management-integration/team-1.jpg",
+  },
+  {
+    className: "is-offsite",
+    label: "Resource Management team offsite",
+    src: "/work/resource-management-integration/team-2.jpg",
+  },
+  {
+    className: "is-toast",
+    label: "Resource Management teammates at dinner",
+    src: "/work/resource-management-integration/team-3.jpg",
+  },
+  {
+    className: "is-group",
+    label: "Resource Management team gathering",
+    src: "/work/resource-management-integration/team-4.jpg",
+  },
+];
+
+function CaseStudyResourceManagementPeopleBento() {
+  const dinnerImage = resourceManagementPeopleImages[0];
+  const offsiteImage = resourceManagementPeopleImages[1];
+  const toastImage = resourceManagementPeopleImages[2];
+  const groupImage = resourceManagementPeopleImages[3];
+
+  return (
+    <section className="case-study-rm-people case-study-block" aria-label="Resource Management team">
+      <div className="case-study-rm-people-grid">
+        <figure className={`case-study-rm-people-tile ${dinnerImage.className}`} aria-label={dinnerImage.label}>
+          <img src={dinnerImage.src} alt="" loading="lazy" decoding="async" />
+        </figure>
+        <figure className={`case-study-rm-people-tile ${offsiteImage.className}`} aria-label={offsiteImage.label}>
+          <img src={offsiteImage.src} alt="" loading="lazy" decoding="async" />
+        </figure>
+        <div className="case-study-rm-people-note">
+          <p>
+            Nearly three years of
+            <br />
+            Resource Management,
+            <br />
+            with some pretty great
+            <br />
+            people along the way.
+          </p>
+        </div>
+        <figure className={`case-study-rm-people-tile ${groupImage.className}`} aria-label={groupImage.label}>
+          <img src={groupImage.src} alt="" loading="lazy" decoding="async" />
+        </figure>
+        <figure className={`case-study-rm-people-tile ${toastImage.className}`} aria-label={toastImage.label}>
+          <img src={toastImage.src} alt="" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+    </section>
   );
 }
 
@@ -1541,8 +1735,10 @@ function CaseStudySmartsheetPullingSection({
 
 function CaseStudySmartsheetViewPrimitiveSection({
   specSamplesBlock,
+  usePlaceholderOnly = false,
 }: {
   specSamplesBlock?: Extract<CaseStudyBlock, { type: "specSamples" }>;
+  usePlaceholderOnly?: boolean;
 }) {
   return (
     <section className="case-study-smartsheet-pulling-section case-study-smartsheet-view-parity-section case-study-block" aria-label="Execution">
@@ -1550,13 +1746,19 @@ function CaseStudySmartsheetViewPrimitiveSection({
         <CaseStudySmartsheetProse body={smartsheetViewPrimitiveCopy} bullets={smartsheetViewPrimitiveBullets} />
       </CaseStudySmartsheetSpineSection>
       <div className="case-study-smartsheet-solution-media">
-        <CaseStudySmartsheetViewBento />
-        <CaseStudySmartsheetFullMedia
-          label="Grouping levels"
-          src="/work/smartsheet-reports/grouping-levels-fast.webp"
-          className="is-grouping-levels"
-        />
-        {specSamplesBlock ? (
+        {usePlaceholderOnly ? (
+          <CaseStudySmartsheetFullMedia label="Execution placeholder" placeholder />
+        ) : (
+          <>
+            <CaseStudySmartsheetViewBento />
+            <CaseStudySmartsheetFullMedia
+              label="Grouping levels"
+              src="/work/smartsheet-reports/grouping-levels-fast.webp"
+              className="is-grouping-levels"
+            />
+          </>
+        )}
+        {!usePlaceholderOnly && specSamplesBlock ? (
           <div className="case-study-smartsheet-spec-band">
             <div className="case-study-smartsheet-spec-band-inner">
               <CaseStudySpecSamplesBlock block={specSamplesBlock} showHeader={false} />
@@ -1667,9 +1869,11 @@ function CaseStudySmartsheetImpactBlock({ block }: { block: Extract<CaseStudyBlo
 function CaseStudySmartsheetBlocks({
   overview,
   blocks,
+  useResourceManagementScaffold = false,
 }: {
   overview?: CaseStudyOverview;
   blocks: CaseStudyBlock[];
+  useResourceManagementScaffold?: boolean;
 }) {
   const spotlightBlock = blocks.find(
     (block): block is Extract<CaseStudyBlock, { type: "spotlight" }> => block.type === "spotlight",
@@ -1682,7 +1886,7 @@ function CaseStudySmartsheetBlocks({
   );
 
   function renderPivotBand() {
-    if (!spotlightBlock) {
+    if (useResourceManagementScaffold || !spotlightBlock) {
       return null;
     }
 
@@ -1705,6 +1909,102 @@ function CaseStudySmartsheetBlocks({
     );
   }
 
+  if (useResourceManagementScaffold) {
+    return (
+      <>
+        {overview ? (
+          <>
+            <CaseStudySmartsheetSpineSection label="Context">
+              <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
+            </CaseStudySmartsheetSpineSection>
+            <CaseStudyResourceManagementPeopleBento />
+          </>
+        ) : null}
+
+        {blocks.map((block, index) => {
+          if (block.type === "text") {
+            if (block.title === "Creating demand") {
+              return (
+                <section key={`${block.title}-${index}`} className="case-study-rm-demand-band case-study-block" aria-label={block.title}>
+                  <CaseStudySmartsheetSpineSection label={block.title}>
+                    <CaseStudySmartsheetProse body={block.body} />
+                  </CaseStudySmartsheetSpineSection>
+                  <div className="case-study-structured-media case-study-rm-video-media case-study-block">
+                    <CaseStudyMediaBlock
+                      label="Resource Management workload schedule walkthrough"
+                      embedSrc="https://www.youtube.com/embed/cxlCmjKvVC8"
+                      width="large"
+                    />
+                  </div>
+                </section>
+              );
+            }
+
+            return (
+              <Fragment key={`${block.title}-${index}`}>
+                <CaseStudySmartsheetSpineSection label={block.title ?? "Section"}>
+                  <CaseStudySmartsheetProse body={block.body} />
+                </CaseStudySmartsheetSpineSection>
+                {block.title === "Customer retention" ? (
+                  <div className="case-study-structured-media case-study-block">
+                    <CaseStudySmartsheetFullMedia
+                      label="Resource Management advanced report integration"
+                      src="/work/resource-management-integration/advanced-report.jpg"
+                      srcSet="/work/resource-management-integration/advanced-report.jpg 2400w, /work/resource-management-integration/advanced-report-2x.jpg 3360w"
+                      sizes="(max-width: 1720px) calc(100vw - 40px), 1680px"
+                    />
+                  </div>
+                ) : block.title === "Inherited strategy" ? (
+                  <div className="case-study-structured-media case-study-block">
+                    <CaseStudySmartsheetImageSequence
+                      label="Resource Management in Smartsheet global navigation"
+                      frames={resourceManagementArmsFrames}
+                    />
+                  </div>
+                ) : block.title === "Visibility and vision" ? (
+                  <div className="case-study-structured-media case-study-block">
+                    <CaseStudySmartsheetFullMedia
+                      label="Resource Management upsell experience"
+                      src="/work/resource-management-integration/arms-upsell.jpg"
+                      srcSet="/work/resource-management-integration/arms-upsell.jpg 2400w, /work/resource-management-integration/arms-upsell-2x.jpg 3360w"
+                      sizes="(max-width: 1720px) calc(100vw - 40px), 1680px"
+                    />
+                    <CaseStudySmartsheetFullMedia
+                      label="Resource Management self-serve setup experience"
+                      src="/work/resource-management-integration/self-serve.jpg"
+                      srcSet="/work/resource-management-integration/self-serve.jpg 2400w, /work/resource-management-integration/self-serve-2x.jpg 3360w"
+                      sizes="(max-width: 1720px) calc(100vw - 40px), 1680px"
+                    />
+                    <CaseStudySmartsheetFullMedia
+                      label="Resource Management scenario planning experience"
+                      src="/work/resource-management-integration/scenario-planning.jpg"
+                      srcSet="/work/resource-management-integration/scenario-planning.jpg 2400w, /work/resource-management-integration/scenario-planning-2x.jpg 3360w"
+                      sizes="(max-width: 1720px) calc(100vw - 40px), 1680px"
+                    />
+                  </div>
+                ) : (
+                  <div className="case-study-structured-media case-study-block">
+                    <CaseStudySmartsheetFullMedia label={`${block.title ?? "Section"} placeholder`} placeholder />
+                  </div>
+                )}
+              </Fragment>
+            );
+          }
+
+          if (block.type === "impact") {
+            return (
+              <CaseStudySmartsheetSpineSection key={`${block.label}-${index}`} label={block.label}>
+                <CaseStudySmartsheetImpactBlock block={block} />
+              </CaseStudySmartsheetSpineSection>
+            );
+          }
+
+          return null;
+        })}
+      </>
+    );
+  }
+
   return (
     <>
       {overview ? (
@@ -1712,7 +2012,11 @@ function CaseStudySmartsheetBlocks({
           <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
         </CaseStudySmartsheetSpineSection>
       ) : null}
-      {overview ? (
+      {overview ? useResourceManagementScaffold ? (
+        <div className="case-study-structured-media case-study-block">
+          <CaseStudySmartsheetFullMedia label="Resource Management context placeholder" placeholder />
+        </div>
+      ) : (
         <section className="case-study-smartsheet-legacy-band case-study-block" aria-label="Legacy report">
           <div className="case-study-smartsheet-legacy-media">
             <CaseStudySmartsheetFullMedia
@@ -1752,7 +2056,7 @@ function CaseStudySmartsheetBlocks({
                 label="New paradigm"
                 body={smartsheetExplorationCopy}
                 mediaMode="placeholder"
-                mediaItems={[
+                mediaItems={useResourceManagementScaffold ? undefined : [
                   {
                     label: "Source data controls and display controls",
                     src: "/work/smartsheet-reports/paradigm-1-fast.webp",
@@ -1775,7 +2079,10 @@ function CaseStudySmartsheetBlocks({
         if (block.type === "split" && block.title === "Aligning with nascent capabilities") {
           return (
             <Fragment key={`${block.title}-${index}`}>
-              <CaseStudySmartsheetViewPrimitiveSection specSamplesBlock={specSamplesBlock} />
+              <CaseStudySmartsheetViewPrimitiveSection
+                specSamplesBlock={specSamplesBlock}
+                usePlaceholderOnly={useResourceManagementScaffold}
+              />
               {renderImpactSection()}
             </Fragment>
           );
@@ -1829,38 +2136,6 @@ function CaseStudySmartsheetBlocks({
   );
 }
 
-function CaseStudyStructuredMedia({ block }: { block: Extract<CaseStudyBlock, { type: "split" }> }) {
-  const hasMedia = Boolean(block.media.src || block.media.bentoItems?.length);
-
-  return (
-    <div className="case-study-structured-media">
-      {hasMedia ? (
-        <CaseStudyMediaBlock
-          label={block.media.label}
-          src={block.media.src}
-          caption={block.media.caption}
-          bentoItems={block.media.bentoItems}
-          aspectRatio={16 / 10}
-          width="full"
-        />
-      ) : (
-        <CaseStudySmartsheetFullMedia label={block.media.label} placeholder />
-      )}
-    </div>
-  );
-}
-
-function CaseStudyStructuredSplitSection({ block }: { block: Extract<CaseStudyBlock, { type: "split" }> }) {
-  return (
-    <section className="case-study-structured-section case-study-block" aria-label={block.title}>
-      <CaseStudySmartsheetSpineSection label={block.title}>
-        <CaseStudySmartsheetProse body={block.body} />
-      </CaseStudySmartsheetSpineSection>
-      <CaseStudyStructuredMedia block={block} />
-    </section>
-  );
-}
-
 function CaseStudyStructuredShowcaseGrid({
   block,
   showTitles = true,
@@ -1891,14 +2166,6 @@ function CaseStudyStructuredShowcaseGrid({
   );
 }
 
-function CaseStudyStructuredShowcaseBlock({ block }: { block: Extract<CaseStudyBlock, { type: "showcase" }> }) {
-  return (
-    <div className="case-study-structured-media case-study-block">
-      <CaseStudyStructuredShowcaseGrid block={block} />
-    </div>
-  );
-}
-
 function CaseStudyMetLifeSnapshotBlocks({
   overview,
   blocks,
@@ -1916,77 +2183,6 @@ function CaseStudyMetLifeSnapshotBlocks({
       </div>
     </CaseStudySmartsheetSpineSection>
   ) : null;
-}
-
-function CaseStudyStructuredBlocks({
-  overview,
-  blocks,
-  overviewLabel = "Information",
-  showOverviewPlaceholder = true,
-  impactAsProse = false,
-}: {
-  overview?: CaseStudyOverview;
-  blocks: CaseStudyBlock[];
-  overviewLabel?: string;
-  showOverviewPlaceholder?: boolean;
-  impactAsProse?: boolean;
-}) {
-  return (
-    <>
-      {overview ? (
-        <CaseStudySmartsheetSpineSection label={overviewLabel}>
-          <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
-        </CaseStudySmartsheetSpineSection>
-      ) : null}
-      {overview && showOverviewPlaceholder ? (
-        <div className="case-study-structured-media case-study-block">
-          <CaseStudySmartsheetFullMedia label="Resource Management overview placeholder" placeholder />
-        </div>
-      ) : null}
-
-      {blocks.map((block, index) => {
-        if (block.type === "text") {
-          return (
-            <CaseStudySmartsheetSpineSection key={`${block.title}-${index}`} label={block.title ?? "Section"}>
-              <CaseStudySmartsheetProse body={block.body} />
-            </CaseStudySmartsheetSpineSection>
-          );
-        }
-
-        if (block.type === "split") {
-          return <CaseStudyStructuredSplitSection key={`${block.title}-${index}`} block={block} />;
-        }
-
-        if (block.type === "showcase") {
-          return <CaseStudyStructuredShowcaseBlock key={`${block.type}-${index}`} block={block} />;
-        }
-
-        if (block.type === "impact") {
-          if (impactAsProse) {
-            const impactBody = [
-              block.statement,
-              ...block.outcomes.map((item) => `${item.title}: ${item.body}`),
-              ...(block.footnote ? [block.footnote] : []),
-            ];
-
-            return (
-              <CaseStudySmartsheetSpineSection key={`${block.label}-${index}`} label={block.label}>
-                <CaseStudySmartsheetProse body={impactBody} />
-              </CaseStudySmartsheetSpineSection>
-            );
-          }
-
-          return (
-            <CaseStudySmartsheetSpineSection key={`${block.label}-${index}`} label={block.label}>
-              <CaseStudySmartsheetImpactBlock block={block} />
-            </CaseStudySmartsheetSpineSection>
-          );
-        }
-
-        return <CaseStudyBlockView key={`${block.type}-${index}`} block={block} />;
-      })}
-    </>
-  );
 }
 
 function CaseStudyBlockView({ block }: { block: CaseStudyBlock }) {
@@ -2139,7 +2335,7 @@ function CaseStudyNextUpSection({
                   loading="lazy"
                   decoding="async"
                   style={{
-                    objectPosition: item.slug === "smartsheet-reports" ? "70% 18%" : undefined,
+                    objectPosition: item.slug === "smartsheet-reports" || item.slug === "resource-management-integration" ? "70% 18%" : undefined,
                   }}
                 />
               </figure>
@@ -2185,8 +2381,9 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const isSmartsheetReportsCaseStudy = project.slug === "smartsheet-reports";
   const isResourceManagementCaseStudy = project.slug === "resource-management-integration";
   const isMetLifeMexicoCaseStudy = project.slug === "metlife-mexico";
-  const isStructuredCaseStudy = isSmartsheetReportsCaseStudy || isResourceManagementCaseStudy || isMetLifeMexicoCaseStudy;
-  const usesPlaceholderHero = isResourceManagementCaseStudy;
+  const usesSmartsheetTemplate = isSmartsheetReportsCaseStudy || isResourceManagementCaseStudy;
+  const isStructuredCaseStudy = usesSmartsheetTemplate || isMetLifeMexicoCaseStudy;
+  const usesPlaceholderHero = false;
   const [fontsReady, setFontsReady] = useState(false);
   const heroImageRef = useRef<HTMLImageElement | null>(null);
   const sequenceReady = fontsReady;
@@ -2349,7 +2546,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   }
 
   return (
-    <div className={`case-study-page ${isStructuredCaseStudy ? "is-structured-case-study" : ""} ${isSmartsheetReportsCaseStudy ? "is-smartsheet-reports" : ""} ${isResourceManagementCaseStudy ? "is-resource-management-integration" : ""} ${isMetLifeMexicoCaseStudy ? "is-metlife-mexico" : ""} ${sequenceReady ? "sequence-ready" : ""}`}>
+    <div className={`case-study-page ${isStructuredCaseStudy ? "is-structured-case-study" : ""} ${usesSmartsheetTemplate ? "is-smartsheet-reports" : ""} ${isResourceManagementCaseStudy ? "is-resource-management-integration" : ""} ${isMetLifeMexicoCaseStudy ? "is-metlife-mexico" : ""} ${sequenceReady ? "sequence-ready" : ""}`}>
       <SiteNav showBack />
 
       <main className="case-study-main">
@@ -2389,7 +2586,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 fill
                 preload
                 sizes="(max-width: 1720px) calc(100vw - 40px), 1680px"
-                quality={82}
+                quality={isResourceManagementCaseStudy ? 95 : 82}
                 unoptimized={(project.heroImage ?? project.image).endsWith(".webp")}
               />
             )}
@@ -2397,12 +2594,11 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
         </section>
 
         <section className="case-study-body" aria-label="Project details">
-          {isSmartsheetReportsCaseStudy ? (
-            <CaseStudySmartsheetBlocks overview={overview} blocks={caseStudyBlocks} />
-          ) : isResourceManagementCaseStudy ? (
-            <CaseStudyStructuredBlocks
+          {usesSmartsheetTemplate ? (
+            <CaseStudySmartsheetBlocks
               overview={overview}
               blocks={caseStudyBlocks}
+              useResourceManagementScaffold={isResourceManagementCaseStudy}
             />
           ) : isMetLifeMexicoCaseStudy ? (
             <CaseStudyMetLifeSnapshotBlocks overview={overview} blocks={caseStudyBlocks} />
