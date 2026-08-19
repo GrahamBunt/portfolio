@@ -2,12 +2,15 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
 import { SiteNav } from "@/components/SiteNav";
 import { SocialIcon } from "@/components/SocialIcon";
 import { aboutContent, type AboutContent } from "@/content/about";
 import { preventTextOrphans } from "@/lib/typography";
 
+const ABOUT_IMAGE =
+  "/about-portrait.webp";
 const HOME_EMAIL = "gtbunt@gmail.com";
 
 function cloneContent() {
@@ -68,6 +71,14 @@ function CopyIcon() {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
 export default function AboutPage() {
   const [fontsReady, setFontsReady] = useState(false);
   const [tuneMode, setTuneMode] = useState(false);
@@ -123,6 +134,14 @@ export default function AboutPage() {
     return () => window.clearTimeout(tuneModeTimer);
   }, []);
 
+  const portraitDelay = {
+    "--rise-delay": "220ms",
+    "--rise-duration": "0.58s",
+    "--rise-distance": "8px",
+    "--rise-blur": "0px",
+    "--rise-animation": "quiet-rise-in",
+  } as CSSProperties;
+
   const bioDelay = {
     "--rise-delay": "260ms",
     "--rise-duration": "0.58s",
@@ -158,7 +177,7 @@ export default function AboutPage() {
 
   return (
     <div className={`about-page ${sequenceReady ? "sequence-ready" : ""}`}>
-      <SiteNav />
+      <SiteNav showBack />
 
       {tuneMode ? (
         <div className="tune-panel font-sans-preview" role="region" aria-label="About tuning controls">
@@ -221,6 +240,17 @@ export default function AboutPage() {
             ) : null}
           </header>
 
+          <div className="about-portrait staged-work-rise" style={portraitDelay}>
+            <Image
+              src={ABOUT_IMAGE}
+              alt=""
+              fill
+              sizes="(max-width: 767px) calc(100vw - 40px), 560px"
+              quality={95}
+              priority
+            />
+          </div>
+
           <div className="about-bio staged-work-rise" style={bioDelay}>
             <div className="about-copy">
               {draft.bio.map((paragraph, index) => (
@@ -269,8 +299,8 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="home-contact-band about-contact-band">
-          <div className="home-contact-content about-contact-content">
+        <section className="home-contact-band">
+          <div className="home-contact-content">
             <p className="home-section-label">
               {tuneMode ? (
                 <EditableText
@@ -302,7 +332,7 @@ export default function AboutPage() {
                 onClick={copyEmail}
                 aria-live="polite"
               >
-                <CopyIcon />
+                {copiedEmail ? <CheckIcon /> : <CopyIcon />}
                 {copiedEmail ? "Copied" : tuneMode ? (
                   <EditableText
                     value={draft.contact.action}

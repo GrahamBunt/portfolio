@@ -33,6 +33,14 @@ function CopyIcon() {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
 function getProjectImage(project: (typeof allWork)[number]) {
   return project.homepageImage ?? project.image;
 }
@@ -89,6 +97,9 @@ export default function Home() {
           className="home-hero-v2"
           aria-labelledby="home-identity-title"
         >
+          <p className={`home-hero-meta ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
+            Product Designer
+          </p>
           <h1
             id="home-identity-title"
             className={`home-hero-name ${fontsReady ? "animate-reveal" : "opacity-0"}`}
@@ -98,7 +109,7 @@ export default function Home() {
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            Product Designer shaping direction, designing with intent, and driving quality through delivery.
+            I work across the full spectrum of product design, from shaping product direction to designing interfaces with intent and driving quality through delivery.
           </p>
         </section>
 
@@ -160,7 +171,7 @@ export default function Home() {
             <p className="home-section-label">Get in touch</p>
             <div className="home-contact-copy-stack">
               <p className="home-contact-copy">
-                I&apos;d love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities.
+                {preventTextOrphans("I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities.")}
               </p>
               <button
                 type="button"
@@ -168,7 +179,7 @@ export default function Home() {
                 onClick={copyEmail}
                 aria-live="polite"
               >
-                <CopyIcon />
+                {copiedEmail ? <CheckIcon /> : <CopyIcon />}
                 {copiedEmail ? "Copied" : HOME_EMAIL}
               </button>
             </div>

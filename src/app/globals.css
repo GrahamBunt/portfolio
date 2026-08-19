@@ -78,7 +78,7 @@ body {
 }
 
 .home-page {
-  --home-copy-right-inset: clamp(72px, 7vw, 136px);
+  --home-copy-right-inset: clamp(40px, 4vw, 72px);
 
   min-height: 100vh;
   background: var(--color-page-background);
@@ -107,12 +107,14 @@ body {
 .home-hero-v2 {
   min-height: min(920px, calc(100vh - 88px));
   align-items: start;
+  align-content: start;
   row-gap: 18px;
   padding-top: clamp(260px, 31vh, 348px);
   padding-bottom: clamp(340px, 36vh, 460px);
 }
 
 .home-hero-name,
+.home-hero-meta,
 .home-hero-value,
 .home-section-label,
 .home-contact-copy,
@@ -122,8 +124,19 @@ body {
   margin: 0;
 }
 
+.home-hero-meta {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  color: #ffffff;
+  font-size: clamp(16px, 1.45vw, 30px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
 .home-hero-name {
   grid-column: 2 / -1;
+  grid-row: 1;
   color: #ffffff;
   font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(36px, 4vw, 76px);
@@ -134,12 +147,13 @@ body {
 
 .home-hero-value {
   grid-column: 2 / -1;
+  grid-row: 2;
   width: 100%;
   max-width: 850px;
   box-sizing: border-box;
   padding-right: var(--home-copy-right-inset);
   color: var(--text-description);
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 400;
   line-height: 1.16;
 }
@@ -213,7 +227,7 @@ body {
   grid-column: 2;
   display: flex;
   width: 100%;
-  max-width: 600px;
+  max-width: 850px;
   box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;
@@ -245,6 +259,35 @@ body {
   }
 }
 
+@media (max-width: 980px) {
+  .about-section {
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .about-heading,
+  .about-portrait,
+  .about-bio {
+    grid-column: 1;
+  }
+
+  .about-heading {
+    grid-row: 1;
+  }
+
+  .about-portrait {
+    grid-row: 2;
+    max-width: none;
+  }
+
+  .about-bio {
+    grid-row: 3;
+    max-width: none;
+  }
+}
+
 @media (max-width: 760px) {
   .home-page {
     --home-copy-right-inset: 0px;
@@ -261,26 +304,35 @@ body {
   }
 
   .home-hero-v2 {
-    min-height: 620px;
-    padding-top: 190px;
-    padding-bottom: 150px;
+    min-height: auto;
+    row-gap: 18px;
+    padding-top: 170px;
+    padding-bottom: 108px;
   }
 
   .home-hero-name,
+  .home-hero-meta,
   .home-hero-value,
   .home-section-label,
   .home-featured-work-grid,
   .home-contact-copy-stack,
   .home-contact-copy,
   .about-heading,
+  .about-portrait,
   .about-bio {
     grid-column: 1;
     grid-row: auto;
   }
 
   .home-hero-name,
+  .home-hero-meta,
   .work-heading.about-heading h1 {
-    font-size: 30px;
+    font-size: 34px;
+  }
+
+  .home-hero-meta {
+    font-size: 18px;
+    line-height: 1.2;
   }
 
   .work-heading.case-study-heading h1,
@@ -290,8 +342,9 @@ body {
   }
 
   .home-hero-value {
-    font-size: 30px;
-    line-height: 1.2;
+    max-width: 560px;
+    font-size: 22px;
+    line-height: 1.3;
   }
 
   .home-section-label {
@@ -1254,7 +1307,7 @@ body {
   grid-template-columns: minmax(0, 0.43fr) minmax(0, 0.57fr);
   align-items: start;
   column-gap: 20px;
-  row-gap: 28px;
+  row-gap: 32px;
   padding-right: 20px;
   padding-left: 20px;
 }
@@ -1271,7 +1324,7 @@ body {
   font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(30px, 2.7vw, 52px);
   font-weight: 600;
-  letter-spacing: -0.3px;
+  letter-spacing: 0;
   line-height: 1.16;
   margin: 0;
 }
@@ -1291,6 +1344,23 @@ body {
   font-weight: 400;
   letter-spacing: 0;
   line-height: 1.5;
+}
+
+.about-portrait {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  justify-self: start;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 900 / 1120;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.about-portrait img {
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
 .about-bio {
@@ -1313,13 +1383,18 @@ body {
 
 .about-bio p,
 .about-copy p {
-  color: var(--text-description);
+  color: #ffffff;
   font-family: var(--font-sans-preview), sans-serif;
-  font-size: 18px;
+  font-size: 21px;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 28px;
+  line-height: 1.5;
   margin: 0;
+}
+
+.about-page .about-bio p,
+.about-page .about-copy p {
+  color: #ffffff;
 }
 
 .about-bio p {
@@ -1423,10 +1498,10 @@ body {
   max-width: 940px;
   color: #ffffff;
   font-family: var(--font-sans-preview), sans-serif;
-  font-size: clamp(30px, 2.7vw, 52px);
+  font-size: clamp(30px, 3vw, 44px);
   font-weight: 600;
-  letter-spacing: -0.3px;
-  line-height: 1.16;
+  letter-spacing: 0;
+  line-height: 1.14;
   margin: 0;
 }
 
@@ -3256,15 +3331,15 @@ body {
 
 .case-study-page.is-structured-case-study .work-heading.case-study-heading h1 {
   max-width: 738px;
-  font-size: clamp(30px, 2.7vw, 52px);
+  font-size: clamp(30px, 3vw, 44px);
   font-weight: 600;
-  letter-spacing: -0.3px;
-  line-height: 1.16;
+  letter-spacing: 0;
+  line-height: 1.14;
 }
 
 .case-study-page.is-resource-management-integration .work-heading.case-study-heading h1 {
   max-width: min(1680px, calc(100vw - 40px));
-  font-size: clamp(30px, 2.7vw, 52px);
+  font-size: clamp(30px, 3vw, 44px);
 }
 
 @media (min-width: 900px) {
@@ -4463,8 +4538,9 @@ body {
   }
 
   .case-study-smartsheet-view-bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: clamp(120px, 16vw, 180px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 
   .case-study-smartsheet-view-bento-tile.is-custom-views,
@@ -4473,12 +4549,13 @@ body {
   .case-study-smartsheet-view-bento-tile.is-calculate-menu,
   .case-study-smartsheet-view-bento-tile.is-grouping-logic {
     grid-column: auto;
-    grid-row: span 2;
+    grid-row: auto;
+    aspect-ratio: auto;
   }
 
-  .case-study-smartsheet-view-bento-tile.is-custom-views,
-  .case-study-smartsheet-view-bento-tile.is-grouping-logic {
-    grid-column: 1 / -1;
+  .case-study-smartsheet-view-bento-tile img {
+    height: auto;
+    object-fit: contain;
   }
 
 }
@@ -4523,10 +4600,6 @@ body {
   .case-study-spine-content,
   .case-study-spine-content.is-media,
   .case-study-spine-content.is-wide {
-    width: 100%;
-  }
-
-  .case-study-next-up-grid {
     width: 100%;
   }
 
@@ -4635,8 +4708,11 @@ body {
 
 @media (max-width: 700px) {
   .case-study-next-up-grid {
+    width: 100%;
+    max-width: 520px;
     grid-template-columns: 1fr;
     gap: 48px;
+    margin-left: 0;
   }
 
   .case-study-rm-people-grid {
