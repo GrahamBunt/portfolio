@@ -240,17 +240,6 @@ export default function AboutPage() {
             ) : null}
           </header>
 
-          <div className="about-portrait staged-work-rise" style={portraitDelay}>
-            <Image
-              src={ABOUT_IMAGE}
-              alt=""
-              fill
-              sizes="(max-width: 767px) calc(100vw - 40px), 560px"
-              quality={95}
-              priority
-            />
-          </div>
-
           <div className="about-bio staged-work-rise" style={bioDelay}>
             <div className="about-copy">
               {draft.bio.map((paragraph, index) => (
@@ -267,6 +256,16 @@ export default function AboutPage() {
                   )}
                 </p>
               ))}
+            </div>
+            <div className="about-portrait" style={portraitDelay}>
+              <Image
+                src={ABOUT_IMAGE}
+                alt=""
+                fill
+                sizes="(max-width: 767px) min(420px, calc(100vw - 40px)), 420px"
+                quality={95}
+                priority
+              />
             </div>
             {draft.social.length ? (
               <div className="about-social">
@@ -323,7 +322,7 @@ export default function AboutPage() {
                     })}
                   />
                 ) : (
-                  preventTextOrphans(draft.contact.description)
+                  draft.contact.description
                 )}
               </p>
               <button

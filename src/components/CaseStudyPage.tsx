@@ -1571,14 +1571,14 @@ function CaseStudyResourceManagementPeopleBento() {
           <img src={offsiteImage.src} alt="" loading="lazy" decoding="async" />
         </figure>
         <div className="case-study-rm-people-note">
-          <p>
-            Nearly three years of
-            <br />
-            Resource Management,
-            <br />
-            with some pretty great
-            <br />
-            people along the way.
+          <p className="case-study-rm-people-note-copy is-desktop">
+            <span>Nearly three years of</span>
+            <span>Resource Management,</span>
+            <span>with some pretty great</span>
+            <span>people along the way.</span>
+          </p>
+          <p className="case-study-rm-people-note-copy is-mobile">
+            Nearly three years of Resource Management, with some pretty great people along the way.
           </p>
         </div>
         <figure className={`case-study-rm-people-tile ${groupImage.className}`} aria-label={groupImage.label}>

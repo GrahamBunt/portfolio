@@ -154,7 +154,7 @@ export default function Home() {
                       <ArrowIcon />
                     </span>
                   </div>
-                  <p className="font-sans-preview">{preventTextOrphans(project.summary)}</p>
+                  <p className="home-featured-work-summary font-sans-preview">{project.summary}</p>
                   {project.cardMeta ? (
                     <p className="case-study-next-up-meta font-sans-preview">
                       <ProjectMeta value={project.cardMeta} />
@@ -171,7 +171,7 @@ export default function Home() {
             <p className="home-section-label">Get in touch</p>
             <div className="home-contact-copy-stack">
               <p className="home-contact-copy">
-                {preventTextOrphans("I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities.")}
+                {"I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities."}
               </p>
               <button
                 type="button"
