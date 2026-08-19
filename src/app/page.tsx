@@ -98,8 +98,7 @@ export default function Home() {
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            Shapes direction, designs with intent,<br />
-            and drives quality through delivery.
+            Product Designer shaping direction, designing with intent, and driving quality through delivery.
           </p>
         </section>
 
