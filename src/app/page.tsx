@@ -42,7 +42,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={`home-page flex min-h-screen flex-col items-center bg-black pt-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
+    <main className={`home-page flex min-h-screen flex-col items-center pt-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
       <div className="canvas flex flex-col items-center gap-5">
         <SiteNav />
 
