@@ -2513,7 +2513,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 >
                   <ProjectMeta value={headerMeta} />
                 </div>
-                <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
+                <h1>
                   <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                     {title}
                   </span>
@@ -2565,7 +2565,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                   <ProjectMeta value={headerMeta} />
                 )}
               </div>
-              <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
+              <h1>
                 <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                   {title}
                 </span>

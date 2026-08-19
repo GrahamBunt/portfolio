@@ -40,7 +40,7 @@ function renderTypographicNode(node: ReactNode) {
 
 export function ContactSection({
   title = "Get in touch",
-  description = "I'm always excited to chat, collaborate on ideas, and discuss opportunities.",
+  description = "I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities.",
   action = DEFAULT_EMAIL,
   align = "center",
   email = DEFAULT_EMAIL,

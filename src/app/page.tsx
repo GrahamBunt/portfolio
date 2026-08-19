@@ -4,7 +4,6 @@ import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ContactSection } from "@/components/ContactSection";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import { allWork } from "@/content/work";
@@ -15,10 +14,21 @@ const homeFeaturedProjects = featuredHomeProjectSlugs
   .map((slug) => allWork.find((project) => project.slug === slug))
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
 
+const HOME_EMAIL = "gtbunt@gmail.com";
+
 function ArrowIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
       <path d="M5 13h11.17l-4.88 4.88c-.39.39-.39 1.03 0 1.42.39.39 1.02.39 1.41 0l6.59-6.59c.39-.39.39-1.02 0-1.41l-6.58-6.6a.9959.9959 0 0 0-1.41 0c-.39.39-.39 1.02 0 1.41L16.17 11H5c-.55 0-1 .45-1 1s.45 1 1 1z" />
+    </svg>
+  );
+}
+
+function CopyIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
     </svg>
   );
 }
@@ -29,6 +39,7 @@ function getProjectImage(project: (typeof allWork)[number]) {
 
 export default function Home() {
   const [fontsReady, setFontsReady] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -41,48 +52,71 @@ export default function Home() {
       .then(() => setFontsReady(true));
   }, []);
 
+  useEffect(() => {
+    if (!copiedEmail) return;
+
+    const timeoutId = window.setTimeout(() => setCopiedEmail(false), 2600);
+    return () => window.clearTimeout(timeoutId);
+  }, [copiedEmail]);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(HOME_EMAIL);
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = HOME_EMAIL;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
+
+    setCopiedEmail(true);
+  };
+
   return (
-    <main className={`home-page flex min-h-screen flex-col items-center pt-[120px] text-white ${fontsReady ? "sequence-ready" : ""}`}>
-      <div className="canvas flex flex-col items-center gap-5">
+    <main className={`home-page min-h-screen text-white ${fontsReady ? "sequence-ready" : ""}`}>
+      <div className="home-page-shell">
         <SiteNav />
 
         <section
           data-section="intro"
-          className="home-identity-hero"
+          className="home-hero-v2"
           aria-labelledby="home-identity-title"
         >
           <h1
             id="home-identity-title"
-            className={`home-identity-lockup display-serif-type font-[family-name:var(--font-display-serif)] ${fontsReady ? "animate-reveal" : "opacity-0"}`}
+            className={`home-hero-name ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            <span className="home-identity-name home-identity-name-graham">GRAHAM</span>
-            <span className="home-identity-lower">
-              <span className="home-identity-support" aria-label="Shaping direction. Designing with intent. Driving quality.">
-                <span>Shaping direction</span>
-                <span>Designing with intent</span>
-                <span>Driving quality</span>
-              </span>
-              <span className="home-identity-name home-identity-name-bunt">BUNT</span>
-              <span className="home-identity-meta" aria-label="Product Designer. Salt Lake City, UT.">
-                <span>Product Designer</span>
-                <span>Salt Lake City, UT</span>
-              </span>
-            </span>
+            Graham Bunt
           </h1>
+          <p
+            className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
+          >
+            Shapes direction, designs with intent,<br />
+            and drives quality through delivery.
+          </p>
         </section>
 
-        <section className="flex w-full flex-col items-center gap-[60px] overflow-hidden px-5 pb-[60px] pt-[96px]">
+        <section className="home-selected-work-section staged-work-rise"
+          style={
+            {
+              "--rise-delay": "220ms",
+              "--rise-duration": "0.62s",
+              "--rise-distance": "8px",
+              "--rise-animation": "quiet-rise-in",
+              "--rise-blur": "0px",
+            } as CSSProperties
+          }
+        >
+          <p className="home-section-label">Selected work</p>
           <div
-            className="home-featured-work-grid staged-work-rise"
-            style={
-              {
-                "--rise-delay": "220ms",
-                "--rise-duration": "0.62s",
-                "--rise-distance": "8px",
-                "--rise-animation": "quiet-rise-in",
-                "--rise-blur": "0px",
-              } as CSSProperties
-            }
+            className="home-featured-work-grid"
           >
             {homeFeaturedProjects.map((project) => (
               <Link key={project.slug} href={`/work/${project.slug}`} className="case-study-next-up-card home-featured-work-card">
@@ -92,7 +126,7 @@ export default function Home() {
                     alt=""
                     fill
                     className="object-cover"
-                    sizes="(max-width: 809px) calc(100vw - 40px), (max-width: 1720px) calc((100vw - 60px) / 2), 830px"
+                    sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1180px) calc(100vw - 520px), 960px"
                     loading={project.slug === "smartsheet-reports" ? "eager" : "lazy"}
                     preload={project.slug === "smartsheet-reports"}
                     fetchPriority={project.slug === "smartsheet-reports" ? "high" : "auto"}
@@ -122,14 +156,32 @@ export default function Home() {
           </div>
         </section>
 
-        <ContactSection />
-
-        <footer className="work-footer">
-          <div>
-            <p>Graham Bunt</p>
-            <p>©2026</p>
+        <section className="home-contact-band">
+          <div className="home-contact-content">
+            <p className="home-section-label">Get in touch</p>
+            <div className="home-contact-copy-stack">
+              <p className="home-contact-copy">
+                I&apos;d love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities.
+              </p>
+              <button
+                type="button"
+                className="nav-item-pill home-copy-email-button"
+                onClick={copyEmail}
+                aria-live="polite"
+              >
+                <CopyIcon />
+                {copiedEmail ? "Copied" : HOME_EMAIL}
+              </button>
+            </div>
           </div>
-        </footer>
+          <footer className="work-footer home-footer">
+            <div>
+              <p>Graham Bunt</p>
+              <p>©2026</p>
+            </div>
+          </footer>
+        </section>
+
       </div>
       <div aria-hidden="true" className="viewport-bottom-blur" />
     </main>

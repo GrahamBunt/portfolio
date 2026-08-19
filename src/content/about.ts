@@ -23,9 +23,9 @@ export type AboutContent = {
 
 export const aboutContent: AboutContent = {
   hero: {
-    titleItalic: "Hey there",
-    titleRest: "—I'm Graham.",
-    description: "I work across the full spectrum of product design, from shaping product direction to designing interfaces with intent and driving quality through delivery.",
+    titleItalic: "",
+    titleRest: "I'm Graham.",
+    description: "",
   },
   bio: [
     "I’ve spent the last several years working on products where the path forward wasn’t always obvious. My work has spanned new products, major redesigns, platform integrations, and evolving existing products as customer and business needs change. Along the way, I’ve learned to think beyond the interface and consider the broader systems, teams, and business behind the product.",
@@ -36,7 +36,7 @@ export const aboutContent: AboutContent = {
   contact: {
     title: "Get in touch",
     description:
-      "I'm always excited to chat, collaborate on ideas, and discuss opportunities.",
+      "I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities.",
     action: "gtbunt@gmail.com",
   },
   footer: {

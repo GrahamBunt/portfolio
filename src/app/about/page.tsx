@@ -1,17 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
-import { ContactSection } from "@/components/ContactSection";
 import { SiteNav } from "@/components/SiteNav";
 import { SocialIcon } from "@/components/SocialIcon";
 import { aboutContent, type AboutContent } from "@/content/about";
 import { preventTextOrphans } from "@/lib/typography";
 
-const ABOUT_IMAGE =
-  "/about-portrait.webp";
+const HOME_EMAIL = "gtbunt@gmail.com";
 
 function cloneContent() {
   return JSON.parse(JSON.stringify(aboutContent)) as AboutContent;
@@ -62,24 +59,55 @@ function EditableText({
   );
 }
 
+function CopyIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </svg>
+  );
+}
+
 export default function AboutPage() {
   const [fontsReady, setFontsReady] = useState(false);
-  const [portraitImageReady, setPortraitImageReady] = useState(false);
   const [tuneMode, setTuneMode] = useState(false);
   const [draft, setDraft] = useState<AboutContent>(() => cloneContent());
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const sequenceReady = fontsReady && portraitImageReady;
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const sequenceReady = fontsReady;
+
+  useEffect(() => {
+    if (!copiedEmail) return;
+
+    const timeoutId = window.setTimeout(() => setCopiedEmail(false), 2600);
+    return () => window.clearTimeout(timeoutId);
+  }, [copiedEmail]);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(HOME_EMAIL);
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = HOME_EMAIL;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
+
+    setCopiedEmail(true);
+  };
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
     window.scrollTo(0, 0);
-
-    const imagePreload = new window.Image();
-    imagePreload.onload = () => setPortraitImageReady(true);
-    imagePreload.onerror = () => setPortraitImageReady(true);
-    imagePreload.src = ABOUT_IMAGE;
 
     document.fonts.ready
       .then(() => new Promise((resolve) => setTimeout(resolve, 120)))
@@ -94,14 +122,6 @@ export default function AboutPage() {
 
     return () => window.clearTimeout(tuneModeTimer);
   }, []);
-
-  const portraitDelay = {
-    "--rise-delay": "220ms",
-    "--rise-duration": "0.58s",
-    "--rise-distance": "8px",
-    "--rise-blur": "0px",
-    "--rise-animation": "quiet-rise-in",
-  } as CSSProperties;
 
   const bioDelay = {
     "--rise-delay": "260ms",
@@ -155,7 +175,7 @@ export default function AboutPage() {
       <main className="about-main">
         <section className="about-section" aria-label="About">
           <header className="work-heading about-heading">
-            <h1 className="display-serif-type font-[family-name:var(--font-display-serif)]">
+            <h1>
               <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
                 {tuneMode ? (
                   <>
@@ -176,7 +196,7 @@ export default function AboutPage() {
                   </>
                 ) : (
                   <>
-                    <span>{draft.hero.titleItalic}</span>
+                    {draft.hero.titleItalic ? <span>{draft.hero.titleItalic}</span> : null}
                     {draft.hero.titleRest}
                   </>
                 )}
@@ -191,19 +211,15 @@ export default function AboutPage() {
                   })}
                 />
               </p>
-            ) : (
+            ) : draft.hero.description ? (
               <AnimatedDescription
                 ready={sequenceReady}
                 delay="140ms"
                 text={draft.hero.description}
                 className="about-heading-description"
               />
-            )}
+            ) : null}
           </header>
-
-          <div className="about-portrait staged-work-rise" style={portraitDelay}>
-            <img src={ABOUT_IMAGE} alt="" />
-          </div>
 
           <div className="about-bio staged-work-rise" style={bioDelay}>
             <div className="about-copy">
@@ -253,75 +269,83 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <ContactSection
-          align="left"
-          title={
-            tuneMode ? (
-              <EditableText
-                value={draft.contact.title}
-                onChange={(value) => updateDraft((content) => {
-                  content.contact.title = value;
-                })}
-              />
-            ) : (
-              preventTextOrphans(draft.contact.title)
-            )
-          }
-          description={
-            tuneMode ? (
-              <EditableText
-                value={draft.contact.description}
-                onChange={(value) => updateDraft((content) => {
-                  content.contact.description = value;
-                })}
-              />
-            ) : (
-              preventTextOrphans(draft.contact.description)
-            )
-          }
-          action={
-            tuneMode ? (
-              <EditableText
-                value={draft.contact.action}
-                onChange={(value) => updateDraft((content) => {
-                  content.contact.action = value;
-                })}
-              />
-            ) : (
-              draft.contact.action
-            )
-          }
-        />
+        <section className="home-contact-band about-contact-band">
+          <div className="home-contact-content about-contact-content">
+            <p className="home-section-label">
+              {tuneMode ? (
+                <EditableText
+                  value={draft.contact.title}
+                  onChange={(value) => updateDraft((content) => {
+                    content.contact.title = value;
+                  })}
+                />
+              ) : (
+                preventTextOrphans(draft.contact.title)
+              )}
+            </p>
+            <div className="home-contact-copy-stack">
+              <p className="home-contact-copy">
+                {tuneMode ? (
+                  <EditableText
+                    value={draft.contact.description}
+                    onChange={(value) => updateDraft((content) => {
+                      content.contact.description = value;
+                    })}
+                  />
+                ) : (
+                  preventTextOrphans(draft.contact.description)
+                )}
+              </p>
+              <button
+                type="button"
+                className="nav-item-pill home-copy-email-button"
+                onClick={copyEmail}
+                aria-live="polite"
+              >
+                <CopyIcon />
+                {copiedEmail ? "Copied" : tuneMode ? (
+                  <EditableText
+                    value={draft.contact.action}
+                    onChange={(value) => updateDraft((content) => {
+                      content.contact.action = value;
+                    })}
+                  />
+                ) : (
+                  draft.contact.action
+                )}
+              </button>
+            </div>
+          </div>
+          <footer className="work-footer home-footer">
+            <div>
+              <p>
+                {tuneMode ? (
+                  <EditableText
+                    value={draft.footer.name}
+                    onChange={(value) => updateDraft((content) => {
+                      content.footer.name = value;
+                    })}
+                  />
+                ) : (
+                  preventTextOrphans(draft.footer.name)
+                )}
+              </p>
+              <p>
+                {tuneMode ? (
+                  <EditableText
+                    value={draft.footer.year}
+                    onChange={(value) => updateDraft((content) => {
+                      content.footer.year = value;
+                    })}
+                  />
+                ) : (
+                  draft.footer.year
+                )}
+              </p>
+            </div>
+          </footer>
+        </section>
       </main>
-
-      <footer className="work-footer">
-        <div>
-          <p>
-            {tuneMode ? (
-              <EditableText
-                value={draft.footer.name}
-                onChange={(value) => updateDraft((content) => {
-                  content.footer.name = value;
-                })}
-              />
-            ) : (
-              preventTextOrphans(draft.footer.name)
-            )}
-          </p>
-          <p>
-            {tuneMode ? (
-              <EditableText
-                value={draft.footer.year}
-                onChange={(value) => updateDraft((content) => {
-                  content.footer.year = value;
-                })}
-              />
-            ) : (
-              draft.footer.year
-            )}
-          </p>
-        </div>
-      </footer>
 
       <div aria-hidden="true" className="viewport-bottom-blur" />
     </div>
