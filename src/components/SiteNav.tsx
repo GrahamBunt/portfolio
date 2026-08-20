@@ -30,7 +30,7 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
         <Link
           href="/"
           aria-label="Home"
-          className="site-nav-avatar group relative block h-10 w-10 overflow-hidden rounded-full"
+          className="site-nav-avatar group relative block overflow-hidden rounded-full"
           onClick={onAvatarClick}
         >
           <div

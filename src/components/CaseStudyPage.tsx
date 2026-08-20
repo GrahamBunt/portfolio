@@ -141,18 +141,6 @@ const specSampleChipArrowStyle: CSSProperties = {
   transform: "translate(0, 0) scale(1)",
 };
 
-const legacyReportStatementStyle: CSSProperties = {
-  width: "100%",
-  maxWidth: 1120,
-  color: "#ffffff",
-  fontSize: 44,
-  fontWeight: 600,
-  letterSpacing: 0,
-  lineHeight: 1.14,
-  margin: "0 auto",
-  textAlign: "center",
-};
-
 const narrativeParagraphSpeeds = [1, 1.25];
 
 function ArrowIcon() {
@@ -2024,7 +2012,7 @@ function CaseStudySmartsheetBlocks({
               src="/work/smartsheet-reports/legacy-report-fast.webp"
               className="is-legacy-report-ui"
             />
-            <p className="case-study-smartsheet-legacy-statement font-sans-preview" style={legacyReportStatementStyle}>
+            <p className="case-study-smartsheet-legacy-statement font-sans-preview">
               {preventTextOrphans("Only admins could edit the toolbar in the legacy report, while collaborators were completely shut out.")}
             </p>
           </div>
