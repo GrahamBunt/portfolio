@@ -148,11 +148,79 @@ body {
 .home-hero-meta {
   grid-column: 1;
   grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   align-self: start;
+  align-items: flex-start;
   color: #ffffff;
   font-size: var(--type-body-size);
   font-weight: var(--type-body-weight);
   line-height: var(--type-body-line);
+  min-height: calc(var(--type-body-size) * var(--type-body-line) + var(--type-description-line) + 5px);
+}
+
+.home-hero-meta.animate-reveal {
+  display: flex;
+}
+
+.home-hero-meta-fixed {
+  display: inline-block;
+}
+
+.home-hero-descriptor-support {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 2px;
+  color: var(--text-description);
+  font-size: var(--type-description-size);
+  font-weight: var(--type-description-weight);
+  line-height: var(--type-description-line);
+  opacity: 0;
+  transform: translate3d(-4px, 0, 0);
+}
+
+.home-page.sequence-ready .home-hero-descriptor-support {
+  animation: home-descriptor-support-in 0.56s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+}
+
+.home-hero-descriptor-arrow {
+  width: 22px;
+  height: 14px;
+  flex: 0 0 22px;
+  margin-top: 5px;
+}
+
+.home-hero-descriptor-cycle {
+  position: relative;
+  display: block;
+  width: 176px;
+  height: var(--type-description-line);
+  margin-left: -2px;
+  transform: translateY(-2px);
+  overflow: hidden;
+}
+
+.home-hero-descriptor-word {
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: flex;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+.home-hero-descriptor-char {
+  display: inline-block;
+  opacity: 0;
+  animation: home-descriptor-soft-type-on-quiet 10s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: calc(var(--word-delay) + var(--char-delay));
+}
+
+.home-hero-descriptor-char.is-space {
+  width: 0.28em;
 }
 
 .home-hero-name {
@@ -189,6 +257,29 @@ body {
   font-size: var(--type-button-size);
   font-weight: var(--type-button-weight);
   line-height: var(--type-button-line);
+}
+
+@keyframes home-descriptor-soft-type-on-quiet {
+  0% {
+    opacity: 0;
+  }
+  3.5%, 19.5% {
+    opacity: 1;
+  }
+  22%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes home-descriptor-support-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-4px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .home-selected-work-section {
@@ -7773,6 +7864,21 @@ body {
 
   .case-study-hero-reveal img {
     transform: scale(1);
+  }
+
+  .home-hero-descriptor-support {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .home-hero-descriptor-word:not(:first-child) {
+    display: none;
+  }
+
+  .home-hero-descriptor-char {
+    opacity: 1;
+    animation: none;
   }
 
 }

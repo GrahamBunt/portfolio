@@ -15,6 +15,14 @@ const homeFeaturedProjects = featuredHomeProjectSlugs
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
 
 const HOME_EMAIL = "gtbunt@gmail.com";
+const HERO_DESCRIPTORS = [
+  "AI Enthusiast",
+  "Girl Dad x2",
+  "Land-locked Surfer",
+  "Salt Lake City, Utah",
+];
+const HERO_DESCRIPTOR_CHAR_STEP_MS = 14;
+const HERO_DESCRIPTOR_SLOT_SECONDS = 2.5;
 
 function ArrowIcon() {
   return (
@@ -41,8 +49,41 @@ function CheckIcon() {
   );
 }
 
+function ElbowArrowIcon() {
+  return (
+    <svg className="home-hero-descriptor-arrow" viewBox="0 0 28 18" fill="none" aria-hidden="true" focusable="false">
+      <path d="M3 2V11H22" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" strokeLinejoin="miter" />
+      <path d="M18 7L22 11L18 15" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" strokeLinejoin="miter" />
+    </svg>
+  );
+}
+
 function getProjectImage(project: (typeof allWork)[number]) {
   return project.homepageImage ?? project.image;
+}
+
+function HeroDescriptorCycle() {
+  return (
+    <span className="home-hero-descriptor-cycle" aria-hidden="true">
+      {HERO_DESCRIPTORS.map((descriptor, wordIndex) => (
+        <span
+          key={descriptor}
+          className="home-hero-descriptor-word"
+          style={{ "--word-delay": `${wordIndex * HERO_DESCRIPTOR_SLOT_SECONDS}s` } as CSSProperties}
+        >
+          {Array.from(descriptor).map((character, characterIndex) => (
+            <span
+              key={`${descriptor}-${characterIndex}`}
+              className={`home-hero-descriptor-char ${character === " " ? "is-space" : ""}`}
+              style={{ "--char-delay": `${characterIndex * HERO_DESCRIPTOR_CHAR_STEP_MS}ms` } as CSSProperties}
+            >
+              {character === " " ? "\u00A0" : character}
+            </span>
+          ))}
+        </span>
+      ))}
+    </span>
+  );
 }
 
 export default function Home() {
@@ -97,8 +138,15 @@ export default function Home() {
           className="home-hero-v2"
           aria-labelledby="home-identity-title"
         >
-          <p className={`home-hero-meta ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
-            Product Designer
+          <p
+            className={`home-hero-meta ${fontsReady ? "animate-reveal" : "opacity-0"}`}
+            aria-label={`Product Designer, ${HERO_DESCRIPTORS.join(", ")}`}
+          >
+            <span className="home-hero-meta-fixed">Product Designer</span>
+            <span className="home-hero-descriptor-support">
+              <ElbowArrowIcon />
+              <HeroDescriptorCycle />
+            </span>
           </p>
           <h1
             id="home-identity-title"
