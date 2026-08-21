@@ -12,7 +12,6 @@ import { preventTextOrphans } from "@/lib/typography";
 const ABOUT_IMAGE =
   "/about-portrait.webp";
 const HOME_EMAIL = "gtbunt@gmail.com";
-const PRACTICE_SEQUENCE = "practice → failure → repetition → competence → style";
 
 function cloneContent() {
   return JSON.parse(JSON.stringify(aboutContent)) as AboutContent;
@@ -244,7 +243,7 @@ export default function AboutPage() {
           <div className="about-bio staged-work-rise" style={bioDelay}>
             <div className="about-copy">
               {draft.bio.map((paragraph, index) => (
-                <p key={index} className={paragraph.trim() === PRACTICE_SEQUENCE ? "about-practice-sequence" : undefined}>
+                <p key={index}>
                   {tuneMode ? (
                     <EditableText
                       value={paragraph}

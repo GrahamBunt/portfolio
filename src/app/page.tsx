@@ -150,7 +150,7 @@ export default function Home() {
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            Graham Bunt is a Product Designer exploring possibilities, shaping direction, and crafting the details that feel just right.
+            Graham Bunt is a Product Designer imagining possible futures, moving teams forward, and pouring care and intention into the craft.
           </p>
         </section>
 

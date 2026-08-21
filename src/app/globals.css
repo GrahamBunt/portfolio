@@ -1412,14 +1412,6 @@ body {
   color: #ffffff;
 }
 
-.about-page .about-copy > p.about-practice-sequence {
-  color: var(--text-description);
-  font-size: var(--type-metadata-size);
-  font-weight: var(--type-metadata-weight);
-  line-height: var(--type-metadata-line);
-  margin: 10px 0;
-}
-
 .about-bio p {
   width: 100%;
 }
