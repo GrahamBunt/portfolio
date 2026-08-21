@@ -9,7 +9,7 @@ import { SiteNav } from "@/components/SiteNav";
 import { allWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
 
-const featuredHomeProjectSlugs = ["smartsheet-reports", "resource-management-integration", "metlife-mexico"];
+const featuredHomeProjectSlugs = ["smartsheet-reports", "resource-management-integration"];
 const homeFeaturedProjects = featuredHomeProjectSlugs
   .map((slug) => allWork.find((project) => project.slug === slug))
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
@@ -172,7 +172,7 @@ export default function Home() {
             } as CSSProperties
           }
         >
-          <p className="home-section-label">Selected work</p>
+          <p className="home-section-label">Recent work</p>
           <div
             className="home-featured-work-grid"
           >
