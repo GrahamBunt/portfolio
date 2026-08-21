@@ -2311,6 +2311,42 @@ body {
   object-fit: cover;
 }
 
+.case-study-lazy-video-shell {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--color-page-background);
+}
+
+.case-study-lazy-video-shell .case-study-lazy-video-poster,
+.case-study-lazy-video-shell .case-study-lazy-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.case-study-lazy-video-shell .case-study-lazy-video-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.case-study-lazy-video-shell .case-study-lazy-video {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.case-study-lazy-video-shell.is-ready .case-study-lazy-video {
+  opacity: 1;
+}
+
 .case-study-spec-sample-media.has-image {
   padding: 0;
 }
@@ -4982,6 +5018,10 @@ body {
 .case-study-video-frame video {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+}
+
+.case-study-video-frame .case-study-lazy-video-poster {
   object-fit: contain;
 }
 

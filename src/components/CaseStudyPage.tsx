@@ -485,6 +485,8 @@ function CaseStudyLazyVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [readyVideoSrc, setReadyVideoSrc] = useState<string | null>(null);
+  const isVideoReady = readyVideoSrc === src;
 
   useEffect(() => {
     const node = videoRef.current;
@@ -539,6 +541,8 @@ function CaseStudyLazyVideo({
   }, [autoPlay, shouldLoad, src]);
 
   function handleAutoplayReady() {
+    setReadyVideoSrc(src);
+
     if (!autoPlay) {
       return;
     }
@@ -547,21 +551,25 @@ function CaseStudyLazyVideo({
   }
 
   return (
-    <video
-      ref={videoRef}
-      src={shouldLoad ? src : undefined}
-      autoPlay={autoPlay && shouldLoad}
-      controls={controls}
-      loop={loop}
-      muted={muted}
-      playsInline
-      poster={poster}
-      preload={shouldLoad ? (autoPlay ? "auto" : controls ? "metadata" : "none") : "none"}
-      onLoadedData={autoPlay ? handleAutoplayReady : undefined}
-      onCanPlay={autoPlay ? handleAutoplayReady : undefined}
-      aria-hidden={ariaHidden ? true : undefined}
-      aria-label={ariaLabel}
-    />
+    <span className={`case-study-lazy-video-shell ${poster ? "has-poster" : ""} ${isVideoReady ? "is-ready" : ""}`}>
+      {poster ? <img className="case-study-lazy-video-poster" src={poster} alt="" loading="eager" decoding="async" aria-hidden="true" /> : null}
+      <video
+        ref={videoRef}
+        className="case-study-lazy-video"
+        src={shouldLoad ? src : undefined}
+        autoPlay={autoPlay && shouldLoad}
+        controls={controls}
+        loop={loop}
+        muted={muted}
+        playsInline
+        poster={poster}
+        preload={shouldLoad ? (autoPlay ? "auto" : controls ? "metadata" : "none") : "none"}
+        onLoadedData={handleAutoplayReady}
+        onCanPlay={handleAutoplayReady}
+        aria-hidden={ariaHidden ? true : undefined}
+        aria-label={ariaLabel}
+      />
+    </span>
   );
 }
 
@@ -597,7 +605,7 @@ function CaseStudySpecSamplesBlock({
               style={specSampleMediaStyle}
             >
               {item.video ? (
-                <CaseStudyLazyVideo src={item.video} poster={item.image} autoPlay loop muted ariaHidden rootMargin="3200px 0px" />
+                <CaseStudyLazyVideo src={item.video} poster={item.image} autoPlay loop muted ariaHidden rootMargin="6400px 0px" />
               ) : item.image ? (
                 <img src={item.image} alt="" loading="lazy" decoding="async" aria-hidden="true" />
               ) : (
@@ -2416,8 +2424,9 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
 
     function warmVideo(src: string) {
       const link = document.createElement("link");
-      link.rel = "prefetch";
+      link.rel = "preload";
       link.as = "video";
+      link.type = "video/mp4";
       link.href = src;
       document.head.appendChild(link);
       warmedLinks.push(link);
@@ -2428,7 +2437,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
     });
 
     warmVideoAssets.forEach((src, index) => {
-      schedule(() => warmVideo(src), 1600 + index * 260);
+      schedule(() => warmVideo(src), 900 + index * 220);
     });
 
     return () => {
