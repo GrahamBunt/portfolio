@@ -15,14 +15,8 @@ const homeFeaturedProjects = featuredHomeProjectSlugs
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
 
 const HOME_EMAIL = "gtbunt@gmail.com";
-const HERO_DESCRIPTORS = [
-  "AI Enthusiast",
-  "Girl Dad x2",
-  "Land-locked Surfer",
-  "Salt Lake City, Utah",
-];
-const HERO_DESCRIPTOR_CHAR_STEP_MS = 14;
-const HERO_DESCRIPTOR_SLOT_SECONDS = 2.5;
+const HERO_H1_TRACKING_STORAGE_KEY = "homeHeroH1Tracking";
+const HERO_H1_DEFAULT_TRACKING = -0.014;
 
 function ArrowIcon() {
   return (
@@ -49,46 +43,15 @@ function CheckIcon() {
   );
 }
 
-function ElbowArrowIcon() {
-  return (
-    <svg className="home-hero-descriptor-arrow" viewBox="0 0 28 18" fill="none" aria-hidden="true" focusable="false">
-      <path d="M3 2V11H22" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" strokeLinejoin="miter" />
-      <path d="M18 7L22 11L18 15" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" strokeLinejoin="miter" />
-    </svg>
-  );
-}
-
 function getProjectImage(project: (typeof allWork)[number]) {
   return project.homepageImage ?? project.image;
-}
-
-function HeroDescriptorCycle() {
-  return (
-    <span className="home-hero-descriptor-cycle" aria-hidden="true">
-      {HERO_DESCRIPTORS.map((descriptor, wordIndex) => (
-        <span
-          key={descriptor}
-          className="home-hero-descriptor-word"
-          style={{ "--word-delay": `${wordIndex * HERO_DESCRIPTOR_SLOT_SECONDS}s` } as CSSProperties}
-        >
-          {Array.from(descriptor).map((character, characterIndex) => (
-            <span
-              key={`${descriptor}-${characterIndex}`}
-              className={`home-hero-descriptor-char ${character === " " ? "is-space" : ""}`}
-              style={{ "--char-delay": `${characterIndex * HERO_DESCRIPTOR_CHAR_STEP_MS}ms` } as CSSProperties}
-            >
-              {character === " " ? "\u00A0" : character}
-            </span>
-          ))}
-        </span>
-      ))}
-    </span>
-  );
 }
 
 export default function Home() {
   const [fontsReady, setFontsReady] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [tuneMode, setTuneMode] = useState(false);
+  const [heroH1Tracking, setHeroH1Tracking] = useState(HERO_H1_DEFAULT_TRACKING);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -99,6 +62,23 @@ export default function Home() {
     document.fonts.ready
       .then(() => new Promise((r) => setTimeout(r, 140)))
       .then(() => setFontsReady(true));
+
+    const tuneModeTimer = window.setTimeout(() => {
+      setTuneMode(
+        process.env.NODE_ENV === "development" &&
+          new URLSearchParams(window.location.search).get("tune") === "1",
+      );
+
+      const storedTracking = window.localStorage.getItem(HERO_H1_TRACKING_STORAGE_KEY);
+      if (storedTracking) {
+        const parsedTracking = Number(storedTracking);
+        if (Number.isFinite(parsedTracking)) {
+          setHeroH1Tracking(parsedTracking);
+        }
+      }
+    }, 0);
+
+    return () => window.clearTimeout(tuneModeTimer);
   }, []);
 
   useEffect(() => {
@@ -128,36 +108,49 @@ export default function Home() {
     setCopiedEmail(true);
   };
 
+  const updateHeroH1Tracking = (value: number) => {
+    setHeroH1Tracking(value);
+    window.localStorage.setItem(HERO_H1_TRACKING_STORAGE_KEY, String(value));
+  };
+
   return (
     <main className={`home-page min-h-screen text-white ${fontsReady ? "sequence-ready" : ""}`}>
       <div className="home-page-shell">
         <SiteNav />
+
+        {tuneMode ? (
+          <div className="tune-panel home-hero-tune-panel font-sans-preview" role="region" aria-label="Hero tuning controls">
+            <label>
+              <span>H1 tracking</span>
+              <input
+                type="range"
+                min="-0.08"
+                max="0.02"
+                step="0.001"
+                value={heroH1Tracking}
+                onChange={(event) => updateHeroH1Tracking(Number(event.currentTarget.value))}
+              />
+              <span>{heroH1Tracking.toFixed(3)}em</span>
+            </label>
+          </div>
+        ) : null}
 
         <section
           data-section="intro"
           className="home-hero-v2"
           aria-labelledby="home-identity-title"
         >
-          <p
-            className={`home-hero-meta ${fontsReady ? "animate-reveal" : "opacity-0"}`}
-            aria-label={`Product Designer, ${HERO_DESCRIPTORS.join(", ")}`}
-          >
-            <span className="home-hero-meta-fixed">Product Designer</span>
-            <span className="home-hero-descriptor-support">
-              <ElbowArrowIcon />
-              <HeroDescriptorCycle />
-            </span>
-          </p>
           <h1
             id="home-identity-title"
             className={`home-hero-name ${fontsReady ? "animate-reveal" : "opacity-0"}`}
+            style={{ "--home-hero-h1-tracking": `${heroH1Tracking}em` } as CSSProperties}
           >
-            Graham Bunt
+            In pursuit of making things well.
           </h1>
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            I work across the full spectrum of product design, from shaping product direction to designing interfaces with intent and driving quality through delivery.
+            Graham Bunt is a Product Designer exploring possibilities, shaping direction, and crafting the details that feel just right.
           </p>
         </section>
 

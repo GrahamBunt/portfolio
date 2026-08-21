@@ -24,13 +24,15 @@ export type AboutContent = {
 export const aboutContent: AboutContent = {
   hero: {
     titleItalic: "",
-    titleRest: "I'm Graham.",
+    titleRest: "Making things well takes practice.",
     description: "",
   },
   bio: [
-    "I’ve spent the last several years working on products where the path forward wasn’t always obvious. My work has spanned new products, major redesigns, platform integrations, and evolving existing products as customer and business needs change. Along the way, I’ve learned to think beyond the interface and consider the broader systems, teams, and business behind the product.",
-    "I’m comfortable moving between the big picture and the little details. I like inspiring people around a clear direction, working closely with product and engineering, and getting deep into the craft to make experiences feel intuitive, thoughtful, and visually refined.",
-    "Outside of work, my wife and I are raising two daughters and wrangling two golden retrievers. I spend the rest of my time exercising, mountain biking, and snowboarding. I'm also a land-locked surfer, so every summer we try to spend some time on the Jersey Shore—where I grew up and where I still love to surf.",
+    "I’ve always been drawn to things that take practice. As a kid, it started with skateboarding, then surfing and freestyle skiing, and eventually cooking in a Michelin-starred kitchen in New York. They’re all different, but the part I love is the same: you try something, get it wrong, try again, slowly get better, and eventually bring your own style to it.",
+    "practice → failure → repetition → competence → style",
+    "Design feels a lot like that to me. Most ideas aren’t the right idea. You have to explore, pull on different threads, change your mind, and sometimes go too far before knowing when to pull something back. Eventually you find a direction that keeps going. Then it becomes about staying with it until everything feels just right—reaching a place where you’re proud of the work and maybe even pushed the bar a little higher. And when it finally reaches someone else, hopefully they feel the care and intention that went into it.",
+    "I’ve also come to appreciate the people you make things with. I like working elbow to elbow with a team, throwing ideas around, challenging each other, and shaping something none of us would have arrived at alone. Digital products evolve, but the relationships and memories you build along the way tend to stick. That matters a lot to me, and I try to be the kind of teammate people genuinely enjoy making things with.",
+    "When I’m not making things, most of my time goes to my family. My wife and I are raising two daughters and wrangling two golden retrievers. I spend whatever’s left exercising, mountain biking, and snowboarding. I’m also a land-locked surfer, so every summer we try to spend some time on the Jersey Shore—where I grew up and still my favorite place to surf.",
   ],
   social: [],
   contact: {
