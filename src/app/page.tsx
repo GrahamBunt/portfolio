@@ -381,7 +381,7 @@ export default function Home() {
           >
             <span ref={heroPortraitRef} className="home-hero-portrait-parallax">
               <Image
-                src="/home-hero-portrait.jpg"
+                src="/home-hero-portrait-mono.jpg"
                 alt=""
                 width={1000}
                 height={978}
