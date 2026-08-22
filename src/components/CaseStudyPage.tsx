@@ -221,7 +221,7 @@ const stepMediaStyle: CSSProperties = {
   alignItems: "center",
   justifyContent: "center",
   overflow: "hidden",
-  borderRadius: 10,
+  borderRadius: 2,
   background: "linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)), var(--color-charcoal)",
   boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.14)",
   margin: 0,

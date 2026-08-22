@@ -1,33 +1,50 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export function WavingHandIcon() {
   const wrapperRef = useRef<HTMLSpanElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const element = wrapperRef.current;
     if (!element) return undefined;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.65 },
-    );
+    let frame = 0;
 
-    observer.observe(element);
-    return () => observer.disconnect();
+    const updateHandRotation = () => {
+      frame = 0;
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const pageBottom = document.documentElement.scrollHeight;
+      const triggerDistance = Math.min(360, window.innerHeight * 0.34);
+      const distanceFromBottom = pageBottom - scrollBottom;
+      const progress = Math.min(1, Math.max(0, 1 - distanceFromBottom / triggerDistance));
+      const rotation = 90 - progress * 90;
+
+      element.style.setProperty("--footer-hand-rotation", `${rotation.toFixed(2)}deg`);
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateHandRotation);
+    };
+
+    updateHandRotation();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
   }, []);
 
   return (
     <span
       ref={wrapperRef}
-      className={`footer-wave-icon ${isVisible ? "is-visible" : ""}`}
+      className="footer-wave-icon"
       aria-hidden="true"
     >
       <svg viewBox="0 0 64 64" focusable="false">
