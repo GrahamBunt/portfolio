@@ -520,7 +520,7 @@ export const otherWork: WorkItem[] = [
 ];
 
 export const allWork = [featuredWork, ...otherWork];
-export const routeableWork = allWork.filter((item) => ["smartsheet-reports", "resource-management-integration"].includes(item.slug));
+export const routeableWork = allWork.filter((item) => ["smartsheet-reports", "resource-management-integration", "metlife-mexico"].includes(item.slug));
 const locallyRouteableWork = routeableWork;
 
 export function getCaseStudy(slug: string) {

@@ -249,6 +249,52 @@ body {
   padding-right: var(--home-copy-right-inset);
 }
 
+.footer-wave-icon {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  color: var(--text-description);
+}
+
+.footer-wave-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.footer-wave-hand,
+.footer-wave-accent {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3.2;
+}
+
+.footer-wave-hand {
+  opacity: 0.88;
+  transform-box: fill-box;
+  transform-origin: 30% 88%;
+}
+
+.footer-wave-accent {
+  opacity: 0;
+  stroke-width: 2.4;
+}
+
+.footer-wave-icon.is-visible .footer-wave-hand {
+  animation: footer-wave-hand 1.25s cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+}
+
+.footer-wave-icon.is-visible .footer-wave-accent {
+  animation: footer-wave-accent 1.25s cubic-bezier(0.22, 1, 0.36, 1) 160ms both;
+}
+
+.footer-wave-icon.is-visible .footer-wave-accent.is-right {
+  animation-delay: 240ms;
+}
+
 .home-contact-copy {
   color: var(--text-description);
   font-size: var(--type-home-subheader-size);
@@ -668,6 +714,50 @@ body {
     opacity: 1;
     clip-path: inset(0 0 0 0 round 10px);
     transform: translateY(0);
+  }
+}
+
+@keyframes footer-wave-hand {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) rotate(0deg);
+  }
+  18% {
+    opacity: 0.88;
+    transform: translate3d(0, 0, 0) rotate(-8deg);
+  }
+  36% {
+    transform: rotate(10deg);
+  }
+  52% {
+    transform: rotate(-6deg);
+  }
+  68% {
+    transform: rotate(5deg);
+  }
+  84% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    opacity: 0.88;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@keyframes footer-wave-accent {
+  0%, 18% {
+    opacity: 0;
+    stroke-dasharray: 22;
+    stroke-dashoffset: 22;
+  }
+  42%, 72% {
+    opacity: 0.48;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    opacity: 0;
+    stroke-dasharray: 22;
+    stroke-dashoffset: -18;
   }
 }
 
@@ -7812,6 +7902,8 @@ body {
   .case-study-hero-reveal img,
   .work-description-reveal,
   .animated-description-line,
+  .footer-wave-icon .footer-wave-hand,
+  .footer-wave-icon .footer-wave-accent,
   .animate-social-reveal,
   .animate-social-reveal .social-icon-button {
     opacity: 1;
@@ -7825,6 +7917,10 @@ body {
 
   .case-study-hero-reveal img {
     transform: scale(1);
+  }
+
+  .footer-wave-icon .footer-wave-accent {
+    opacity: 0;
   }
 
 }

@@ -6,10 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
+import { WavingHandIcon } from "@/components/WavingHandIcon";
 import { allWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
 
-const featuredHomeProjectSlugs = ["smartsheet-reports", "resource-management-integration"];
+const featuredHomeProjectSlugs = ["smartsheet-reports", "resource-management-integration", "metlife-mexico"];
 const homeFeaturedProjects = featuredHomeProjectSlugs
   .map((slug) => allWork.find((project) => project.slug === slug))
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
@@ -150,7 +151,7 @@ export default function Home() {
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            Graham Bunt is a Product Designer imagining possible futures, moving teams forward, and pouring care and intention into the craft.
+            Graham Bunt is a Product Designer imagining the possible future, moving teams forward, and pouring care and intention into the craft.
           </p>
         </section>
 
@@ -165,7 +166,7 @@ export default function Home() {
             } as CSSProperties
           }
         >
-          <p className="home-section-label">Recent work</p>
+          <p className="home-section-label">Select work</p>
           <div
             className="home-featured-work-grid"
           >
@@ -211,6 +212,7 @@ export default function Home() {
           <div className="home-contact-content">
             <p className="home-section-label">Get in touch</p>
             <div className="home-contact-copy-stack">
+              <WavingHandIcon />
               <p className="home-contact-copy">
                 {"I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities."}
               </p>
