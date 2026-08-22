@@ -283,6 +283,8 @@ body {
   font-family: var(--font-sans-preview), sans-serif;
   font-size: var(--type-body-size);
   font-weight: var(--type-body-weight);
+  font-variant-numeric: slashed-zero;
+  font-feature-settings: "zero" 1;
   letter-spacing: 0;
   line-height: var(--type-body-line);
   transform: translateX(var(--home-marker-nudge));
