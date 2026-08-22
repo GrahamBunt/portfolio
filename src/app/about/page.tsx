@@ -4,9 +4,9 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatedDescription } from "@/components/AnimatedDescription";
+import { FooterHandIcon } from "@/components/FooterHandIcon";
 import { SiteNav } from "@/components/SiteNav";
 import { SocialIcon } from "@/components/SocialIcon";
-import { WavingHandIcon } from "@/components/WavingHandIcon";
 import { aboutContent, type AboutContent } from "@/content/about";
 import { preventTextOrphans } from "@/lib/typography";
 
@@ -314,19 +314,21 @@ export default function AboutPage() {
               )}
             </p>
             <div className="home-contact-copy-stack">
-              <WavingHandIcon />
-              <p className="home-contact-copy">
-                {tuneMode ? (
-                  <EditableText
-                    value={draft.contact.description}
-                    onChange={(value) => updateDraft((content) => {
-                      content.contact.description = value;
-                    })}
-                  />
-                ) : (
-                  draft.contact.description
-                )}
-              </p>
+              <div className="home-contact-copy-row">
+                <FooterHandIcon />
+                <p className="home-contact-copy">
+                  {tuneMode ? (
+                    <EditableText
+                      value={draft.contact.description}
+                      onChange={(value) => updateDraft((content) => {
+                        content.contact.description = value;
+                      })}
+                    />
+                  ) : (
+                    draft.contact.description
+                  )}
+                </p>
+              </div>
               <button
                 type="button"
                 className="nav-item-pill home-copy-email-button"
