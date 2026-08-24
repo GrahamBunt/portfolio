@@ -308,10 +308,13 @@ body {
   justify-content: space-between;
   background: var(--color-charcoal);
   padding-top: 156px;
+  --footer-edge-inset: clamp(20px, 2vw, 32px);
 }
 
 .home-contact-content {
   align-items: start;
+  padding-right: var(--footer-edge-inset);
+  padding-left: var(--footer-edge-inset);
 }
 
 .home-contact-copy-stack {
@@ -1461,7 +1464,7 @@ body {
   max-width: none;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 20px var(--footer-edge-inset, 20px);
 }
 
 .work-footer p {
@@ -1763,7 +1766,7 @@ body {
   top: 47%;
   right: auto;
   left: 7%;
-  width: var(--about-collage-small-width);
+  width: var(--about-collage-large-width);
   --about-label-top: 56%;
   --about-label-left: 52%;
   --about-label-x: -50%;

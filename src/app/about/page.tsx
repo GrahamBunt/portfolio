@@ -37,9 +37,9 @@ const aboutImages: AboutImageItem[] = [
     placement: "is-family",
     media: {
       type: "image",
-      src: "/about/family.jpg",
-      width: 1600,
-      height: 1200,
+      src: "/about/family-v2.jpg",
+      width: 1800,
+      height: 2600,
     },
   },
   {
@@ -53,11 +53,11 @@ const aboutImages: AboutImageItem[] = [
     },
   },
   {
-    label: "Surfer",
+    label: "Biker",
     placement: "is-shore",
     media: {
       type: "image",
-      src: "/about/surfer.jpg",
+      src: "/about/biking-family.jpg",
       width: 1800,
       height: 1350,
     },
@@ -176,7 +176,7 @@ export default function AboutPage() {
           <div className={`about-orientation ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
             <h1 className="about-orientation-title">Graham Bunt</h1>
             <p className="about-orientation-block">
-              Born and raised on the Jersey Shore and now live in Utah with my wife, two daughters, and two goldens. I like being outside, staying active, and getting back to the ocean whenever I can.
+              Born and raised on the Jersey Shore. Now living in Salt Lake City with my wife, two daughters, and two goldens. I like being outside, staying active, and getting back to the ocean whenever I can.
             </p>
           </div>
 

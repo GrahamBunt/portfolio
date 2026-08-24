@@ -286,7 +286,7 @@ export default function Home() {
             <p className="home-section-label">Get in touch</p>
             <div className="home-contact-copy-stack">
               <p className="home-contact-copy">
-                {"I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities."}
+                {"I'd love to hear from you—let's chat, collaborate on ideas, or discuss opportunities."}
               </p>
               <button
                 type="button"
