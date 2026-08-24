@@ -9,7 +9,7 @@ import { preventTextOrphans } from "@/lib/typography";
 
 const HOME_EMAIL = "gtbunt@gmail.com";
 const LABEL_EXIT_DURATION = 460;
-const ABOUT_HOVER_LABELS_ENABLED = false;
+const ABOUT_HOVER_LABELS_ENABLED = true;
 
 type AboutMedia =
   | {
@@ -28,13 +28,15 @@ type AboutMedia =
 type AboutImageItem = {
   label: string;
   placement: string;
+  parallax: number;
   media?: AboutMedia;
 };
 
 const aboutImages: AboutImageItem[] = [
   {
-    label: "Family",
+    label: "Family in Steamboat",
     placement: "is-family",
+    parallax: 14,
     media: {
       type: "image",
       src: "/about/family-v2.jpg",
@@ -45,6 +47,7 @@ const aboutImages: AboutImageItem[] = [
   {
     label: "Maverick + Bodhi",
     placement: "is-dogs",
+    parallax: -10,
     media: {
       type: "image",
       src: "/about/maverick-bodhi.jpg",
@@ -53,8 +56,9 @@ const aboutImages: AboutImageItem[] = [
     },
   },
   {
-    label: "Biker",
+    label: "\"big bike\"",
     placement: "is-shore",
+    parallax: 12,
     media: {
       type: "image",
       src: "/about/biking-family.jpg",
@@ -65,6 +69,7 @@ const aboutImages: AboutImageItem[] = [
   {
     label: "Rory + Mara",
     placement: "is-snowboarder",
+    parallax: -8,
     media: {
       type: "image",
       src: "/about/rory-mara.jpg",
@@ -96,6 +101,7 @@ export default function AboutPage() {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [labelStates, setLabelStates] = useState<Record<number, "active" | "exiting">>({});
   const labelExitTimeouts = useRef<Record<number, number>>({});
+  const collageFrameRefs = useRef<Array<HTMLSpanElement | null>>([]);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -122,6 +128,62 @@ export default function AboutPage() {
       Object.values(timeouts).forEach((timeoutId) => {
         window.clearTimeout(timeoutId);
       });
+    };
+  }, []);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frameId = 0;
+
+    const clearTransforms = () => {
+      collageFrameRefs.current.forEach((frame) => {
+        if (!frame) return;
+        frame.style.transform = "translate3d(0, 0, 0)";
+      });
+    };
+
+    const updateParallax = () => {
+      frameId = 0;
+
+      if (reduceMotion.matches || window.innerWidth <= 760) {
+        clearTransforms();
+        return;
+      }
+
+      const viewportHeight = window.innerHeight || 1;
+      const viewportCenter = viewportHeight / 2;
+
+      collageFrameRefs.current.forEach((frame, index) => {
+        if (!frame) return;
+
+        const item = frame.closest(".about-collage-item");
+        if (!item) return;
+
+        const rect = item.getBoundingClientRect();
+        const itemCenter = rect.top + rect.height / 2;
+        const distanceFromCenter = (itemCenter - viewportCenter) / viewportHeight;
+        const depth = aboutImages[index]?.parallax ?? 0;
+        const y = Math.max(-20, Math.min(20, distanceFromCenter * depth));
+
+        frame.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`;
+      });
+    };
+
+    const requestUpdate = () => {
+      if (frameId) return;
+      frameId = window.requestAnimationFrame(updateParallax);
+    };
+
+    updateParallax();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    reduceMotion.addEventListener("change", requestUpdate);
+
+    return () => {
+      if (frameId) window.cancelAnimationFrame(frameId);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      reduceMotion.removeEventListener("change", requestUpdate);
     };
   }, []);
 
@@ -176,7 +238,7 @@ export default function AboutPage() {
           <div className={`about-orientation ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
             <h1 className="about-orientation-title">Graham Bunt</h1>
             <p className="about-orientation-block">
-              Born and raised on the Jersey Shore. Now living in Salt Lake City with my wife, two daughters, and two goldens. I like being outside, staying active, and getting back to the ocean whenever I can.
+              Born and raised on the Jersey Shore. Now living in Salt Lake City with my wife, daughters, and two goldens. I like being outside, staying active, and getting back to the ocean whenever I can.
             </p>
           </div>
 
@@ -197,6 +259,9 @@ export default function AboutPage() {
                 <span
                   className={`about-collage-frame ${image.media ? "has-media" : ""}`}
                   aria-hidden="true"
+                  ref={(element) => {
+                    collageFrameRefs.current[index] = element;
+                  }}
                 >
                   {image.media?.type === "video" ? (
                     <video
