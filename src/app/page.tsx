@@ -4,7 +4,6 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FooterHandIcon } from "@/components/FooterHandIcon";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import { allWork } from "@/content/work";
@@ -208,7 +207,7 @@ export default function Home() {
           >
             <span ref={heroPortraitRef} className="home-hero-portrait-parallax">
               <Image
-                src="/home-hero-portrait-mono.jpg"
+                src="/home-hero-portrait.jpg"
                 alt=""
                 width={1000}
                 height={978}
@@ -286,12 +285,9 @@ export default function Home() {
           <div className="home-contact-content">
             <p className="home-section-label">Get in touch</p>
             <div className="home-contact-copy-stack">
-              <div className="home-contact-copy-row">
-                <FooterHandIcon />
-                <p className="home-contact-copy">
-                  {"I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities."}
-                </p>
-              </div>
+              <p className="home-contact-copy">
+                {"I'd love to hear from you—always excited to chat, collaborate on ideas, and discuss opportunities."}
+              </p>
               <button
                 type="button"
                 className="nav-item-pill home-copy-email-button"

@@ -3,65 +3,76 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { AnimatedDescription } from "@/components/AnimatedDescription";
-import { FooterHandIcon } from "@/components/FooterHandIcon";
 import { SiteNav } from "@/components/SiteNav";
-import { SocialIcon } from "@/components/SocialIcon";
-import { aboutContent, type AboutContent } from "@/content/about";
+import { aboutContent } from "@/content/about";
 import { preventTextOrphans } from "@/lib/typography";
 
-const ABOUT_IMAGE =
-  "/about-portrait.webp";
 const HOME_EMAIL = "gtbunt@gmail.com";
+const LABEL_EXIT_DURATION = 460;
+const ABOUT_HOVER_LABELS_ENABLED = false;
 
-function cloneContent() {
-  return JSON.parse(JSON.stringify(aboutContent)) as AboutContent;
-}
-
-function EditableText({
-  value,
-  onChange,
-  className,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-  className?: string;
-}) {
-  const elementRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const element = elementRef.current;
-    if (!element || document.activeElement === element) return;
-    if (element.textContent !== value) {
-      element.textContent = value;
+type AboutMedia =
+  | {
+      type: "image";
+      src: string;
+      width: number;
+      height: number;
     }
-  }, [value]);
+  | {
+      type: "video";
+      src: string;
+      width: number;
+      height: number;
+    };
 
-  return (
-    <span
-      ref={elementRef}
-      className={`tune-editable ${className ?? ""}`}
-      contentEditable
-      dir="ltr"
-      suppressContentEditableWarning
-      spellCheck={false}
-      onBlur={(event) => onChange(event.currentTarget.textContent ?? "")}
-      onKeyDown={(event) => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          event.currentTarget.blur();
-        }
-      }}
-      onPaste={(event) => {
-        event.preventDefault();
-        const text = event.clipboardData.getData("text/plain");
-        document.execCommand("insertText", false, text);
-      }}
-    >
-      {value}
-    </span>
-  );
-}
+type AboutImageItem = {
+  label: string;
+  placement: string;
+  media?: AboutMedia;
+};
+
+const aboutImages: AboutImageItem[] = [
+  {
+    label: "Family",
+    placement: "is-family",
+    media: {
+      type: "image",
+      src: "/about/family.jpg",
+      width: 1600,
+      height: 1200,
+    },
+  },
+  {
+    label: "Maverick + Bodhi",
+    placement: "is-dogs",
+    media: {
+      type: "image",
+      src: "/about/maverick-bodhi.jpg",
+      width: 4032,
+      height: 3024,
+    },
+  },
+  {
+    label: "Surfer",
+    placement: "is-shore",
+    media: {
+      type: "image",
+      src: "/about/surfer.jpg",
+      width: 1800,
+      height: 1350,
+    },
+  },
+  {
+    label: "Rory + Mara",
+    placement: "is-snowboarder",
+    media: {
+      type: "image",
+      src: "/about/rory-mara.jpg",
+      width: 1800,
+      height: 1350,
+    },
+  },
+];
 
 function CopyIcon() {
   return (
@@ -82,11 +93,20 @@ function CheckIcon() {
 
 export default function AboutPage() {
   const [fontsReady, setFontsReady] = useState(false);
-  const [tuneMode, setTuneMode] = useState(false);
-  const [draft, setDraft] = useState<AboutContent>(() => cloneContent());
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const sequenceReady = fontsReady;
+  const [labelStates, setLabelStates] = useState<Record<number, "active" | "exiting">>({});
+  const labelExitTimeouts = useRef<Record<number, number>>({});
+
+  useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+
+    document.fonts.ready
+      .then(() => new Promise((resolve) => setTimeout(resolve, 120)))
+      .then(() => setFontsReady(true));
+  }, []);
 
   useEffect(() => {
     if (!copiedEmail) return;
@@ -94,6 +114,38 @@ export default function AboutPage() {
     const timeoutId = window.setTimeout(() => setCopiedEmail(false), 2600);
     return () => window.clearTimeout(timeoutId);
   }, [copiedEmail]);
+
+  useEffect(() => {
+    const timeouts = labelExitTimeouts.current;
+
+    return () => {
+      Object.values(timeouts).forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+      });
+    };
+  }, []);
+
+  const showLabel = (index: number) => {
+    window.clearTimeout(labelExitTimeouts.current[index]);
+    setLabelStates((current) => ({ ...current, [index]: "active" }));
+  };
+
+  const hideLabel = (index: number) => {
+    window.clearTimeout(labelExitTimeouts.current[index]);
+    setLabelStates((current) => {
+      if (!current[index]) return current;
+      return { ...current, [index]: "exiting" };
+    });
+
+    labelExitTimeouts.current[index] = window.setTimeout(() => {
+      setLabelStates((current) => {
+        if (current[index] !== "exiting") return current;
+        const next = { ...current };
+        delete next[index];
+        return next;
+      });
+    }, LABEL_EXIT_DURATION);
+  };
 
   const copyEmail = async () => {
     try {
@@ -115,220 +167,117 @@ export default function AboutPage() {
     setCopiedEmail(true);
   };
 
-  useEffect(() => {
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "manual";
-    }
-    window.scrollTo(0, 0);
-
-    document.fonts.ready
-      .then(() => new Promise((resolve) => setTimeout(resolve, 120)))
-      .then(() => setFontsReady(true));
-
-    const tuneModeTimer = window.setTimeout(() => {
-      setTuneMode(
-        process.env.NODE_ENV === "development" &&
-          new URLSearchParams(window.location.search).get("tune") === "1",
-      );
-    }, 0);
-
-    return () => window.clearTimeout(tuneModeTimer);
-  }, []);
-
-  const portraitDelay = {
-    "--rise-delay": "220ms",
-    "--rise-duration": "0.58s",
-    "--rise-distance": "8px",
-    "--rise-blur": "0px",
-    "--rise-animation": "quiet-rise-in",
-  } as CSSProperties;
-
-  const bioDelay = {
-    "--rise-delay": "260ms",
-    "--rise-duration": "0.58s",
-    "--rise-distance": "6px",
-    "--rise-blur": "0px",
-    "--rise-animation": "quiet-rise-in",
-  } as CSSProperties;
-
-  const updateDraft = (updater: (content: AboutContent) => void) => {
-    setSaveStatus("idle");
-    setDraft((current) => {
-      const next = JSON.parse(JSON.stringify(current)) as AboutContent;
-      updater(next);
-      return next;
-    });
-  };
-
-  const saveContent = async () => {
-    setSaveStatus("saving");
-    const response = await fetch("/api/tune/about", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(draft),
-    });
-
-    setSaveStatus(response.ok ? "saved" : "error");
-  };
-
-  const resetContent = () => {
-    setDraft(cloneContent());
-    setSaveStatus("idle");
-  };
-
   return (
-    <div className={`about-page ${sequenceReady ? "sequence-ready" : ""}`}>
+    <div className={`about-page ${ABOUT_HOVER_LABELS_ENABLED ? "is-about-hover-labels-enabled" : ""} ${fontsReady ? "sequence-ready" : ""}`}>
       <SiteNav showBack />
 
-      {tuneMode ? (
-        <div className="tune-panel font-sans-preview" role="region" aria-label="About tuning controls">
-          <span>{saveStatus === "saving" ? "Saving..." : saveStatus === "saved" ? "Saved" : saveStatus === "error" ? "Save failed" : "Tune mode"}</span>
-          <button type="button" onClick={saveContent} disabled={saveStatus === "saving"}>
-            Save
-          </button>
-          <button type="button" onClick={resetContent}>
-            Reset
-          </button>
-        </div>
-      ) : null}
-
       <main className="about-main">
-        <section className="about-section" aria-label="About">
-          <header className="work-heading about-heading">
-            <h1>
-              <span className={`work-title-reveal ${sequenceReady ? "animate-reveal" : "opacity-0"}`}>
-                {tuneMode ? (
-                  <>
-                    <span>
-                      <EditableText
-                        value={draft.hero.titleItalic}
-                        onChange={(value) => updateDraft((content) => {
-                          content.hero.titleItalic = value;
-                        })}
-                      />
-                    </span>
-                    <EditableText
-                      value={draft.hero.titleRest}
-                      onChange={(value) => updateDraft((content) => {
-                        content.hero.titleRest = value;
-                      })}
-                    />
-                  </>
-                ) : (
-                  <>
-                    {draft.hero.titleItalic ? <span>{draft.hero.titleItalic}</span> : null}
-                    {draft.hero.titleRest}
-                  </>
-                )}
-              </span>
-            </h1>
-            {tuneMode ? (
-              <p className="about-heading-description font-sans-preview">
-                <EditableText
-                  value={draft.hero.description}
-                  onChange={(value) => updateDraft((content) => {
-                    content.hero.description = value;
-                  })}
-                />
-              </p>
-            ) : draft.hero.description ? (
-              <AnimatedDescription
-                ready={sequenceReady}
-                delay="140ms"
-                text={draft.hero.description}
-                className="about-heading-description"
-              />
-            ) : null}
-          </header>
+        <section className="about-act-one" aria-label="Personal">
+          <div className={`about-orientation ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
+            <h1 className="about-orientation-title">Graham Bunt</h1>
+            <p className="about-orientation-block">
+              Born and raised on the Jersey Shore and now live in Utah with my wife, two daughters, and two goldens. I like being outside, staying active, and getting back to the ocean whenever I can.
+            </p>
+          </div>
 
-          <div className="about-bio staged-work-rise" style={bioDelay}>
-            <div className="about-copy">
-              {draft.bio.map((paragraph, index) => (
-                <p key={index}>
-                  {tuneMode ? (
-                    <EditableText
-                      value={paragraph}
-                      onChange={(value) => updateDraft((content) => {
-                        content.bio[index] = value;
-                      })}
+          <div className="about-image-canvas" aria-label="Personal photographs">
+            {aboutImages.map((image, index) => (
+              <figure
+                key={`${image.label}-${index}`}
+                className={`about-collage-item ${image.placement} ${
+                  ABOUT_HOVER_LABELS_ENABLED && labelStates[index] === "active" ? "is-label-active" : ""
+                } ${ABOUT_HOVER_LABELS_ENABLED && labelStates[index] === "exiting" ? "is-label-exiting" : ""} staged-work-rise`}
+                style={{ "--rise-delay": `${180 + index * 80}ms` } as CSSProperties}
+                tabIndex={ABOUT_HOVER_LABELS_ENABLED ? 0 : undefined}
+                onPointerEnter={ABOUT_HOVER_LABELS_ENABLED ? () => showLabel(index) : undefined}
+                onPointerLeave={ABOUT_HOVER_LABELS_ENABLED ? () => hideLabel(index) : undefined}
+                onFocus={ABOUT_HOVER_LABELS_ENABLED ? () => showLabel(index) : undefined}
+                onBlur={ABOUT_HOVER_LABELS_ENABLED ? () => hideLabel(index) : undefined}
+              >
+                <span
+                  className={`about-collage-frame ${image.media ? "has-media" : ""}`}
+                  aria-hidden="true"
+                >
+                  {image.media?.type === "video" ? (
+                    <video
+                      src={image.media.src}
+                      width={image.media.width}
+                      height={image.media.height}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
                     />
-                  ) : (
-                    preventTextOrphans(paragraph)
-                  )}
-                </p>
-              ))}
-            </div>
-            <div className="about-portrait" style={portraitDelay}>
-              <Image
-                src={ABOUT_IMAGE}
-                alt=""
-                fill
-                sizes="(max-width: 767px) min(420px, calc(100vw - 40px)), 420px"
-                quality={95}
-                priority
-              />
-            </div>
-            {draft.social.length ? (
-              <div className="about-social">
-                {draft.social.map((item, index) => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className="nav-item-pill about-social-link font-sans-preview text-base font-medium leading-6 text-white"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={tuneMode ? (event) => event.preventDefault() : undefined}
-                  >
-                    <span className="about-social-icon">
-                      <SocialIcon icon={item.icon} />
+                  ) : image.media?.type === "image" ? (
+                    <Image
+                      src={image.media.src}
+                      alt=""
+                      width={image.media.width}
+                      height={image.media.height}
+                      sizes="(max-width: 760px) 90vw, 38vw"
+                    />
+                  ) : null}
+                </span>
+                <figcaption className="about-collage-label" aria-hidden="true">
+                  {image.label.split("\n").map((line, lineIndex) => (
+                    <span
+                      key={`${image.label}-${line}-${lineIndex}`}
+                      className="about-hover-label-line-mask"
+                      style={{ "--line-index": lineIndex } as CSSProperties}
+                    >
+                      <span className="about-hover-label-line-words">
+                        {line.split(" ").map((word, wordIndex) => (
+                          <span
+                            key={`${image.label}-${line}-${word}-${wordIndex}`}
+                            className="about-hover-label-word"
+                            style={{ "--word-index": wordIndex } as CSSProperties}
+                          >
+                            {Array.from(word).map((character, characterIndex) => (
+                              <span
+                                key={`${image.label}-${line}-${word}-${character}-${characterIndex}`}
+                                className="about-hover-label-character"
+                                style={{ "--character-index": characterIndex } as CSSProperties}
+                              >
+                                {character}
+                              </span>
+                            ))}
+                          </span>
+                        ))}
+                      </span>
                     </span>
-                    {tuneMode ? (
-                      <EditableText
-                        value={item.label}
-                        onChange={(value) => updateDraft((content) => {
-                          content.social[index].label = value;
-                        })}
-                      />
-                    ) : (
-                      preventTextOrphans(item.label)
-                    )}
-                  </a>
+                  ))}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        <section className="about-act-two" aria-label="Reflection">
+          <div className="about-text-section">
+            <div className="about-act-two-content">
+              <h1 className="about-practice-statement">
+                {["Practice.", "Failure.", "Repetition.", "Competence.", "Style."].map((word) => (
+                  <span key={word}>{word}</span>
+                ))}
+              </h1>
+
+              <div className="about-copy">
+                {aboutContent.bio.slice(0, 3).map((paragraph, index) => (
+                  <p key={index}>{preventTextOrphans(paragraph)}</p>
                 ))}
               </div>
-            ) : null}
+            </div>
           </div>
         </section>
 
         <section className="home-contact-band">
           <div className="home-contact-content">
             <p className="home-section-label">
-              {tuneMode ? (
-                <EditableText
-                  value={draft.contact.title}
-                  onChange={(value) => updateDraft((content) => {
-                    content.contact.title = value;
-                  })}
-                />
-              ) : (
-                preventTextOrphans(draft.contact.title)
-              )}
+              {preventTextOrphans(aboutContent.contact.title)}
             </p>
             <div className="home-contact-copy-stack">
-              <div className="home-contact-copy-row">
-                <FooterHandIcon />
-                <p className="home-contact-copy">
-                  {tuneMode ? (
-                    <EditableText
-                      value={draft.contact.description}
-                      onChange={(value) => updateDraft((content) => {
-                        content.contact.description = value;
-                      })}
-                    />
-                  ) : (
-                    draft.contact.description
-                  )}
-                </p>
-              </div>
+              <p className="home-contact-copy">{aboutContent.contact.description}</p>
               <button
                 type="button"
                 className="nav-item-pill home-copy-email-button"
@@ -336,51 +285,18 @@ export default function AboutPage() {
                 aria-live="polite"
               >
                 {copiedEmail ? <CheckIcon /> : <CopyIcon />}
-                {copiedEmail ? "Copied" : tuneMode ? (
-                  <EditableText
-                    value={draft.contact.action}
-                    onChange={(value) => updateDraft((content) => {
-                      content.contact.action = value;
-                    })}
-                  />
-                ) : (
-                  draft.contact.action
-                )}
+                {copiedEmail ? "Copied" : aboutContent.contact.action}
               </button>
             </div>
           </div>
           <footer className="work-footer home-footer">
             <div>
-              <p>
-                {tuneMode ? (
-                  <EditableText
-                    value={draft.footer.name}
-                    onChange={(value) => updateDraft((content) => {
-                      content.footer.name = value;
-                    })}
-                  />
-                ) : (
-                  preventTextOrphans(draft.footer.name)
-                )}
-              </p>
-              <p>
-                {tuneMode ? (
-                  <EditableText
-                    value={draft.footer.year}
-                    onChange={(value) => updateDraft((content) => {
-                      content.footer.year = value;
-                    })}
-                  />
-                ) : (
-                  draft.footer.year
-                )}
-              </p>
+              <p>{preventTextOrphans(aboutContent.footer.name)}</p>
+              <p>{aboutContent.footer.year}</p>
             </div>
           </footer>
         </section>
       </main>
-
-      <div aria-hidden="true" className="viewport-bottom-blur" />
     </div>
   );
 }

@@ -34,7 +34,7 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
           onClick={onAvatarClick}
         >
           <div
-            className="h-full w-full rounded-full bg-cover bg-center transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.12]"
+            className="site-nav-avatar-image h-full w-full rounded-full bg-cover bg-center"
             style={{ backgroundImage: "url(/avatar-thumb.webp)" }}
           />
         </Link>
