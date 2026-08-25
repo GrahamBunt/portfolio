@@ -295,7 +295,7 @@ export const featuredWork: WorkItem = {
     "/work/smartsheet-reports/figma-spec-loop.mp4",
   ],
   summary: "Modernized one of Smartsheet's core platform capabilities while aligning three teams around its long-term direction.",
-  cardMeta: "Smartsheet • Case Study • 2025–26",
+  cardMeta: "Smartsheet • Case Study",
   caseStudyMeta: "Case Study • Aug '25 – Feb '26",
   overview: {
     items: [
@@ -403,7 +403,7 @@ export const otherWork: WorkItem[] = [
     upNextImage: "/work/resource-management-integration/up-next.png",
     heroImage: "/work/resource-management-integration/hero-updated.png",
     summary: "Shaped the future of a declining $35M ARR acquisition while integrating its core capabilities into Smartsheet.",
-    cardMeta: "Smartsheet • Case Study • 2022–25",
+    cardMeta: "Smartsheet • Case Study",
     caseStudyMeta: "Case Study • Mar ‘22 - Jan ‘25",
     overview: {
       items: [],
@@ -470,7 +470,7 @@ export const otherWork: WorkItem[] = [
       "/work/metlife-mexico/performance-display-fast.webp",
     ],
     summary: "Built the foundation for MetLife Mexico's digital agent experience, unifying fragmented workflows into a single product.",
-    cardMeta: "KPMG • Summary • 2021",
+    cardMeta: "KPMG • Summary",
     caseStudyMeta: "Summary • 2021",
     overview: {
       items: [

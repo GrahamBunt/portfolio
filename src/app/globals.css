@@ -176,38 +176,6 @@ body {
   display: inline-block;
 }
 
-.home-hero-line-top {
-  z-index: 1;
-}
-
-.home-hero-line-bottom {
-  z-index: 3;
-}
-
-.home-hero-overlap-char {
-  position: relative;
-  z-index: 1;
-  color: #ffffff;
-}
-
-.home-hero-foreground-char {
-  position: relative;
-  display: inline-block;
-  z-index: 4;
-}
-
-.home-hero-foreground-char::before {
-  content: "i";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  color: transparent;
-  -webkit-text-stroke: 3px var(--color-page-background);
-  paint-order: stroke fill;
-  pointer-events: none;
-  clip-path: inset(-0.05em -0.06em 58% -0.06em);
-}
-
 .home-hero-portrait {
   position: absolute;
   top: clamp(76px, 10vh, 126px);
@@ -265,16 +233,89 @@ body {
   white-space: nowrap;
 }
 
-.home-copy-email-button {
+.home-email-copy-row {
   display: inline-flex;
-  width: auto;
-  min-width: 0;
-  gap: 8px;
-  color: #ffffff;
+  align-items: center;
+  gap: 14px;
+}
+
+.home-copy-email-button.nav-item-pill {
+  position: relative;
+  display: inline-flex;
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  flex: 0 0 40px;
+  background-color: #ffffff;
+  color: var(--color-page-background);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: var(--type-button-size);
   font-weight: var(--type-button-weight);
   line-height: var(--type-button-line);
+  padding: 0;
+  cursor: pointer;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.home-copy-email-button svg {
+  color: var(--color-page-background);
+  transition: color 160ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.home-copy-email-check-icon {
+  transform: translate(1px, -0.5px);
+}
+
+.home-email-copy-text {
+  color: #ffffff;
+  font-family: var(--font-sans-preview), sans-serif;
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  letter-spacing: 0;
+  line-height: var(--type-body-line);
+}
+
+.home-copy-email-button.nav-item-pill:hover,
+.home-copy-email-button.nav-item-pill:focus-visible {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--color-page-background);
+  box-shadow: none;
+}
+
+.home-copy-email-button.is-copied.nav-item-pill,
+.home-copy-email-button.is-copied.nav-item-pill:hover,
+.home-copy-email-button.is-copied.nav-item-pill:focus-visible {
+  background-color: #ffffff;
+  color: var(--color-page-background);
+}
+
+.home-copy-email-particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.home-copy-email-particle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  opacity: 0;
+  transform: translate(-50%, -50%) translate(0, 0);
+  animation: copy-particle-drift 720ms cubic-bezier(0.16, 1, 0.3, 1) var(--particle-delay, 0ms) both;
 }
 
 .home-selected-work-section {
@@ -444,7 +485,7 @@ body {
   .home-hero-v2 {
     min-height: auto;
     row-gap: 14px;
-    padding-top: 160px;
+    padding-top: 224px;
     padding-bottom: 108px;
   }
 
@@ -579,7 +620,7 @@ body {
   }
 
   .about-practice-statement {
-    font-size: clamp(40px, 11vw, 58px);
+    font-size: clamp(42px, 5vw, 82px);
     letter-spacing: -0.038em;
     line-height: 0.98;
   }
@@ -693,6 +734,26 @@ body {
 @keyframes quiet-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes copy-particle-drift {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(0, 0);
+  }
+  9% {
+    opacity: 0.95;
+  }
+  42% {
+    opacity: 0.72;
+  }
+  74% {
+    opacity: 0.28;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--particle-x), var(--particle-y));
+  }
 }
 
 @keyframes rise-in {
@@ -1582,7 +1643,7 @@ body {
   grid-row: 2;
   width: 100%;
   max-width: 760px;
-  color: var(--text-description);
+  color: #ffffff;
   font-family: var(--font-sans-preview), sans-serif;
   font-size: var(--type-body-size);
   font-weight: var(--type-body-weight);
@@ -1805,7 +1866,7 @@ body {
   right: auto;
   left: 7%;
   width: var(--about-collage-large-width);
-  --about-label-top: 70%;
+  --about-label-top: 76%;
   --about-label-left: 52%;
   --about-label-x: -50%;
   --about-label-y: -50%;
@@ -1997,6 +2058,15 @@ body {
 }
 
 @media (max-width: 760px) {
+  .home-copy-email-particles {
+    display: none;
+  }
+
+  .about-orientation-title,
+  .about-practice-statement {
+    font-size: clamp(48px, 12vw, 64px);
+  }
+
   .about-image-canvas {
     display: flex;
     min-height: auto;

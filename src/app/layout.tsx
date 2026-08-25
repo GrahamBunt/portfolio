@@ -3,9 +3,22 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://grahambunt.com"),
   title: "Graham Bunt — Product Designer",
   description:
-    "Graham Bunt is a designer imagining possibilities, moving teams forward, and pouring care and intention into the craft.",
+    "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and driving teams to bring ambitious ideas to life.",
+  icons: {
+    icon: "/icon",
+    shortcut: "/icon",
+    apple: "/icon",
+  },
+  openGraph: {
+    title: "Graham Bunt — Product Designer",
+    description:
+      "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and driving teams to bring ambitious ideas to life.",
+    url: "https://grahambunt.com",
+    siteName: "Graham Bunt",
+  },
 };
 
 export default function RootLayout({

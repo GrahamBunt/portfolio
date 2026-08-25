@@ -36,7 +36,7 @@ type HeroSubtextTypeDials = {
 
 const HERO_H1_DEFAULT_TYPE_DIALS: HeroH1TypeDials = {
   tracking: -0.022,
-  lineHeight: 0.9,
+  lineHeight: 0.845,
   minSize: 60,
   viewportSize: 8.7,
   maxSize: 144,
@@ -62,7 +62,7 @@ function ArrowIcon() {
 
 function CopyIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.95" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
       <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
     </svg>
@@ -71,9 +71,38 @@ function CopyIcon() {
 
 function CheckIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg className="home-copy-email-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.95" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <polyline points="20 6 9 17 4 12" />
     </svg>
+  );
+}
+
+function CopyParticles() {
+  const particles = [
+    ["0px", "-62px", "0ms"],
+    ["46px", "-50px", "18ms"],
+    ["64px", "-4px", "32ms"],
+    ["47px", "48px", "46ms"],
+    ["2px", "64px", "16ms"],
+    ["-50px", "46px", "38ms"],
+    ["-64px", "-2px", "24ms"],
+    ["-44px", "-52px", "8ms"],
+    ["24px", "-70px", "54ms"],
+    ["68px", "26px", "4ms"],
+    ["-26px", "68px", "58ms"],
+    ["-70px", "-22px", "42ms"],
+  ];
+
+  return (
+    <span className="home-copy-email-particles" aria-hidden="true">
+      {particles.map(([x, y, delay], index) => (
+        <span
+          key={`${x}-${y}-${index}`}
+          className="home-copy-email-particle"
+          style={{ "--particle-x": x, "--particle-y": y, "--particle-delay": delay } as CSSProperties}
+        />
+      ))}
+    </span>
   );
 }
 
@@ -200,10 +229,10 @@ export default function Home() {
             }
           >
             <span className="home-hero-line home-hero-line-top">
-              In <span className="home-hero-overlap-char">p</span>ursuit of
+              In pursuit of
             </span>{" "}
             <span className="home-hero-line home-hero-line-bottom">
-              sh<span className="home-hero-foreground-char">i</span>pping great work.
+              shipping great work.
             </span>
           </h1>
           <figure
@@ -288,20 +317,25 @@ export default function Home() {
 
         <section className="home-contact-band">
           <div className="home-contact-content">
-            <p className="home-section-label">Get in touch</p>
             <div className="home-contact-copy-stack">
               <p className="home-contact-copy">
                 {"I'd love to hear from you—let's chat, collaborate on ideas, or discuss opportunities."}
               </p>
-              <button
-                type="button"
-                className="nav-item-pill home-copy-email-button"
-                onClick={copyEmail}
-                aria-live="polite"
-              >
-                {copiedEmail ? <CheckIcon /> : <CopyIcon />}
-                {copiedEmail ? "Copied" : HOME_EMAIL}
-              </button>
+              <div className="home-email-copy-row">
+                <button
+                  type="button"
+                  className={`nav-item-pill home-copy-email-button ${copiedEmail ? "is-copied" : ""}`}
+                  onClick={copyEmail}
+                  aria-label={copiedEmail ? "Email copied" : "Copy email address"}
+                  aria-live="polite"
+                >
+                  {copiedEmail ? <CheckIcon /> : <CopyIcon />}
+                  {copiedEmail ? <CopyParticles /> : null}
+                </button>
+                <span className="home-email-copy-text" aria-live="polite">
+                  {copiedEmail ? "Copied" : HOME_EMAIL}
+                </span>
+              </div>
             </div>
           </div>
           <footer className="work-footer home-footer">

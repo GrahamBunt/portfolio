@@ -22,17 +22,16 @@ export default function Icon() {
           height: "100%",
           borderRadius: "50%",
           overflow: "hidden",
-          background: "#ffffff",
+          background: "transparent",
         }}
       >
         <img
           src={dataUrl}
-          width={48}
-          height={48}
+          width={72}
+          height={72}
           style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "50%",
+            width: "72px",
+            height: "72px",
             objectFit: "cover",
           }}
           alt=""
