@@ -253,13 +253,12 @@ export default function Home() {
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            <span>Graham Bunt is a product designer leaning into </span>
-            <span>scale and complexity, shaping direction, and driving </span>
-            <span>teams to bring ambitious ideas to life.</span>
+            Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and driving teams to bring ambitious ideas to life.
           </p>
         </section>
 
         <section className="home-selected-work-section staged-work-rise"
+          data-nosnippet
           style={
             {
               "--rise-delay": "220ms",
@@ -315,7 +314,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="home-contact-band">
+        <section className="home-contact-band" data-nosnippet>
           <div className="home-contact-content">
             <div className="home-contact-copy-stack">
               <p className="home-contact-copy">
@@ -338,7 +337,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <footer className="work-footer home-footer">
+          <footer className="work-footer home-footer" data-nosnippet>
             <div>
               <p>Graham Bunt</p>
               <p>©2026</p>

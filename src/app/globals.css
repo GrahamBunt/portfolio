@@ -228,11 +228,6 @@ body {
   text-wrap: normal;
 }
 
-.home-hero-value span {
-  display: block;
-  white-space: nowrap;
-}
-
 .home-email-copy-row {
   display: inline-flex;
   align-items: center;
@@ -514,15 +509,6 @@ body {
     letter-spacing: var(--home-hero-subtext-tracking, -0.014em);
     line-height: max(var(--home-hero-subtext-line, 1.12), 1.24);
     margin-top: 0;
-  }
-
-  .home-hero-value span {
-    display: inline;
-    white-space: normal;
-  }
-
-  .home-hero-value span:not(:last-child)::after {
-    content: " ";
   }
 
   .home-hero-portrait {

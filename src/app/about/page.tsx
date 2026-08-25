@@ -383,7 +383,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="home-contact-band">
+        <section className="home-contact-band" data-nosnippet>
           <div className="home-contact-content">
             <div className="home-contact-copy-stack">
               <p className="home-contact-copy">{aboutContent.contact.description}</p>
@@ -404,7 +404,7 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-          <footer className="work-footer home-footer">
+          <footer className="work-footer home-footer" data-nosnippet>
             <div>
               <p>{preventTextOrphans(aboutContent.footer.name)}</p>
               <p>{aboutContent.footer.year}</p>
