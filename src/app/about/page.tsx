@@ -324,7 +324,7 @@ export default function AboutPage() {
                   ) : image.media?.type === "image" ? (
                     <Image
                       src={image.media.src}
-                      alt=""
+                      alt={image.label}
                       width={image.media.width}
                       height={image.media.height}
                       sizes="(max-width: 760px) 90vw, 38vw"

@@ -15,6 +15,34 @@ const homeFeaturedProjects = featuredHomeProjectSlugs
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
 
 const HOME_EMAIL = "gtbunt@gmail.com";
+const HOME_SUPPORT_TEXT =
+  "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and driving teams to bring ambitious ideas to life.";
+const HOME_STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://grahambunt.com/#person",
+      name: "Graham Bunt",
+      jobTitle: "Product Designer",
+      url: "https://grahambunt.com",
+      email: "mailto:gtbunt@gmail.com",
+      image: "https://grahambunt.com/home-hero-portrait.jpg",
+      sameAs: ["https://www.linkedin.com/in/grahambunt/"],
+      description: HOME_SUPPORT_TEXT,
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://grahambunt.com/#website",
+      name: "Graham Bunt",
+      url: "https://grahambunt.com",
+      publisher: {
+        "@id": "https://grahambunt.com/#person",
+      },
+      description: HOME_SUPPORT_TEXT,
+    },
+  ],
+};
 
 type HeroH1TypeDials = {
   tracking: number;
@@ -205,6 +233,10 @@ export default function Home() {
         } as CSSProperties
       }
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_STRUCTURED_DATA) }}
+      />
       <div className="home-page-shell">
         <SiteNav />
 
@@ -242,7 +274,7 @@ export default function Home() {
             <span ref={heroPortraitRef} className="home-hero-portrait-parallax">
               <Image
                 src="/home-hero-portrait.jpg"
-                alt=""
+                alt="Graham Bunt, product designer"
                 width={1000}
                 height={978}
                 priority
@@ -253,7 +285,7 @@ export default function Home() {
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and driving teams to bring ambitious ideas to life.
+            {HOME_SUPPORT_TEXT}
           </p>
         </section>
 
