@@ -1844,12 +1844,12 @@ body {
   left: auto;
   width: var(--about-collage-large-width);
   --about-label-top: 32%;
-  --about-label-left: 98%;
-  --about-label-x: -72%;
+  --about-label-left: -8%;
+  --about-label-x: 0%;
   --about-label-y: -50%;
   --about-label-width: calc(100% + 11vw);
-  --about-label-align: right;
-  --about-label-justify: flex-end;
+  --about-label-align: left;
+  --about-label-justify: flex-start;
   --about-label-size: clamp(26px, 3.3vw, 62px);
 }
 
