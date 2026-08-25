@@ -20,19 +20,31 @@ export default function Icon() {
           justifyContent: "center",
           width: "100%",
           height: "100%",
+          background: "transparent",
         }}
       >
-        <img
-          src={dataUrl}
-          width={64}
-          height={64}
+        <div
           style={{
+            display: "flex",
             width: "64px",
             height: "64px",
-            objectFit: "cover",
+            borderRadius: "9999px",
+            overflow: "hidden",
           }}
-          alt=""
-        />
+        >
+          <img
+            src={dataUrl}
+            width={64}
+            height={64}
+            style={{
+              display: "block",
+              width: "64px",
+              height: "64px",
+              objectFit: "cover",
+            }}
+            alt=""
+          />
+        </div>
       </div>
     ),
     size
