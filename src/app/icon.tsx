@@ -16,20 +16,23 @@ export default function Icon() {
       <div
         style={{
           display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           width: "100%",
           height: "100%",
           borderRadius: "50%",
           overflow: "hidden",
-          background: "#000",
+          background: "#ffffff",
         }}
       >
         <img
           src={dataUrl}
-          width={64}
-          height={64}
+          width={48}
+          height={48}
           style={{
-            width: "100%",
-            height: "100%",
+            width: "48px",
+            height: "48px",
+            borderRadius: "50%",
             objectFit: "cover",
           }}
           alt=""

@@ -10,6 +10,13 @@ import { preventTextOrphans } from "@/lib/typography";
 const HOME_EMAIL = "gtbunt@gmail.com";
 const LABEL_EXIT_DURATION = 460;
 const ABOUT_HOVER_LABELS_ENABLED = true;
+const SHARED_SUPPORT_TYPE = {
+  tracking: -0.014,
+  lineHeight: 1.12,
+  size: 33,
+  maxWidth: 760,
+  weight: 400,
+};
 
 type AboutMedia =
   | {
@@ -230,7 +237,18 @@ export default function AboutPage() {
   };
 
   return (
-    <div className={`about-page ${ABOUT_HOVER_LABELS_ENABLED ? "is-about-hover-labels-enabled" : ""} ${fontsReady ? "sequence-ready" : ""}`}>
+    <div
+      className={`about-page ${ABOUT_HOVER_LABELS_ENABLED ? "is-about-hover-labels-enabled" : ""} ${fontsReady ? "sequence-ready" : ""}`}
+      style={
+        {
+          "--home-hero-subtext-tracking": `${SHARED_SUPPORT_TYPE.tracking}em`,
+          "--home-hero-subtext-line": SHARED_SUPPORT_TYPE.lineHeight,
+          "--home-hero-subtext-size": `${SHARED_SUPPORT_TYPE.size}px`,
+          "--home-hero-subtext-max-width": `${SHARED_SUPPORT_TYPE.maxWidth}px`,
+          "--home-hero-subtext-weight": SHARED_SUPPORT_TYPE.weight,
+        } as CSSProperties
+      }
+    >
       <SiteNav showBack />
 
       <main className="about-main">

@@ -4,7 +4,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Graham Bunt — Product Designer",
-  description: "Product Designer based in Salt Lake City, Utah.",
+  description:
+    "Graham Bunt is a designer imagining possibilities, moving teams forward, and pouring care and intention into the craft.",
 };
 
 export default function RootLayout({

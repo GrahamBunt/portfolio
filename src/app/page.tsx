@@ -36,7 +36,7 @@ type HeroSubtextTypeDials = {
 
 const HERO_H1_DEFAULT_TYPE_DIALS: HeroH1TypeDials = {
   tracking: -0.022,
-  lineHeight: 0.925,
+  lineHeight: 0.9,
   minSize: 60,
   viewportSize: 8.7,
   maxSize: 144,
@@ -199,7 +199,12 @@ export default function Home() {
               } as CSSProperties
             }
           >
-            In pursuit of making things well.
+            <span className="home-hero-line home-hero-line-top">
+              In <span className="home-hero-overlap-char">p</span>ursuit of
+            </span>{" "}
+            <span className="home-hero-line home-hero-line-bottom">
+              sh<span className="home-hero-foreground-char">i</span>pping great work.
+            </span>
           </h1>
           <figure
             className={`home-hero-portrait ${fontsReady ? "animate-reveal" : "opacity-0"}`}
@@ -219,9 +224,9 @@ export default function Home() {
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
           >
-            <span>Graham Bunt is a designer imagining possibilities,</span>
-            <span>moving teams forward, and pouring care and</span>
-            <span>intention into the craft.</span>
+            <span>Graham Bunt is a product designer leaning into </span>
+            <span>scale and complexity, shaping direction, and driving </span>
+            <span>teams to bring ambitious ideas to life.</span>
           </p>
         </section>
 
