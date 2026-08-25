@@ -21,12 +21,12 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
   if (!project) {
     return {
-      title: "Project not found — Graham Bunt",
+      title: "Graham Bunt — Project not found",
     };
   }
 
   return {
-    title: `${project.title} — Graham Bunt`,
+    title: `Graham Bunt — ${project.title}`,
     description: project.summary,
   };
 }
