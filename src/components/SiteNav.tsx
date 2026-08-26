@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { SocialIcon } from "@/components/SocialIcon";
 
@@ -16,7 +17,13 @@ function BackIcon() {
   );
 }
 
-export function SiteNav({ showBack = false }: { showBack?: boolean }) {
+export function SiteNav({
+  showBack = false,
+  avatarTone = "color",
+}: {
+  showBack?: boolean;
+  avatarTone?: "color" | "grayscale";
+}) {
   const onAvatarClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (window.location.pathname === "/") {
       event.preventDefault();
@@ -30,12 +37,19 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
         <Link
           href="/"
           aria-label="Home"
-          className="site-nav-avatar group relative block overflow-hidden rounded-full"
+          className={`site-nav-avatar group relative block overflow-hidden rounded-full ${
+            avatarTone === "grayscale" ? "is-grayscale" : "is-color"
+          }`}
           onClick={onAvatarClick}
         >
-          <div
+          <Image
+            src="/avatar-thumb.webp"
+            alt=""
+            width={160}
+            height={160}
+            sizes="40px"
+            priority
             className="site-nav-avatar-image h-full w-full rounded-full bg-cover bg-center"
-            style={{ backgroundImage: "url(/avatar-thumb.webp)" }}
           />
         </Link>
         {showBack ? (

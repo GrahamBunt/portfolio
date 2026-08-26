@@ -267,12 +267,43 @@ body {
 }
 
 .home-email-copy-text {
+  position: relative;
+  display: inline-grid;
+  align-items: center;
   color: #ffffff;
   font-family: var(--font-sans-preview), sans-serif;
   font-size: var(--type-body-size);
   font-weight: var(--type-body-weight);
   letter-spacing: 0;
   line-height: var(--type-body-line);
+}
+
+.home-email-copy-text-layer {
+  grid-area: 1 / 1;
+  transition:
+    opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  white-space: nowrap;
+}
+
+.home-email-copy-text-layer.is-email {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-email-copy-text-layer.is-copied {
+  opacity: 0;
+  transform: translateY(7px);
+}
+
+.home-email-copy-text.is-copied .home-email-copy-text-layer.is-email {
+  opacity: 0;
+  transform: translateY(-5px);
+}
+
+.home-email-copy-text.is-copied .home-email-copy-text-layer.is-copied {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .home-copy-email-button.nav-item-pill:hover,
@@ -304,13 +335,28 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 1px;
-  height: 1px;
+  width: 1.35px;
+  height: 1.35px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.88);
   opacity: 0;
   transform: translate(-50%, -50%) translate(0, 0);
   animation: copy-particle-drift 720ms cubic-bezier(0.16, 1, 0.3, 1) var(--particle-delay, 0ms) both;
+}
+
+.home-copy-email-particle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  width: 11px;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32));
+  opacity: 0;
+  transform: translateY(-50%) rotate(var(--particle-angle, 0deg));
+  transform-origin: right center;
+  animation: copy-particle-trace 720ms cubic-bezier(0.16, 1, 0.3, 1) var(--particle-delay, 0ms) both;
 }
 
 .home-selected-work-section {
@@ -742,6 +788,26 @@ body {
   }
 }
 
+@keyframes copy-particle-trace {
+  0%,
+  8% {
+    opacity: 0;
+    width: 0;
+  }
+  22% {
+    opacity: 0.42;
+    width: 9px;
+  }
+  58% {
+    opacity: 0.22;
+    width: 11px;
+  }
+  100% {
+    opacity: 0;
+    width: 7px;
+  }
+}
+
 @keyframes rise-in {
   0% {
     opacity: 0;
@@ -1097,9 +1163,16 @@ body {
   display: block;
   width: 100%;
   height: 100%;
-  background-position: center;
-  background-size: cover;
-  transition: transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  object-fit: cover;
+  filter: grayscale(0);
+  transition:
+    filter 520ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: filter, transform;
+}
+
+.site-nav-avatar.is-grayscale .site-nav-avatar-image {
+  filter: grayscale(1);
 }
 
 .site-nav-avatar:hover .site-nav-avatar-image,

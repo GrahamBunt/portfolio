@@ -16,7 +16,7 @@ const homeFeaturedProjects = featuredHomeProjectSlugs
 
 const HOME_EMAIL = "gtbunt@gmail.com";
 const HOME_SUPPORT_TEXT =
-  "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and helping teams to bring ambitious ideas to life.";
+  "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and helping teams bring ambitious ideas to life.";
 const HOME_STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@graph": [
@@ -99,7 +99,7 @@ function CopyIcon() {
 
 function CheckIcon() {
   return (
-    <svg className="home-copy-email-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.95" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg className="home-copy-email-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.08" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <polyline points="20 6 9 17 4 12" />
     </svg>
   );
@@ -107,27 +107,34 @@ function CheckIcon() {
 
 function CopyParticles() {
   const particles = [
-    ["0px", "-62px", "0ms"],
-    ["46px", "-50px", "18ms"],
-    ["64px", "-4px", "32ms"],
-    ["47px", "48px", "46ms"],
-    ["2px", "64px", "16ms"],
-    ["-50px", "46px", "38ms"],
-    ["-64px", "-2px", "24ms"],
-    ["-44px", "-52px", "8ms"],
-    ["24px", "-70px", "54ms"],
-    ["68px", "26px", "4ms"],
-    ["-26px", "68px", "58ms"],
-    ["-70px", "-22px", "42ms"],
+    ["0px", "-62px", "0ms", "90deg"],
+    ["46px", "-50px", "18ms", "132deg"],
+    ["64px", "-4px", "32ms", "176deg"],
+    ["47px", "48px", "46ms", "224deg"],
+    ["2px", "64px", "16ms", "268deg"],
+    ["-50px", "46px", "38ms", "313deg"],
+    ["-64px", "-2px", "24ms", "2deg"],
+    ["-44px", "-52px", "8ms", "40deg"],
+    ["24px", "-70px", "54ms", "109deg"],
+    ["68px", "26px", "4ms", "201deg"],
+    ["-26px", "68px", "58ms", "291deg"],
+    ["-70px", "-22px", "42ms", "17deg"],
   ];
 
   return (
     <span className="home-copy-email-particles" aria-hidden="true">
-      {particles.map(([x, y, delay], index) => (
+      {particles.map(([x, y, delay, angle], index) => (
         <span
           key={`${x}-${y}-${index}`}
           className="home-copy-email-particle"
-          style={{ "--particle-x": x, "--particle-y": y, "--particle-delay": delay } as CSSProperties}
+          style={
+            {
+              "--particle-x": x,
+              "--particle-y": y,
+              "--particle-delay": delay,
+              "--particle-angle": angle,
+            } as CSSProperties
+          }
         />
       ))}
     </span>
@@ -141,7 +148,9 @@ function getProjectImage(project: (typeof allWork)[number]) {
 export default function Home() {
   const [fontsReady, setFontsReady] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [homeAvatarInColor, setHomeAvatarInColor] = useState(false);
   const heroPortraitRef = useRef<HTMLSpanElement>(null);
+  const homeAvatarInColorRef = useRef(false);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -170,6 +179,12 @@ export default function Home() {
 
     const updatePortraitParallax = () => {
       frame = 0;
+      const nextAvatarInColor = portrait.getBoundingClientRect().bottom <= 80;
+
+      if (nextAvatarInColor !== homeAvatarInColorRef.current) {
+        homeAvatarInColorRef.current = nextAvatarInColor;
+        setHomeAvatarInColor(nextAvatarInColor);
+      }
 
       if (reduceMotion.matches) {
         portrait.style.setProperty("--home-hero-portrait-parallax", "0px");
@@ -238,7 +253,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_STRUCTURED_DATA) }}
       />
       <div className="home-page-shell">
-        <SiteNav />
+        <SiteNav avatarTone={homeAvatarInColor ? "color" : "grayscale"} />
 
         <section
           data-section="intro"
@@ -363,8 +378,17 @@ export default function Home() {
                   {copiedEmail ? <CheckIcon /> : <CopyIcon />}
                   {copiedEmail ? <CopyParticles /> : null}
                 </button>
-                <span className="home-email-copy-text" aria-live="polite">
-                  {copiedEmail ? "Copied" : HOME_EMAIL}
+                <span
+                  className={`home-email-copy-text ${copiedEmail ? "is-copied" : ""}`}
+                  aria-live="polite"
+                >
+                  <span className="home-email-copy-text-layer is-email" aria-hidden={copiedEmail}>
+                    {HOME_EMAIL}
+                  </span>
+                  <span className="home-email-copy-text-layer is-copied" aria-hidden={!copiedEmail}>
+                    Copied
+                  </span>
+                  <span className="sr-only">{copiedEmail ? "Copied" : HOME_EMAIL}</span>
                 </span>
               </div>
             </div>
