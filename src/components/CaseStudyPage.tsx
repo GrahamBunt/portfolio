@@ -2325,12 +2325,15 @@ function CaseStudyNextUpSection({
           const cardContent = (
             <>
               <figure className="case-study-next-up-media">
-                <img
+                <Image
                   src={item.upNextImage ?? item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image}
                   alt=""
+                  fill
+                  sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1180px) calc((100vw - 40px - 24px) / 2), 680px"
                   loading="lazy"
-                  decoding="async"
+                  quality={90}
                   style={{
+                    objectFit: "cover",
                     objectPosition: item.slug === "smartsheet-reports" || item.slug === "resource-management-integration" ? "70% 18%" : undefined,
                   }}
                 />

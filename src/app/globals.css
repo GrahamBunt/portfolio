@@ -1164,15 +1164,8 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(0);
-  transition:
-    filter 520ms cubic-bezier(0.25, 0.1, 0.25, 1),
-    transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
-  will-change: filter, transform;
-}
-
-.site-nav-avatar.is-grayscale .site-nav-avatar-image {
-  filter: grayscale(1);
+  transition: transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
 }
 
 .site-nav-avatar:hover .site-nav-avatar-image,
@@ -5857,6 +5850,7 @@ body {
 }
 
 .case-study-next-up-media {
+  position: relative;
   width: 100%;
   aspect-ratio: 10 / 9;
   overflow: hidden;

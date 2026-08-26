@@ -148,9 +148,8 @@ function getProjectImage(project: (typeof allWork)[number]) {
 export default function Home() {
   const [fontsReady, setFontsReady] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [homeAvatarInColor, setHomeAvatarInColor] = useState(false);
+  const [copyBurstKey, setCopyBurstKey] = useState(0);
   const heroPortraitRef = useRef<HTMLSpanElement>(null);
-  const homeAvatarInColorRef = useRef(false);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -179,12 +178,6 @@ export default function Home() {
 
     const updatePortraitParallax = () => {
       frame = 0;
-      const nextAvatarInColor = portrait.getBoundingClientRect().bottom <= 80;
-
-      if (nextAvatarInColor !== homeAvatarInColorRef.current) {
-        homeAvatarInColorRef.current = nextAvatarInColor;
-        setHomeAvatarInColor(nextAvatarInColor);
-      }
 
       if (reduceMotion.matches) {
         portrait.style.setProperty("--home-hero-portrait-parallax", "0px");
@@ -232,6 +225,7 @@ export default function Home() {
       }
     }
 
+    setCopyBurstKey((key) => key + 1);
     setCopiedEmail(true);
   };
 
@@ -253,7 +247,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_STRUCTURED_DATA) }}
       />
       <div className="home-page-shell">
-        <SiteNav avatarTone={homeAvatarInColor ? "color" : "grayscale"} />
+        <SiteNav />
 
         <section
           data-section="intro"
@@ -288,7 +282,7 @@ export default function Home() {
           >
             <span ref={heroPortraitRef} className="home-hero-portrait-parallax">
               <Image
-                src="/home-hero-portrait.jpg"
+                src="/home-hero-portrait-mono.jpg"
                 alt="Graham Bunt, product designer"
                 width={1000}
                 height={978}
@@ -336,7 +330,6 @@ export default function Home() {
                     preload={project.slug === "smartsheet-reports"}
                     fetchPriority={project.slug === "smartsheet-reports" ? "high" : "auto"}
                     quality={92}
-                    unoptimized
                     style={{
                       objectPosition: project.slug === "smartsheet-reports" || project.slug === "resource-management-integration" ? "70% 18%" : "50% 50%",
                     }}
@@ -376,7 +369,7 @@ export default function Home() {
                   aria-live="polite"
                 >
                   {copiedEmail ? <CheckIcon /> : <CopyIcon />}
-                  {copiedEmail ? <CopyParticles /> : null}
+                  {copiedEmail ? <CopyParticles key={copyBurstKey} /> : null}
                 </button>
                 <span
                   className={`home-email-copy-text ${copiedEmail ? "is-copied" : ""}`}

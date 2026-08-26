@@ -17,13 +17,7 @@ function BackIcon() {
   );
 }
 
-export function SiteNav({
-  showBack = false,
-  avatarTone = "color",
-}: {
-  showBack?: boolean;
-  avatarTone?: "color" | "grayscale";
-}) {
+export function SiteNav({ showBack = false }: { showBack?: boolean }) {
   const onAvatarClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (window.location.pathname === "/") {
       event.preventDefault();
@@ -37,9 +31,7 @@ export function SiteNav({
         <Link
           href="/"
           aria-label="Home"
-          className={`site-nav-avatar group relative block overflow-hidden rounded-full ${
-            avatarTone === "grayscale" ? "is-grayscale" : "is-color"
-          }`}
+          className="site-nav-avatar group relative block overflow-hidden rounded-full"
           onClick={onAvatarClick}
         >
           <Image
