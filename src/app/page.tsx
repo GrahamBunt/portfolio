@@ -16,7 +16,7 @@ const homeFeaturedProjects = featuredHomeProjectSlugs
 
 const HOME_EMAIL = "gtbunt@gmail.com";
 const HOME_SUPPORT_TEXT =
-  "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and driving teams to bring ambitious ideas to life.";
+  "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and helping teams to bring ambitious ideas to life.";
 const HOME_STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@graph": [
