@@ -2501,7 +2501,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   if (isDeckCaseStudy && project.deckSlides) {
     return (
       <div className={`case-study-page case-study-deck-page ${sequenceReady ? "sequence-ready" : ""}`}>
-        <SiteNav showBack />
+        <SiteNav />
 
         <main className="case-study-main case-study-deck-main">
           <section className="case-study-hero-section case-study-deck-title-section" aria-label={title}>
@@ -2547,7 +2547,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
 
   return (
     <div className={`case-study-page ${isStructuredCaseStudy ? "is-structured-case-study" : ""} ${usesSmartsheetTemplate ? "is-smartsheet-reports" : ""} ${isResourceManagementCaseStudy ? "is-resource-management-integration" : ""} ${isMetLifeMexicoCaseStudy ? "is-metlife-mexico" : ""} ${sequenceReady ? "sequence-ready" : ""}`}>
-      <SiteNav showBack />
+      <SiteNav />
 
       <main className="case-study-main">
         <section className="case-study-hero-section" aria-label={title}>

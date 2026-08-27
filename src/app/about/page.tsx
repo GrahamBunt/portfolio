@@ -278,7 +278,7 @@ export default function AboutPage() {
         } as CSSProperties
       }
     >
-      <SiteNav showBack />
+      <SiteNav />
 
       <main className="about-main">
         <section className="about-act-one" aria-label="Personal">

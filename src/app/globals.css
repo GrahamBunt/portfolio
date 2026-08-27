@@ -1246,29 +1246,6 @@ body {
   flex-basis: 80px;
 }
 
-.nav-back-pill {
-  width: 86px;
-  min-width: 86px;
-  max-width: 86px;
-  flex-basis: 86px;
-  gap: 7px;
-  padding: 6px 15px 6px 14px;
-}
-
-.nav-back-icon {
-  display: inline-flex;
-  width: 16px;
-  height: 16px;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-back-icon svg {
-  display: block;
-  width: 16px;
-  height: 16px;
-}
-
 .nav-item-pill:hover,
 .nav-item-pill:focus-visible,
 .nav-item-pill[aria-expanded="true"] {

@@ -8,16 +8,7 @@ const NAV_LINKS = [
   { label: "About", href: "/about" },
 ];
 
-function BackIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
-      <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="m12 5-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-export function SiteNav({ showBack = false }: { showBack?: boolean }) {
+export function SiteNav() {
   const onAvatarClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (window.location.pathname === "/") {
       event.preventDefault();
@@ -44,14 +35,6 @@ export function SiteNav({ showBack = false }: { showBack?: boolean }) {
             className="site-nav-avatar-image h-full w-full rounded-full bg-cover bg-center"
           />
         </Link>
-        {showBack ? (
-          <Link href="/" aria-label="Back home" className="nav-item-pill nav-back-pill font-sans-preview font-medium text-white">
-            <span className="nav-back-icon">
-              <BackIcon />
-            </span>
-            Back
-          </Link>
-        ) : null}
       </div>
       <div className="site-nav-links font-sans-preview flex items-center gap-2.5 text-base font-medium leading-6">
         {NAV_LINKS.map((link) => (
