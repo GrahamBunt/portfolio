@@ -99,8 +99,8 @@ function CopyIcon() {
 
 function CheckIcon() {
   return (
-    <svg className="home-copy-email-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.08" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <polyline points="20 6 9 17 4 12" />
+    <svg className="home-copy-email-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.95" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <polyline points="18.75 7.25 10.25 15.75 5.25 10.75" />
     </svg>
   );
 }

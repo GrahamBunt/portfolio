@@ -263,7 +263,7 @@ body {
 }
 
 .home-copy-email-check-icon {
-  transform: translate(1px, -0.5px);
+  transform: translate(0.35px, -0.35px);
 }
 
 .home-email-copy-text {
