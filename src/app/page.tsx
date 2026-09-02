@@ -99,36 +99,35 @@ function CopyIcon() {
 
 function CheckIcon() {
   return (
-    <svg className="home-copy-email-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.95" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <polyline points="18.75 7.25 10.25 15.75 5.25 10.75" />
+    <svg className="home-copy-email-check-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <polyline points="19 7.15 10.15 16 5 10.85" />
     </svg>
   );
 }
 
 function CopyParticles() {
   const particles = [
-    ["0px", "-62px", "0ms", "90deg"],
-    ["46px", "-50px", "18ms", "132deg"],
-    ["64px", "-4px", "32ms", "176deg"],
-    ["47px", "48px", "46ms", "224deg"],
-    ["2px", "64px", "16ms", "268deg"],
-    ["-50px", "46px", "38ms", "313deg"],
-    ["-64px", "-2px", "24ms", "2deg"],
-    ["-44px", "-52px", "8ms", "40deg"],
-    ["24px", "-70px", "54ms", "109deg"],
-    ["68px", "26px", "4ms", "201deg"],
-    ["-26px", "68px", "58ms", "291deg"],
-    ["-70px", "-22px", "42ms", "17deg"],
+    ["4px", "-20px", "11px", "-45px", "15px", "-58px", "70ms", "104deg"],
+    ["17px", "-10px", "42px", "-32px", "55px", "-43px", "82ms", "138deg"],
+    ["20px", "4px", "51px", "7px", "66px", "9px", "96ms", "184deg"],
+    ["13px", "15px", "35px", "41px", "47px", "54px", "108ms", "230deg"],
+    ["-3px", "20px", "-9px", "47px", "-12px", "61px", "90ms", "282deg"],
+    ["-17px", "9px", "-43px", "25px", "-56px", "33px", "102ms", "332deg"],
+    ["-12px", "-16px", "-32px", "-40px", "-43px", "-52px", "78ms", "46deg"],
   ];
 
   return (
     <span className="home-copy-email-particles" aria-hidden="true">
-      {particles.map(([x, y, delay, angle], index) => (
+      {particles.map(([originX, originY, midX, midY, x, y, delay, angle], index) => (
         <span
           key={`${x}-${y}-${index}`}
           className="home-copy-email-particle"
           style={
             {
+              "--particle-origin-x": originX,
+              "--particle-origin-y": originY,
+              "--particle-mid-x": midX,
+              "--particle-mid-y": midY,
               "--particle-x": x,
               "--particle-y": y,
               "--particle-delay": delay,
@@ -165,7 +164,7 @@ export default function Home() {
   useEffect(() => {
     if (!copiedEmail) return;
 
-    const timeoutId = window.setTimeout(() => setCopiedEmail(false), 2600);
+    const timeoutId = window.setTimeout(() => setCopiedEmail(false), 1250);
     return () => window.clearTimeout(timeoutId);
   }, [copiedEmail]);
 
@@ -368,7 +367,16 @@ export default function Home() {
                   aria-label={copiedEmail ? "Email copied" : "Copy email address"}
                   aria-live="polite"
                 >
-                  {copiedEmail ? <CheckIcon /> : <CopyIcon />}
+                  <span className="home-copy-email-icon-stack" aria-hidden="true">
+                    <span className="home-copy-email-icon-layer is-copy">
+                      <CopyIcon />
+                    </span>
+                    <span className="home-copy-email-icon-layer is-check">
+                      <CheckIcon />
+                    </span>
+                  </span>
+                  {copiedEmail ? <span key={`surface-${copyBurstKey}`} className="home-copy-email-surface" aria-hidden="true" /> : null}
+                  {copiedEmail ? <span key={`pulse-${copyBurstKey}`} className="home-copy-email-pulse" aria-hidden="true" /> : null}
                   {copiedEmail ? <CopyParticles key={copyBurstKey} /> : null}
                 </button>
                 <span

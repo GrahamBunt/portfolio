@@ -237,6 +237,8 @@ body {
 .home-copy-email-button.nav-item-pill {
   position: relative;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   width: 40px;
   height: 40px;
@@ -258,12 +260,83 @@ body {
 }
 
 .home-copy-email-button svg {
+  position: relative;
+  display: block;
   color: var(--color-page-background);
   transition: color 160ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
+.home-copy-email-icon-stack {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.home-copy-email-icon-layer {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 58%;
+  transition:
+    opacity 120ms cubic-bezier(0.33, 1, 0.68, 1),
+    transform 170ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.home-copy-email-icon-layer.is-copy {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(0deg);
+}
+
+.home-copy-email-icon-layer.is-check {
+  opacity: 0;
+  transform: translateY(2px) scale(0.88) rotate(-5deg);
+}
+
+.home-copy-email-button.is-copied .home-copy-email-icon-layer.is-copy {
+  opacity: 0;
+  transform: translateY(-2px) scale(0.9) rotate(3deg);
+  transition:
+    opacity 170ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-copy-email-button.is-copied .home-copy-email-icon-layer.is-check {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(0deg);
+  transition-delay: 42ms;
+  transition-duration: 190ms, 270ms;
+}
+
+.home-copy-email-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(26, 26, 26, 0.14), rgba(26, 26, 26, 0) 58%);
+  opacity: 0;
+  transform: scale(0.18);
+  pointer-events: none;
+  animation: copy-button-surface 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-copy-email-pulse {
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  border: 1px solid rgba(26, 26, 26, 0.2);
+  opacity: 0;
+  transform: scale(0.86);
+  animation: copy-button-confirm-pulse 430ms cubic-bezier(0.19, 1, 0.22, 1) 28ms both;
+}
+
 .home-copy-email-check-icon {
-  transform: translate(0.35px, -0.35px);
+  transform: translate(0.45px, -0.15px) scale(1.02);
 }
 
 .home-email-copy-text {
@@ -281,8 +354,8 @@ body {
 .home-email-copy-text-layer {
   grid-area: 1 / 1;
   transition:
-    opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
   white-space: nowrap;
 }
 
@@ -299,11 +372,13 @@ body {
 .home-email-copy-text.is-copied .home-email-copy-text-layer.is-email {
   opacity: 0;
   transform: translateY(-5px);
+  transition-delay: 40ms;
 }
 
 .home-email-copy-text.is-copied .home-email-copy-text-layer.is-copied {
   opacity: 1;
   transform: translateY(0);
+  transition-delay: 80ms;
 }
 
 .home-copy-email-button.nav-item-pill:hover,
@@ -338,10 +413,10 @@ body {
   width: 1.35px;
   height: 1.35px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   opacity: 0;
-  transform: translate(-50%, -50%) translate(0, 0);
-  animation: copy-particle-drift 720ms cubic-bezier(0.16, 1, 0.3, 1) var(--particle-delay, 0ms) both;
+  transform: translate(-50%, -50%) translate(var(--particle-origin-x), var(--particle-origin-y));
+  animation: copy-particle-drift 620ms cubic-bezier(0.18, 0.86, 0.32, 1) var(--particle-delay, 0ms) both;
 }
 
 .home-copy-email-particle::before {
@@ -349,14 +424,14 @@ body {
   position: absolute;
   top: 50%;
   right: 50%;
-  width: 11px;
+  width: 7px;
   height: 1px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32));
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24));
   opacity: 0;
   transform: translateY(-50%) rotate(var(--particle-angle, 0deg));
   transform-origin: right center;
-  animation: copy-particle-trace 720ms cubic-bezier(0.16, 1, 0.3, 1) var(--particle-delay, 0ms) both;
+  animation: copy-particle-trace 620ms cubic-bezier(0.18, 0.86, 0.32, 1) var(--particle-delay, 0ms) both;
 }
 
 .home-selected-work-section {
@@ -768,19 +843,56 @@ body {
   to { opacity: 1; }
 }
 
+@keyframes copy-button-confirm-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  24% {
+    opacity: 0.2;
+  }
+  64% {
+    opacity: 0.1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes copy-button-surface {
+  0% {
+    opacity: 0;
+    transform: scale(0.18);
+  }
+  24% {
+    opacity: 0.14;
+  }
+  68% {
+    opacity: 0.06;
+    transform: scale(0.82);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
 @keyframes copy-particle-drift {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) translate(0, 0);
+    transform: translate(-50%, -50%) translate(var(--particle-origin-x), var(--particle-origin-y));
   }
-  9% {
-    opacity: 0.95;
+  8% {
+    opacity: 0.86;
   }
-  42% {
-    opacity: 0.72;
+  30% {
+    opacity: 0.56;
+    transform: translate(-50%, -50%) translate(var(--particle-mid-x), var(--particle-mid-y));
   }
-  74% {
-    opacity: 0.28;
+  72% {
+    opacity: 0.18;
   }
   100% {
     opacity: 0;
@@ -790,21 +902,21 @@ body {
 
 @keyframes copy-particle-trace {
   0%,
-  8% {
+  12% {
     opacity: 0;
     width: 0;
   }
-  22% {
-    opacity: 0.42;
-    width: 9px;
+  28% {
+    opacity: 0.18;
+    width: 5px;
   }
-  58% {
-    opacity: 0.22;
-    width: 11px;
+  54% {
+    opacity: 0.1;
+    width: 7px;
   }
   100% {
     opacity: 0;
-    width: 7px;
+    width: 4px;
   }
 }
 
