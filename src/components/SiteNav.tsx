@@ -41,7 +41,7 @@ export function SiteNav() {
           <Link
             key={link.href}
             href={link.href}
-            className="nav-item-pill nav-link-about text-white"
+            className="nav-item-pill nav-link-about text-[var(--text-primary)]"
             aria-label={link.label}
           >
             {link.label}
@@ -49,7 +49,7 @@ export function SiteNav() {
         ))}
         <a
           href="https://www.linkedin.com/in/grahambunt/"
-          className="nav-item-pill nav-link-linkedin text-white"
+          className="nav-item-pill nav-link-linkedin text-[var(--text-primary)]"
           aria-label="LinkedIn"
           target="_blank"
           rel="noreferrer"

@@ -3,11 +3,11 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { EmailCopyControl } from "@/components/EmailCopyControl";
 import { SiteNav } from "@/components/SiteNav";
 import { aboutContent } from "@/content/about";
 import { preventTextOrphans } from "@/lib/typography";
 
-const HOME_EMAIL = "gtbunt@gmail.com";
 const LABEL_EXIT_DURATION = 460;
 const ABOUT_HOVER_LABELS_ENABLED = true;
 const SHARED_SUPPORT_TYPE = {
@@ -86,55 +86,8 @@ const aboutImages: AboutImageItem[] = [
   },
 ];
 
-function CopyIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.95" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg className="home-copy-email-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.95" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  );
-}
-
-function CopyParticles() {
-  const particles = [
-    ["0px", "-62px", "0ms"],
-    ["46px", "-50px", "18ms"],
-    ["64px", "-4px", "32ms"],
-    ["47px", "48px", "46ms"],
-    ["2px", "64px", "16ms"],
-    ["-50px", "46px", "38ms"],
-    ["-64px", "-2px", "24ms"],
-    ["-44px", "-52px", "8ms"],
-    ["24px", "-70px", "54ms"],
-    ["68px", "26px", "4ms"],
-    ["-26px", "68px", "58ms"],
-    ["-70px", "-22px", "42ms"],
-  ];
-
-  return (
-    <span className="home-copy-email-particles" aria-hidden="true">
-      {particles.map(([x, y, delay], index) => (
-        <span
-          key={`${x}-${y}-${index}`}
-          className="home-copy-email-particle"
-          style={{ "--particle-x": x, "--particle-y": y, "--particle-delay": delay } as CSSProperties}
-        />
-      ))}
-    </span>
-  );
-}
-
 export default function AboutPage() {
   const [fontsReady, setFontsReady] = useState(false);
-  const [copiedEmail, setCopiedEmail] = useState(false);
   const [labelStates, setLabelStates] = useState<Record<number, "active" | "exiting">>({});
   const labelExitTimeouts = useRef<Record<number, number>>({});
   const collageFrameRefs = useRef<Array<HTMLSpanElement | null>>([]);
@@ -149,13 +102,6 @@ export default function AboutPage() {
       .then(() => new Promise((resolve) => setTimeout(resolve, 120)))
       .then(() => setFontsReady(true));
   }, []);
-
-  useEffect(() => {
-    if (!copiedEmail) return;
-
-    const timeoutId = window.setTimeout(() => setCopiedEmail(false), 2600);
-    return () => window.clearTimeout(timeoutId);
-  }, [copiedEmail]);
 
   useEffect(() => {
     const timeouts = labelExitTimeouts.current;
@@ -243,26 +189,6 @@ export default function AboutPage() {
         return next;
       });
     }, LABEL_EXIT_DURATION);
-  };
-
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(HOME_EMAIL);
-    } catch {
-      const textarea = document.createElement("textarea");
-      textarea.value = HOME_EMAIL;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand("copy");
-      } finally {
-        document.body.removeChild(textarea);
-      }
-    }
-
-    setCopiedEmail(true);
   };
 
   return (
@@ -387,21 +313,7 @@ export default function AboutPage() {
           <div className="home-contact-content">
             <div className="home-contact-copy-stack">
               <p className="home-contact-copy">{aboutContent.contact.description}</p>
-              <div className="home-email-copy-row">
-                <button
-                  type="button"
-                  className={`nav-item-pill home-copy-email-button ${copiedEmail ? "is-copied" : ""}`}
-                  onClick={copyEmail}
-                  aria-label={copiedEmail ? "Email copied" : "Copy email address"}
-                  aria-live="polite"
-                >
-                  {copiedEmail ? <CheckIcon /> : <CopyIcon />}
-                  {copiedEmail ? <CopyParticles /> : null}
-                </button>
-                <span className="home-email-copy-text" aria-live="polite">
-                  {copiedEmail ? "Copied" : aboutContent.contact.action}
-                </span>
-              </div>
+              <EmailCopyControl email={aboutContent.contact.action} />
             </div>
           </div>
           <footer className="work-footer home-footer" data-nosnippet>

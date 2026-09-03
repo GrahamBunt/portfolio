@@ -37,7 +37,7 @@ const defaultProblemCardDials: ProblemCardDials = {
 };
 
 const overviewCopyStyle: CSSProperties = {
-  color: "#ffffff",
+  color: "var(--text-primary)",
   fontFamily: 'var(--font-sans-preview), sans-serif',
   fontSize: "clamp(25px, 2.25vw, 34px)",
   fontWeight: 400,
@@ -56,11 +56,11 @@ const overviewLeadCopyStyle: CSSProperties = {
 
 const overviewSupportingCopyStyle: CSSProperties = {
   ...overviewCopyStyle,
-  color: "rgba(255, 255, 255, 0.65)",
+  color: "var(--text-description)",
 };
 
 const smartsheetOverviewCopyStyle: CSSProperties = {
-  color: "#ffffff",
+  color: "var(--text-primary)",
   fontFamily: 'var(--font-sans-preview), sans-serif',
   fontSize: 21,
   fontWeight: 400,
@@ -80,7 +80,7 @@ const hiddenMetadataLabelStyle: CSSProperties = {
 };
 
 const overviewMetaPrimaryStyle: CSSProperties = {
-  color: "#ffffff",
+  color: "var(--text-primary)",
   fontSize: 20,
   fontWeight: 400,
   lineHeight: "28px",
@@ -88,7 +88,7 @@ const overviewMetaPrimaryStyle: CSSProperties = {
 };
 
 const overviewMetaSecondaryStyle: CSSProperties = {
-  color: "rgba(255, 255, 255, 0.65)",
+  color: "var(--text-description)",
   fontSize: 18,
   fontWeight: 400,
   lineHeight: "28px",
@@ -111,7 +111,7 @@ const specSampleChipStyle: CSSProperties = {
   borderRadius: 4,
   background: "rgba(0, 0, 0, 0.84)",
   boxShadow: "0 8px 24px rgba(0, 0, 0, 0.2)",
-  color: "#ffffff",
+  color: "var(--text-primary)",
   fontSize: 14,
   fontWeight: 500,
   letterSpacing: 0,
@@ -221,7 +221,7 @@ const stepMediaStyle: CSSProperties = {
   alignItems: "center",
   justifyContent: "center",
   overflow: "hidden",
-  borderRadius: 2,
+  borderRadius: 0,
   background: "linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)), var(--color-charcoal)",
   boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.14)",
   margin: 0,
@@ -259,7 +259,7 @@ const stepFlowHeaderStyle: CSSProperties = {
 };
 
 const stepFlowTitleStyle: CSSProperties = {
-  color: "#ffffff",
+  color: "var(--text-primary)",
   fontFamily: "var(--font-display-serif), serif",
   fontSize: "clamp(38px, 4.4vw, 64px)",
   fontWeight: 400,
@@ -268,7 +268,7 @@ const stepFlowTitleStyle: CSSProperties = {
 };
 
 const sectionLabelStyle: CSSProperties = {
-  color: "rgba(255, 255, 255, 0.36)",
+  color: "var(--text-description)",
   fontSize: 16,
   fontWeight: 500,
   letterSpacing: "0.12em",
@@ -278,7 +278,7 @@ const sectionLabelStyle: CSSProperties = {
 };
 
 const stepTitleStyle: CSSProperties = {
-  color: "#ffffff",
+  color: "var(--text-primary)",
   fontFamily: 'var(--font-sans-preview), sans-serif',
   fontSize: 21,
   fontWeight: 400,
@@ -287,7 +287,7 @@ const stepTitleStyle: CSSProperties = {
 };
 
 const stepDescriptionStyle: CSSProperties = {
-  color: "rgba(255, 255, 255, 0.65)",
+  color: "var(--text-description)",
   fontSize: 18,
   fontWeight: 400,
   lineHeight: "28px",
