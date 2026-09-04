@@ -296,7 +296,7 @@ export const featuredWork: WorkItem = {
   ],
   summary: "Modernized one of Smartsheet's core platform capabilities while aligning three teams around its long-term direction.",
   cardMeta: "Smartsheet • Case Study",
-  caseStudyMeta: "Case Study • Aug '25 – Feb '26",
+  caseStudyMeta: "Case Study • Aug '25 – Mar '26",
   overview: {
     items: [
       { label: "Role", value: "Lead designer" },
