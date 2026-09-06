@@ -471,7 +471,7 @@ export const otherWork: WorkItem[] = [
     ],
     summary: "Built the foundation for MetLife Mexico's digital agent experience, unifying fragmented workflows into a single product.",
     cardMeta: "KPMG",
-    caseStudyMeta: "Summary • 2021",
+    caseStudyMeta: "Summary • KPMG",
     overview: {
       items: [
         { label: "Role", value: "Lead designer" },
