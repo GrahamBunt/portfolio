@@ -1955,6 +1955,7 @@ function CaseStudySmartsheetBlocks({
                     <CaseStudySmartsheetImageSequence
                       label="Resource Management in Smartsheet global navigation"
                       frames={resourceManagementArmsFrames}
+                      intervalMs={850}
                     />
                   </div>
                 ) : block.title === "Visibility and vision" ? (

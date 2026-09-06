@@ -470,7 +470,7 @@ export const otherWork: WorkItem[] = [
       "/work/metlife-mexico/performance-display-fast.webp",
     ],
     summary: "Built the foundation for MetLife Mexico's digital agent experience, unifying fragmented workflows into a single product.",
-    cardMeta: "KPMG • Summary",
+    cardMeta: "KPMG",
     caseStudyMeta: "Summary • 2021",
     overview: {
       items: [
