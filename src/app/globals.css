@@ -67,6 +67,16 @@ body {
   color: var(--text-primary);
 }
 
+::selection {
+  background: #d9b85a;
+  color: var(--color-page-background);
+}
+
+::-moz-selection {
+  background: #d9b85a;
+  color: var(--color-page-background);
+}
+
 img:not(.site-nav-avatar-image),
 video,
 iframe {

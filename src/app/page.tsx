@@ -16,7 +16,7 @@ const homeFeaturedProjects = featuredHomeProjectSlugs
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
 
 const HOME_SUPPORT_TEXT =
-  "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and helping teams bring ambitious ideas to life.";
+  "Graham Bunt is a product designer leaning into scale and complexity, exploring what AI makes possible, and turning ambitious ideas into real experiences.";
 const HOME_STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@graph": [

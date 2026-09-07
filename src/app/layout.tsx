@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://grahambunt.com"),
   title: "Graham Bunt — Product Designer",
   description:
-    "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and helping teams bring ambitious ideas to life.",
+    "Graham Bunt is a product designer leaning into scale and complexity, exploring what AI makes possible, and turning ambitious ideas into real experiences.",
   alternates: {
     canonical: "/",
   },
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Graham Bunt — Product Designer",
     description:
-      "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and helping teams bring ambitious ideas to life.",
+      "Graham Bunt is a product designer leaning into scale and complexity, exploring what AI makes possible, and turning ambitious ideas into real experiences.",
     url: "https://grahambunt.com",
     siteName: "Graham Bunt",
     images: [
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Graham Bunt — Product Designer",
     description:
-      "Graham Bunt is a product designer leaning into scale and complexity, shaping direction, and helping teams bring ambitious ideas to life.",
+      "Graham Bunt is a product designer leaning into scale and complexity, exploring what AI makes possible, and turning ambitious ideas into real experiences.",
     images: ["/home-hero-portrait.jpg"],
   },
 };
