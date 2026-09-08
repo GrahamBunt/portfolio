@@ -9,6 +9,7 @@ type CubbyProjectMediaProps = {
   variant?: "card" | "hero";
   wallpaper?: { src: string; zoom?: number };
   appPreview?: ReactNode;
+  decorative?: boolean;
 };
 
 function LiveMenuClock() {
@@ -124,7 +125,7 @@ function CubbyMenuBar() {
   );
 }
 
-export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpaper, variant = "card", appPreview }: CubbyProjectMediaProps) {
+export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpaper, variant = "card", appPreview, decorative = false }: CubbyProjectMediaProps) {
   const handleMediaClick = (event: MouseEvent<HTMLElement>) => {
     const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
       if (!(node instanceof Element)) return false;
@@ -141,7 +142,10 @@ export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpa
   const MediaTag = variant === "hero" ? "div" : "figure";
 
   return (
-    <MediaTag className={`case-study-next-up-media cubby-project-mascot-media ${variant === "hero" ? "cubby-project-hero-media" : ""}`} aria-label="Cubby app preview with animated mascot" onClick={handleMediaClick}
+    <MediaTag className={`case-study-next-up-media cubby-project-mascot-media ${variant === "hero" ? "cubby-project-hero-media" : ""}`}
+      aria-label={decorative ? undefined : "Cubby app preview with animated mascot"}
+      aria-hidden={decorative || undefined} inert={decorative}
+      onClick={decorative ? undefined : handleMediaClick}
       style={wallpaper ? {
         "--cubby-wallpaper": `url("${wallpaper.src}")`,
         "--cubby-wallpaper-zoom": `${wallpaper.zoom ?? 155}%`,

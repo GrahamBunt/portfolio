@@ -3,8 +3,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import type { CSSProperties, MouseEvent, ReactNode, RefObject, SyntheticEvent } from "react";
-import { useRouter } from "next/navigation";
+import type { CSSProperties, ReactNode, RefObject, SyntheticEvent } from "react";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
 import { CubbyDemoHero } from "@/components/cubby-demo/CubbyDemoHero";
@@ -2310,22 +2309,9 @@ function CaseStudyNextUpSection({
   related: WorkItem[];
   style?: CSSProperties;
 }) {
-  const router = useRouter();
   const routeableItems = related.filter((item) => !item.isComingSoon);
   const fallbackItems = related.filter((item) => item.isComingSoon);
   const nextItems = [...routeableItems, ...fallbackItems].slice(0, 2);
-
-  const navigateFromCubbyCard = (href: string, event: MouseEvent<HTMLElement>) => {
-    const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
-      if (!(node instanceof Element)) return false;
-
-      return node.matches("a, button, cubby-grizzly");
-    });
-
-    if (!clickedInteractiveElement) {
-      router.push(href);
-    }
-  };
 
   if (!nextItems.length) {
     return null;
@@ -2391,16 +2377,16 @@ function CaseStudyNextUpSection({
 
           if (isCubby) {
             return (
-              <article key={item.slug} className={cardClassName} onClick={(event) => navigateFromCubbyCard(href, event)}>
+              <Link key={item.slug} href={href} className={cardClassName} aria-label="View Cubby project">
                 <CubbyProjectMedia
                   showMenuBar
+                  decorative
                   wallpaper={{ src: "/work/cubby/wallpapers/alpine-stillness.webp", zoom: 125 }}
-                  onMediaNavigate={() => router.push(href)}
                 />
-                <Link href={href} className="case-study-next-up-copy cubby-project-copy-link" aria-label="View Cubby project">
+                <div className="case-study-next-up-copy">
                   {cardCopy}
-                </Link>
-              </article>
+                </div>
+              </Link>
             );
           }
 
