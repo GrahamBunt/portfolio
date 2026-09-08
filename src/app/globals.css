@@ -2409,6 +2409,10 @@ iframe {
   height: 100%;
   border-radius: inherit;
   object-fit: cover;
+}
+
+.case-study-hero img,
+.case-study-hero .cubby-project-hero-media {
   transform: scale(1.18);
   transform-origin: center;
 }
@@ -2418,7 +2422,8 @@ iframe {
   animation-delay: var(--rise-delay, 700ms);
 }
 
-.sequence-ready .case-study-hero-reveal img {
+.sequence-ready .case-study-hero-reveal img,
+.sequence-ready .case-study-hero-reveal .cubby-project-hero-media {
   animation: case-study-image-settle var(--rise-duration, 1.72s) cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--rise-delay, 700ms);
 }

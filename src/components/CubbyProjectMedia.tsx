@@ -51,9 +51,11 @@ function CubbyMenuBar() {
       .sort((a, b) => Number(a.dataset.priority) - Number(b.dataset.priority));
 
     const fitItems = () => {
-      const available = items.getBoundingClientRect().width;
+      // Use layout widths so the hero's entrance scale does not affect icon fitting.
+      const available = Number.parseFloat(getComputedStyle(items).width);
       const minimumGap = Number.parseFloat(getComputedStyle(items).fontSize) * 0.8;
-      let occupied = launcher.getBoundingClientRect().width + clock.getBoundingClientRect().width;
+      let occupied = Number.parseFloat(getComputedStyle(launcher).width)
+        + Number.parseFloat(getComputedStyle(clock).width);
       let gaps = 1;
 
       // Reserve the centered launcher and full date/time first. Optional status
