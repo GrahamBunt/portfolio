@@ -464,8 +464,8 @@ export const otherWork: WorkItem[] = [
     upNextImage: "/work/cubby/up-next.svg",
     heroImage: "/work/cubby/hero.svg",
     summary: "MacOS menu bar app for capturing context throughout the day.",
-    cardMeta: "Summary · AI Build",
-    caseStudyMeta: "Summary · AI Build",
+    cardMeta: "Personal · AI Build",
+    caseStudyMeta: "Personal · AI Build",
     overview: {
       items: [
         { label: "Type", value: "Personal project" },
