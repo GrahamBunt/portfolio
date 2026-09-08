@@ -2494,7 +2494,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   } as CSSProperties;
 
   const relatedStyle = {
-    marginTop: project.slug === "cubby" ? "clamp(24px, 3vw, 48px)" : undefined,
+    marginTop: project.slug === "cubby" ? "clamp(48px, 5vw, 80px)" : undefined,
     "--rise-delay": "1180ms",
     "--rise-duration": "1.08s",
     "--rise-blur": "0px",
