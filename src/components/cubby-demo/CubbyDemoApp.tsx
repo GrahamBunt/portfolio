@@ -92,6 +92,32 @@ export function CubbyDemoApp() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
+  useEffect(() => {
+    const app = canvas.current;
+    if (!app) return;
+    const onWheel = (event: WheelEvent) => {
+      const activeFeed = feed.current;
+      // Preserve browser zoom and horizontal gestures. Clipboard is decorative.
+      if (!activeFeed || event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      const target = event.target;
+      const textEditor = editor.current;
+      // Keep native scrolling and momentum inside the feed or a long draft.
+      // CSS contains those gestures at their boundaries.
+      if (target instanceof Node && (
+        (activeFeed.contains(target) && activeFeed.scrollHeight > activeFeed.clientHeight)
+        || (textEditor?.contains(target) && textEditor.scrollHeight > textEditor.clientHeight)
+      )) return;
+      // The header, wooden frame, and composer also belong to the active feed.
+      // A non-passive local listener prevents these gestures moving the page.
+      event.preventDefault();
+      const unit = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? 16
+        : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? activeFeed.clientHeight : 1;
+      activeFeed.scrollTop += event.deltaY * unit;
+    };
+    app.addEventListener('wheel', onWheel, { passive: false });
+    return () => app.removeEventListener('wheel', onWheel);
+  }, []);
+
   useLayoutEffect(() => {
     const scrollTop = feed.current?.scrollTop ?? 0;
     if (editor.current) {

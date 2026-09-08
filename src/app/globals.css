@@ -1273,6 +1273,13 @@ iframe {
 
 .site-nav {
   height: 80px;
+  /* Empty space in the fixed nav must not cover interactive page content. */
+  pointer-events: none;
+}
+
+.site-nav a,
+.site-nav button {
+  pointer-events: auto;
 }
 
 .site-nav-left {
