@@ -1,6 +1,6 @@
 "use client";
 
-import { createElement, type CSSProperties, type MouseEvent, useEffect, useRef, useState } from "react";
+import { createElement, type CSSProperties, type MouseEvent, type ReactNode, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 
 type CubbyProjectMediaProps = {
@@ -8,6 +8,7 @@ type CubbyProjectMediaProps = {
   showMenuBar?: boolean;
   variant?: "card" | "hero";
   wallpaper?: { src: string; zoom?: number };
+  appPreview?: ReactNode;
 };
 
 function LiveMenuClock() {
@@ -123,7 +124,7 @@ function CubbyMenuBar() {
   );
 }
 
-export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpaper, variant = "card" }: CubbyProjectMediaProps) {
+export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpaper, variant = "card", appPreview }: CubbyProjectMediaProps) {
   const handleMediaClick = (event: MouseEvent<HTMLElement>) => {
     const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
       if (!(node instanceof Element)) return false;
@@ -147,11 +148,11 @@ export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpa
       } as CSSProperties : undefined}
     >
       <Script src="/work/cubby/cubby-grizzly.js" strategy="afterInteractive" />
-      <Script src="/work/cubby/study-frame.js?v=unified-zoom" strategy="afterInteractive" />
+      {!appPreview && <Script src="/work/cubby/study-frame.js?v=unified-zoom" strategy="afterInteractive" />}
       {showMenuBar ? <CubbyMenuBar /> : null}
       <div className="cubby-project-zoom-layer">
         <div className="cubby-project-frame-shell">
-          {createElement(
+          {appPreview ?? createElement(
             "grizzly-study-frame",
             { className: "cubby-project-app-frame", "sample-feed": "" },
             createElement("cubby-grizzly", { className: "cubby-project-mascot" }),

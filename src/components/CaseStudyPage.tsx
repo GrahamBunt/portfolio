@@ -7,6 +7,7 @@ import type { CSSProperties, MouseEvent, ReactNode, RefObject, SyntheticEvent } 
 import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
+import { CubbyDemoHero } from "@/components/cubby-demo/CubbyDemoHero";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
 import { SiteNav } from "@/components/SiteNav";
@@ -18,6 +19,7 @@ type CaseStudy = WorkItem;
 type CaseStudyPageProps = {
   project: CaseStudy;
   related: WorkItem[];
+  heroPreview?: ReactNode;
 };
 
 type ProblemCardDials = {
@@ -2413,7 +2415,7 @@ function CaseStudyNextUpSection({
   );
 }
 
-export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
+export function CaseStudyPage({ project, related, heroPreview }: CaseStudyPageProps) {
   const isSmartsheetReportsCaseStudy = project.slug === "smartsheet-reports";
   const isResourceManagementCaseStudy = project.slug === "resource-management-integration";
   const isMetLifeMexicoCaseStudy = project.slug === "metlife-mexico";
@@ -2617,12 +2619,8 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
             style={heroStyle}
             aria-label={usesPlaceholderHero ? "Resource Management hero placeholder" : undefined}
           >
-            {project.slug === "cubby" ? (
-              <CubbyProjectMedia
-                variant="hero"
-                showMenuBar
-                wallpaper={{ src: "/work/cubby/wallpapers/alpine-stillness.webp", zoom: 125 }}
-              />
+            {heroPreview ?? (project.slug === "cubby" ? (
+              <CubbyDemoHero />
             ) : usesPlaceholderHero ? null : (
               <Image
                 ref={heroImageRef}
@@ -2634,7 +2632,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
                 quality={isResourceManagementCaseStudy ? 95 : 82}
                 unoptimized={(project.heroImage ?? project.image).endsWith(".webp")}
               />
-            )}
+            ))}
           </figure>
         </section>
 
