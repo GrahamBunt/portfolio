@@ -236,7 +236,7 @@ export function CubbyDemoApp() {
               <p>{text}</p><div className={styles.meta}><time>9:{index === 0 ? '41' : '42'} AM</time><span className={styles.actions}><Icon name="copy" /><Icon name="delete" /></span></div>
             </div>)}
           </div>
-          {createElement('cubby-grizzly', { className: styles.bear })}
+          {createElement('cubby-cozy-detailed', { className: styles.bear })}
         </div>
         {tab !== 'clipboard' && <div className={styles.feed} ref={feed} key={tab}>
           {tab === 'notes' ? <div className={styles.notes}>

@@ -103,7 +103,7 @@ export default function Home() {
     const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
       if (!(node instanceof Element)) return false;
 
-      return node.matches("a, button, cubby-grizzly");
+      return node.matches("a, button, cubby-cozy-detailed");
     });
 
     if (!clickedInteractiveElement) {

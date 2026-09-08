@@ -5968,6 +5968,7 @@ iframe {
 }
 
 .case-study-next-up-card.is-cubby {
+  position: relative;
   cursor: pointer;
 }
 
@@ -6095,8 +6096,8 @@ iframe {
   height: 1.439394em;
   background-color: currentColor;
   /* Use the SVG's alpha, including its transparent face, for inherited tint. */
-  -webkit-mask: url("/work/cubby/cozy-face.svg") center / contain no-repeat;
-  mask: url("/work/cubby/cozy-face.svg") center / contain no-repeat;
+  -webkit-mask: url("/work/cubby/detailed-monochrome.svg") center / contain no-repeat;
+  mask: url("/work/cubby/detailed-monochrome.svg") center / contain no-repeat;
   mask-mode: alpha;
 }
 
@@ -6154,6 +6155,14 @@ iframe {
 .cubby-project-copy-link:focus-visible {
   outline: 1px solid var(--text-primary);
   outline-offset: 8px;
+}
+
+/* Cover the Up next card without nesting the mascot's greeting button in a link. */
+.case-study-next-up .cubby-project-copy-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
 }
 
 .case-study-next-up-card.is-cubby:focus-within .case-study-next-up-arrow,

@@ -130,7 +130,7 @@ export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpa
     const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
       if (!(node instanceof Element)) return false;
 
-      return node.matches("a, button, cubby-grizzly");
+      return node.matches("a, button, cubby-cozy-detailed");
     });
 
     if (!clickedInteractiveElement) {
@@ -151,15 +151,15 @@ export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpa
         "--cubby-wallpaper-zoom": `${wallpaper.zoom ?? 155}%`,
       } as CSSProperties : undefined}
     >
-      <Script src="/work/cubby/cubby-grizzly.js" strategy="afterInteractive" />
-      {!appPreview && <Script src="/work/cubby/study-frame.js?v=unified-zoom" strategy="afterInteractive" />}
+      <Script src="/work/cubby/cubby-cozy-detailed.js" strategy="afterInteractive" />
+      {!appPreview && <Script src="/work/cubby/study-frame.js?v=detailed-cozy" strategy="afterInteractive" />}
       {showMenuBar ? <CubbyMenuBar /> : null}
       <div className="cubby-project-zoom-layer">
         <div className="cubby-project-frame-shell">
           {appPreview ?? createElement(
             "grizzly-study-frame",
             { className: "cubby-project-app-frame", "sample-feed": "" },
-            createElement("cubby-grizzly", { className: "cubby-project-mascot" }),
+            createElement("cubby-cozy-detailed", { className: "cubby-project-mascot" }),
           )}
         </div>
       </div>

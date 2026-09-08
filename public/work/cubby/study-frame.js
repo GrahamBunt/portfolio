@@ -24,13 +24,13 @@ class GrizzlyStudyFrame extends HTMLElement {
         .tab-glyphs{position:absolute;left:0;top:0;width:100%;height:9.166666667%;display:block;pointer-events:none;overflow:visible}
         /* Product coordinates: 360×480, header 44pt, panel inset 5pt, radius 13pt. */
         .feed{position:absolute;left:1.388888889%;right:1.388888889%;top:9.166666667%;bottom:1.041666667%;display:grid;place-items:center;border-radius:3.611111111cqw;overflow:hidden}
-        ::slotted(cubby-mascot),::slotted(cubby-grizzly){position:relative;width:112%;max-width:none;transform:translateY(-2cqw)}
-        :host(:not([bare])) ::slotted(cubby-grizzly){width:72%}
+        ::slotted(cubby-cozy-detailed){position:relative;width:112%;max-width:none;transform:translateY(-2cqw)}
+        :host(:not([bare])) ::slotted(cubby-cozy-detailed){width:72%}
         /* Sample feed uses the product's 13pt text, 11pt timestamps, 22pt
            action frames with a 2pt gap, and 14pt text inset, scaled from 360pt. */
         .sample-feed{display:none;position:absolute;inset:2.777777778cqw 2.777777778cqw auto;height:52.777777778cqw;font-family:CubbyStudyHanken,sans-serif;color:#45423b;pointer-events:none;user-select:none;opacity:.72;mask-image:linear-gradient(to bottom,#000 0%,#000 37%,#0009 66%,transparent 96%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 37%,#0009 66%,transparent 96%)}
         :host([sample-feed]:not([bare])) .sample-feed{display:block}
-        :host([sample-feed]:not([bare])) ::slotted(cubby-grizzly){transform:translateY(4cqw)}
+        :host([sample-feed]:not([bare])) ::slotted(cubby-cozy-detailed){transform:translateY(4cqw)}
         .day{display:flex;align-items:center;padding:2.5cqw 0;gap:0}
         .day::before,.day::after{content:'';height:.138888889cqw;flex:1;background:#eb8f1494}
         .day span{font-size:2.5cqw;line-height:3cqw;font-weight:600;letter-spacing:.138888889cqw;color:#8c4d05;padding:.833333333cqw 2.5cqw;border:.138888889cqw solid #db7a0bb3;border-radius:10cqw;background:#ffbd1f38}

@@ -2377,16 +2377,16 @@ function CaseStudyNextUpSection({
 
           if (isCubby) {
             return (
-              <Link key={item.slug} href={href} className={cardClassName} aria-label="View Cubby project">
+              <article key={item.slug} className={cardClassName}>
                 <CubbyProjectMedia
                   showMenuBar
                   decorative
                   wallpaper={{ src: "/work/cubby/wallpapers/alpine-stillness.webp", zoom: 125 }}
                 />
-                <div className="case-study-next-up-copy">
+                <Link href={href} className="case-study-next-up-copy cubby-project-copy-link" aria-label="View Cubby project">
                   {cardCopy}
-                </div>
-              </Link>
+                </Link>
+              </article>
             );
           }
 
