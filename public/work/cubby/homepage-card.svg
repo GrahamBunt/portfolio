@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" role="img" aria-label="Cubby placeholder project image">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#191612"/>
+      <stop offset="0.52" stop-color="#302116"/>
+      <stop offset="1" stop-color="#0c0b09"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#d7a66f"/>
+      <stop offset="0.5" stop-color="#9d6238"/>
+      <stop offset="1" stop-color="#5c321e"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="1100" fill="url(#bg)"/>
+  <rect x="216" y="160" width="1168" height="780" rx="44" fill="#21150d"/>
+  <rect x="244" y="188" width="1112" height="724" rx="28" fill="url(#wood)"/>
+  <g fill="none" stroke="#3b2012" stroke-width="26" stroke-linecap="round">
+    <path d="M520 208v684"/>
+    <path d="M800 208v684"/>
+    <path d="M1080 208v684"/>
+    <path d="M264 428h1072"/>
+    <path d="M264 668h1072"/>
+  </g>
+  <g fill="#f2d9b2" opacity=".88">
+    <rect x="310" y="256" width="142" height="56" rx="14"/>
+    <rect x="592" y="510" width="130" height="52" rx="14"/>
+    <rect x="872" y="742" width="148" height="56" rx="14"/>
+    <rect x="1154" y="284" width="116" height="50" rx="14"/>
+  </g>
+  <g fill="#2a1710" opacity=".45">
+    <rect x="312" y="742" width="126" height="88" rx="18"/>
+    <rect x="592" y="286" width="148" height="116" rx="22"/>
+    <rect x="872" y="510" width="128" height="92" rx="18"/>
+    <rect x="1152" y="732" width="120" height="118" rx="22"/>
+  </g>
+  <circle cx="1240" cy="210" r="180" fill="#f3b76d" opacity=".18" filter="url(#soft)"/>
+  <text x="800" y="1010" fill="#fff7eb" font-family="Georgia, 'Times New Roman', serif" font-size="92" text-anchor="middle">Cubby</text>
+</svg>

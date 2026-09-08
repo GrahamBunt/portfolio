@@ -5955,6 +5955,10 @@ iframe {
   cursor: default;
 }
 
+.case-study-next-up-card.is-cubby {
+  cursor: pointer;
+}
+
 .case-study-next-up-media {
   position: relative;
   width: 100%;
@@ -5972,6 +5976,180 @@ iframe {
   height: 100%;
   object-fit: cover;
   transition: transform 780ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cubby-project-mascot-media {
+  container: cubby-card / inline-size;
+  display: block;
+  isolation: isolate;
+  background-color: #eee2c7;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
+
+.cubby-project-zoom-layer {
+  container-type: size;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: inherit;
+  background-color: #eee2c7;
+  background-image: var(--cubby-wallpaper, none);
+  background-size: var(--cubby-wallpaper-zoom, 155%) auto;
+  background-position: right top;
+  background-repeat: no-repeat;
+  transform: scale(var(--cubby-ui-scale, 1));
+  transform-origin: center;
+  transition: transform 780ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cubby-project-zoom-layer {
+    transition: none;
+  }
+}
+
+.cubby-project-frame-shell {
+  container-type: inline-size;
+  position: relative;
+  z-index: 3;
+  width: min(48%, 210px, calc((100% - 32px) * 0.75));
+  aspect-ratio: 3 / 4;
+}
+
+.home-featured-work-card.is-cubby .cubby-project-frame-shell {
+  /* A 3:4 window occupies 76% of the card height at every breakpoint. */
+  width: min(60cqw, 57cqh);
+}
+
+.cubby-project-hero-media {
+  --cubby-menu-anchor: 74%;
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.cubby-project-hero-media .cubby-project-frame-shell {
+  position: absolute;
+  left: var(--cubby-menu-anchor);
+  top: clamp(8px, 1.2cqw, 12px);
+  margin-top: calc(clamp(6px, 1.6cqw, 13.2px) * 2.075 + clamp(6px, 1cqw, 12px));
+  width: min(30cqw, 54cqh, 380px);
+  transform: translateX(-50%);
+}
+
+@media (max-width: 760px) {
+  .cubby-project-hero-media {
+    --cubby-menu-anchor: 64%;
+  }
+}
+
+.cubby-project-app-frame {
+  filter: drop-shadow(0 12px 24px rgba(104, 66, 28, 0.1));
+  width: 100%;
+  height: 100%;
+}
+
+.cubby-project-menu-plane {
+  position: absolute;
+  top: clamp(8px, 1.2cqw, 12px);
+  right: clamp(10px, 1.8cqw, 18px);
+  left: calc(var(--cubby-menu-anchor, 50%) - 0.833333em);
+  z-index: 4;
+  /* Scale with the app preview, including narrow cards before the grid changes. */
+  font-size: clamp(6px, 1.6cqw, 13.2px);
+  pointer-events: none;
+}
+
+.cubby-project-menu-strip {
+  height: 2.075em;
+  color: #36332c;
+}
+
+.cubby-project-menu-items {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8em;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.cubby-project-menu-launcher {
+  /* 22 × 19px at full size; preserve the same proportions as the menu scales. */
+  flex: 0 0 1.666667em;
+  width: 1.666667em;
+  height: 1.439394em;
+  background-color: currentColor;
+  /* Use the SVG's alpha, including its transparent face, for inherited tint. */
+  -webkit-mask: url("/work/cubby/cozy-face.svg") center / contain no-repeat;
+  mask: url("/work/cubby/cozy-face.svg") center / contain no-repeat;
+  mask-mode: alpha;
+}
+
+.cubby-project-menu-items svg {
+  flex: 0 0 auto;
+  width: 1.125em;
+  height: 1.125em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cubby-project-menu-items .cubby-project-menu-bluetooth {
+  width: 0.75em;
+}
+
+.cubby-project-menu-items .cubby-project-menu-battery {
+  width: 1.8em;
+}
+
+.cubby-project-menu-clock {
+  flex: 0 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  .cubby-project-zoom-layer {
+    background-size: auto var(--cubby-wallpaper-zoom, 155%);
+  }
+
+}
+
+
+.cubby-project-copy-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cubby-project-copy-link:focus-visible {
+  outline: 1px solid var(--text-primary);
+  outline-offset: 8px;
+}
+
+.case-study-next-up-card.is-cubby:focus-within .case-study-next-up-arrow,
+.case-study-next-up-card.is-cubby:hover .case-study-next-up-arrow {
+  width: 28px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.case-study-next-up-card.is-cubby:not(.is-disabled):hover .cubby-project-zoom-layer,
+.case-study-next-up-card.is-cubby:not(.is-disabled):focus-visible .cubby-project-zoom-layer,
+.case-study-next-up-card.is-cubby:focus-within .cubby-project-zoom-layer {
+  --cubby-ui-scale: 1.045;
 }
 
 .case-study-next-up-card.is-metlife-mexico .case-study-next-up-media img {

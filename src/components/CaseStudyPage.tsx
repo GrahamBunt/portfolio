@@ -3,8 +3,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import type { CSSProperties, ReactNode, RefObject, SyntheticEvent } from "react";
+import type { CSSProperties, MouseEvent, ReactNode, RefObject, SyntheticEvent } from "react";
+import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
 import { SiteNav } from "@/components/SiteNav";
@@ -2306,9 +2308,22 @@ function CaseStudyNextUpSection({
   related: WorkItem[];
   style?: CSSProperties;
 }) {
+  const router = useRouter();
   const routeableItems = related.filter((item) => !item.isComingSoon);
   const fallbackItems = related.filter((item) => item.isComingSoon);
   const nextItems = [...routeableItems, ...fallbackItems].slice(0, 2);
+
+  const navigateFromCubbyCard = (href: string, event: MouseEvent<HTMLElement>) => {
+    const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
+      if (!(node instanceof Element)) return false;
+
+      return node.matches("a, button, cubby-grizzly");
+    });
+
+    if (!clickedInteractiveElement) {
+      router.push(href);
+    }
+  };
 
   if (!nextItems.length) {
     return null;
@@ -2323,6 +2338,25 @@ function CaseStudyNextUpSection({
         {nextItems.map((item) => {
           const href = item.isComingSoon ? undefined : `/work/${item.slug}`;
           const cardClassName = `case-study-next-up-card is-${item.slug}`;
+          const isCubby = item.slug === "cubby";
+          const cardCopy = (
+            <>
+              <div className="case-study-next-up-title-row">
+                <h3>{preventTextOrphans(item.title)}</h3>
+                {href ? (
+                  <span className="case-study-next-up-arrow">
+                    <ArrowIcon />
+                  </span>
+                ) : null}
+              </div>
+              <p className="font-sans-preview">{preventTextOrphans(item.summary)}</p>
+              {item.cardMeta ? (
+                <p className="case-study-next-up-meta font-sans-preview">
+                  <ProjectMeta value={item.cardMeta} />
+                </p>
+              ) : null}
+            </>
+          );
           const cardContent = (
             <>
               <figure className="case-study-next-up-media">
@@ -2340,20 +2374,7 @@ function CaseStudyNextUpSection({
                 />
               </figure>
               <div className="case-study-next-up-copy">
-                <div className="case-study-next-up-title-row">
-                  <h3>{preventTextOrphans(item.title)}</h3>
-                  {href ? (
-                    <span className="case-study-next-up-arrow">
-                      <ArrowIcon />
-                    </span>
-                  ) : null}
-                </div>
-                <p className="font-sans-preview">{preventTextOrphans(item.summary)}</p>
-                {item.cardMeta ? (
-                  <p className="case-study-next-up-meta font-sans-preview">
-                    <ProjectMeta value={item.cardMeta} />
-                  </p>
-                ) : null}
+                {cardCopy}
               </div>
             </>
           );
@@ -2362,6 +2383,17 @@ function CaseStudyNextUpSection({
             return (
               <article key={item.slug} className={`${cardClassName} is-disabled`}>
                 {cardContent}
+              </article>
+            );
+          }
+
+          if (isCubby) {
+            return (
+              <article key={item.slug} className={cardClassName} onClick={(event) => navigateFromCubbyCard(href, event)}>
+                <CubbyProjectMedia onMediaNavigate={() => router.push(href)} />
+                <Link href={href} className="case-study-next-up-copy cubby-project-copy-link" aria-label="View Cubby project">
+                  {cardCopy}
+                </Link>
               </article>
             );
           }
@@ -2381,8 +2413,9 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   const isSmartsheetReportsCaseStudy = project.slug === "smartsheet-reports";
   const isResourceManagementCaseStudy = project.slug === "resource-management-integration";
   const isMetLifeMexicoCaseStudy = project.slug === "metlife-mexico";
+  const usesSnapshotTemplate = isMetLifeMexicoCaseStudy || project.slug === "cubby";
   const usesSmartsheetTemplate = isSmartsheetReportsCaseStudy || isResourceManagementCaseStudy;
-  const isStructuredCaseStudy = usesSmartsheetTemplate || isMetLifeMexicoCaseStudy;
+  const isStructuredCaseStudy = usesSmartsheetTemplate || usesSnapshotTemplate;
   const usesPlaceholderHero = false;
   const [fontsReady, setFontsReady] = useState(false);
   const heroImageRef = useRef<HTMLImageElement | null>(null);
@@ -2461,6 +2494,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
   } as CSSProperties;
 
   const relatedStyle = {
+    marginTop: project.slug === "cubby" ? "clamp(24px, 3vw, 48px)" : undefined,
     "--rise-delay": "1180ms",
     "--rise-duration": "1.08s",
     "--rise-blur": "0px",
@@ -2579,7 +2613,13 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
             style={heroStyle}
             aria-label={usesPlaceholderHero ? "Resource Management hero placeholder" : undefined}
           >
-            {usesPlaceholderHero ? null : (
+            {project.slug === "cubby" ? (
+              <CubbyProjectMedia
+                variant="hero"
+                showMenuBar
+                wallpaper={{ src: "/work/cubby/wallpapers/alpine-stillness.webp", zoom: 125 }}
+              />
+            ) : usesPlaceholderHero ? null : (
               <Image
                 ref={heroImageRef}
                 src={project.heroImage ?? project.image}
@@ -2601,7 +2641,7 @@ export function CaseStudyPage({ project, related }: CaseStudyPageProps) {
               blocks={caseStudyBlocks}
               useResourceManagementScaffold={isResourceManagementCaseStudy}
             />
-          ) : isMetLifeMexicoCaseStudy ? (
+          ) : usesSnapshotTemplate ? (
             <CaseStudyMetLifeSnapshotBlocks overview={overview} blocks={caseStudyBlocks} />
           ) : (
             <>

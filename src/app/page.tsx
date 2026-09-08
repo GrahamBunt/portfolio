@@ -1,16 +1,18 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
 import { EmailCopyControl } from "@/components/EmailCopyControl";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import { allWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
 
-const featuredHomeProjectSlugs = ["smartsheet-reports", "resource-management-integration", "metlife-mexico"];
+const featuredHomeProjectSlugs = ["smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
 const homeFeaturedProjects = featuredHomeProjectSlugs
   .map((slug) => allWork.find((project) => project.slug === slug))
   .filter((project): project is (typeof allWork)[number] => Boolean(project));
@@ -93,8 +95,21 @@ function getProjectImage(project: (typeof allWork)[number]) {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [fontsReady, setFontsReady] = useState(false);
   const heroPortraitRef = useRef<HTMLSpanElement>(null);
+
+  const navigateFromCubbyCard = (href: string, event: MouseEvent<HTMLElement>) => {
+    const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
+      if (!(node instanceof Element)) return false;
+
+      return node.matches("a, button, cubby-grizzly");
+    });
+
+    if (!clickedInteractiveElement) {
+      router.push(href);
+    }
+  };
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -231,27 +246,10 @@ export default function Home() {
           <div
             className="home-featured-work-grid"
           >
-            {homeFeaturedProjects.map((project, index) => (
-              <Link key={project.slug} href={`/work/${project.slug}`} className="case-study-next-up-card home-featured-work-card">
-                <span className="home-featured-work-index">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <figure className="case-study-next-up-media">
-                  <Image
-                    src={getProjectImage(project)}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1180px) calc(100vw - 520px), 960px"
-                    loading={project.slug === "smartsheet-reports" ? "eager" : "lazy"}
-                    preload={project.slug === "smartsheet-reports"}
-                    fetchPriority={project.slug === "smartsheet-reports" ? "high" : "auto"}
-                    quality={92}
-                    style={{
-                      objectPosition: project.slug === "smartsheet-reports" || project.slug === "resource-management-integration" ? "70% 18%" : "50% 50%",
-                    }}
-                  />
-                </figure>
+            {homeFeaturedProjects.map((project, index) => {
+              const href = `/work/${project.slug}`;
+              const cardClassName = `case-study-next-up-card home-featured-work-card is-${project.slug}`;
+              const cardCopy = (
                 <div className="case-study-next-up-copy">
                   <div className="case-study-next-up-title-row">
                     <h3>{preventTextOrphans(project.title)}</h3>
@@ -266,8 +264,47 @@ export default function Home() {
                     </p>
                   ) : null}
                 </div>
-              </Link>
-            ))}
+              );
+
+              if (project.slug === "cubby") {
+                return (
+                  <article key={project.slug} className={cardClassName} onClick={(event) => navigateFromCubbyCard(href, event)}>
+                    <span className="home-featured-work-index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <CubbyProjectMedia showMenuBar wallpaper={{ src: "/work/cubby/wallpapers/alpine-stillness.webp", zoom: 125 }} onMediaNavigate={() => router.push(href)} />
+                    <Link href={href} className="cubby-project-copy-link" aria-label="View Cubby project">
+                      {cardCopy}
+                    </Link>
+                  </article>
+                );
+              }
+
+              return (
+                <Link key={project.slug} href={href} className={cardClassName}>
+                  <span className="home-featured-work-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <figure className="case-study-next-up-media">
+                    <Image
+                      src={getProjectImage(project)}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1180px) calc(100vw - 520px), 960px"
+                      loading={project.slug === "smartsheet-reports" ? "eager" : "lazy"}
+                      preload={project.slug === "smartsheet-reports"}
+                      fetchPriority={project.slug === "smartsheet-reports" ? "high" : "auto"}
+                      quality={92}
+                      style={{
+                        objectPosition: project.slug === "smartsheet-reports" || project.slug === "resource-management-integration" ? "70% 18%" : "50% 50%",
+                      }}
+                    />
+                  </figure>
+                  {cardCopy}
+                </Link>
+              );
+            })}
           </div>
         </section>
 

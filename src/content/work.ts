@@ -456,6 +456,30 @@ export const otherWork: WorkItem[] = [
     ],
   },
   {
+    title: "Cubby",
+    slug: "cubby",
+    tag: "Personal • 2026",
+    image: "/work/cubby/homepage-card.svg",
+    homepageImage: "/work/cubby/homepage-card.svg",
+    upNextImage: "/work/cubby/up-next.svg",
+    heroImage: "/work/cubby/hero.svg",
+    summary: "MacOS menu bar app for capturing context throughout the day.",
+    cardMeta: "Summary · AI Build",
+    caseStudyMeta: "Summary · AI Build",
+    overview: {
+      items: [
+        { label: "Type", value: "Personal project" },
+        { label: "Platform", value: "Mac menu bar" },
+        { label: "Focus", value: "Context capture" },
+      ],
+      body: [
+        "I built Cubby to collect the small pieces of context I create throughout the day. Anything I copy, screenshot, or jot down lands in a chronological feed, always a click away in the menu bar. As more of my work happens through prompts, having that context close at hand has become increasingly useful.",
+        "I styled Cubby after the wooden cubbies I remember from kindergarten. There was something comforting about having this little wooden space that was uniquely yours, and I wanted Cubby to carry some of that same warmth and nostalgia.",
+      ],
+    },
+    blocks: [],
+  },
+  {
     title: "MetLife Mexico",
     slug: "metlife-mexico",
     tag: "KPMG • 2021",
@@ -520,7 +544,10 @@ export const otherWork: WorkItem[] = [
 ];
 
 export const allWork = [featuredWork, ...otherWork];
-export const routeableWork = allWork.filter((item) => ["smartsheet-reports", "resource-management-integration", "metlife-mexico"].includes(item.slug));
+const routeableWorkSlugs = ["smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
+export const routeableWork = routeableWorkSlugs
+  .map((slug) => allWork.find((item) => item.slug === slug))
+  .filter((item): item is WorkItem => Boolean(item));
 const locallyRouteableWork = routeableWork;
 
 export function getCaseStudy(slug: string) {

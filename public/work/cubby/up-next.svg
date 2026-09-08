@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Cubby placeholder up next image">
+  <rect width="1200" height="800" fill="#11100e"/>
+  <rect x="144" y="108" width="912" height="576" rx="34" fill="#9b6239"/>
+  <g fill="none" stroke="#351f13" stroke-width="22">
+    <path d="M380 126v540"/>
+    <path d="M600 126v540"/>
+    <path d="M820 126v540"/>
+    <path d="M166 306h868"/>
+    <path d="M166 486h868"/>
+  </g>
+  <g fill="#f0d5ad">
+    <rect x="222" y="178" width="108" height="42" rx="12"/>
+    <rect x="444" y="370" width="98" height="40" rx="12"/>
+    <rect x="662" y="552" width="116" height="44" rx="12"/>
+    <rect x="884" y="192" width="92" height="40" rx="12"/>
+  </g>
+  <text x="600" y="744" fill="#fff7eb" font-family="Georgia, 'Times New Roman', serif" font-size="70" text-anchor="middle">Cubby</text>
+</svg>
