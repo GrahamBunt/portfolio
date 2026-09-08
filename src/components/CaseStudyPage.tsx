@@ -2390,7 +2390,11 @@ function CaseStudyNextUpSection({
           if (isCubby) {
             return (
               <article key={item.slug} className={cardClassName} onClick={(event) => navigateFromCubbyCard(href, event)}>
-                <CubbyProjectMedia onMediaNavigate={() => router.push(href)} />
+                <CubbyProjectMedia
+                  showMenuBar
+                  wallpaper={{ src: "/work/cubby/wallpapers/alpine-stillness.webp", zoom: 125 }}
+                  onMediaNavigate={() => router.push(href)}
+                />
                 <Link href={href} className="case-study-next-up-copy cubby-project-copy-link" aria-label="View Cubby project">
                   {cardCopy}
                 </Link>

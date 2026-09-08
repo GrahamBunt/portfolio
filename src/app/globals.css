@@ -6017,13 +6017,9 @@ iframe {
   container-type: inline-size;
   position: relative;
   z-index: 3;
-  width: min(48%, 210px, calc((100% - 32px) * 0.75));
-  aspect-ratio: 3 / 4;
-}
-
-.home-featured-work-card.is-cubby .cubby-project-frame-shell {
-  /* A 3:4 window occupies 76% of the card height at every breakpoint. */
+  /* Keep the app proportional in both home and Up next cards. */
   width: min(60cqw, 57cqh);
+  aspect-ratio: 3 / 4;
 }
 
 .cubby-project-hero-media {
@@ -6128,6 +6124,15 @@ iframe {
 
 }
 
+
+/* Up next cards are taller than the home cards, so crop and scale for their height. */
+.case-study-next-up .cubby-project-zoom-layer {
+  background-size: auto var(--cubby-wallpaper-zoom, 155%);
+}
+
+.case-study-next-up .cubby-project-menu-plane {
+  font-size: clamp(8px, 2.2cqw, 20px);
+}
 
 .cubby-project-copy-link {
   color: inherit;
