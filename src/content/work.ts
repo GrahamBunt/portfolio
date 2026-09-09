@@ -473,8 +473,8 @@ export const otherWork: WorkItem[] = [
         { label: "Focus", value: "Context capture" },
       ],
       body: [
-        "I built Cubby to keep the little things I collect throughout the day close at hand. Anything I copy, screenshot, or jot down lands in a chronological feed, always a click away in the menu bar. As more of my work happens through prompts, I’ve found myself reaching for that context more and more.",
-        "Cubby is styled after the wooden cubbies I remember from kindergarten. There was something comforting about having this little wooden space that was uniquely yours, and I wanted Cubby to carry that warmth and nostalgia.",
+        "I built Cubby so anything I copy, screenshot, or jot down is stored in a chronological feed, always a click away in the menu bar. As more of my work happens through prompts, keeping that context close at hand has become increasingly useful.",
+        "Cubby is styled after the wooden cubbies I remember from kindergarten. I wanted to bring some of that same warmth and nostalgia into the experience.",
       ],
     },
     blocks: [],
