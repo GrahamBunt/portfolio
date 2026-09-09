@@ -1,0 +1,8 @@
+{
+  "widths": [640, 960, 1440, 1920, 2560, 3320],
+  "sources": {
+    "smartsheet-reports": "c3fc335c^:public/work/smartsheet-reports/homepage-card.png",
+    "resource-management-integration": "a625657b^:public/work/resource-management-integration/homepage-card.png",
+    "metlife-mexico": "c3fc335c^:public/work/metlife-mexico/homepage-card.png"
+  }
+}

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
+import { HomeProjectImage } from "@/components/HomeProjectImage";
 import { EmailCopyControl } from "@/components/EmailCopyControl";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
@@ -286,20 +287,7 @@ export default function Home() {
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <figure className="case-study-next-up-media">
-                    <Image
-                      src={getProjectImage(project)}
-                      alt=""
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1180px) calc(100vw - 520px), 960px"
-                      loading={project.slug === "smartsheet-reports" ? "eager" : "lazy"}
-                      preload={project.slug === "smartsheet-reports"}
-                      fetchPriority={project.slug === "smartsheet-reports" ? "high" : "auto"}
-                      quality={92}
-                      style={{
-                        objectPosition: project.slug === "smartsheet-reports" || project.slug === "resource-management-integration" ? "70% 18%" : "50% 50%",
-                      }}
-                    />
+                    <HomeProjectImage slug={project.slug} fallbackSrc={getProjectImage(project)} />
                   </figure>
                   {cardCopy}
                 </Link>
