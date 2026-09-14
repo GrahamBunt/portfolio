@@ -1375,6 +1375,13 @@ iframe {
   height: 15px;
 }
 
+.nav-social-icon svg.social-icon-github {
+  /* The round GitHub mark needs more area to balance LinkedIn's solid square. */
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 .nav-link-misc {
   width: 80px;
   min-width: 80px;
