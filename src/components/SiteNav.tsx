@@ -49,13 +49,24 @@ export function SiteNav() {
         ))}
         <a
           href="https://www.linkedin.com/in/grahambunt/"
-          className="nav-item-pill nav-link-linkedin text-[var(--text-primary)]"
+          className="nav-item-pill nav-link-social text-[var(--text-primary)]"
           aria-label="LinkedIn"
           target="_blank"
           rel="noreferrer"
         >
-          <span className="nav-linkedin-icon">
+          <span className="nav-social-icon">
             <SocialIcon icon="linkedin" />
+          </span>
+        </a>
+        <a
+          href="https://github.com/GrahamBunt"
+          className="nav-item-pill nav-link-social text-[var(--text-primary)]"
+          aria-label="GitHub"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span className="nav-social-icon">
+            <SocialIcon icon="github" />
           </span>
         </a>
       </div>

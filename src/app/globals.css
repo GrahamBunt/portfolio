@@ -1353,7 +1353,7 @@ iframe {
   flex-basis: 76px;
 }
 
-.nav-link-linkedin {
+.nav-link-social {
   width: 40px;
   min-width: 40px;
   max-width: 40px;
@@ -1361,7 +1361,7 @@ iframe {
   padding: 0;
 }
 
-.nav-linkedin-icon {
+.nav-social-icon {
   display: inline-flex;
   width: 15px;
   height: 15px;
@@ -1369,7 +1369,7 @@ iframe {
   justify-content: center;
 }
 
-.nav-linkedin-icon svg {
+.nav-social-icon svg {
   display: block;
   width: 15px;
   height: 15px;
