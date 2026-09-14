@@ -10,13 +10,13 @@ import { HomeProjectImage } from "@/components/HomeProjectImage";
 import { EmailCopyControl } from "@/components/EmailCopyControl";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
-import { allWork } from "@/content/work";
+import { publishedWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
 
 const featuredHomeProjectSlugs = ["smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
 const homeFeaturedProjects = featuredHomeProjectSlugs
-  .map((slug) => allWork.find((project) => project.slug === slug))
-  .filter((project): project is (typeof allWork)[number] => Boolean(project));
+  .map((slug) => publishedWork.find((project) => project.slug === slug))
+  .filter((project): project is (typeof publishedWork)[number] => Boolean(project));
 
 const HOME_SUPPORT_TEXT =
   "Graham Bunt is a product designer leaning into scale and complexity, exploring what AI makes possible, and turning ambitious ideas into real experiences.";
@@ -91,7 +91,7 @@ function ArrowIcon() {
   );
 }
 
-function getProjectImage(project: (typeof allWork)[number]) {
+function getProjectImage(project: (typeof publishedWork)[number]) {
   return project.homepageImage ?? project.image;
 }
 

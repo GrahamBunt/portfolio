@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { allWork } from "@/content/work";
+import { publishedWork } from "@/content/work";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://grahambunt.com";
@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       priority: 0.8,
     },
-    ...allWork
+    ...publishedWork
       .filter((item) => !item.isComingSoon)
       .map((item) => ({
         url: `${baseUrl}/work/${item.slug}`,

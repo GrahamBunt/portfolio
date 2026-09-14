@@ -15,6 +15,7 @@ export type WorkItem = {
   cardMeta?: string;
   caseStudyMeta?: string;
   isComingSoon?: boolean;
+  isHidden?: boolean;
   caseStudyLayout?: "deck";
   deckSlides?: CaseStudyPresentationSlide[];
   overview?: CaseStudyOverview;
@@ -482,6 +483,8 @@ export const otherWork: WorkItem[] = [
   {
     title: "MetLife Mexico",
     slug: "metlife-mexico",
+    // Retained for a possible return; hidden from listings, routes, and the sitemap.
+    isHidden: true,
     tag: "KPMG • 2021",
     image: "/work/metlife-mexico/homepage-card-fast.webp",
     homepageImage: "/work/metlife-mexico/homepage-card-fast.webp",
@@ -544,9 +547,10 @@ export const otherWork: WorkItem[] = [
 ];
 
 export const allWork = [featuredWork, ...otherWork];
+export const publishedWork = allWork.filter((item) => !item.isHidden);
 const routeableWorkSlugs = ["smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
 export const routeableWork = routeableWorkSlugs
-  .map((slug) => allWork.find((item) => item.slug === slug))
+  .map((slug) => publishedWork.find((item) => item.slug === slug))
   .filter((item): item is WorkItem => Boolean(item));
 const locallyRouteableWork = routeableWork;
 
