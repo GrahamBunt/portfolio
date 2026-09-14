@@ -10,7 +10,9 @@ retain their existing content. The separate preview uses the same `CubbyDemoHero
 Implemented against the current source in the Cubby workspace:
 `TimelineView.swift`, `EntryRow.swift`, `ScreenshotTile.swift`, `CubbyTheme.swift`,
 `CubbyFonts.swift`, `ComposerView.swift`, `DaySeparator.swift`, and `EntryTransition.swift`.
-Native wood/paper materials come from `WoodBackground.swift` and `ForegroundPanel.swift`.
+Paper and chrome come from `ForegroundPanel.swift` and the native export. The outer
+wood uses the approved web recipe at Cubby commit `80ed6b9` (seed 30597); see
+[`../cubby-wood/README.md`](../cubby-wood/README.md) for rendering and rollback.
 No source files in the Cubby workspace are modified.
 
 - Clipboard uses the approved `cubby-cozy-detailed.js` with the existing 72% feed sizing,

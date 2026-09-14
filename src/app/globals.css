@@ -5999,6 +5999,11 @@ iframe {
 }
 
 .cubby-project-mascot-media {
+  /* Approved web wood: GrahamBunt/cubby@80ed6b9, seed 30597.
+     Rollback values are documented in scripts/cubby-wood/README.md. */
+  --cubby-wood: url('/work/cubby/wood/approved-30597.svg');
+  --cubby-card-chrome: url('/work/cubby/wood/card-chrome.png');
+  --cubby-demo-chrome: url('/work/cubby/wood/demo-chrome.png');
   container: cubby-card / inline-size;
   display: block;
   isolation: isolate;

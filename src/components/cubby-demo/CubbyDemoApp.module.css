@@ -9,7 +9,8 @@
   --action: rgb(0 0 0 / 42%);
   position: absolute; inset: 0 auto auto 0; width: 360px; height: 480px;
   transform: scale(var(--demo-scale, 1)); transform-origin: top left;
-  background: url('/work/cubby/demo/native-chrome.png') center / 100% 100% no-repeat;
+  background: var(--cubby-demo-chrome, url('/work/cubby/demo/native-chrome.png')) center / 100% 100% no-repeat, var(--cubby-wood, none) center / 100% 100% no-repeat;
+  border-radius: 18px;
   font: 400 13px / 16px CubbyDemoHanken, sans-serif;
   color: var(--ink); letter-spacing: 0; text-align: left;
 

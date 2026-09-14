@@ -152,7 +152,7 @@ export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpa
       } as CSSProperties : undefined}
     >
       <Script src="/work/cubby/cubby-cozy-detailed.js" strategy="afterInteractive" />
-      {!appPreview && <Script src="/work/cubby/study-frame.js?v=detailed-cozy" strategy="afterInteractive" />}
+      {!appPreview && <Script src="/work/cubby/study-frame.js?v=wood-30597" strategy="afterInteractive" />}
       {showMenuBar ? <CubbyMenuBar /> : null}
       <div className="cubby-project-zoom-layer">
         <div className="cubby-project-frame-shell">
