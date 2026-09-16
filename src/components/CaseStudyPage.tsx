@@ -594,7 +594,19 @@ function CaseStudySpecSamplesBlock({
         </header>
       ) : null}
       <div className="case-study-spec-samples-grid">
-        {block.items.map((item) => (
+        {block.items.map((item) => !item.image && !item.video ? (
+          <a
+            key={item.title}
+            className="case-study-spec-sample-link font-sans-preview"
+            href={item.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${item.title}: ${item.action}`}
+          >
+            <span>{preventTextOrphans(item.title)}</span>
+            <span className="case-study-spec-sample-chip-arrow" aria-hidden="true"><UpRightArrowIcon /></span>
+          </a>
+        ) : (
           <a
             key={item.title}
             className="case-study-spec-sample-card"
