@@ -420,16 +420,16 @@ export const otherWork: WorkItem[] = [
         type: "text",
         title: "Customer retention",
         body: [
-          "As we continued searching for a sustainable path to growth, our attention shifted to immediate customer retention. Several high-value renewals depended on tighter integration, including sending Resource Management report data into sheets and keeping it automatically synced.",
-          "I defined the direction for that integration using Smartsheet’s Data Shuttle, while acting as a player-coach for a junior designer through delivery. The release immediately protected roughly $850K ARR in renewals and influenced another $300K ARR shortly thereafter.",
+          "As we continued searching for a sustainable path to growth, our attention shifted to immediate customer retention. Several high-value renewals depended on tighter integration, including sending Resource Management report data into Sheets and keeping it automatically synced.",
+          "I defined the direction for that integration using Smartsheet’s Data Shuttle product under the hood, and acted as a player-coach to a junior designer through delivery. The release immediately retained $850K ARR and another $300K ARR shortly thereafter.",
         ],
       },
       {
         type: "text",
         title: "Inherited strategy",
         body: [
-          "Everything changed when an engineer on the team embedded the standalone Resource Management product into Smartsheet's global navigation as part of a hackathon project. The concept gained traction with leadership and became the direction the team rallied behind.",
-          "It wasn't a strategy our team had intentionally chosen, but that became an important lesson for me. If a product team doesn't define a clear and compelling strategy, it will eventually inherit one.",
+          "Everything changed when an engineering hackathon project proposed embedding the entire Resource Management product into Smartsheet's global navigation via an iframe. The concept gained traction with leadership and quickly became the plan of record.",
+          "It wasn't a product strategy our team had intentionally chosen. It felt bolted on, but we had to commit and make it work. The experience instilled a principle I’ve carried with me ever since: if a product team doesn't define a clear and compelling strategy, it will eventually inherit one.",
         ],
       },
       {
