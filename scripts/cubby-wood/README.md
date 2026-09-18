@@ -39,6 +39,17 @@ pixels were verified identical to the previous exports in both variants.
 
 The Cubby reference workspace is read-only; all exports were run in this portfolio.
 
+The site serves lossless `.webp` copies of these chrome layers at the original
+dimensions (2160 × 2880 for cards, 1440 × 1920 for the demo). Regenerate and verify
+every visible RGB pixel and alpha value with:
+
+```sh
+node scripts/cubby-wood/optimize-chrome.mjs
+```
+
+The PNG sources remain unchanged. The wood SVG, native vector tabs, wallpaper,
+and animated mascot are not rasterized or reduced in resolution.
+
 ## Rollback
 
 Replace the three material variables in `.cubby-project-mascot-media` with:

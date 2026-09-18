@@ -52,6 +52,7 @@ class CubbyCozyDetailed extends HTMLElement {
   </g></g></g></svg></button>`;
     this.controller = new AbortController();
     const signal = this.controller.signal;
+    this.renderedAttributes = new WeakMap();
     this.parts = Object.fromEntries([...this.shadowRoot.querySelectorAll('[data-part]')].map(el => [el.dataset.part, el]));
     this.reduced = matchMedia('(prefers-reduced-motion: reduce)');
     this.target = { x: 0, y: 0 }; this.pose = { x: 0, y: 0 }; this.velocity = { x: 0, y: 0 };
@@ -118,25 +119,37 @@ class CubbyCozyDetailed extends HTMLElement {
     this.render(this.pose.x, this.pose.y, blink, hello);
     this.frame = requestAnimationFrame(next => this.tick(next));
   }
+  // Setting an identical SVG attribute still invalidates rendering in browsers.
+  // Preserve the exact animation values, but leave unchanged geometry alone.
+  setPartAttribute(part, name, value) {
+    let attributes = this.renderedAttributes.get(part);
+    if (!attributes) {
+      attributes = new Map();
+      this.renderedAttributes.set(part, attributes);
+    }
+    if (attributes.get(name) === value) return;
+    attributes.set(name, value);
+    part.setAttribute(name, value);
+  }
   render(x, y, blink, hello) {
     const p = this.parts;
     const breath = this.active ? Math.sin(this.elapsed * 1.45) * 2.3 : 0;
     const nod = hello * Math.sin((this.elapsed - this.helloAt) * 9) * 3;
-    p.head.setAttribute('transform', `translate(${x * 9} ${y * 5 + breath - hello * 9}) rotate(${x * 3 + nod} 627 850)`);
-    p.face.setAttribute('transform', `translate(${x * 24} ${y * 15})`);
-    p.eyes.setAttribute('transform', `translate(${this.gaze.x * 6} ${this.gaze.y * 5})`);
+    this.setPartAttribute(p.head, 'transform', `translate(${x * 9} ${y * 5 + breath - hello * 9}) rotate(${x * 3 + nod} 627 850)`);
+    this.setPartAttribute(p.face, 'transform', `translate(${x * 24} ${y * 15})`);
+    this.setPartAttribute(p.eyes, 'transform', `translate(${this.gaze.x * 6} ${this.gaze.y * 5})`);
     for (const side of ['left', 'right']) {
-      p[`eye-${side}`].setAttribute('transform', `scale(${1 - Math.abs(x) * .035} ${Math.max(.06, blink * (1 - hello * .35))})`);
-      p[`glint-${side}`].setAttribute('transform', `translate(${this.gaze.x * 5} ${this.gaze.y * 4})`);
+      this.setPartAttribute(p[`eye-${side}`], 'transform', `scale(${1 - Math.abs(x) * .035} ${Math.max(.06, blink * (1 - hello * .35))})`);
+      this.setPartAttribute(p[`glint-${side}`], 'transform', `translate(${this.gaze.x * 5} ${this.gaze.y * 4})`);
     }
-    p.muzzle.setAttribute('transform', `translate(${x * 12} ${y * 9 - hello * 3})`);
-    p['ear-left'].setAttribute('transform', `translate(${-x * 3} ${y * -1.5}) rotate(${-hello * 3} 365 490)`);
-    p['ear-right'].setAttribute('transform', `translate(${-x * 3} ${y * -1.5}) rotate(${hello * 3} 889 490)`);
+    this.setPartAttribute(p.muzzle, 'transform', `translate(${x * 12} ${y * 9 - hello * 3})`);
+    this.setPartAttribute(p['ear-left'], 'transform', `translate(${-x * 3} ${y * -1.5}) rotate(${-hello * 3} 365 490)`);
+    this.setPartAttribute(p['ear-right'], 'transform', `translate(${-x * 3} ${y * -1.5}) rotate(${hello * 3} 889 490)`);
     // One filled outline joins the stem and both smile branches without a seam.
     // Keep the junction fixed while the outer corners lift during a greeting.
     const lift = hello * 8;
-    p.mouth.setAttribute('d', `M619 803H633V836C633 847 650 861 664 861C670 861 675 ${858 - lift} 676 ${853 - lift}C681 ${844 - lift} 693 ${851 - lift} 687 ${862 - lift}C672 885 641 871 626 856C611 871 580 885 565 ${862 - lift}C559 ${851 - lift} 571 ${844 - lift} 576 ${853 - lift}C577 ${858 - lift} 582 861 588 861C602 861 619 847 619 836Z`);
-    p.shadow.setAttribute('opacity', String(.15 - hello * .035));
+    this.setPartAttribute(p.mouth, 'd', `M619 803H633V836C633 847 650 861 664 861C670 861 675 ${858 - lift} 676 ${853 - lift}C681 ${844 - lift} 693 ${851 - lift} 687 ${862 - lift}C672 885 641 871 626 856C611 871 580 885 565 ${862 - lift}C559 ${851 - lift} 571 ${844 - lift} 576 ${853 - lift}C577 ${858 - lift} 582 861 588 861C602 861 619 847 619 836Z`);
+    this.setPartAttribute(p.shadow, 'opacity', String(.15 - hello * .035));
   }
   disconnectedCallback() {
     cancelAnimationFrame(this.frame); this.controller?.abort(); this.observer?.disconnect(); this.controller = null;

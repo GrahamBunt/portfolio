@@ -126,6 +126,23 @@ function CubbyMenuBar() {
 }
 
 export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpaper, variant = "card", appPreview, decorative = false }: CubbyProjectMediaProps) {
+  const mediaRef = useRef<HTMLElement>(null);
+  const [cardReady, setCardReady] = useState(false);
+  const ready = variant === "hero" || cardReady;
+
+  useEffect(() => {
+    if (ready || !mediaRef.current) return;
+    // Prepare offscreen cards before they enter view. Keep them mounted after
+    // that so returning to a card never resets its animation or demo state.
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setCardReady(true);
+      observer.disconnect();
+    }, { rootMargin: "600px 0px" });
+    observer.observe(mediaRef.current);
+    return () => observer.disconnect();
+  }, [ready]);
+
   const handleMediaClick = (event: MouseEvent<HTMLElement>) => {
     const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
       if (!(node instanceof Element)) return false;
@@ -143,6 +160,7 @@ export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpa
 
   return (
     <MediaTag className={`case-study-next-up-media cubby-project-mascot-media ${variant === "hero" ? "cubby-project-hero-media" : ""}`}
+      ref={(node) => { mediaRef.current = node; }}
       aria-label={decorative ? undefined : "Cubby app preview with animated mascot"}
       aria-hidden={decorative || undefined} inert={decorative}
       onClick={decorative ? undefined : handleMediaClick}
@@ -151,18 +169,20 @@ export function CubbyProjectMedia({ onMediaNavigate, showMenuBar = false, wallpa
         "--cubby-wallpaper-zoom": `${wallpaper.zoom ?? 155}%`,
       } as CSSProperties : undefined}
     >
-      <Script src="/work/cubby/cubby-cozy-detailed.js" strategy="afterInteractive" />
-      {!appPreview && <Script src="/work/cubby/study-frame.js?v=wood-30597" strategy="afterInteractive" />}
-      {showMenuBar ? <CubbyMenuBar /> : null}
-      <div className="cubby-project-zoom-layer">
-        <div className="cubby-project-frame-shell">
-          {appPreview ?? createElement(
-            "grizzly-study-frame",
-            { className: "cubby-project-app-frame", "sample-feed": "" },
-            createElement("cubby-cozy-detailed", { className: "cubby-project-mascot" }),
-          )}
+      {ready && <>
+        <Script src="/work/cubby/cubby-cozy-detailed.js" strategy="afterInteractive" />
+        {!appPreview && <Script src="/work/cubby/study-frame.js?v=shared-fonts" strategy="afterInteractive" />}
+        {showMenuBar ? <CubbyMenuBar /> : null}
+        <div className="cubby-project-zoom-layer">
+          <div className="cubby-project-frame-shell">
+            {appPreview ?? createElement(
+              "grizzly-study-frame",
+              { className: "cubby-project-app-frame", "sample-feed": "" },
+              createElement("cubby-cozy-detailed", { className: "cubby-project-mascot" }),
+            )}
+          </div>
         </div>
-      </div>
+      </>}
     </MediaTag>
   );
 }
