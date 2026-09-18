@@ -5,11 +5,15 @@ class CubbyCozyDetailed extends HTMLElement {
     if (!this.shadowRoot) this.attachShadow({ mode: 'open' }).innerHTML = `
       <style>
         :host{display:block;width:100%;aspect-ratio:1;contain:layout style}
-        button{all:unset;display:block;width:100%;height:100%;cursor:pointer;border-radius:40%;-webkit-tap-highlight-color:transparent}
+        button{all:unset;position:relative;display:block;width:100%;height:100%;cursor:pointer;border-radius:40%;-webkit-tap-highlight-color:transparent}
         button:focus-visible{outline:2px solid #996b3b;outline-offset:-24px}
+        .shadow{position:absolute;inset:0;pointer-events:none}
+        .breathing{display:block;width:100%;height:100%;will-change:transform}
         svg{display:block;width:100%;height:100%;overflow:visible}
       </style>
-      <button type="button" aria-label="Say hello to Detailed Cozy Grizzly"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1254 1254" fill="none" aria-hidden="true">
+      <button type="button" aria-label="Say hello to Detailed Cozy Grizzly">
+      <svg class="shadow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1254 1254" fill="none" aria-hidden="true"><defs><filter id="shadow-blur"><feGaussianBlur stdDeviation="14" /></filter></defs><ellipse data-part="shadow" cx="627" cy="1025" rx="254" ry="21" fill="#7d4a20" opacity=".15" filter="url(#shadow-blur)" /></svg>
+      <span class="breathing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1254 1254" fill="none" aria-hidden="true">
 <defs>
   <radialGradient id="fur" cx=".39" cy=".17" r=".89"><stop stop-color="#dba360" /><stop offset=".38" stop-color="#b87736" /><stop offset=".72" stop-color="#98501f" /><stop offset=".92" stop-color="#653115" /><stop offset="1" stop-color="#4c2208" /></radialGradient>
   <radialGradient id="ear" cx=".41" cy=".17" r=".9"><stop stop-color="#d49a56" /><stop offset=".58" stop-color="#aa672e" /><stop offset="1" stop-color="#5a2604" /></radialGradient>
@@ -27,9 +31,7 @@ class CubbyCozyDetailed extends HTMLElement {
   </filter>
   <filter id="muzzleShadow" x="-30%" y="-25%" width="160%" height="170%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#311400" flood-opacity=".20" /></filter>
   <filter id="noseShadow" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#58310e" flood-opacity=".34" /></filter>
-  <filter id="blur"><feGaussianBlur stdDeviation="14" /></filter>
 </defs>
-<ellipse data-part="shadow" cx="627" cy="1025" rx="254" ry="21" fill="#7d4a20" opacity=".15" filter="url(#blur)" />
 <g data-part="head">
 <g transform="translate(380 535) scale(.95) translate(-365 -490)"><g data-part="ear-left">
     <path d="M282 501C246 468 248 402 280 368C312 334 361 345 391 374C415 399 418 440 402 480Z" fill="url(#ear)" filter="url(#suede)" />
@@ -49,9 +51,10 @@ class CubbyCozyDetailed extends HTMLElement {
       <path d="M627 726C592 726 554 729 547 749C538 777 594 817 627 817C660 817 716 777 707 749C700 729 662 726 627 726Z" fill="url(#nose)" filter="url(#noseShadow)" />
       <path d="M627 726C592 726 554 729 547 749C538 777 594 817 627 817C660 817 716 777 707 749C700 729 662 726 627 726Z" fill="url(#nose)" filter="url(#suede)" />
       </g>
-  </g></g></g></svg></button>`;
+  </g></g></g></svg></span></button>`;
     this.controller = new AbortController();
     const signal = this.controller.signal;
+    this.breathing = this.shadowRoot.querySelector('.breathing');
     this.renderedAttributes = new WeakMap();
     this.parts = Object.fromEntries([...this.shadowRoot.querySelectorAll('[data-part]')].map(el => [el.dataset.part, el]));
     this.reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -134,8 +137,12 @@ class CubbyCozyDetailed extends HTMLElement {
   render(x, y, blink, hello) {
     const p = this.parts;
     const breath = this.active ? Math.sin(this.elapsed * 1.45) * 2.3 : 0;
+    // Translate a composited HTML layer instead of invalidating all the SVG's
+    // turbulence/lighting filters for every breathing frame. The shadow stays
+    // fixed and the SVG keeps its original geometry, texture and resolution.
+    this.breathing.style.transform = `translate3d(0, ${breath / 1254 * 100}%, 0)`;
     const nod = hello * Math.sin((this.elapsed - this.helloAt) * 9) * 3;
-    this.setPartAttribute(p.head, 'transform', `translate(${x * 9} ${y * 5 + breath - hello * 9}) rotate(${x * 3 + nod} 627 850)`);
+    this.setPartAttribute(p.head, 'transform', `translate(${x * 9} ${y * 5 - hello * 9}) rotate(${x * 3 + nod} 627 850)`);
     this.setPartAttribute(p.face, 'transform', `translate(${x * 24} ${y * 15})`);
     this.setPartAttribute(p.eyes, 'transform', `translate(${this.gaze.x * 6} ${this.gaze.y * 5})`);
     for (const side of ['left', 'right']) {
