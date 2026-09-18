@@ -465,7 +465,7 @@ export const otherWork: WorkItem[] = [
       ],
       body: [
         "I built Cubby so anything I copy, screenshot, or jot down is stored in a chronological feed, always a click away in the menu bar. As more of my work happens through prompts, keeping that context close has become increasingly useful.",
-        "Cubby is styled after the wooden cubbies I remember from kindergarten. There was something comforting about this little wooden space, and I wanted Cubby to carry that warmth and nostalgia.",
+        "Cubby is styled after the wooden cubbies I remember from kindergarten. There was something comforting about this wooden space, and I wanted Cubby to carry that warmth and nostalgia.",
       ],
     },
     blocks: [],
