@@ -412,8 +412,8 @@ export const otherWork: WorkItem[] = [
         type: "text",
         title: "Creating demand",
         body: [
-          "Only 4.2% of Smartsheet customers were using Resource Management, so we brought its strongest capabilities into Smartsheet to create demand for the premium product.",
-          "I replaced an error-prone 20+ click onboarding process with a simple column mapping experience that connected sheets to Resource Management projects. We also brought Resource Management's core workload schedule directly into the sheet. The experience improved, but we hadn't addressed the sales-assisted path required to become a paying customer, limiting our ability to materially move adoption.",
+          "Only 4.2% of Smartsheet customers were paying for Resource Management, so we brought its strongest capabilities into Smartsheet to create demand for the premium product.",
+          "I replaced an error-prone 20+ click onboarding process with a simple column mapping experience that connected Sheets to Resource Management projects. We also brought Resource Management's core workload schedule directly into the Sheet as an expandable full-screen view. The experience improved, but the trial flow into the premium product still relied on a sales-assisted motion, limiting our ability to open our funnel and materially grow the business.",
         ],
       },
       {
