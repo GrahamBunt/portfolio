@@ -413,7 +413,7 @@ export const otherWork: WorkItem[] = [
         title: "Creating demand",
         body: [
           "Only 4.2% of Smartsheet customers were paying for Resource Management, so we brought its strongest capabilities into Smartsheet to create demand for the premium product.",
-          "I replaced an error-prone 20+ click onboarding process with a simple column mapping experience that connected Sheets to Resource Management projects. We also brought Resource Management's core workload schedule directly into the Sheet as an expandable full-screen view. The experience improved, but the trial flow into the premium product still relied on a sales-assisted motion, limiting our ability to open our funnel and materially grow the business.",
+          "I replaced an error-prone 20+ click onboarding process with a simple column mapping experience that connected Sheets to Resource Management projects. We also brought Resource Management's core workload schedule directly into the Sheet as an expandable full-screen view. The experience improved, but the trial flow into the premium product still relied on a sales-assisted motion, limiting our ability to activate our funnel and materially grow the business.",
         ],
       },
       {
@@ -421,30 +421,30 @@ export const otherWork: WorkItem[] = [
         title: "Customer retention",
         body: [
           "As we continued searching for a sustainable path to growth, our attention shifted to immediate customer retention. Several high-value renewals depended on tighter integration, including sending Resource Management report data into Sheets and keeping it automatically synced.",
-          "I defined the direction for that integration using Smartsheet’s Data Shuttle product under the hood, and acted as a player-coach to a junior designer through delivery. The release immediately retained $850K ARR and another $300K ARR shortly thereafter.",
+          "I defined the direction for that integration using Smartsheet’s Data Shuttle under the hood. I also acted as a player-coach to a junior designer through delivery. The release immediately retained $850K ARR and another $300K ARR shortly thereafter.",
         ],
       },
       {
         type: "text",
         title: "Inherited strategy",
         body: [
-          "Everything changed when an engineering hackathon project proposed embedding the entire Resource Management product into Smartsheet's global navigation via an iframe. The concept gained traction with leadership and quickly became the plan of record.",
-          "It wasn't a product strategy our team had intentionally chosen. It felt bolted on, but we had to commit and make it work. The experience instilled a principle I’ve carried with me ever since: if a product team doesn't define a clear and compelling strategy, it will eventually inherit one.",
+          "Everything changed when an engineer's hackathon project embedded the entire Resource Management product into Smartsheet's global navigation via iframe. The concept gained traction with leadership and became the plan of record.",
+          "It wasn't a product strategy our team had intentionally chosen, but we committed to making it work. This experience instilled a principle I’ve carried with me ever since: if a product team doesn't define a clear and compelling strategy, it will eventually inherit one.",
         ],
       },
       {
         type: "text",
         title: "Visibility and vision",
         body: [
-          "With Resource Management in the global navigation, existing customers could access the product directly from Smartsheet. For everyone else, the new entry point led to an upsell page that captured qualified leads, and sent them to the same sales-assisted motion we had relied on before. For the first time, we could see how many customers were discovering and showing interest in Resource Management, which became especially important as Smartsheet approached a private equity takeover.",
-          "From there, the focus was on transitioning into a self-serve trial motion and giving customers new reasons to value Resource Management. I defined the self-serve experience that let customers select sheets in bulk, map their data to Resource Management, and start with projects, people, and workload data already in place. In parallel, I joined a sales and product tiger team to define a brand new Scenario Planning tool, for exploring a range of resource and project changes before committing them to a plan of record.",
-          "The self-serve trial motion was aimed at putting the business unit on a get healthy plan, while Scenario Planning breathed new life and excitement into the product. Together, they formed the vision I defined for Resource Management and the foundation for a multi-year roadmap investment.",
+          "With Resource Management in Smartsheet’s global navigation, existing Smartsheet customers could discover the product and land on an upsell page. For the first time, we could measure discovery and interest, an important signal as Smartsheet approached its private equity takeover.",
+          "From there, I focused on moving Resource Management toward self-serve and giving customers new reasons to value the product. I designed a trial experience that let customers bring their Smartsheet data into Resource Management in bulk. In parallel, I joined a sales and product tiger team to define Scenario Planning, a new way to explore resource and project changes before committing them to a plan.",
+          "Together, self-serve and Scenario Planning became the vision I defined for Resource Management and the foundation for a multi-year roadmap.",
         ],
       },
       {
         type: "impact",
         label: "Perspective",
-        statement: "Resource Management taught me to think about product design through the lens of the business. We were constantly balancing customer needs, experience improvements, and long-term product bets with the realities of a declining business unit.",
+        statement: "Resource Management taught me to think about product design through the lens of the business. We were constantly balancing customer needs, experience improvements, and long-term product bets with the day-to-day realities of operating inside a declining business unit.",
         outcomes: [],
         footnote: "Some well-intentioned investments failed to move the needle, others directly protected revenue, and the vision we ultimately defined became a multi-year roadmap that endured through Smartsheet's private equity takeover.",
       },
