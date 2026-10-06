@@ -26,7 +26,8 @@ class CubbyCozyDetailed extends HTMLElement {
   <filter id="suede" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
     <feTurbulence type="fractalNoise" baseFrequency=".32 .48" numOctaves="3" seed="12" result="noise" />
     <feDiffuseLighting in="noise" surfaceScale=".95" diffuseConstant="1.15" lighting-color="#fff" result="nap"><feDistantLight azimuth="235" elevation="60" /></feDiffuseLighting>
-    <feComposite in="SourceGraphic" in2="nap" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" />
+    <!-- Keep the fine grain subtle at the small empty-state size. -->
+    <feComposite in="SourceGraphic" in2="nap" operator="arithmetic" k1="${this.hasAttribute('accessory') ? '.15' : '1'}" k2="${this.hasAttribute('accessory') ? '.85' : '0'}" k3="0" k4="0" />
     <feComposite in2="SourceGraphic" operator="in" />
   </filter>
   <filter id="muzzleShadow" x="-30%" y="-25%" width="160%" height="170%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#311400" flood-opacity=".20" /></filter>
@@ -51,7 +52,7 @@ class CubbyCozyDetailed extends HTMLElement {
       <path d="M627 726C592 726 554 729 547 749C538 777 594 817 627 817C660 817 716 777 707 749C700 729 662 726 627 726Z" fill="url(#nose)" filter="url(#noseShadow)" />
       <path d="M627 726C592 726 554 729 547 749C538 777 594 817 627 817C660 817 716 777 707 749C700 729 662 726 627 726Z" fill="url(#nose)" filter="url(#suede)" />
       </g>
-  </g></g></g></svg></span></button>`;
+  </g></g><g data-part="accessory">${this.accessoryMarkup()}</g></g></svg></span></button>`;
     this.controller = new AbortController();
     const signal = this.controller.signal;
     this.breathing = this.shadowRoot.querySelector('.breathing');
@@ -86,8 +87,56 @@ class CubbyCozyDetailed extends HTMLElement {
     this.observer.observe(this);
     this.sync();
   }
-  static get observedAttributes() { return ['paused']; }
-  attributeChangedCallback() { if (this.controller) this.sync(); }
+  // Small objects held below the face; the approved head, texture and expression
+  // remain intact. Props inherit the head motion and the existing breathing layer.
+  accessoryMarkup() {
+    const paw = (x, y, rotation) => `<g transform="translate(${x} ${y}) rotate(${rotation})"><ellipse rx="47" ry="60" fill="url(#fur)" filter="url(#suede)"/><path d="M-21-27V-10M-2-32V-15M17-25V-9" stroke="#633914" stroke-opacity=".45" stroke-width="7" stroke-linecap="round"/></g>`;
+    switch (this.getAttribute('accessory')) {
+      case 'clipboard': return `
+        <g transform="translate(0 28)"><g transform="rotate(-7 627 980)" filter="url(#muzzleShadow)">
+          <rect x="472" y="838" width="310" height="285" rx="29" fill="#975924"/>
+          <rect x="482" y="842" width="290" height="265" rx="22" fill="#c18d51"/>
+          <rect x="503" y="862" width="248" height="221" rx="10" fill="url(#cream)"/>
+          <path d="M584 852V836Q584 819 601 819H653Q670 819 670 836V852" stroke="#6c5138" stroke-width="15" stroke-linejoin="round"/>
+          <rect x="570" y="842" width="114" height="28" rx="9" fill="#8f795b"/>
+          <path d="M539 927H716M539 972H694M539 1017H708" stroke="#b29870" stroke-width="11" stroke-linecap="round"/>
+        </g>${paw(478, 985, -17)}${paw(778, 958, 18)}</g>`;
+      case 'camera': return `
+        <g filter="url(#muzzleShadow)">
+          <path d="M534 879L554 841H676L697 879" fill="#697362" stroke="#485342" stroke-width="10" stroke-linejoin="round"/>
+          <rect x="467" y="864" width="70" height="26" rx="9" fill="#8f6540"/>
+          <rect x="443" y="879" width="368" height="208" rx="38" fill="#53604c"/>
+          <rect x="450" y="879" width="354" height="73" rx="30" fill="#8c9780"/>
+          <path d="M454 941H800" stroke="#c3c4a5" stroke-opacity=".45" stroke-width="5"/>
+          <rect x="734" y="903" width="40" height="26" rx="7" fill="#ede1bd"/>
+          <circle cx="627" cy="985" r="91" fill="#aa9976"/>
+          <circle cx="627" cy="985" r="76" fill="#343e36" stroke="#ded2b0" stroke-width="5"/>
+          <circle cx="627" cy="985" r="56" fill="#172d2b"/>
+          <circle cx="615" cy="971" r="33" fill="#314d44"/>
+          <path d="M601 951Q617 940 634 947" stroke="#a4b3a1" stroke-opacity=".65" stroke-width="10" stroke-linecap="round"/>
+        </g>${paw(449, 984, -17)}${paw(805, 984, 17)}`;
+      case 'pencil': return `
+        <g transform="translate(791 785) rotate(34)" filter="url(#muzzleShadow)">
+          <rect x="-44" y="0" width="88" height="286" rx="10" fill="#dba54a"/>
+          <path d="M-44 75H-15V286H-44Z" fill="#ad722c"/>
+          <path d="M13 75H36V286H13Z" fill="#f0c66d"/>
+          <path d="M-44 286L0 368L44 286Z" fill="#edd0a0"/>
+          <path d="M-15 340L0 368L15 340Z" fill="#49382a"/>
+          <path d="M-44 26Q-44 0-18 0H18Q44 0 44 26V62H-44Z" fill="#bb8271"/>
+          <path d="M-44 55H44V88H-44Z" fill="#c5b69b"/>
+          <path d="M-44 65H44M-44 79H44" stroke="#93866e" stroke-width="5"/>
+        </g>${paw(720, 961, 28)}`;
+      default: return '';
+    }
+  }
+  static get observedAttributes() { return ['paused', 'accessory']; }
+  attributeChangedCallback(name) {
+    if (name === 'accessory') {
+      const prop = this.shadowRoot?.querySelector('[data-part="accessory"]');
+      if (prop) prop.innerHTML = this.accessoryMarkup();
+    }
+    if (this.controller) this.sync();
+  }
   get active() { return !this.hasAttribute('paused') && !this.reduced.matches && !document.hidden && this.inView; }
   sync() {
     cancelAnimationFrame(this.frame); this.lastTime = 0;

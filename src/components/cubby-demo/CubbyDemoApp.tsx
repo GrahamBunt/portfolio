@@ -3,14 +3,18 @@
 import { createElement, Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import { sampleNotes, sampleScreenshots, type DemoNote } from './demo-content';
 import styles from './CubbyDemoApp.module.css';
-import { selectRange } from './demo-interactions';
+import { selectRange, updateNote, deletionTargets } from './demo-interactions';
+import { EntryAction } from './EntryAction';
 
 type Tab = 'clipboard' | 'screenshots' | 'notes';
 const tabs: Tab[] = ['clipboard', 'screenshots', 'notes'];
 const labels = { clipboard: 'Clipboard', screenshots: 'Screenshots', notes: 'Notes' };
-type IconName = Tab | 'copy' | 'delete' | 'check' | 'submit';
+type IconName = Tab | 'copy' | 'delete' | 'check' | 'submit' | 'edit';
 
 function Icon({ name }: { name: IconName }) {
+  if (name === 'edit') return <svg aria-hidden="true" className={styles.icon} viewBox="0 0 22 22" fill="none">
+    <path transform="translate(5.5 5.5) scale(.4583333333)" d="M3 16 16 3Q18 1 20 3L21 4Q23 6 21 8L8 21 2 22ZM14 5 19 10" stroke="currentColor" strokeWidth="1.963636" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>;
   return <span aria-hidden="true" className={styles.icon}
     style={{ '--icon': `url('/work/cubby/demo/${name}.png')` } as CSSProperties} />;
 }
@@ -19,7 +23,7 @@ function Day({ label }: { label: string }) {
   return <div className={styles.day}><span>{label}</span></div>;
 }
 
-function Actions({ time, label, copy, remove }: { time: string; label: string; copy: () => Promise<void>; remove: () => void }) {
+function Actions({ time, label, copy, remove, edit, selectedCount = 1 }: { time: string; label: string; copy: () => Promise<void>; remove: () => void; edit?: () => void; selectedCount?: number }) {
   const [copied, setCopied] = useState(false);
   const [failed, setFailed] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -41,13 +45,40 @@ function Actions({ time, label, copy, remove }: { time: string; label: string; c
   return <div className={styles.meta}>
     <time>{time}</time>
     <span className={styles.actions}>
-      <button type="button" aria-label={`Copy ${label}`} title={failed ? 'Copy unavailable in this browser' : 'Copy'} onClick={onCopy} className={copied ? styles.copied : undefined}>
+      <EntryAction label={`Copy ${label}`} tooltip={failed ? 'Copy unavailable in this browser' : 'Copy'} onClick={onCopy} className={copied ? styles.copied : undefined}>
         <Icon name={copied ? 'check' : 'copy'} />
-      </button>
-      <button type="button" aria-label={`Delete ${label}`} title="Delete" onClick={event => { event.stopPropagation(); remove(); }}><Icon name="delete" /></button>
+      </EntryAction>
+      {edit && <EntryAction label="Edit note" tooltip="Edit" onClick={edit}><Icon name="edit" /></EntryAction>}
+      <EntryAction label={`Delete ${label}`} tooltip={selectedCount > 1 ? `Delete ${selectedCount} Selected Items` : 'Delete'} onClick={remove}><Icon name="delete" /></EntryAction>
     </span>
     <span className={styles.srOnly} role="status">{copied ? 'Copied' : failed ? 'Copy was blocked by the browser. Nothing was copied.' : ''}</span>
   </div>;
+}
+
+function NoteEditor({ text, onChange }: { text: string; onChange: (text: string) => void }) {
+  const field = useRef<HTMLTextAreaElement>(null);
+  useLayoutEffect(() => {
+    const input = field.current;
+    if (!input) return;
+    const feed = input.closest<HTMLElement>('[data-demo-feed]');
+    const scrollTop = feed?.scrollTop ?? 0;
+    input.style.height = '16px';
+    input.style.height = `${input.scrollHeight}px`;
+    if (feed) feed.scrollTop = scrollTop;
+  }, [text]);
+  useEffect(() => {
+    const input = field.current;
+    input?.focus({ preventScroll: true });
+    const row = input?.closest<HTMLElement>('[data-entry-id]');
+    const feed = input?.closest<HTMLElement>('[data-demo-feed]');
+    if (row && feed) {
+      // Keep the editor footer reachable without scrolling the case-study page.
+      const bottom = row.offsetTop + row.offsetHeight;
+      if (bottom > feed.scrollTop + feed.clientHeight) feed.scrollTop = bottom - feed.clientHeight;
+    }
+  }, []);
+  return <textarea ref={field} className={styles.noteEditor} aria-label="Edit note text" value={text}
+    onChange={event => onChange(event.target.value)} rows={1} />;
 }
 
 async function copyScreenshot(src: string) {
@@ -64,6 +95,8 @@ export function CubbyDemoApp() {
   const [notes, setNotes] = useState<DemoNote[]>(sampleNotes);
   const [screenshots, setScreenshots] = useState(sampleScreenshots);
   const [draft, setDraft] = useState('');
+  const [editing, setEditing] = useState<Record<string, string>>({});
+  const [composerFocused, setComposerFocused] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [latestNote, setLatestNote] = useState<string>();
   const [announcement, setAnnouncement] = useState('');
@@ -176,11 +209,24 @@ export function CubbyDemoApp() {
     const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase();
     setNotes(previous => [...previous, { id, text: draft.trim(), day: 'Today', time }]);
     setDraft('');
+    setEditing({});
     setLatestNote(id);
     setSelected([]);
     scrollOnUpdate.current = true;
     setAnnouncement('Note added');
     editor.current?.focus({ preventScroll: true });
+  };
+
+  const finishEditing = (id: string, save: boolean) => {
+    if (save) {
+      setNotes(previous => updateNote(previous, id, editing[id]));
+      setAnnouncement('Note saved');
+    }
+    setEditing(previous => {
+      const next = { ...previous };
+      delete next[id];
+      return next;
+    });
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -211,7 +257,7 @@ export function CubbyDemoApp() {
   };
 
   return <div className={styles.wrapper} ref={wrapper}>
-    <div className={styles.app} ref={canvas} onKeyDown={onKeyDown}>
+    <div className={styles.app} data-cubby-demo ref={canvas} onKeyDown={onKeyDown}>
       <header className={styles.header}>
         <div role="tablist" aria-label="Cubby feeds" className={styles.tabs}>
           {tabs.map(name => <button type="button" role="tab" key={name} id={`cubby-demo-tab-${name}`} aria-selected={tab === name}
@@ -238,14 +284,14 @@ export function CubbyDemoApp() {
           </div>
           {createElement('cubby-cozy-detailed', { className: styles.bear })}
         </div>
-        {tab !== 'clipboard' && <div className={styles.feed} ref={feed} key={tab}>
+        {tab !== 'clipboard' && <div className={styles.feed} data-demo-feed ref={feed} key={tab}>
           {tab === 'notes' ? <div className={styles.notes}>
-            {notes.length === 0 && <div className={styles.empty}><Icon name="notes" /><strong>Start with a note</strong><p>Write a thought, link, or reminder below.</p></div>}
+            {notes.length === 0 && <div className={styles.empty}>{createElement('cubby-cozy-detailed', { className: styles.emptyBear, accessory: 'pencil', 'aria-hidden': true, inert: true })}<p>Write a note to save it here.</p></div>}
             {notes.map((note, index) => <Fragment key={note.id}>
               {note.day !== notes[index - 1]?.day && <Day label={note.day} />}
-              <div className={`${styles.note} ${note.id === latestNote ? styles.arrival : ''} ${selected.includes(note.id) ? styles.selectedNote : ''} ${deleting.includes(note.id) ? styles.deleting : ''}`}
+              <div className={`${styles.note} ${note.id === latestNote ? styles.arrival : ''} ${editing[note.id] !== undefined ? styles.editingNote : ''} ${selected.includes(note.id) ? styles.selectedNote : ''} ${deleting.includes(note.id) ? styles.deleting : ''}`}
                 data-entry-id={note.id} onMouseDown={event => {
-                  if (event.button !== 0 || (event.target as HTMLElement).closest('button')) return;
+                  if (event.button !== 0 || (event.target as HTMLElement).closest('button, textarea')) return;
                   if (event.shiftKey || event.metaKey || event.ctrlKey) {
                     event.preventDefault();
                     window.getSelection()?.removeAllRanges();
@@ -254,27 +300,38 @@ export function CubbyDemoApp() {
                   select(note.id, event);
                 }}
                 data-divider={note.day === notes[index + 1]?.day}>
-                <p>{note.text}</p>
-                <Actions time={note.time} label="note" copy={() => navigator.clipboard.writeText(note.text)} remove={() => remove(selected.includes(note.id) ? selected : [note.id], 'notes')} />
+                {editing[note.id] !== undefined ? <>
+                  <NoteEditor text={editing[note.id]} onChange={text => setEditing(previous => ({ ...previous, [note.id]: text }))} />
+                  <div className={styles.meta}><time>{note.time}</time><span className={styles.editControls}>
+                    <button type="button" onClick={() => finishEditing(note.id, false)}>Cancel</button>
+                    <button type="button" onClick={() => finishEditing(note.id, true)}>Save</button>
+                  </span></div>
+                </> : <>
+                  <p>{note.text}</p>
+                  <Actions time={note.time} label="note" copy={() => navigator.clipboard.writeText(note.text)}
+                    edit={() => setEditing(previous => ({ ...previous, [note.id]: note.text }))}
+                    selectedCount={selected.includes(note.id) ? selected.length : 1}
+                    remove={() => remove(deletionTargets(note.id, selected), 'notes')} />
+                </>}
               </div>
             </Fragment>)}
           </div> : <div className={styles.screenshots}>
-            {screenshots.length === 0 && <div className={styles.empty}><Icon name="screenshots" /><strong>Screenshots are ready</strong></div>}
+            {screenshots.length === 0 && <div className={`${styles.empty} ${styles.emptyScreenshots}`}>{createElement('cubby-cozy-detailed', { className: styles.emptyBear, accessory: 'camera', 'aria-hidden': true, inert: true })}<p>Screenshots are saved here automatically.</p></div>}
             {screenshots.map((shot, index) => <Fragment key={shot.id}>
               {shot.day !== screenshots[index - 1]?.day && <Day label={shot.day} />}
               <div className={`${styles.screenshot} ${selected.includes(shot.id) ? styles.selectedShot : ''} ${deleting.includes(shot.id) ? styles.deleting : ''}`} data-entry-id={shot.id}>
                 <button type="button" className={styles.capture} aria-label={`Select ${shot.label}`} aria-pressed={selected.includes(shot.id)}
                   style={{ backgroundImage: `url('${shot.src}')` }} onClick={event => { select(shot.id, event); event.currentTarget.closest<HTMLElement>('[role="tabpanel"]')?.focus({ preventScroll: true }); }} />
                 <div onClick={event => select(shot.id, event)}>
-                  <Actions time={shot.time} label="screenshot" copy={() => copyScreenshot(shot.src)} remove={() => remove([shot.id], 'screenshots')} />
+                  <Actions time={shot.time} label="screenshot" copy={() => copyScreenshot(shot.src)} selectedCount={selected.includes(shot.id) ? selected.length : 1} remove={() => remove(deletionTargets(shot.id, selected), 'screenshots')} />
                 </div>
               </div>
             </Fragment>)}
           </div>}
         </div>}
-        {tab === 'notes' && <form className={styles.composer} data-has-content={draft.length > 0} onSubmit={event => { event.preventDefault(); submit(); }}>
+        {tab === 'notes' && <form className={styles.composer} data-focused={composerFocused} onSubmit={event => { event.preventDefault(); submit(); }}>
           <textarea ref={editor} value={draft} placeholder="Add a note..." aria-label="Add a note" rows={1}
-            onChange={event => setDraft(event.target.value)} onFocus={() => setSelected([])}
+            onChange={event => setDraft(event.target.value)} onFocus={() => { setSelected([]); setComposerFocused(true); }} onBlur={() => setComposerFocused(false)}
             onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); submit(); } }} />
           <button type="submit" aria-label="Add note" disabled={!draft.trim()}><Icon name="submit" /></button>
         </form>}

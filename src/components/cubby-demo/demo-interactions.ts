@@ -6,3 +6,12 @@ export function selectRange(ids: string[], selected: string[], anchor: string | 
   }
   return additive ? selected.includes(target) ? selected.filter(id => id !== target) : [...selected, target] : [target];
 }
+
+// Editing changes content only; identity, creation time, day, and order stay intact.
+export function updateNote<T extends { id: string; text: string }>(notes: T[], id: string, text: string): T[] {
+  return notes.map(note => note.id === id ? { ...note, text } : note);
+}
+
+export function deletionTargets(id: string, selected: string[]): string[] {
+  return selected.includes(id) ? selected : [id];
+}

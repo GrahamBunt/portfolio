@@ -29,7 +29,7 @@ class GrizzlyStudyFrame extends HTMLElement {
         :host(:not([bare])) ::slotted(cubby-cozy-detailed){width:72%}
         /* Sample feed uses the product's 13pt text, 11pt timestamps, 22pt
            action frames with a 2pt gap, and 14pt text inset, scaled from 360pt. */
-        .sample-feed{display:none;position:absolute;inset:2.777777778cqw 2.777777778cqw auto;height:52.777777778cqw;font-family:CubbyStudyHanken,sans-serif;color:#45423b;pointer-events:none;user-select:none;opacity:.72;mask-image:linear-gradient(to bottom,#000 0%,#000 37%,#0009 66%,transparent 96%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 37%,#0009 66%,transparent 96%)}
+        .sample-feed{display:none;position:absolute;inset:2.777777778cqw 2.777777778cqw auto;height:52.777777778cqw;font-family:CubbyStudyHanken,sans-serif;color:#4a2e1f;pointer-events:none;user-select:none;opacity:.72;mask-image:linear-gradient(to bottom,#000 0%,#000 37%,#0009 66%,transparent 96%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 37%,#0009 66%,transparent 96%)}
         :host([sample-feed]:not([bare])) .sample-feed{display:block}
         :host([sample-feed]:not([bare])) ::slotted(cubby-cozy-detailed){transform:translateY(4cqw)}
         .day{display:flex;align-items:center;padding:2.5cqw 0;gap:0}
@@ -38,7 +38,7 @@ class GrizzlyStudyFrame extends HTMLElement {
         .entry{position:relative;padding:2.777777778cqw 1.111111111cqw;font-size:3.611111111cqw;line-height:4.444444444cqw;font-weight:400}
         .entry+.entry::before{content:'';position:absolute;top:0;left:2.222222222cqw;right:2.222222222cqw;height:.138888889cqw;background:#00000021}
         .entry p{margin:0;overflow-wrap:anywhere}
-        .meta{display:flex;align-items:center;gap:1.111111111cqw;margin-top:.833333333cqw;color:#0000008f;font-size:3.055555556cqw;line-height:3.666666667cqw;font-weight:500}
+        .meta{display:flex;align-items:center;gap:1.111111111cqw;margin-top:.833333333cqw;color:#4a2e1fb8;font-size:3.055555556cqw;line-height:3.666666667cqw;font-weight:500}
         .meta img{width:12.777777778cqw;height:6.111111111cqw;display:block}
         :host([bare]){aspect-ratio:1}
         :host([bare]) .feed{inset:0;overflow:visible}
