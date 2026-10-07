@@ -477,8 +477,6 @@ export const otherWork: WorkItem[] = [
   {
     title: "MetLife Mexico",
     slug: "metlife-mexico",
-    // Retained for a possible return; hidden from listings, routes, and the sitemap.
-    isHidden: true,
     tag: "KPMG • 2021",
     image: "/work/metlife-mexico/homepage-card-fast.webp",
     homepageImage: "/work/metlife-mexico/homepage-card-fast.webp",
