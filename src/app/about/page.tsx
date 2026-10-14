@@ -211,7 +211,7 @@ export default function AboutPage() {
           <div className={`about-orientation ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
             <h1 className="about-orientation-title">Graham Bunt</h1>
             <p className="about-orientation-block">
-              Born and raised on the Jersey Shore. Now living in Salt Lake City with my wife, daughters, and two goldens. I like being outside, staying active, and getting back to the ocean whenever I can.
+              Currently living in Salt Lake City, but moving back home to New Jersey this November with my wife, daughters, and two goldens. I like being outside, staying active, and I’m looking forward to surfing more once we’re back. Open to hybrid roles in NYC and remote opportunities.
             </p>
           </div>
 
