@@ -1285,10 +1285,12 @@ function CaseStudyOverviewBlock({
   overview,
   subtleCopy = false,
   hideDetails = false,
+  footer,
 }: {
   overview: CaseStudyOverview;
   subtleCopy?: boolean;
   hideDetails?: boolean;
+  footer?: ReactNode;
 }) {
   return (
     <section className={`case-study-overview case-study-block font-sans-preview ${hideDetails ? "is-copy-only" : ""}`}>
@@ -1315,6 +1317,7 @@ function CaseStudyOverviewBlock({
             </p>
           ))}
         </div>
+        {footer}
       </div>
     </section>
   );
@@ -2181,16 +2184,18 @@ function CaseStudyStructuredShowcaseGrid({
 function CaseStudyMetLifeSnapshotBlocks({
   overview,
   blocks,
+  overviewFooter,
 }: {
   overview?: CaseStudyOverview;
   blocks: CaseStudyBlock[];
+  overviewFooter?: ReactNode;
 }) {
   const showcaseBlock = blocks.find((block): block is Extract<CaseStudyBlock, { type: "showcase" }> => block.type === "showcase");
 
   return overview ? (
     <CaseStudySmartsheetSpineSection label="Context" contentClassName="case-study-metlife-snapshot-spine">
       <div className="case-study-metlife-snapshot-content">
-        <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails />
+        <CaseStudyOverviewBlock overview={overview} subtleCopy hideDetails footer={overviewFooter} />
         {showcaseBlock ? <CaseStudyStructuredShowcaseGrid block={showcaseBlock} showTitles={false} /> : null}
       </div>
     </CaseStudySmartsheetSpineSection>
@@ -2642,7 +2647,16 @@ export function CaseStudyPage({ project, related, heroPreview }: CaseStudyPagePr
               useResourceManagementScaffold={isResourceManagementCaseStudy}
             />
           ) : usesSnapshotTemplate ? (
-            <CaseStudyMetLifeSnapshotBlocks overview={overview} blocks={caseStudyBlocks} />
+            <CaseStudyMetLifeSnapshotBlocks
+              overview={overview}
+              blocks={caseStudyBlocks}
+              overviewFooter={project.slug === "cubby" ? (
+                <a href="/download/cubby" className="nav-item-pill cubby-download-button font-sans-preview">
+                  <span className="cubby-download-icon" aria-hidden="true" />
+                  Download for Mac
+                </a>
+              ) : undefined}
+            />
           ) : (
             <>
               {overview ? (
