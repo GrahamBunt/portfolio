@@ -74,7 +74,7 @@ const HERO_H1_DEFAULT_TYPE_DIALS: HeroH1TypeDials = {
   viewportSize: 7.6,
   maxSize: 126,
   maxWidth: 1460,
-  weight: 600,
+  weight: 700,
 };
 
 const HeroTypographyControls = process.env.NODE_ENV === "development"
@@ -83,9 +83,9 @@ const HeroTypographyControls = process.env.NODE_ENV === "development"
 
 const HERO_TYPOGRAPHY_DEFAULTS = {
   size: 96,
-  measure: 87,
-  lineHeight: 0.855,
-  position: { x: 0, y: -7 },
+  measure: 88,
+  lineHeight: 0.935,
+  position: { x: 0, y: 0 },
 };
 
 const HERO_SUBTEXT_DEFAULT_TYPE_DIALS: HeroSubtextTypeDials = {

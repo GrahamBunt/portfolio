@@ -637,7 +637,9 @@ iframe {
 
   .home-hero-name {
     grid-row: 1;
-    font-size: calc(clamp(calc(var(--home-hero-h1-min-size, 60px) * 0.96), 15vw, min(var(--home-hero-h1-max-size, 144px), 68px)) * var(--home-hero-h1-size-scale, 1));
+    /* Let the long headline shrink with narrow phones instead of hitting the
+       desktop minimum, while keeping the user's size dial proportional. */
+    font-size: calc(clamp(2.125rem, 11vw, 4rem) * var(--home-hero-h1-size-scale, 1));
     line-height: var(--home-hero-h1-mobile-line, 0.98);
   }
 
@@ -752,6 +754,39 @@ iframe {
   .about-copy {
     gap: 18px;
     max-width: none;
+  }
+}
+
+/* Give phones and tablets their own text-first hero composition. */
+@media (max-width: 1024px) {
+  .home-hero-v2 {
+    --home-marker-offset: 0px;
+    --home-support-fluid-size: clamp(1.3125rem, 2.7vw, 1.75rem);
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    min-height: auto;
+    row-gap: clamp(24px, 3.4vw, 36px);
+    padding-top: clamp(140px, 18svh, 190px);
+    padding-bottom: clamp(72px, 12svh, 128px);
+  }
+
+  .home-hero-v2 .home-hero-portrait {
+    display: none;
+  }
+
+  .home-hero-name {
+    grid-column: 1;
+    width: 100%;
+    font-size: calc(clamp(2.5rem, 12.5vw, 5rem) * var(--home-hero-h1-size-scale, 1));
+    line-height: var(--home-hero-h1-mobile-line, 1.08);
+    text-wrap: balance;
+  }
+
+  .home-hero-value {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+    line-height: max(var(--home-hero-subtext-line, 1.12), 1.3);
   }
 }
 
@@ -1154,6 +1189,56 @@ iframe {
   animation-duration: 0.64s;
 }
 
+@keyframes hero-copy-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  70% {
+    opacity: 0.9;
+    transform: translateY(0);
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  /* After fonts are ready: headline at 350ms, description 140ms later.
+     Movement and wipe settle in 1.4s; opacity finishes softly at 2s. */
+  .home-page .home-hero-name.animate-reveal,
+  .home-page .home-hero-value.animate-reveal {
+    --hero-copy-delay: 210ms;
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, transparent 26%, white 36%, white 100%);
+    -webkit-mask-size: 520% 100%;
+    mask-image: linear-gradient(to left, transparent 0%, transparent 26%, white 36%, white 100%);
+    mask-size: 520% 100%;
+    animation: hero-copy-reveal 2s cubic-bezier(0.25, 0.1, 0.25, 1) var(--hero-copy-delay) both;
+  }
+
+  .home-page .home-hero-value.animate-reveal {
+    --hero-copy-delay: 350ms;
+  }
+}
+
+@media (max-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .home-page .home-hero-name.animate-reveal,
+  .home-page .home-hero-value.animate-reveal {
+    opacity: 1;
+    transform: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+    animation: none;
+  }
+}
+
 .animate-reveal-compact {
   display: block;
   opacity: 0;
@@ -1359,6 +1444,24 @@ iframe {
   max-width: 40px;
   flex-basis: 40px;
   padding: 0;
+}
+
+@media (max-width: 360px) {
+  .site-nav-links {
+    gap: 6px;
+  }
+
+  .site-nav-links .nav-link-about {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    flex-basis: auto;
+  }
+
+  .site-nav-links .nav-item-pill:not(.nav-link-social) {
+    padding-inline: 12px;
+    font-size: 14px;
+  }
 }
 
 .nav-social-icon {

@@ -209,9 +209,9 @@ export default function AboutPage() {
       <main className="about-main">
         <section className="about-act-one" aria-label="Personal">
           <div className={`about-orientation ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
-            <h1 className="about-orientation-title">Graham Bunt</h1>
+            <h1 className="about-orientation-title" style={{ fontWeight: 700 }}>Graham Bunt</h1>
             <p className="about-orientation-block">
-              Currently based in Salt Lake City. Moving back home to the Jersey Shore (NYC metro) this November with my wife, daughters, and two goldens. I like being outside, staying active, and I’m looking forward to surfing more once we’re back.
+              Moving back home to the Jersey Shore (NYC metro) this November with my wife, daughters, and two goldens. I like being outside, staying active, and I’m looking forward to surfing more once we’re back.
             </p>
           </div>
 
