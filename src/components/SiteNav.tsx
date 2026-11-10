@@ -48,6 +48,14 @@ export function SiteNav() {
           </Link>
         ))}
         <a
+          href="/graham-bunt-resume.pdf"
+          className="nav-item-pill text-[var(--text-primary)]"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Resume
+        </a>
+        <a
           href="https://www.linkedin.com/in/grahambunt/"
           className="nav-item-pill nav-link-social text-[var(--text-primary)]"
           aria-label="LinkedIn"
