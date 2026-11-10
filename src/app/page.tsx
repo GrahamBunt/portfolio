@@ -13,6 +13,7 @@ import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import { publishedWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
+import type { HeroDescriptionTypography } from "@/components/HeroTypographyControls";
 
 const featuredHomeProjectSlugs = ["smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
 const homeFeaturedProjects = featuredHomeProjectSlugs
@@ -91,8 +92,16 @@ const HERO_SUBTEXT_DEFAULT_TYPE_DIALS: HeroSubtextTypeDials = {
   tracking: -0.014,
   lineHeight: 1.12,
   size: 33,
-  maxWidth: 760,
+  maxWidth: 690,
   weight: 400,
+};
+
+const HERO_DESCRIPTION_DEFAULTS: HeroDescriptionTypography = {
+  measure: HERO_SUBTEXT_DEFAULT_TYPE_DIALS.maxWidth,
+  size: 100,
+  lineHeight: HERO_SUBTEXT_DEFAULT_TYPE_DIALS.lineHeight,
+  tracking: HERO_SUBTEXT_DEFAULT_TYPE_DIALS.tracking,
+  fullWidth: false,
 };
 
 function ArrowIcon() {
@@ -110,6 +119,7 @@ function getProjectImage(project: (typeof publishedWork)[number]) {
 export default function Home() {
   const router = useRouter();
   const [heroTypography, setHeroTypography] = useState(HERO_TYPOGRAPHY_DEFAULTS);
+  const [heroDescription, setHeroDescription] = useState(HERO_DESCRIPTION_DEFAULTS);
   const [fontsReady, setFontsReady] = useState(false);
   const heroPortraitRef = useRef<HTMLSpanElement>(null);
   // Move both text blocks by the same responsive offset. The reveal animation
@@ -183,8 +193,8 @@ export default function Home() {
       className={`home-page min-h-screen text-[var(--text-primary)] ${fontsReady ? "sequence-ready" : ""}`}
       style={
         {
-          "--home-hero-subtext-tracking": `${HERO_SUBTEXT_DEFAULT_TYPE_DIALS.tracking}em`,
-          "--home-hero-subtext-line": HERO_SUBTEXT_DEFAULT_TYPE_DIALS.lineHeight,
+          "--home-hero-subtext-tracking": `${heroDescription.tracking}em`,
+          "--home-hero-subtext-line": heroDescription.lineHeight,
           "--home-hero-subtext-size": `${HERO_SUBTEXT_DEFAULT_TYPE_DIALS.size}px`,
           "--home-hero-subtext-max-width": `${HERO_SUBTEXT_DEFAULT_TYPE_DIALS.maxWidth}px`,
           "--home-hero-subtext-weight": HERO_SUBTEXT_DEFAULT_TYPE_DIALS.weight,
@@ -192,7 +202,12 @@ export default function Home() {
       }
     >
       {HeroTypographyControls ? (
-        <HeroTypographyControls defaults={HERO_TYPOGRAPHY_DEFAULTS} onChange={setHeroTypography} />
+        <HeroTypographyControls
+          defaults={HERO_TYPOGRAPHY_DEFAULTS}
+          onChange={setHeroTypography}
+          descriptionDefaults={HERO_DESCRIPTION_DEFAULTS}
+          onDescriptionChange={setHeroDescription}
+        />
       ) : null}
       <script
         type="application/ld+json"
@@ -248,7 +263,14 @@ export default function Home() {
           </figure>
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
-            style={{ translate: heroTextTranslate }}
+            style={{
+              translate: heroTextTranslate,
+              gridColumn: heroDescription.fullWidth ? "1 / -1" : undefined,
+              marginLeft: heroDescription.fullWidth ? 0 : undefined,
+              width: `min(${heroDescription.measure}px, calc(100% - ${heroDescription.fullWidth ? "0px" : "var(--home-marker-offset)"}))`,
+              maxWidth: "none",
+              fontSize: `calc(var(--home-support-fluid-size) * ${heroDescription.size / 100})`,
+            }}
           >
             {HOME_SUPPORT_TEXT}
           </p>
