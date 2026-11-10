@@ -2,6 +2,7 @@
 
 import type { CSSProperties, MouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ const homeFeaturedProjects = featuredHomeProjectSlugs
   .filter((project): project is (typeof publishedWork)[number] => Boolean(project));
 
 const HOME_SUPPORT_TEXT =
-  "Graham Bunt is a product designer leaning into scale and complexity, exploring what AI makes possible, and turning ambitious ideas into real experiences.";
+  "Graham Bunt is a product designer making sense of complex systems, shaping product direction, and bringing ideas to life through design and code.";
 const HOME_STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@graph": [
@@ -68,11 +69,22 @@ type HeroSubtextTypeDials = {
 const HERO_H1_DEFAULT_TYPE_DIALS: HeroH1TypeDials = {
   tracking: -0.022,
   lineHeight: 0.845,
-  minSize: 60,
-  viewportSize: 8.7,
-  maxSize: 144,
+  minSize: 54,
+  viewportSize: 7.6,
+  maxSize: 126,
   maxWidth: 1460,
   weight: 600,
+};
+
+const HeroTypographyControls = process.env.NODE_ENV === "development"
+  ? dynamic(() => import("@/components/HeroTypographyControls"), { ssr: false })
+  : null;
+
+const HERO_TYPOGRAPHY_DEFAULTS = {
+  size: 96,
+  measure: 87,
+  lineHeight: 0.855,
+  position: { x: 0, y: -7 },
 };
 
 const HERO_SUBTEXT_DEFAULT_TYPE_DIALS: HeroSubtextTypeDials = {
@@ -97,8 +109,12 @@ function getProjectImage(project: (typeof publishedWork)[number]) {
 
 export default function Home() {
   const router = useRouter();
+  const [heroTypography, setHeroTypography] = useState(HERO_TYPOGRAPHY_DEFAULTS);
   const [fontsReady, setFontsReady] = useState(false);
   const heroPortraitRef = useRef<HTMLSpanElement>(null);
+  // Move both text blocks by the same responsive offset. The reveal animation
+  // owns transform, so use translate to keep its motion independent.
+  const heroTextTranslate = `${heroTypography.position?.x ?? 0}vw ${-(heroTypography.position?.y ?? 0)}vh`;
 
   const navigateFromCubbyCard = (href: string, event: MouseEvent<HTMLElement>) => {
     const clickedInteractiveElement = event.nativeEvent.composedPath().some((node) => {
@@ -175,6 +191,9 @@ export default function Home() {
         } as CSSProperties
       }
     >
+      {HeroTypographyControls ? (
+        <HeroTypographyControls defaults={HERO_TYPOGRAPHY_DEFAULTS} onChange={setHeroTypography} />
+      ) : null}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_STRUCTURED_DATA) }}
@@ -192,12 +211,15 @@ export default function Home() {
             className={`home-hero-name ${fontsReady ? "animate-reveal" : "opacity-0"}`}
             style={
               {
+                translate: heroTextTranslate,
                 "--home-hero-h1-tracking": `${HERO_H1_DEFAULT_TYPE_DIALS.tracking}em`,
-                "--home-hero-h1-line": HERO_H1_DEFAULT_TYPE_DIALS.lineHeight,
+                "--home-hero-h1-line": heroTypography.lineHeight,
+                "--home-hero-h1-size-scale": heroTypography.size / 100,
+                "--home-hero-h1-mobile-line": 0.98 * heroTypography.lineHeight / HERO_H1_DEFAULT_TYPE_DIALS.lineHeight,
                 "--home-hero-h1-min-size": `${HERO_H1_DEFAULT_TYPE_DIALS.minSize}px`,
                 "--home-hero-h1-vw-size": `${HERO_H1_DEFAULT_TYPE_DIALS.viewportSize}vw`,
                 "--home-hero-h1-max-size": `${HERO_H1_DEFAULT_TYPE_DIALS.maxSize}px`,
-                "--home-hero-h1-max-width": `${HERO_H1_DEFAULT_TYPE_DIALS.maxWidth}px`,
+                "--home-hero-h1-max-width": `${heroTypography.measure}%`,
                 "--home-hero-h1-weight": HERO_H1_DEFAULT_TYPE_DIALS.weight,
               } as CSSProperties
             }
@@ -206,7 +228,7 @@ export default function Home() {
               In pursuit of
             </span>{" "}
             <span className="home-hero-line home-hero-line-bottom">
-              shipping great work.
+              shipping products customers love.
             </span>
           </h1>
           <figure
@@ -226,6 +248,7 @@ export default function Home() {
           </figure>
           <p
             className={`home-hero-value ${fontsReady ? "animate-reveal" : "opacity-0"}`}
+            style={{ translate: heroTextTranslate }}
           >
             {HOME_SUPPORT_TEXT}
           </p>
