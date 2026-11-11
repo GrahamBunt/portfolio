@@ -209,7 +209,7 @@ export default function AboutPage() {
       <main className="about-main">
         <section className="about-act-one" aria-label="Personal">
           <div className={`about-orientation ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
-            <h1 className="about-orientation-title" style={{ fontWeight: 700 }}>Graham Bunt</h1>
+            <h1 className="about-orientation-title">Graham Bunt</h1>
             <p className="about-orientation-block">
               Moving back home to the Jersey Shore (NYC metro) this November with my wife, daughters, and two goldens. I like being outside, staying active, and I’m looking forward to surfing more once we’re back.
             </p>
@@ -294,7 +294,7 @@ export default function AboutPage() {
         <section className="about-act-two" aria-label="Reflection">
           <div className="about-text-section">
             <div className="about-act-two-content">
-              <h1 className="about-practice-statement" style={{ fontWeight: 700 }}>
+              <h1 className="about-practice-statement">
                 {["Practice.", "Failure.", "Repetition.", "Competence.", "Style."].map((word) => (
                   <span key={word}>{word}</span>
                 ))}

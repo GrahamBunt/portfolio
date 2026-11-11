@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
 import { HomeProjectImage } from "@/components/HomeProjectImage";
+import { ProjectVideo } from "@/components/ProjectVideo";
 import { EmailCopyControl } from "@/components/EmailCopyControl";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
@@ -15,7 +16,7 @@ import { publishedWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
 import type { HeroDescriptionTypography } from "@/components/HeroTypographyControls";
 
-const featuredHomeProjectSlugs = ["smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
+const featuredHomeProjectSlugs = ["paper-trades", "smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
 const homeFeaturedProjects = featuredHomeProjectSlugs
   .map((slug) => publishedWork.find((project) => project.slug === slug))
   .filter((project): project is (typeof publishedWork)[number] => Boolean(project));
@@ -74,7 +75,7 @@ const HERO_H1_DEFAULT_TYPE_DIALS: HeroH1TypeDials = {
   viewportSize: 7.6,
   maxSize: 126,
   maxWidth: 1460,
-  weight: 700,
+  weight: 600,
 };
 
 const HeroTypographyControls = process.env.NODE_ENV === "development"
@@ -257,7 +258,7 @@ export default function Home() {
                 width={1000}
                 height={978}
                 priority
-                sizes="(max-width: 760px) calc(100vw - 40px), 28vw"
+                sizes="(max-width: 1024px) clamp(180px, 48vw, 300px), (max-width: 1545px) 22vw, 340px"
               />
             </span>
           </figure>
@@ -294,14 +295,19 @@ export default function Home() {
           >
             {homeFeaturedProjects.map((project, index) => {
               const href = `/work/${project.slug}`;
-              const cardClassName = `case-study-next-up-card home-featured-work-card is-${project.slug}`;
+              const cardClassName = `case-study-next-up-card home-featured-work-card is-${project.slug}${project.isInProgress ? " is-in-progress" : ""}`;
               const cardCopy = (
                 <div className="case-study-next-up-copy">
                   <div className="case-study-next-up-title-row">
                     <h3>{preventTextOrphans(project.title)}</h3>
-                    <span className="case-study-next-up-arrow">
-                      <ArrowIcon />
-                    </span>
+                    {project.isInProgress || project.isComingSoon ? (
+                      <span className="home-project-status">Work in progress</span>
+                    ) : null}
+                    {!project.isComingSoon ? (
+                      <span className="case-study-next-up-arrow">
+                        <ArrowIcon />
+                      </span>
+                    ) : null}
                   </div>
                   <p className="home-featured-work-summary font-sans-preview">{project.summary}</p>
                   {project.cardMeta ? (
@@ -311,6 +317,22 @@ export default function Home() {
                   ) : null}
                 </div>
               );
+
+              if (project.isComingSoon) {
+                return (
+                  <article key={project.slug} className={`${cardClassName} is-disabled`}>
+                    <span className="home-featured-work-index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    {project.homepageImage ? (
+                      <figure className="case-study-next-up-media">
+                        <HomeProjectImage slug={project.slug} fallbackSrc={project.homepageImage} />
+                      </figure>
+                    ) : null}
+                    {cardCopy}
+                  </article>
+                );
+              }
 
               if (project.slug === "cubby") {
                 return (
@@ -332,7 +354,11 @@ export default function Home() {
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <figure className="case-study-next-up-media">
-                    <HomeProjectImage slug={project.slug} fallbackSrc={getProjectImage(project)} />
+                    {project.homepageVideo ? (
+                      <ProjectVideo src={project.homepageVideo} poster={getProjectImage(project)} label={`${project.title} preview`} decorative />
+                    ) : (
+                      <HomeProjectImage slug={project.slug} fallbackSrc={getProjectImage(project)} />
+                    )}
                   </figure>
                   {cardCopy}
                 </Link>

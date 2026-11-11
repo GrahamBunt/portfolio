@@ -8,6 +8,7 @@ import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
 import { CubbyDemoHero } from "@/components/cubby-demo/CubbyDemoHero";
 import { ProjectMeta } from "@/components/ProjectMeta";
+import { ProjectVideo } from "@/components/ProjectVideo";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
 import { SiteNav } from "@/components/SiteNav";
 import type { CaseStudyBlock, CaseStudyBlockWidth, CaseStudyOverview, WorkItem } from "@/content/work";
@@ -35,7 +36,7 @@ type ProblemCardDialStyle = CSSProperties & {
 
 const defaultProblemCardDials: ProblemCardDials = {
   padding: 42,
-  titleWeight: 500,
+  titleWeight: 600,
   subtitleWeight: 500,
 };
 
@@ -263,9 +264,9 @@ const stepFlowHeaderStyle: CSSProperties = {
 
 const stepFlowTitleStyle: CSSProperties = {
   color: "var(--text-primary)",
-  fontFamily: "var(--font-display-serif), serif",
+  fontFamily: "var(--font-sans-preview), sans-serif",
   fontSize: "clamp(38px, 4.4vw, 64px)",
-  fontWeight: 400,
+  fontWeight: 600,
   lineHeight: 1,
   margin: 0,
 };
@@ -284,7 +285,7 @@ const stepTitleStyle: CSSProperties = {
   color: "var(--text-primary)",
   fontFamily: 'var(--font-sans-preview), sans-serif',
   fontSize: 21,
-  fontWeight: 400,
+  fontWeight: 600,
   lineHeight: 1.5,
   margin: 0,
 };
@@ -2422,7 +2423,7 @@ export function CaseStudyPage({ project, related, heroPreview }: CaseStudyPagePr
   const isSmartsheetReportsCaseStudy = project.slug === "smartsheet-reports";
   const isResourceManagementCaseStudy = project.slug === "resource-management-integration";
   const isMetLifeMexicoCaseStudy = project.slug === "metlife-mexico";
-  const usesSnapshotTemplate = isMetLifeMexicoCaseStudy || project.slug === "cubby";
+  const usesSnapshotTemplate = isMetLifeMexicoCaseStudy || project.caseStudyLayout === "snapshot";
   const usesSmartsheetTemplate = isSmartsheetReportsCaseStudy || isResourceManagementCaseStudy;
   const isStructuredCaseStudy = usesSmartsheetTemplate || usesSnapshotTemplate;
   const usesPlaceholderHero = false;
@@ -2503,7 +2504,7 @@ export function CaseStudyPage({ project, related, heroPreview }: CaseStudyPagePr
   } as CSSProperties;
 
   const relatedStyle = {
-    marginTop: project.slug === "cubby" ? "clamp(48px, 5vw, 80px)" : undefined,
+    marginTop: project.caseStudyLayout === "snapshot" ? "clamp(48px, 5vw, 80px)" : undefined,
     "--rise-delay": "1180ms",
     "--rise-duration": "1.08s",
     "--rise-blur": "0px",
@@ -2624,6 +2625,8 @@ export function CaseStudyPage({ project, related, heroPreview }: CaseStudyPagePr
           >
             {heroPreview ?? (project.slug === "cubby" ? (
               <CubbyDemoHero />
+            ) : project.heroVideo ? (
+              <ProjectVideo src={project.heroVideo} poster={project.heroImage ?? project.image} label={`${project.title} preview`} />
             ) : usesPlaceholderHero ? null : (
               <Image
                 ref={heroImageRef}

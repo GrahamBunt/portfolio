@@ -5,9 +5,11 @@ export type WorkItem = {
   tag: string;
   image: string;
   homepageImage?: string;
+  homepageVideo?: string;
   upNextImage?: string;
   thumbnailImage?: string;
   heroImage?: string;
+  heroVideo?: string;
   warmImageAssets?: string[];
   warmVideoAssets?: string[];
   featuredImage?: string;
@@ -15,8 +17,9 @@ export type WorkItem = {
   cardMeta?: string;
   caseStudyMeta?: string;
   isComingSoon?: boolean;
+  isInProgress?: boolean;
   isHidden?: boolean;
-  caseStudyLayout?: "deck";
+  caseStudyLayout?: "deck" | "snapshot";
   deckSlides?: CaseStudyPresentationSlide[];
   overview?: CaseStudyOverview;
   blocks?: CaseStudyBlock[];
@@ -389,6 +392,32 @@ export const featuredWork: WorkItem = {
 
 export const otherWork: WorkItem[] = [
   {
+    title: "Paper Trades",
+    slug: "paper-trades",
+    tag: "Personal • 2026",
+    image: "/work/paper-trades/hero-poster.webp",
+    homepageImage: "/work/paper-trades/hero-poster.webp",
+    homepageVideo: "/work/paper-trades/hero.mp4",
+    heroImage: "/work/paper-trades/hero-poster.webp",
+    heroVideo: "/work/paper-trades/hero.mp4",
+    summary: "Exploring native iOS design and AI-assisted development in SwiftUI through a paper trading app built with real market data.",
+    cardMeta: "Personal · AI Build",
+    caseStudyMeta: "Personal · AI Build",
+    caseStudyLayout: "snapshot",
+    overview: {
+      items: [
+        { label: "Type", value: "Personal · AI Build" },
+        { label: "Platform", value: "iOS · SwiftUI" },
+      ],
+      body: [
+        "Paper Trades is a native iOS app for exploring investment ideas with simulated money and real market data. Create portfolios, follow companies, and practice trading without risking capital.",
+        "I’m designing and building the app with SwiftUI and AI-assisted development, bringing it from early concepts to a working experience on my iPhone. The focus is interaction craft, with responsive charts, fluid transitions, clear typography, and details that make financial information easier to understand.",
+        "Trading apps carry strong expectations around familiarity and reliability. I’m building that foundation first, then exploring a more distinctive visual and interaction language.",
+      ],
+    },
+    blocks: [],
+  },
+  {
     ...featuredWork,
     title: "Resource Management Integration",
     slug: "resource-management-integration",
@@ -452,6 +481,7 @@ export const otherWork: WorkItem[] = [
   },
   {
     title: "Cubby",
+    caseStudyLayout: "snapshot",
     slug: "cubby",
     tag: "Personal • 2026",
     image: "/work/cubby/homepage-card.svg",
@@ -540,7 +570,7 @@ export const otherWork: WorkItem[] = [
 
 export const allWork = [featuredWork, ...otherWork];
 export const publishedWork = allWork.filter((item) => !item.isHidden);
-const routeableWorkSlugs = ["smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
+const routeableWorkSlugs = ["paper-trades", "smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
 export const routeableWork = routeableWorkSlugs
   .map((slug) => publishedWork.find((item) => item.slug === slug))
   .filter((item): item is WorkItem => Boolean(item));
