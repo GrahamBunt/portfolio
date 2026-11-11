@@ -87,7 +87,7 @@ const HERO_TYPOGRAPHY_DEFAULTS = {
   size: 96,
   measure: 88,
   lineHeight: 0.935,
-  position: { x: 0, y: 0 },
+  position: { x: 0, y: -9.3 },
 };
 
 const HERO_SUBTEXT_DEFAULT_TYPE_DIALS: HeroSubtextTypeDials = {
