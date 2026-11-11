@@ -393,6 +393,7 @@ export const featuredWork: WorkItem = {
 export const otherWork: WorkItem[] = [
   {
     title: "Paper Trades",
+    isInProgress: true,
     slug: "paper-trades",
     tag: "Personal • 2026",
     image: "/work/paper-trades/hero-poster-4k-v2.webp",

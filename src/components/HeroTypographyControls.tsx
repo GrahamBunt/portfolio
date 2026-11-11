@@ -19,20 +19,42 @@ export type HeroDescriptionTypography = {
   fullWidth: boolean;
 };
 
-export default function HeroTypographyControls({ defaults, onChange, descriptionDefaults, onDescriptionChange }: {
+export type HeroSpacing = {
+  gap: number;
+  top: number;
+  bottom: number;
+};
+
+export default function HeroTypographyControls({ defaults, onChange, descriptionDefaults, onDescriptionChange, spacingDefaults, onSpacingChange }: {
   defaults: HeroTypography;
   onChange: (values: HeroTypography) => void;
   descriptionDefaults: HeroDescriptionTypography;
   onDescriptionChange: (values: HeroDescriptionTypography) => void;
+  spacingDefaults: HeroSpacing;
+  onSpacingChange: (values: HeroSpacing) => void;
 }) {
+  const spacing = useDialKit("Hero spacing", {
+    "Heading to description (%)": [spacingDefaults.gap, 0, 400, 1],
+    "Top space (%)": [spacingDefaults.top, 40, 180, 1],
+    "Bottom space (%)": [spacingDefaults.bottom, 0, 200, 1],
+  }, { id: "home-hero-spacing", persist: true });
+
+  const gap = spacing["Heading to description (%)"];
+  const top = spacing["Top space (%)"];
+  const bottom = spacing["Bottom space (%)"];
+
+  useEffect(() => {
+    onSpacingChange({ gap, top, bottom });
+  }, [gap, top, bottom, onSpacingChange]);
+
   const values = useDialKit("Hero typography", {
     "Size (%)": [defaults.size, 60, 140, 1],
     "Content measure (%)": [defaults.measure, 30, 100, 1],
     "Line height": [defaults.lineHeight, 0.8, 1.4, 0.005],
     "Text position": {
       type: "pad",
-      x: [defaults.position.x, -15, 15, 0.5],
-      y: [defaults.position.y, -30, 30, 0.5],
+      x: [defaults.position.x, -15, 15, 0.1],
+      y: [defaults.position.y, -30, 30, 0.1],
       labels: { x: "Horizontal (vw)", y: "Vertical (vh)" },
     },
   }, { id: "home-hero-typography", persist: true });

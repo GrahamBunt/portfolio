@@ -9,12 +9,13 @@ import { useRouter } from "next/navigation";
 import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
 import { HomeProjectImage } from "@/components/HomeProjectImage";
 import { ProjectVideo } from "@/components/ProjectVideo";
+import { WorkInProgressOverlay } from "@/components/WorkInProgressOverlay";
 import { EmailCopyControl } from "@/components/EmailCopyControl";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { SiteNav } from "@/components/SiteNav";
 import { publishedWork } from "@/content/work";
 import { preventTextOrphans } from "@/lib/typography";
-import type { HeroDescriptionTypography } from "@/components/HeroTypographyControls";
+import type { HeroDescriptionTypography, HeroSpacing } from "@/components/HeroTypographyControls";
 
 const featuredHomeProjectSlugs = ["paper-trades", "smartsheet-reports", "cubby", "resource-management-integration", "metlife-mexico"];
 const homeFeaturedProjects = featuredHomeProjectSlugs
@@ -105,6 +106,8 @@ const HERO_DESCRIPTION_DEFAULTS: HeroDescriptionTypography = {
   fullWidth: false,
 };
 
+const HERO_SPACING_DEFAULTS: HeroSpacing = { gap: 100, top: 100, bottom: 100 };
+
 function ArrowIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
@@ -121,6 +124,7 @@ export default function Home() {
   const router = useRouter();
   const [heroTypography, setHeroTypography] = useState(HERO_TYPOGRAPHY_DEFAULTS);
   const [heroDescription, setHeroDescription] = useState(HERO_DESCRIPTION_DEFAULTS);
+  const [heroSpacing, setHeroSpacing] = useState(HERO_SPACING_DEFAULTS);
   const [fontsReady, setFontsReady] = useState(false);
   const heroPortraitRef = useRef<HTMLSpanElement>(null);
   // Move both text blocks by the same responsive offset. The reveal animation
@@ -199,6 +203,9 @@ export default function Home() {
           "--home-hero-subtext-size": `${HERO_SUBTEXT_DEFAULT_TYPE_DIALS.size}px`,
           "--home-hero-subtext-max-width": `${HERO_SUBTEXT_DEFAULT_TYPE_DIALS.maxWidth}px`,
           "--home-hero-subtext-weight": HERO_SUBTEXT_DEFAULT_TYPE_DIALS.weight,
+          "--home-hero-gap-scale": heroSpacing.gap / 100,
+          "--home-hero-top-scale": heroSpacing.top / 100,
+          "--home-hero-bottom-scale": heroSpacing.bottom / 100,
         } as CSSProperties
       }
     >
@@ -208,6 +215,8 @@ export default function Home() {
           onChange={setHeroTypography}
           descriptionDefaults={HERO_DESCRIPTION_DEFAULTS}
           onDescriptionChange={setHeroDescription}
+          spacingDefaults={HERO_SPACING_DEFAULTS}
+          onSpacingChange={setHeroSpacing}
         />
       ) : null}
       <script
@@ -300,7 +309,7 @@ export default function Home() {
                 <div className="case-study-next-up-copy">
                   <div className="case-study-next-up-title-row">
                     <h3>{preventTextOrphans(project.title)}</h3>
-                    {project.isInProgress || project.isComingSoon ? (
+                    {project.isComingSoon ? (
                       <span className="home-project-status">Work in progress</span>
                     ) : null}
                     {!project.isComingSoon ? (
@@ -359,6 +368,7 @@ export default function Home() {
                     ) : (
                       <HomeProjectImage slug={project.slug} fallbackSrc={getProjectImage(project)} />
                     )}
+                    {project.isInProgress ? <WorkInProgressOverlay /> : null}
                   </figure>
                   {cardCopy}
                 </Link>
