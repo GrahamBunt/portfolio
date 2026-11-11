@@ -36,7 +36,7 @@ type ProblemCardDialStyle = CSSProperties & {
 
 const defaultProblemCardDials: ProblemCardDials = {
   padding: 42,
-  titleWeight: 600,
+  titleWeight: 500,
   subtitleWeight: 500,
 };
 
@@ -264,9 +264,9 @@ const stepFlowHeaderStyle: CSSProperties = {
 
 const stepFlowTitleStyle: CSSProperties = {
   color: "var(--text-primary)",
-  fontFamily: "var(--font-sans-preview), sans-serif",
+  fontFamily: "var(--font-display-serif), serif",
   fontSize: "clamp(38px, 4.4vw, 64px)",
-  fontWeight: 600,
+  fontWeight: 400,
   lineHeight: 1,
   margin: 0,
 };
@@ -285,7 +285,7 @@ const stepTitleStyle: CSSProperties = {
   color: "var(--text-primary)",
   fontFamily: 'var(--font-sans-preview), sans-serif',
   fontSize: 21,
-  fontWeight: 600,
+  fontWeight: 400,
   lineHeight: 1.5,
   margin: 0,
 };

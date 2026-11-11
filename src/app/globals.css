@@ -84,11 +84,6 @@ body {
   color: var(--text-primary);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans-preview), sans-serif;
-  font-weight: var(--type-heading-weight);
-}
-
 ::selection {
   background: #d9b85a;
   color: var(--color-page-background);
@@ -482,7 +477,7 @@ iframe {
   grid-column: 1;
   color: var(--text-description);
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   line-height: var(--type-body-line);
 }
 
@@ -535,10 +530,6 @@ iframe {
   box-sizing: border-box;
   gap: 10px;
   padding-right: var(--home-copy-right-inset);
-}
-
-.home-featured-work-card .case-study-next-up-title-row h3 {
-  font-weight: var(--type-body-weight);
 }
 
 .home-featured-work-card.is-disabled .case-study-next-up-title-row,
@@ -1756,7 +1747,7 @@ iframe {
   width: 100%;
   color: var(--text-primary);
   font-size: 30px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 400;
   line-height: 38px;
   margin: 0;
 }
@@ -2514,7 +2505,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: var(--type-page-title-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-page-title-weight);
   letter-spacing: 0;
   line-height: var(--type-page-title-line);
   margin: 0;
@@ -2577,6 +2568,10 @@ iframe {
   height: 100%;
   object-fit: contain;
   background: #000;
+}
+
+.case-study-hero .project-video {
+  object-fit: cover;
 }
 
 .case-study-hero img {
@@ -2824,7 +2819,7 @@ iframe {
   color: var(--text-description);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 18px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   line-height: 24px;
   margin: 0;
 }
@@ -3113,7 +3108,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(25px, 2.25vw, 34px);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--problem-title-weight);
   letter-spacing: -0.01em;
   line-height: 1.24;
   margin: 0;
@@ -3442,7 +3437,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
@@ -3507,7 +3502,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0 0 10px;
@@ -3572,7 +3567,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
@@ -3635,7 +3630,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0;
@@ -3689,7 +3684,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
@@ -3785,7 +3780,7 @@ iframe {
 .case-study-presentation-copy h3 {
   color: var(--text-primary);
   font-size: clamp(26px, 3vw, 46px);
-  font-weight: var(--type-heading-weight);
+  font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.08;
   margin: 0;
@@ -3957,9 +3952,9 @@ iframe {
 
 .case-study-step-flow-header h2 {
   color: var(--text-primary);
-  font-family: var(--font-sans-preview), sans-serif;
+  font-family: var(--font-display-serif), serif;
   font-size: clamp(38px, 4.4vw, 64px);
-  font-weight: var(--type-heading-weight);
+  font-weight: 400;
   line-height: 1;
   margin: 0;
 }
@@ -4066,7 +4061,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   line-height: 28px;
   margin: 0;
 }
@@ -4114,7 +4109,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: clamp(32px, 3.55vw, 54px);
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
@@ -4159,7 +4154,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0;
@@ -4424,7 +4419,7 @@ iframe {
 .case-study-page.is-structured-case-study .work-heading.case-study-heading h1 {
   max-width: 738px;
   font-size: var(--type-page-title-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-page-title-weight);
   letter-spacing: 0;
   line-height: var(--type-page-title-line);
 }
@@ -4471,7 +4466,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   letter-spacing: 0;
   line-height: var(--type-body-line);
   margin: 0;
@@ -4522,10 +4517,6 @@ iframe {
   letter-spacing: 0;
   line-height: var(--type-body-line);
   margin: 0;
-}
-
-.case-study-spine-prose h2 {
-  font-weight: var(--type-heading-weight);
 }
 
 .case-study-spine-prose ul {
@@ -4869,10 +4860,6 @@ iframe {
   margin: 0;
 }
 
-.case-study-smartsheet-slide-copy h2 {
-  font-weight: var(--type-heading-weight);
-}
-
 .case-study-smartsheet-slide-copy p:last-child {
   color: var(--text-description);
 }
@@ -5054,7 +5041,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 28px;
   margin: 0;
@@ -5368,7 +5355,7 @@ iframe {
 .case-study-smartsheet-option-map h3 {
   color: var(--text-primary);
   font-size: 21px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 1.5;
 }
@@ -5579,7 +5566,7 @@ iframe {
 .case-study-smartsheet-spec-samples-header h2 {
   color: var(--text-primary);
   font-size: 21px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 1.5;
 }
@@ -5871,7 +5858,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: 20px;
-  font-weight: var(--type-heading-weight);
+  font-weight: 500;
   line-height: 28px;
   margin: 0;
 }
@@ -6136,7 +6123,7 @@ iframe {
 .case-study-next-up-rail h2 {
   color: var(--text-primary);
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   letter-spacing: 0;
   line-height: var(--type-body-line);
   margin: 0;
@@ -6421,7 +6408,7 @@ iframe {
   color: var(--text-primary);
   font-family: var(--font-sans-preview), sans-serif;
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   letter-spacing: 0;
   line-height: var(--type-body-line);
   margin: 0;
@@ -6517,7 +6504,7 @@ iframe {
 
   .work-heading.about-heading h1 {
     font-size: var(--type-page-title-size);
-    font-weight: var(--type-heading-weight);
+    font-weight: var(--type-page-title-weight);
     line-height: var(--type-page-title-line);
   }
 
