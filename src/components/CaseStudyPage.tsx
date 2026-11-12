@@ -9,6 +9,7 @@ import { CubbyProjectMedia } from "@/components/CubbyProjectMedia";
 import { CubbyDemoHero } from "@/components/cubby-demo/CubbyDemoHero";
 import { ProjectMeta } from "@/components/ProjectMeta";
 import { ProjectVideo } from "@/components/ProjectVideo";
+import { WorkInProgressOverlay } from "@/components/WorkInProgressOverlay";
 import { ScrollRevealText } from "@/components/ScrollRevealText";
 import { SiteNav } from "@/components/SiteNav";
 import type { CaseStudyBlock, CaseStudyBlockWidth, CaseStudyOverview, WorkItem } from "@/content/work";
@@ -2366,18 +2367,30 @@ function CaseStudyNextUpSection({
           const cardContent = (
             <>
               <figure className="case-study-next-up-media">
-                <Image
-                  src={item.upNextImage ?? item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image}
-                  alt=""
-                  fill
-                  sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1180px) calc((100vw - 40px - 24px) / 2), 680px"
-                  loading="lazy"
-                  quality={90}
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: item.slug === "smartsheet-reports" || item.slug === "resource-management-integration" ? "70% 18%" : undefined,
-                  }}
-                />
+                {item.homepageVideo ? (
+                  <ProjectVideo
+                    src={item.homepageVideo}
+                    poster={item.upNextImage ?? item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image}
+                    label={`${item.title} preview`}
+                    decorative
+                  />
+                ) : (
+                  <Image
+                    src={item.upNextImage ?? item.thumbnailImage ?? item.featuredImage ?? item.heroImage ?? item.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1180px) calc((100vw - 40px - 24px) / 2), 680px"
+                    loading="lazy"
+                    quality={90}
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: item.slug === "paper-trades"
+                        ? "right center"
+                        : item.slug === "smartsheet-reports" || item.slug === "resource-management-integration" ? "70% 18%" : undefined,
+                    }}
+                  />
+                )}
+                {item.isInProgress ? <WorkInProgressOverlay /> : null}
               </figure>
               <div className="case-study-next-up-copy">
                 {cardCopy}
@@ -2639,6 +2652,7 @@ export function CaseStudyPage({ project, related, heroPreview }: CaseStudyPagePr
                 unoptimized={(project.heroImage ?? project.image).endsWith(".webp")}
               />
             ))}
+            {project.isInProgress ? <WorkInProgressOverlay /> : null}
           </figure>
         </section>
 

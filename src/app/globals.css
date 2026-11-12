@@ -6275,6 +6275,15 @@ iframe {
   transition: transform 780ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.case-study-next-up .is-paper-trades .project-video {
+  object-fit: cover;
+  object-position: right center;
+}
+
+.case-study-next-up .project-wip-overlay {
+  background: rgb(0 0 0 / 35%);
+}
+
 .cubby-project-mascot-media {
   /* Approved web wood: GrahamBunt/cubby@80ed6b9, seed 30597.
      Rollback values are documented in scripts/cubby-wood/README.md. */
