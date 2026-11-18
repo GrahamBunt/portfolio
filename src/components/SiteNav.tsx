@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SocialIcon } from "@/components/SocialIcon";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
   { label: "About", href: "/about" },
@@ -37,6 +38,7 @@ export function SiteNav() {
         </Link>
       </div>
       <div className="site-nav-links font-sans-preview flex items-center gap-2.5 text-base font-medium leading-6">
+        <ThemeToggle />
         {NAV_LINKS.map((link) => (
           <Link
             key={link.href}
