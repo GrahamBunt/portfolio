@@ -36,7 +36,7 @@ function smoothstep(value: number) {
 
 const wordStyle: CSSProperties = {
   display: "inline",
-  color: `rgb(var(--text-primary-rgb) / ${DIM_ALPHA})`,
+  color: `rgba(245, 245, 245, ${DIM_ALPHA})`,
   willChange: "color",
 };
 

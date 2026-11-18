@@ -29,7 +29,7 @@ export const aboutContent: AboutContent = {
     description: "",
   },
   intro: [
-    "I'm currently a Senior Product Designer at Smartsheet. I enjoy making sense of messy systems, figuring out where products should go, and getting into the smallest interaction and visual details. I care deeply about craft and strive to design experiences that feel intentional and just flat-out good to use.",
+    "I'm currently a Senior Product Designer at Smartsheet. I enjoy making sense of messy systems, figuring out where products should go, and getting into the smallest interaction and visual details. I care deeply about craft and designing experiences that feel intentional and just flat-out good to use.",
     "I've spent the last several years working on everything from integrating acquired products to rethinking core parts of Smartsheet's platform. More recently, I've been getting hands-on with code, using AI to build and ship frontend experiences.",
     "Outside of work, I recently moved back home to the Jersey Shore with my wife, two daughters, and two goldens. I love being outside, staying active, and I'm looking forward to surfing more now that I'm back near the ocean.",
   ],
