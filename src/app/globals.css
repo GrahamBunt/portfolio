@@ -2132,6 +2132,8 @@ iframe {
 }
 
 .about-orientation-block {
+  display: grid;
+  gap: 18px;
   grid-column: 2;
   grid-row: 2;
   width: 100%;
