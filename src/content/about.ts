@@ -29,9 +29,9 @@ export const aboutContent: AboutContent = {
     description: "",
   },
   intro: [
-    "I'm a product designer who loves making things, whether that's figuring out a complicated product problem, exploring new ideas, or obsessing over visual and interaction details.",
-    "Lately, I've been getting more hands-on with building things myself. AI coding tools have opened up a whole new world, letting me learn and create more than I ever thought possible. It's been a lot of fun.",
-    "Outside of work, I'm moving back home to the Jersey Shore with my wife, two daughters, and two goldens. I love being outside, staying active, and I'm looking forward to surfing more once we're back.",
+    "I'm Graham—a product designer who loves making things, whether that's figuring out a complicated product problem, exploring new ideas, or obsessing over visual and interaction details.",
+    "Lately, I've been getting more hands-on with building things myself, both in my current role at Smartsheet and on side projects. AI coding tools have opened up a whole new world, and I'm learning and creating more than I ever thought possible. It's been a lot of fun.",
+    "Outside of work, I recently moved back home to the Jersey Shore with my wife, two daughters, and two goldens. I love being outside, staying active, and I'm looking forward to surfing more now that I'm back near the ocean.",
   ],
   bio: [
     "I’ve always loved the process of getting good at something. For me, that started with action sports. Skateboarding, surfing, freestyle skiing, and in recent years snowboarding. Professionally, I've tried my hand at a few things, including a couple years cooking at a Michelin-starred restaurant in NYC. The throughline of all my different pursuits is what I love—try something, get it wrong, try again, slowly get better, and eventually bring your own style to it.",

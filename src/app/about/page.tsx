@@ -209,7 +209,7 @@ export default function AboutPage() {
       <main className="about-main">
         <section className="about-act-one" aria-label="Personal">
           <div className={`about-orientation ${fontsReady ? "animate-reveal" : "opacity-0"}`}>
-            <h1 className="about-orientation-title">{"Howdy! I'm Graham."}</h1>
+            <h1 className="about-orientation-title">Howdy!</h1>
             <div className="about-orientation-block">
               {aboutContent.intro.map((paragraph, index) => (
                 <p key={index}>{preventTextOrphans(paragraph)}</p>
