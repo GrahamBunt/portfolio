@@ -31,7 +31,7 @@ export const aboutContent: AboutContent = {
   intro: [
     "I'm currently a Senior Product Designer at Smartsheet. I enjoy making sense of messy systems, figuring out where products should go, and designing experiences that feel intentional and just flat-out good to use.",
     "I've spent the last several years working on everything from integrating acquired products to rethinking core parts of Smartsheet's platform. More recently, I've been getting hands-on with code, using AI to build and ship frontend experiences.",
-    "Outside of work, I recently moved back home to the Jersey Shore with my wife, two daughters, and two goldens. I love being outside, staying active, and I'm looking forward to surfing more now that I'm back near the ocean.",
+    "Outside of work, I recently moved back home to the Jersey Shore (NYC metro) with my wife, two daughters, and two goldens. I love being outside, staying active, and I'm looking forward to surfing more now that I'm back near the ocean.",
   ],
   bio: [
     "I’ve always loved the process of getting good at something. For me, that started with action sports. Skateboarding, surfing, freestyle skiing, and in recent years snowboarding. Professionally, I've tried my hand at a few different things, including a couple years cooking at a Michelin-starred restaurant in NYC. The throughline of all my different pursuits is what I love... try something, get it wrong, try again, slowly get better, and eventually bring your own style to it.",
