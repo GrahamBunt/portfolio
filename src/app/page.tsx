@@ -224,7 +224,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_STRUCTURED_DATA) }}
       />
       <div className="home-page-shell">
-        <SiteNav />
+        <SiteNav homePortraitRef={heroPortraitRef} />
 
         <section
           data-section="intro"
@@ -262,7 +262,7 @@ export default function Home() {
           >
             <span ref={heroPortraitRef} className="home-hero-portrait-parallax">
               <Image
-                src="/home-hero-portrait-mono.jpg"
+                src="/home-hero-portrait.jpg"
                 alt="Graham Bunt, product designer"
                 width={1000}
                 height={978}
