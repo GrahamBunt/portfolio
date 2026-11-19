@@ -2019,12 +2019,12 @@ iframe {
   color: var(--text-primary);
   grid-column: 2;
   grid-row: 1;
-  /* Balance the name's ink-to-copy gap against the descender in "Style." */
-  margin-bottom: -0.12em;
 }
 
 .about-practice-statement {
   color: var(--text-primary);
+  /* Give the descender in "Style." the same breathing room as the name. */
+  margin-bottom: 0.12em;
 }
 
 .about-orientation-block {
